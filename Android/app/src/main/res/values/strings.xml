@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SWSSM_ONLINE</string>
+    <string name="action_settings">SWSSM_ONLINE</string>
+    <string name="registering_message_ready">InstanceID 토큰 가져오기</string>
+    <string name="registering_message_generating">InstanceID 토큰 생성중...</string>
+    <string name="registering_message_complete">완료</string>
+    <string name="title_activity_start">StartActivity</string>
+</resources>
