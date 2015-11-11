@@ -68,7 +68,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".QR.QRActivity"
+            android:name=".View.MainActivity$QRActivity"
             android:label="@string/title_activity_qr"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
