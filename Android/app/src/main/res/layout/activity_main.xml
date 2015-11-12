@@ -7,8 +7,16 @@
     android:orientation="vertical" tools:context=".MainActivity">
 
     <Button android:id="@+id/registrationButton"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
         android:layout_height="wrap_content" android:text="@string/registering_message_ready" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start QRscan"
+        android:layout_gravity="center"
+        android:id="@+id/qr_btn"/>
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
