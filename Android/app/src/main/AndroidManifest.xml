@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
     <permission
         android:name="org.secmem.swm_online.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -61,17 +64,32 @@
             android:name=".View.StartActivity"
             android:label="@string/title_activity_start"
             android:theme="@android:style/Theme.NoTitleBar" >
+
+        </activity>
+        <activity
+            android:name=".View.QRActivity"
+            android:label="@string/title_activity_qr"
+
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".View.MainActivity$QRActivity"
-            android:label="@string/title_activity_qr"
-            android:theme="@style/AppTheme.NoActionBar" >
+
+        <activity android:name="com.google.zxing.client.android.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SCAN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
         </activity>
+
     </application>
 
 </manifest>

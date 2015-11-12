@@ -8,4 +8,4 @@
 */
 
 var gcm = require('./gcm');
-gcm.send("title","content",'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','cM9ztr85soo:APA91bFETUuQPolKdEw7n8WaX9_lfe8wCsQCmqmINbyD3echfeTReflQsfGohhkC1oVtofjNcWE4kcllFjPCwK9qQJZi8H663T026wSmc0Fbfg8sj6kRZajBljCuljomu6EhAmZUjuXK');
+gcm.send("title","content",'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
