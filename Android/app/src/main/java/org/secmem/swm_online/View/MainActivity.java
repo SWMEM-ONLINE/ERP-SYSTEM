@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -29,7 +30,7 @@ public class MainActivity extends Activity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
-    private static final String URL = "http://www.swmem.org";
+    private static final String URL = "http://ec2-52-69-176-156.ap-northeast-1.compute.amazonaws.com:3000";
     private static int REQUEST_RENT = 0;
 
     private Button qrButton;
@@ -86,6 +87,7 @@ public class MainActivity extends Activity {
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         myWebView.loadUrl(URL);
+        myWebView.addJavascriptInterface(new JavaScriptInterface(), "Android");
 
 
        // myWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
@@ -226,6 +228,20 @@ public class MainActivity extends Activity {
             // TODO Auto-generated method stub
             myWebView.loadUrl(url);
             return true;
+        }
+    }
+    private class JavaScriptInterface
+    {
+        @JavascriptInterface
+        public void callQRActivity(){
+            // do sth..
+            Toast.makeText(MainActivity.this,"QR Activity called by javascript",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+
+            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+
+            startActivityForResult(intent, REQUEST_RENT);
+
         }
     }
 
