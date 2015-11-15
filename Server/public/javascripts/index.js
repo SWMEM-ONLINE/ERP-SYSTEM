@@ -39,7 +39,7 @@ $(document).ready(function(){
 
     var btn_signup = $("#form-second-btn-signup");
     btn_signup.on("click",function() {
-        location.href='/signup';
+        location.href="/signup";
     });
 });
 
