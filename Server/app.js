@@ -15,6 +15,7 @@ var index_signup = require('./routes/index_signup');
 
 var app = express();
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -28,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', index_login);
 app.use('/users', users);
 app.use('/login',index_login);
 app.use('/signup',index_signup);

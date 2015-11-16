@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
+var repo = require('../repository');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -11,6 +12,14 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     res.json(req.body);
+    //res.send(req.body);
+
+   // repo.hasUserID(req.body, res);
 });
 
+exports.join = function(req, res) {
+    repo.hasUserID(req.body, res);
+};
+
 module.exports = router;
+
