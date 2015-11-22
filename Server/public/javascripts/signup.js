@@ -23,6 +23,7 @@ var pattern = new RegExp(' ');
 var idErr='ID의 길이가 짧습니다<br>';
 var idKoErr='ID는 영어만 사용하세요<br>';
 var idSpaceErr='ID에 빈칸은 불필요합니다<br>';
+var idExist='아이디가 중복됩니다<br>';
 var pwErr='Password 길이가 짧습니다<br>';
 var pwDiff='Password가 다릅니다<br>';
 var nameErr='이름이 중복됩니다<br>';
@@ -59,6 +60,7 @@ toastr.options = {
 };
 
 $(document).ready(function(){
+    /* @gender select */
     btn_male.on('click',function(){
         var male=$('#sex_male');
         var female=$('#sex_female');
@@ -80,7 +82,9 @@ $(document).ready(function(){
         btn_female.css('color','#fff');
         btn_male.css('color','black');
     });
+    /* gender select@ */
 
+    /* @image file select */
     $('input[type=file]').change(function(e) {
         var fn = $(this);
         if(fn.val() != ''){
@@ -91,7 +95,9 @@ $(document).ready(function(){
             $('label[id = sign_up_img_label]').text('사진 선택');
         }
     });
+    /* image file select@ */
 
+    /* @sign form submit event */
     $('#form').submit(function(){
         /* @init */
         var id = inputId.val();
@@ -185,4 +191,5 @@ $(document).ready(function(){
         /* can submit?@ */
             return signup_success;
     });
+    /* sign form submit event@ */
 });
