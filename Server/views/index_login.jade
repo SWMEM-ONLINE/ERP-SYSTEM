@@ -16,7 +16,7 @@ block content
               input#login_id.input-box(type='text', name='id', placeholder='ID', data-required='required')
               input#login_password.input-box(type='password', name='password', placeholder='Password', data-required='required')
               button.form-btn(type='submit') SIGN IN
-            button.form-btn SIGN UP
+            button#sign_up_button.form-btn(type='submit', onclick="window.location.href='/signup'") SIGN UP
             .forgot-container
               | If you forgot your ID or password, Contact us.
 
