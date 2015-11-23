@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad8320e1-59da-4c37-8f2e-556df173bb69" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/routes/images.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/app.js" afterPath="$PROJECT_DIR$/Server/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/routes/index_signup.js" afterPath="$PROJECT_DIR$/Server/routes/index_signup.js" />
     </list>
     <ignored path="ERP-SYSTEM.iws" />
@@ -31,8 +28,8 @@
           <file leaf-file-name="index_signup.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Server/routes/index_signup.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.09375">
-                  <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+                <state vertical-scroll-proportion="0.22508039">
+                  <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -45,8 +42,8 @@
           <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Server/app.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.27652735">
-                  <caret line="53" column="32" selection-start-line="53" selection-start-column="32" selection-end-line="53" selection-end-column="32" />
+                <state vertical-scroll-proportion="0.24115756">
+                  <caret line="15" column="52" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
                   <folding />
                 </state>
               </provider>
@@ -83,9 +80,9 @@
         <option value="$PROJECT_DIR$/Server/repository.js" />
         <option value="$PROJECT_DIR$/Server/package.json" />
         <option value="$PROJECT_DIR$/Server/views/index_signup.jade" />
-        <option value="$PROJECT_DIR$/Server/routes/index_signup.js" />
         <option value="$PROJECT_DIR$/Server/app.js" />
         <option value="$PROJECT_DIR$/Server/routes/images.js" />
+        <option value="$PROJECT_DIR$/Server/routes/index_signup.js" />
       </list>
     </option>
   </component>
@@ -409,6 +406,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2238806">
           <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -484,14 +482,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27652735">
-          <caret line="53" column="32" selection-start-line="53" selection-start-column="32" selection-end-line="53" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/routes/images.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48231512">
@@ -502,10 +492,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Server/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24115756">
+          <caret line="15" column="52" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Server/routes/index_signup.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09375">
-          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.22508039">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
         </state>
       </provider>
