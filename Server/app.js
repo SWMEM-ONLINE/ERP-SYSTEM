@@ -8,9 +8,13 @@ var http = require('http');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var util = require('util');
+var fs = require('fs');
+
 /* @routing pages */
 var index_login = require('./routes/index_login');
 var index_signup = require('./routes/index_signup');
+var imageload = require('./routes/images');
 /* routing pages@ */
 
 var app = express();
@@ -48,6 +52,7 @@ app.use('/', index_login);
 app.use('/users', users);
 app.use('/login',index_login);
 app.use('/signup',index_signup);
+app.use('/image',imageload);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

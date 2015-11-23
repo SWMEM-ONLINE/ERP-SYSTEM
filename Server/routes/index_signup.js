@@ -11,6 +11,9 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 
+    console.log(req.body) // form fields
+    console.log(req.files) // form files
+
     res.json(req.body);
     //res.send(req.body);
 
@@ -18,7 +21,6 @@ router.post('/', function(req, res, next) {
 });
 
 exports.join = function(req, res) {
-    repo.hasUserID(req.body, res);
 };
 
 module.exports = router;
