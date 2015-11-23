@@ -14,6 +14,9 @@ var index_signup = require('./routes/index_signup');
 /* routing pages@ */
 
 var app = express();
+var multer  = require('multer');
+var upload      =   multer({ dest: './uploads/'});
+var done=false;
 
 
 // view engine setup
@@ -28,6 +31,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(multer({ dest: './uploads/',
+  rename: function (fieldname, filename) {
+    return filename+Date.now();
+  },
+  onFileUploadStart: function (file) {
+    console.log(file.originalname + ' is starting ...')
+  },
+  onFileUploadComplete: function (file) {
+    console.log(file.fieldname + ' uploaded to  ' + file.path)
+    done=true;
+  }
+}));
 
 app.use('/', index_login);
 app.use('/users', users);
