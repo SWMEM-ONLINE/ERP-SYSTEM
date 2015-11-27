@@ -4,10 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var http = require('http');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
 var apply_server = require('./routes/apply_server');
 var apply_room = require('./routes/apply_room');
 var apply_equipment = require('./routes/apply_equipment');
@@ -65,3 +64,7 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+http.createServer(app).listen(3000, function() {
+  console.log('Express server listening on port ' + 3000);
+});
