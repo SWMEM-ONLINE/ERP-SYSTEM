@@ -15,12 +15,12 @@ var fs = require('fs');
 var index_login = require('./routes/index_login');
 var index_signup = require('./routes/index_signup');
 var imageload = require('./routes/images');
-var index_main = require('./routes/main');
+var main = require('./routes/main');
 /* routing pages@ */
 
 var app = express();
 var multer  = require('multer');
-var upload      =   multer({ dest: './uploads/'});
+var upload = multer({ dest: './uploads/'});
 var done=false;
 
 
@@ -55,11 +55,11 @@ app.use(multer({ dest: './uploads/',
 }));
 
 app.use('/', index_login);
-app.use('/main', index_main);
 app.use('/users', users);
 app.use('/login',index_login);
 app.use('/signup',index_signup);
 app.use('/image',imageload);
+app.use('/main', main);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

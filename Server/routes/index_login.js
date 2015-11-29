@@ -28,9 +28,11 @@ router.post('/', function(req, res, next) {
         console.log(rows[0]);
         if(0<rows.length){
             //비번 체크
+            console.log('pw check');
             if(encPW == rows[0].u_password){
                 //성공
-                res.render('index_main', { title: '메인화면' });
+                console.log('goto main');
+                res.redirect('/main');
 
             }else{
                 //로그인 실패
@@ -45,7 +47,7 @@ router.post('/', function(req, res, next) {
 
         db_handler.disconnectDB(connection);
 
-        res.render('index_login', { title: '로그인' });
+        //res.render('index_login', { title: '로그인' });
     });
 
 });

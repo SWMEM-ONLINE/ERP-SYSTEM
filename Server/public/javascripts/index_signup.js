@@ -1,5 +1,4 @@
 'use strict';
-var btn = $('#sign_up_button');
 var inputId = $('#sign_up_id');
 var inputPw = $('#sign_up_password');
 var inputPwConfirm = $('#sign_up_password_confirm');
