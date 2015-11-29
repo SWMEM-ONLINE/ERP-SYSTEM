@@ -15,6 +15,7 @@ var fs = require('fs');
 var index_login = require('./routes/index_login');
 var index_signup = require('./routes/index_signup');
 var imageload = require('./routes/images');
+var index_main = require('./routes/main');
 /* routing pages@ */
 
 var app = express();
@@ -37,7 +38,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(multer({ dest: './uploads/',
   rename: function (fieldname, filename) {
-    return filename+Date.now();
+
+    var name = filename;
+    if(10<name.length){
+      name = name.substring(0,9);
+    }
+    return name+Date.now();
   },
   onFileUploadStart: function (file) {
     console.log(file.originalname + ' is starting ...')
@@ -49,6 +55,7 @@ app.use(multer({ dest: './uploads/',
 }));
 
 app.use('/', index_login);
+app.use('/main', index_main);
 app.use('/users', users);
 app.use('/login',index_login);
 app.use('/signup',index_signup);
