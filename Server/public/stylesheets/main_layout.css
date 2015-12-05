@@ -1,6 +1,6 @@
 header div.container{
-        padding-left: 0;
-        padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 header{
@@ -40,7 +40,6 @@ footer{
     bottom: 0;
     height: 53px;
     width: 100%;
-
 }
 
 footer h5{
@@ -56,42 +55,9 @@ footer h5{
         margin-top: 0;
         padding-top: 10px;
     }
-
-    div.card{
-        margin-left: 0;
-        margin-right: 0;
-    }
-    div.card:last-child{
-    margin-bottom:20px;
-}
 }
 
 div.contents{
     position: relative;
     text-align: center;
-}
-div.card {
-    background:#FFF;
-    border:1px solid #AAA;
-    border-bottom:3px solid #BBB;
-    padding:0px;
-    margin:5px;
-    margin-top:20px;
-    overflow:hidden;
-    width:260px;
-    height: 100%;
-    display:inline-block;
-    vertical-align: top;
-}
-
-div.content img{
-    width: 200px;
-}
-
-div.content div.content-header{
-    color: black;
-}
-
-label{
-    font-size:16px;
 }
