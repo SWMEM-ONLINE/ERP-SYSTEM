@@ -8,16 +8,18 @@ var db_handler = require('./DB_handler');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    console.log("login index_login get");
     res.render('index_login', { title: '로그인' });
 });
 
+/*
 router.post('/', function(req, res, next) {
+    console.log("login index_login");
     var id = req.body.id;
     var encPW = crypto.createHash('sha256').update(req.body.password).digest('base64');
 
     console.log(id);
     console.log(encPW);
-
 
     var connection = db_handler.connectDB();
     var query = connection.query('select * from t_user where u_id=?', id, function(err,rows){
@@ -32,8 +34,8 @@ router.post('/', function(req, res, next) {
             if(encPW == rows[0].u_password){
                 //성공
                 console.log('goto main');
-                res.redirect('/main');
 
+                res.redirect('/main');
             }else{
                 //로그인 실패
             }
@@ -51,5 +53,5 @@ router.post('/', function(req, res, next) {
     });
 
 });
-
+*/
 module.exports = router;
