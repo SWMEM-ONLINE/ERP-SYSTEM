@@ -27,68 +27,70 @@ header
                   a.dropdown-toggle(href='#', data-toggle='dropdown') 도서
                   ul.dropdown-menu
                      li
-                        a(href='#') 인문학도서대여
+                        a(href='/book/humanities') 인문학도서대여
                      li
-                        a(href='#') 기술도서대여
+                        a(href='/book/technology') 기술도서대여
                      li
-                        a(href='#') 내도서현황
+                        a(href='/book/mybook') 내도서현황
                li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown') 하드웨어
                   ul.dropdown-menu
                      li
-                        a(href='#') 대여신청
+                        a(href='/hardware/borrow') 대여신청
                      li
-                        a(href='#') 대여확인
+                        a(href='/hardware/myhardware') 대여확인
                li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown') 회비
                   ul.dropdown-menu
                      li
-                        a(href='#') 회비 내역
+                        a(href='/fee/history') 회비 내역
                      li
-                        a(href='#') 미납 내역
+                        a(href='/fee/unpaid') 미납 내역
                li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown') 당직
                   ul.dropdown-menu
                      li
-                        a(href='#') 조회
+                        a(href='/duty/inquiry') 조회
                      li
-                        a(href='#') 교환
+                        a(href='/duty/change') 교환
                      li
-                        a(href='#') 체크리스트
+                        a(href='/duty/point') 상벌당직조회
+                     li
+                        a(href='/duty/checklist') 체크리스트
                li
                   a(href='#') 스케쥴
                li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown') 자재신청
                   ul.dropdown-menu
                      li
-                        a(href='#') 도서
+                        a(href='/apply/newbook') 도서
                      li
-                        a(href='#') 하드웨어
+                        a(href='/apply/hardware') 하드웨어
                      li
-                        a(href='#') 서버
+                        a(href='/apply/server') 서버
                      li
-                        a(href='#') 프로젝트실
+                        a(href='/apply/room') 프로젝트실
                      li
-                        a(href='#') 비품
+                        a(href='/apply/equipment') 비품
                li
-                  a(href='#') 설문
+                  a(href='/vote') 설문
                li
-                  a(href='#') 문의
+                  a(href='/question') 문의
             ul.nav.navbar-nav.navbar-right
                li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown') USER
                   ul.dropdown-menu
                      li
-                        a(href='#') My page
+                        a(href='/info/mypage') My page
                      li
-                        a(href='#') Logout
+                        a(href='/login') Logout
                li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown') SYSTEM
                   ul.dropdown-menu
                      li
-                        a(href='#') Information
+                        a(href='/sys/info') Information
                      li
-                        a(href='#') Manual
+                        a(href='/sys/manual') Manual
 
 block content
 
