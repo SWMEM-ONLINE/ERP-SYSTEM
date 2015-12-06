@@ -1,14 +1,14 @@
 /**
- * Created by KIMDONGWON on 2015-11-29.
+ * Created by DBK on 2015. 12. 6..
  */
+
 var express = require('express');
 var router = express.Router();
 var util = require('./util');
-/*
-/* GET users listing. */
+
 router.get('/', util.ensureAuthenticated, function(req, res, next) {
 
-    res.render('main', { title: '메인' });
+    res.render('fee', { title: '회비' });
 
 });
 
