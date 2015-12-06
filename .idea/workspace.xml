@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad8320e1-59da-4c37-8f2e-556df173bb69" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/routes/fee.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/routes/util.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/app.js" afterPath="$PROJECT_DIR$/Server/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/routes/index_login.js" afterPath="$PROJECT_DIR$/Server/routes/index_login.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/routes/main.js" afterPath="$PROJECT_DIR$/Server/routes/main.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/public/stylesheets/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/public/stylesheets/main_layout.css" afterPath="$PROJECT_DIR$/Server/public/stylesheets/main_layout.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/views/main_layout.jade" afterPath="$PROJECT_DIR$/Server/views/main_layout.jade" />
     </list>
     <ignored path="ERP-SYSTEM.iws" />
@@ -29,14 +25,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="fee.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="fee.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/routes/fee.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.203125">
+            <state vertical-scroll-proportion="0.0">
               <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main_layout.jade" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Server/views/main_layout.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.38643703">
+              <caret line="71" column="31" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -68,8 +74,8 @@
         <option value="$PROJECT_DIR$/Server/routes/index_login.js" />
         <option value="$PROJECT_DIR$/Server/routes/util.js" />
         <option value="$PROJECT_DIR$/Server/routes/fee.js" />
-        <option value="$PROJECT_DIR$/Server/views/main_layout.jade" />
         <option value="$PROJECT_DIR$/Server/app.js" />
+        <option value="$PROJECT_DIR$/Server/views/main_layout.jade" />
       </list>
     </option>
   </component>
@@ -82,7 +88,7 @@
     <option name="x" value="1280" />
     <option name="y" value="-136" />
     <option name="width" value="1920" />
-    <option name="height" value="1057" />
+    <option name="height" value="1053" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -261,7 +267,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1280" y="-136" width="1920" height="1057" extended-state="6" />
+    <frame x="1280" y="-136" width="1920" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.121875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -633,14 +639,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/views/main_layout.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37299034">
-          <caret line="67" column="23" selection-start-line="67" selection-start-column="23" selection-end-line="67" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/views/index_login.jade">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.22508039">
@@ -683,11 +681,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/routes/fee.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.203125">
+        <state vertical-scroll-proportion="0.0">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding>
             <element signature="e#0#42#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/views/main_layout.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38643703">
+          <caret line="71" column="31" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>
