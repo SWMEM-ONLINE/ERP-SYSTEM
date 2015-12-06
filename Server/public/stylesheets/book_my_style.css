@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+.page-header{
+    text-align: center;
+}
+
+article.container{
+    text-align: center;
+}
+
+h4.bookTitle{
+    color: #0100FF;
+}
+
+.btn-group-vertical{
+    vertical-align: middle;
+}
+
+button#turnIn{
+    vertical-align: middle;
+}
+
+ul.nav{
+
+}

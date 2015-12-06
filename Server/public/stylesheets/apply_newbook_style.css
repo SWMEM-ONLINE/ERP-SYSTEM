@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+/**
+ * Created by jung-inchul on 2015. 11. 24..
+ */
+
+div#interparkBooksearch{
+    margin-top:40px;
+    margin-bottom: 30px;
+}
+
+.bookSmallImg{
+    height: 120px;
+    width: 100px;
+}
+
+.bookLargeImg{
+    height: 240px;
+    width: 190px;
+}
+
+table#booklist tbody tr td:first-child{
+    width: 120px;
+    min-width: 80px;
+}
+
+div.test{
+
+}
+
+div.input-group-btn{
+    font-size:15px;
+    text-align: center;
+}
+
+input#loadMyapplication{
+    float: right;
+}
+
+h4.bookTitle{
+    /*font-size: 18px;*/
+    max-height: 30px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #0100FF;
+    text-decoration:underline;
+}
+
+.container{
+    text-align: center;
+}
+
+div.pageArea{
+    text-align: center;
+}
+
+table {
+    width: 200px;
+}
+
+table tr.even td{
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #DAFFFF), color-stop(50%, #FFFFFF), color-stop(100%, #DAFFFF));
+}
+
+table tr:hover td{
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFCBCB), to(#FFFFFF));
+    color: red;
+}
+
+h4.modal-title{
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #BDBDBD), color-stop(50%, #FFFFFF), color-stop(100%, #BDBDBD));
+}
+
+#newbookSearchWords{
+    text-align: center;
+}
+
+#bookSearchWords{
+    text-align: center;
+}
+
+#noti h4{
+    color: #fa4d4a;
+}
+
+hr {
+    border-style: solid;
+    border-color: #999999;
+    border-width: 1px;
+}

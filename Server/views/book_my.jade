@@ -1,0 +1,27 @@
+//Created by jung-inchul on 2015. 12. 06..
+doctype html
+html(lang='ko')
+    head
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        title Title
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+        link(href='../stylesheets/book_my_style.css', rel='stylesheet')
+    body
+        .page-header
+            .container
+                h3 내 도서 현황
+        article.container
+            ul.nav.nav-pills.nav-justified
+                li.active
+                    a(href="#") 대여한 도서
+                li
+                    a(href="#") 예약한 도서
+                li
+                    a(href="#") 구매신청한 도서
+            hr
+            table#myBorrowedBook.table.table-hover.table-bordered.table-condensed.table-striped
+            table#myReservedBook.table.table-hover.table-bordered.table-condensed.table-striped.hidden
+            table#myAppliedBook.table.table-hover.table-bordered.table-condensed.table-striped.hidden
+        script(type='text/javascript', src='http://code.jquery.com/jquery-1.11.3.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+        script(src='../javascripts/book_my_index.js', type='text/javascript')
