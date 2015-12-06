@@ -11,7 +11,6 @@ var db_handler = require('./routes/DB_handler');
 var apply_newbook = require('./routes/apply_newbook');
 var book = require('./routes/book');
 var crypto = require('crypto');
-var http = require('http');
 
 var fs = require('fs');
 var cookieParser = require('cookie-parser')
@@ -34,7 +33,6 @@ var done=false;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.set('port', process.env.PORT || 3000);
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
@@ -193,7 +191,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-http.createServer(app).listen(3000, function() {
-  console.log('Express server listening on port ' + 3000);
-});
