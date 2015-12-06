@@ -8,13 +8,14 @@ var mysql = require('mysql');
  *  If you success to connect, you can see 'connection success!'
  *  but if you not, 'mysql connection error' sentence will be shown.
  */
+
 function connectDB(){
     var connection = mysql.createConnection({
         host : '127.0.0.1',
         user : 'root',
         port : '3306',
-        password : 'admin',
-        database : 'swmemtest_db'
+        password : 'qwer1234',
+        database : 'swmem'
     });
     connection.connect(function(err){
         if(err){
