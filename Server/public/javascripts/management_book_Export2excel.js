@@ -1,9 +1,6 @@
 /**
  * Created by jung-inchul on 2015. 11. 26..
  */
-/**
- * Created by jung-inchul on 2015. 11. 15..
- */
 
 var excel = require('node-excel-export');   // https://github.com/andreyan-andreev/node-excel-export
 var DBhandler = require('../../DB_handler');

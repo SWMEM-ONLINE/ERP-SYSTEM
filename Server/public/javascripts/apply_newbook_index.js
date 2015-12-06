@@ -5,21 +5,19 @@
 var mode = 0;
 var category = ['title', 'author', 'publisher'];
 
-$('#categoryDropdown li a').click(function(){
+$('#categoryDropdown li a').click(function(){               // Select Category to Search.
     $('#bookSearchCategory').html($(this).html());
     mode = $(this).parent().index();
 });
 
-
-$('#newbookSearchWords').focus(function () {
-    $(this).keydown(function(){
-        if(event.keyCode == 13){
-            event.preventDefault();
-            $('#newbookSearchBtn').trigger('click');
-            return false;
-        }
-    });
+$('#newbookSearchWords').keydown(function(){
+    if(event.keyCode == 13){
+        event.preventDefault();
+        $('#newbookSearchBtn').trigger('click');
+        return false;
+    }
 });
+
 
 $('#newbookSearchBtn').click(function() {
     var s_searchWords = $('#newbookSearchWords').val();

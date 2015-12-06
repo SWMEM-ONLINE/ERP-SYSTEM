@@ -15,15 +15,15 @@ $.post('/book/loadNewest', function(data){
     clickEvent(data);
 });
 
-$('#bookSearchWords').focus(function () {
-    $(this).keydown(function(){
-        if(event.keyCode == 13){
-            event.preventDefault();
-            $('#bookSearchBtn').trigger('click');
-            return false;
-        }
-    });
+
+$('#bookSearchWords').keydown(function(){
+    if(event.keyCode == 13){
+        event.preventDefault();
+        $('#bookSearchBtn').trigger('click');
+        return false;
+    }
 });
+
 
 $('#bookSearchBtn').click(function() {
     var bookSearchWords = $('#bookSearchWords').val();
