@@ -134,7 +134,6 @@ app.use(passport.session());
 
 app.use('/', login);
 app.use('/users', users);
-//app.use('/login',index_login);
 app.use('/signup',signup);
 app.use('/image',imageload);
 app.use('/main', index_main);

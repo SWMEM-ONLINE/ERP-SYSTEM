@@ -19,6 +19,7 @@ var pattern = new RegExp(' ');
 /* regex@ */
 
 /* @message */
+var idDuple='ID가 중복되거나 빈칸입니다<br>';
 var idErr='ID의 길이가 짧습니다<br>';
 var idKoErr='ID는 영어만 사용하세요<br>';
 var idSpaceErr='ID에 빈칸은 불필요합니다<br>';
@@ -35,6 +36,7 @@ var imgErr='사진을 넣으세요<br>';
 
 /* @toast */
 var result ='';
+var idok = true;
 var signup_success = true;
 /* toast@ */
 
@@ -65,10 +67,12 @@ inputId.focusout(function(){
         if(data.status === '0'){
             toastr['error']('ID 사용불가능');
             signup_success = false;
+            idok = false;
         }
         else{
             toastr['info']('ID 사용가능');
             signup_success = true;
+            idok = true;
         }
     });
 });
@@ -128,6 +132,9 @@ $(document).ready(function(){
         /* init @ */
 
         /* @id check */
+        if(idok === false){
+            result += idDuple;
+        }
         if(id.length < 4){
             signup_success = false;
             result += idErr;
