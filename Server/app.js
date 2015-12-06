@@ -19,10 +19,11 @@ var cookieParser = require('cookie-parser')
 var session = require('express-session');
 
 /* @routing pages */
-var index_login = require('./routes/index_login');
-var index_signup = require('./routes/index_signup');
+var login = require('./routes/login');
+var signup = require('./routes/signup');
 var imageload = require('./routes/images');
 var index_main = require('./routes/main');
+var checkid = require('./routes/checkid');
 /* routing pages@ */
 
 
@@ -130,10 +131,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-//app.use('/', index_login);
+app.use('/', login);
 app.use('/users', users);
 //app.use('/login',index_login);
-app.use('/signup',index_signup);
+app.use('/signup',signup);
 app.use('/image',imageload);
 app.use('/main', index_main);
 

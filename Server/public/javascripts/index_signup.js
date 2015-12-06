@@ -35,6 +35,7 @@ var imgErr='사진을 넣으세요<br>';
 
 /* @toast */
 var result ='';
+var signup_success = true;
 /* toast@ */
 
 var btn_male = $('#sign_up_male');
@@ -57,6 +58,20 @@ toastr.options = {
     'showMethod': 'fadeIn',
     'hideMethod': 'fadeOut'
 };
+
+inputId.focusout(function(){
+    $.post('/signup/checkid', {userid : inputId.val()}, function(data){
+
+        if(data.status === '0'){
+            toastr['error']('ID 사용불가능');
+            signup_success = false;
+        }
+        else{
+            toastr['info']('ID 사용가능');
+            signup_success = true;
+        }
+    });
+});
 
 $(document).ready(function(){
     /* @gender select */
@@ -109,7 +124,7 @@ $(document).ready(function(){
         var email = inputMail.val();
         var img = inputImg.val();
         result ='';
-        var signup_success = true;
+
         /* init @ */
 
         /* @id check */

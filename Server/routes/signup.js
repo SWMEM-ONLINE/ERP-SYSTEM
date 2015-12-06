@@ -12,6 +12,26 @@ router.get('/', function(req, res, next) {
     res.render('index_signup', { title: '회원가입' });
 });
 
+router.post('/checkid', function(req, res) {
+    var id = req.body.userid;
+    var connection = db_handler.connectDB();
+
+    connection.query('select * from t_user where u_id=?',id,function(err,data){
+        if(err){
+            console.log(err);
+        }
+        else {
+            if (data.length > 0 || id === '') { //impossible
+                res.json({status: '0'});
+            }
+            else{
+                res.json({status: '1'}); //possible
+            }
+        }
+        db_handler.disconnectDB(connection);
+    });
+});
+
 router.post('/', function(req, res, next) {
 
     /*
