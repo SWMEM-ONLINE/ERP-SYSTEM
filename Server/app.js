@@ -9,11 +9,11 @@ var flash = require('connect-flash');
 var db_handler = require('./routes/DB_handler');
 var crypto = require('crypto');
 
+var crypto = require('crypto');
 var http = require('http');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var util = require('util');
 var fs = require('fs');
 var cookieParser = require('cookie-parser')
 var session = require('express-session');
@@ -25,6 +25,7 @@ var imageload = require('./routes/images');
 var index_main = require('./routes/main');
 /* routing pages@ */
 
+var util = require('./routes/util');
 
 var app = express();
 var multer  = require('multer');
@@ -155,6 +156,11 @@ app.post('/',
       res.redirect('/main');
     });
 
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -185,16 +191,6 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-function ensureAuthenticated(req, res, next) {
-  console.log("ensureAuthenticated");
-  // 로그인이 되어 있으면, 다음 파이프라인으로 진행
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  // 로그인이 안되어 있으면, login 페이지로 진행
-  res.redirect('/');
-}
 
 module.exports = app;
 
