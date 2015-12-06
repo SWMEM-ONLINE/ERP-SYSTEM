@@ -54,10 +54,10 @@ app.use(multer({ dest: './uploads/',
     return name+Date.now();
   },
   onFileUploadStart: function (file) {
-    console.log(file.originalname + ' is starting ...')
+    console.log(file.originalname + ' is starting ...');
   },
   onFileUploadComplete: function (file) {
-    console.log(file.fieldname + ' uploaded to  ' + file.path)
+    console.log(file.fieldname + ' uploaded to  ' + file.path);
     done=true;
   }
 }));
