@@ -3,16 +3,15 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var passport = require('passport')
-    , LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var db_handler = require('./routes/DB_handler');
-var crypto = require('crypto');
 
 var crypto = require('crypto');
 var http = require('http');
-var routes = require('./routes/index');
-var users = require('./routes/users');
+//var routes = require('./routes/index');
+//var users = require('./routes/users');
 
 var fs = require('fs');
 var cookieParser = require('cookie-parser')
@@ -23,11 +22,9 @@ var login = require('./routes/login');
 var signup = require('./routes/signup');
 var imageload = require('./routes/images');
 var index_main = require('./routes/main');
-var checkid = require('./routes/checkid');
 /* routing pages@ */
 
 var util = require('./routes/util');
-
 var app = express();
 var multer  = require('multer');
 var upload = multer({ dest: './uploads/'});
@@ -133,7 +130,7 @@ app.use(passport.session());
 
 
 app.use('/', login);
-app.use('/users', users);
+//app.use('/users', users);
 app.use('/signup',signup);
 app.use('/image',imageload);
 app.use('/main', index_main);
