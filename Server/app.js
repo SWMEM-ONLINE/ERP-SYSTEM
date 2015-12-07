@@ -6,10 +6,6 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
-var db_handler = require('./routes/DB_handler');
-
-var apply_newbook = require('./routes/apply_newbook');
-var book = require('./routes/book');
 var crypto = require('crypto');
 
 var fs = require('fs');
@@ -21,6 +17,9 @@ var login = require('./routes/login');
 var signup = require('./routes/signup');
 var imageload = require('./routes/images');
 var index_main = require('./routes/main');
+var apply = require('./routes/apply');
+var book = require('./routes/book');
+var db_handler = require('./routes/DB_handler');
 /* routing pages@ */
 
 var util = require('./routes/util');
@@ -129,11 +128,10 @@ app.use(passport.session());
 
 
 app.use('/', login);
-//app.use('/users', users);
 app.use('/signup',signup);
 app.use('/image',imageload);
 app.use('/main', index_main);
-app.use('/apply_newbook', apply_newbook);
+app.use('/apply', apply);
 app.use('/book', book);
 
 app.get('/',

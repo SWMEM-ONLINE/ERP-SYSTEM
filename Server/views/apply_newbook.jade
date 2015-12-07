@@ -1,15 +1,12 @@
 //Created by jung-inchul on 2015. 11. 20..
-doctype html
-html(lang='ko')
-    head
-        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
-        title Title
-        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-        link(href='./stylesheets/apply_newbook_style.css', rel='stylesheet')
-    body
-        .page-header
-            .container
-                h3 새책 신청하기
+extends main_layout
+append head
+    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
+block content
+    .page-header
+        .container
+            h3 새책 신청하기
         article.container
             .modal.fade
                 .modal-dialog
@@ -42,6 +39,6 @@ html(lang='ko')
             table#newbooklist.table.table-hover.table-bordered.table-condensed
             .pageArea
                 ul.pagination(style='text-align:center')
-        script(type='text/javascript', src='http://code.jquery.com/jquery-1.11.3.js')
-        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
-        script(src='./javascripts/apply_newbook_index.js', type='text/javascript')
+        script(src='http://code.jquery.com/jquery.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.js')
+        script(src='../javascripts/apply_newbook_index.js')
