@@ -1,0 +1,128 @@
+div.contents{
+    position: relative;
+    text-align: center;
+}
+div.content-header {
+    background-size:cover;
+    padding:0px;
+    width: 100%;
+    overflow:hidden;
+    display:inline-block;
+    height: 180px;
+    transition:0.3s all;
+}
+
+div.content{
+    width:900px;
+    margin:0 auto;
+    margin-top:20px;
+}
+
+div.back{
+    height: 180px;
+}
+
+div.content-header h5{
+    color: black;
+    width: 200px;
+    font-size: 25px;
+    margin-left: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    transition:0.3s all;
+}
+
+div.content-header h4{
+    color:black;
+    width:400px;
+    font-size: 20px;
+    margin-left: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    transition:0.3s all;
+}
+
+div.content a{
+    color: black;
+}
+
+div.content table{
+    width: 100%;
+    text-align: center;
+    color: black;
+    font-size: 14px;
+    border-bottom:2px solid #AAA;
+    margin-bottom:10px;
+}
+
+div.content thead,tfoot{
+    border-bottom:2px solid #AAA;
+}
+
+div.content tbody tr,thead tr,tfoot tr{
+    height: 40px;
+    border-bottom:1px solid #dddddd;
+}
+
+div.content th,td,button{
+    text-align: center;
+}
+
+button.apply-button{
+    width: 90px;
+    background-color: #122359;
+    border:0;
+    color: white;
+    border-radius: 3px;
+    transition:0.5s all;
+}
+div.content button.apply-button:hover{
+    background-color: #3b3a3c;
+}
+
+div.content input.datepicker{
+    text-align:center;
+    width:90px;
+    background-color:#dfdfdf;
+    border: none;
+    color:black;
+}
+
+input.datepicker::-webkit-input-placeholder { color:black; }
+input.datepicker::-moz-placeholder { color:black; }
+input.datepicker:-ms-input-placeholder { color:black; }
+
+@media(max-width:992px){
+    div.container{
+        padding: 0;
+    }
+
+    div.content{
+        width: 100%;
+        margin-top:0;
+    }
+
+    div.content-header {
+    padding:0;
+    margin:0;
+    overflow:hidden;
+    width:100%;
+    height: 100px;
+    }
+
+    div.content-header h5{
+        font-size: 20px;
+        width: 150px;
+    }
+
+    div.content-header h4{
+        font-size: 13px;
+        width: 250px;
+    }
+
+    div.back{
+        height: 100px;
+    }
+}

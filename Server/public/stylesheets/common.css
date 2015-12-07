@@ -1,0 +1,63 @@
+header div.container{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+header{
+    background-color: #122359;
+}
+
+html{
+    position: relative;
+    min-height: 100%;
+}
+
+body{
+    background-color:#fff;
+    margin: 0 0 53px;
+}
+.navbar-default{
+    background-color: #122359;
+    border-radius: 0;
+}
+
+.navbar-default .navbar-brand{
+    color: #fff;
+}
+
+div.navbar-default{
+    width: 100%;
+}
+
+ul.bottom-links li{
+    display: inline-block;
+}
+
+footer{
+    background-color: #3b3a3c;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 53px;
+    width: 100%;
+}
+
+footer h5{
+    text-align: center;
+    color: #939597;
+    font-size:45%;
+    margin: 0;
+    padding-top:10px;
+}
+
+@media(max-width:767px){
+    footer h5{
+        margin-top: 0;
+        padding-top: 10px;
+    }
+}
+
+div.contents{
+    position: relative;
+    text-align: center;
+}

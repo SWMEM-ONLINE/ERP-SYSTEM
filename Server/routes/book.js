@@ -19,7 +19,7 @@ router.get('/humanities', function(req, res, next) {
     //book_handler.loadNewest(con, res);
 });
 
-router.get('/my', function(req, res, next){
+router.get('/mybook', function(req, res, next){
     res.render('book_my', { title : '내 도서 현황' });
 });
 

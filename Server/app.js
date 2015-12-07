@@ -21,6 +21,7 @@ var login = require('./routes/login');
 var signup = require('./routes/signup');
 var imageload = require('./routes/images');
 var index_main = require('./routes/main');
+var fee = require('./routes/fee');
 /* routing pages@ */
 
 var util = require('./routes/util');
@@ -135,6 +136,7 @@ app.use('/image',imageload);
 app.use('/main', index_main);
 app.use('/apply_newbook', apply_newbook);
 app.use('/book', book);
+app.use('/fee',fee);
 
 app.get('/',
     function(req, res) {

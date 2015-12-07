@@ -6,10 +6,12 @@ var express = require('express');
 var router = express.Router();
 var util = require('./util');
 
-router.get('/', util.ensureAuthenticated, function(req, res, next) {
+router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
+    res.render('fee_unpaid', { title: '회비미납내역' });
+});
 
-    res.render('fee', { title: '회비' });
-
+router.get('/history', util.ensureAuthenticated, function(req, res, next) {
+    res.render('fee_history', { title: '회비내역' });
 });
 
 router.post('/', util.ensureAuthenticated, function(req, res, next) {
