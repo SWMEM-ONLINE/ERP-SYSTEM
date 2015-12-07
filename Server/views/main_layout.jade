@@ -2,15 +2,11 @@
    Created by KIMDONGWON on 2015-11-29.
 doctype html
 html
-   head
-      meta(charset='utf-8')
-      title #{title} | SWSSM
-      meta(name='viewport', content='width=device-width,initial-scale=1.0')
-      link(rel='stylesheet', href='./stylesheets/bootstrap.min.css')
-      link(rel='stylesheet', type='text/css', href='./stylesheets/flat-ui.css')
-      link(rel='stylesheet', type='text/css', href='./stylesheets/animate.css')
-      link(rel='stylesheet', type='text/css', href='./stylesheets/main_layout.css')
-      link(rel='stylesheet', type='text/css', href='./stylesheets/main.css')
+   block head
+      head
+         meta(charset='utf-8')
+         title #{title} | SWSSM
+         meta(name='viewport', content='width=device-width,initial-scale=1.0')
    body
       header
          .container
@@ -30,7 +26,7 @@ html
                            li
                               a(href='/book/humanities') 인문학도서대여
                            li
-                              a(href='/book/technology') 기술도서대여
+                              a(href='/book/tech') 기술도서대여
                            li
                               a(href='/book/mybook') 내도서현황
                      li.dropdown
@@ -57,7 +53,9 @@ html
                            li
                               a(href='/duty/point') 상벌당직조회
                            li
-                              a(href='/duty/checklist') 체크리스트
+                              a(href='/duty/checklist') 일반당직점검
+                           li
+                              a(href='/duty/checklist') 벌당직점검
                      li
                         a(href='#') 스케쥴
                      li.dropdown
@@ -93,11 +91,11 @@ html
                            li
                               a(href='/sys/manual') Manual
       block content
-
-      footer
-         h5
-            small Copyright 2015 Samsung Software Membership, All Rights Reserved.
-         h5
-            small Developed by Dongwon, Byeonkwon, Incheol, Hyunjae
-      script(src='http://code.jquery.com/jquery.js')
-      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.js')
+      block foot
+         footer
+            h5
+               small Copyright 2015 Samsung Software Membership, All Rights Reserved.
+            h5
+               small Developed by Dongwon, Byeonkwon, Incheol, Hyunjae
+         script(src='http://code.jquery.com/jquery.js')
+         script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.js')

@@ -2,6 +2,9 @@
 extends main_layout
 append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
 block content
     .page-header
@@ -39,6 +42,5 @@ block content
             table#newbooklist.table.table-hover.table-bordered.table-condensed
             .pageArea
                 ul.pagination(style='text-align:center')
-        script(src='http://code.jquery.com/jquery.js')
-        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.js')
-        script(src='../javascripts/apply_newbook_index.js')
+append foot
+    script(src='../javascripts/apply_newbook_index.js')
