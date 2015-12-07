@@ -1,101 +1,100 @@
 //
    Created by KIMDONGWON on 2015-11-29.
 doctype html
-html
-   block head
-      head
-         meta(charset='utf-8')
-         title #{title} | SWSSM
-         meta(name='viewport', content='width=device-width,initial-scale=1.0')
-   body
-      header
-         .container
-            nav.navbar.navbar-default(role='navigation')
-               .navbar-header
-                  button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
-                     span.sr-only toggle nav
-                     span.icon-bar
-                     span.icon-bar
-                     span.icon-bar
-                  a.navbar-brand(href='#') SWMEM.ORG
-               .collapse.navbar-collapse.navbar-ex1-collapse
-                  ul.nav.navbar-nav.navbar-left
-                     li.dropdown
-                        a.dropdown-toggle(href='#', data-toggle='dropdown') 도서
-                        ul.dropdown-menu
-                           li
-                              a(href='/book/humanities') 인문학도서대여
-                           li
-                              a(href='/book/tech') 기술도서대여
-                           li
-                              a(href='/book/mybook') 내도서현황
-                     li.dropdown
-                        a.dropdown-toggle(href='#', data-toggle='dropdown') 하드웨어
-                        ul.dropdown-menu
-                           li
-                              a(href='/hardware/borrow') 대여신청
-                           li
-                              a(href='/hardware/myhardware') 대여확인
-                     li.dropdown
-                        a.dropdown-toggle(href='#', data-toggle='dropdown') 회비
-                        ul.dropdown-menu
-                           li
-                              a(href='/fee/history') 회비 내역
-                           li
-                              a(href='/fee/unpaid') 미납 내역
-                     li.dropdown
-                        a.dropdown-toggle(href='#', data-toggle='dropdown') 당직
-                        ul.dropdown-menu
-                           li
-                              a(href='/duty/inquiry') 조회
-                           li
-                              a(href='/duty/change') 교환
-                           li
-                              a(href='/duty/point') 상벌당직조회
-                           li
-                              a(href='/duty/checklist') 일반당직점검
-                           li
-                              a(href='/duty/checklist') 벌당직점검
-                     li
-                        a(href='#') 스케쥴
-                     li.dropdown
-                        a.dropdown-toggle(href='#', data-toggle='dropdown') 자재신청
-                        ul.dropdown-menu
-                           li
-                              a(href='/apply/newbook') 도서
-                           li
-                              a(href='/apply/hardware') 하드웨어
-                           li
-                              a(href='/apply/server') 서버
-                           li
-                              a(href='/apply/room') 프로젝트실
-                           li
-                              a(href='/apply/equipment') 비품
-                     li
-                        a(href='/vote') 설문
-                     li
-                        a(href='/question') 문의
-                  ul.nav.navbar-nav.navbar-right
-                     li.dropdown
-                        a.dropdown-toggle(href='#', data-toggle='dropdown') USER
-                        ul.dropdown-menu
-                           li
-                              a(href='/info/mypage') My page
-                           li
-                              a(href='/logout') Logout
-                     li.dropdown
-                        a.dropdown-toggle(href='#', data-toggle='dropdown') SYSTEM
-                        ul.dropdown-menu
-                           li
-                              a(href='/sys/info') Information
-                           li
-                              a(href='/sys/manual') Manual
-      block content
-      block foot
-         footer
-            h5
-               small Copyright 2015 Samsung Software Membership, All Rights Reserved.
-            h5
-               small Developed by Dongwon, Byeonkwon, Incheol, Hyunjae
-         script(src='http://code.jquery.com/jquery.js')
-         script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.js')
+block head
+   head
+      meta(charset='utf-8')
+      title #{title} | SWSSM
+      meta(name='viewport', content='width=device-width,initial-scale=1.0')
+body
+   header
+      .container
+         nav.navbar.navbar-default(role='navigation')
+            .navbar-header
+               button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+                  span.sr-only toggle nav
+                  span.icon-bar
+                  span.icon-bar
+                  span.icon-bar
+               a.navbar-brand(href='#') SWMEM.ORG
+            .collapse.navbar-collapse.navbar-ex1-collapse
+               ul.nav.navbar-nav.navbar-left
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') 도서
+                     ul.dropdown-menu
+                        li
+                           a(href='/book/humanities') 인문학도서대여
+                        li
+                           a(href='/book/tech') 기술도서대여
+                        li
+                           a(href='/book/mybook') 내도서현황
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') 하드웨어
+                     ul.dropdown-menu
+                        li
+                           a(href='/hardware/borrow') 대여신청
+                        li
+                           a(href='/hardware/myhardware') 대여확인
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') 회비
+                     ul.dropdown-menu
+                        li
+                           a(href='/fee/history') 회비 내역
+                        li
+                           a(href='/fee/unpaid') 미납 내역
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') 당직
+                     ul.dropdown-menu
+                        li
+                           a(href='/duty/inquiry') 조회
+                        li
+                           a(href='/duty/change') 교환
+                        li
+                           a(href='/duty/point') 상벌당직조회
+                        li
+                           a(href='/duty/checklist') 일반당직점검
+                        li
+                           a(href='/duty/checklist') 벌당직점검
+                  li
+                     a(href='#') 스케쥴
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') 자재신청
+                     ul.dropdown-menu
+                        li
+                           a(href='/apply/newbook') 도서
+                        li
+                           a(href='/apply/hardware') 하드웨어
+                        li
+                           a(href='/apply/server') 서버
+                        li
+                           a(href='/apply/room') 프로젝트실
+                        li
+                           a(href='/apply/equipment') 비품
+                  li
+                     a(href='/vote') 설문
+                  li
+                     a(href='/question') 문의
+               ul.nav.navbar-nav.navbar-right
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') USER
+                     ul.dropdown-menu
+                        li
+                           a(href='/info/mypage') My page
+                        li
+                           a(href='/logout') Logout
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') SYSTEM
+                     ul.dropdown-menu
+                        li
+                           a(href='/sys/info') Information
+                        li
+                           a(href='/sys/manual') Manual
+block content
+block foot
+   footer
+      h5
+         small Copyright 2015 Samsung Software Membership, All Rights Reserved.
+      h5
+         small Developed by Dongwon, Byeonkwon, Incheol, Hyunjae
+      script(src='http://code.jquery.com/jquery.js')
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.js')

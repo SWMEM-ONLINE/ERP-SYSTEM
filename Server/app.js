@@ -20,6 +20,7 @@ var index_main = require('./routes/main');
 var apply = require('./routes/apply');
 var book = require('./routes/book');
 var db_handler = require('./routes/DB_handler');
+var fee = require('./routes/fee');
 /* routing pages@ */
 
 var util = require('./routes/util');
@@ -133,6 +134,7 @@ app.use('/image',imageload);
 app.use('/main', index_main);
 app.use('/apply', apply);
 app.use('/book', book);
+app.use('/fee',fee);
 
 app.get('/',
     function(req, res) {
