@@ -11,15 +11,6 @@ block content
         .container
             h3 새책 신청하기
         article.container
-            .modal.fade
-                .modal-dialog
-                    .modal-content
-                        .modal-header
-                            h4.modal-title
-                        .modal-body
-                        .modal-footer
-                            button#request.btn.btn-primary(type='button')
-                            button.btn.btn-default(type='button', data-dismiss='modal') 뒤로가기
             #interparkBooksearch.row
                 .col-xs-10
                     .input-group
@@ -42,5 +33,14 @@ block content
             table#newbooklist.table.table-hover.table-bordered.table-condensed
             .pageArea
                 ul.pagination(style='text-align:center')
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title
+                .modal-body
+                .modal-footer
+                    button#request.btn.btn-primary(type='button')
+                    button.btn.btn-default(type='button', data-dismiss='modal') 뒤로가기
 append foot
     script(src='../javascripts/apply_newbook_index.js')
