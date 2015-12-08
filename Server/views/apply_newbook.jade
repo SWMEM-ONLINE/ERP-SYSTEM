@@ -6,33 +6,30 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .page-header
-        .container
-            h3 새책 신청하기
-        article.container
-            #interparkBooksearch.row
-                .col-xs-10
-                    .input-group
-                        .input-group-btn
-                            button#bookSearchCategory.btn.btn-default(type='button') 도서명
-                            button.btn.btn-info.dropdown-toggle(type='button', data-toggle='dropdown')
-                                span.caret
-                            ul#categoryDropdown.dropdown-menu
-                                li
-                                    a(href='#') 도서명
-                                li
-                                    a(href='#') 저자
-                                li
-                                    a(href='#') 출판사
-                        input#newbookSearchWords.form-control(type='text', placeholder='검색어를 입력해주세요')
-                        span.input-group-btn
-                            button#newbookSearchBtn.btn.btn-info(type='button') 검색
-                .col-xs-1
-                    button#loadMyapplication.btn.btn-warning(type='button') 내 신청목록
+    .container.contents
+        h3 새 책 신청
+        hr
+        .content
+            #interparkBooksearch
+                .input-group
+                    button#bookSearchCategory(type='button') 도서명
+                        button.dropdown-toggle(type='button', data-toggle='dropdown')
+                            span.caret
+                        ul#categoryDropdown.dropdown-menu
+                            li
+                                a(href='#') 도서명
+                            li
+                                a(href='#') 저자
+                            li
+                                a(href='#') 출판사
+                    input#newbookSearchWords(type='text', placeholder='검색어를 입력해주세요')
+                    button#newbookSearchBtn(type='button') 검색
+                    button#loadMyapplication(type='button') 내 신청목록
             table#newbooklist.table.table-hover.table-bordered.table-condensed
             .pageArea
-                ul.pagination(style='text-align:center')
+                ul.pagination
     .modal.fade
         .modal-dialog
             .modal-content
@@ -40,7 +37,8 @@ block content
                     h4.modal-title
                 .modal-body
                 .modal-footer
-                    button#request.btn.btn-primary(type='button')
-                    button.btn.btn-default(type='button', data-dismiss='modal') 뒤로가기
+                    button#request(type='button')
+                    button#return(type='button', data-dismiss='modal') 닫기
 append foot
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../javascripts/apply_newbook_index.js')

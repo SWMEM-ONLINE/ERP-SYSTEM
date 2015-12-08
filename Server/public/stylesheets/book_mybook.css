@@ -1,11 +1,34 @@
-@CHARSET "UTF-8";
-
-.page-header{
-    text-align: center;
+/**
+ * Created by jung-inchul on 2015. 11. 24..
+ */
+@media(max-width:992px) {
+    .container{
+        padding: 0;
+    }
+    div.content{
+        width:100%;
+        margin:0;
+    }
+    h4.bookTitle{
+        font-size: 20px;
+    }
+    h3{
+        font-size: 30px;
+    }
+}
+@media(min-width:992px) {
+    div.content{
+        width:900px;
+        margin:auto;
+    }
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+    background-color: #122359;
 }
 
-article.container{
-    text-align: center;
+.nav-pills>li>a{
+    background-color: #dfdfdf;
+    color: black;
 }
 
 h4.bookTitle{
@@ -18,8 +41,4 @@ h4.bookTitle{
 
 button#turnIn{
     vertical-align: middle;
-}
-
-ul.nav{
-
 }

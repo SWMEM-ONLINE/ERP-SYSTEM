@@ -5,6 +5,24 @@
 var mode = 0;
 var category = ['title', 'author', 'publisher'];
 
+toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
 $('#categoryDropdown li a').click(function(){               // Select Category to Search.
     $('#bookSearchCategory').html($(this).html());
     mode = $(this).parent().index();
@@ -22,7 +40,7 @@ $('#newbookSearchWords').keydown(function(){
 $('#newbookSearchBtn').click(function() {
     var s_searchWords = $('#newbookSearchWords').val();
     if (s_searchWords.length == 0) {
-        alert('검색어를 입력해주세요 ^^');
+        toastr['info']('검색어를 입력해주세요');
         return false;
     }
     else{
@@ -32,7 +50,7 @@ $('#newbookSearchBtn').click(function() {
 
 $('#loadMyapplication').click(function(){
     var user = 'temp';
-    $.post('/apply_newbook/loadMyapply', {userId : user}, function(res){
+    $.post('/apply/newbook/loadMyapply', {userId : user}, function(res){
         settingHTML(res, 1);
         clickEvent(res, 1);
     });
@@ -41,9 +59,9 @@ $('#loadMyapplication').click(function(){
 function settingHTML(datalist, flag){
     if(datalist.length === 0){
         if(flag === 0){
-            alert('검사 결과가 없습니다 ㅎㅎ');
+            toastr['info']('검사 결과가 없습니다');
         }else{
-            alert('신청하신 책이 없습니다 ^^;;');
+            toastr['info']('신청하신 책이 없습니다');
         }
     }
         var htmlString = '<tbody>';
@@ -90,10 +108,9 @@ function clickEvent(datalist, flag){
         var index = $(this).index();
         var string = '';
         if (flag === 0) {            // flag가 0인 경우 신청하는 곳.
-            string += '<p> 도서를 신청하시려면 <span style="color:red;font-weight:bold;">하단의 신청버튼</span>을 눌러요 ^^ </p>';
             string += '<img class="bookLargeImg" src="' + datalist[index].coverLargeUrl + '"/>';
             string += '<h4 class="bookTitle">' + datalist[index].title + '</h4>';
-            string += '<p>' + '저자 : ' + datalist[index].author + '</p><p>출판사 : ' + datalist[index].publisher + '</p><p>정가 : ' + datalist[index].priceStandard + ' 원</p><p>' + datalist[index].description + '</p>';
+            string += '<p>' + '저자 : ' + datalist[index].author + '</p><p>출판사 : ' + datalist[index].publisher + '</p><p>정가 : ' + datalist[index].priceStandard + ' 원</p>';
         } else {                      // flag가 1인 경우 신청취소하는 곳.
             string += '<p> 신청을 취소하려면 <span style="color:red;font-weight:bold;">하단의 신청취소</span>를 눌러요 ^^ </p>';
             string += '<img class="bookLargeImg" src="' + datalist[index].b_img + '"/>';
@@ -103,11 +120,11 @@ function clickEvent(datalist, flag){
         $('div.modal-body').html(string);
         $('button#request').unbind().click(function(){
             if(flag == 0){
-                $.post("/apply_newbook/request", {b_isbn: datalist[index].isbn, b_name: datalist[index].title, b_author: datalist[index].author, b_publisher: datalist[index].publisher, b_price: datalist[index].priceStandard, b_img: datalist[index].coverLargeUrl}, function(data){
+                $.post("/apply/newbook/request", {b_isbn: datalist[index].isbn, b_name: datalist[index].title, b_author: datalist[index].author, b_publisher: datalist[index].publisher, b_price: datalist[index].priceStandard, b_img: datalist[index].coverLargeUrl}, function(data){
                     alert(data);
                 });
             }else{
-                $.post("/apply_newbook/deleteMyapply", {b_isbn: datalist[index].b_isbn}, function (data) {
+                $.post("/apply/newbook/deleteMyapply", {b_isbn: datalist[index].b_isbn}, function (data) {
                     alert(data);
                     window.location.reload();
                 });
@@ -145,7 +162,7 @@ function getInterparklist(pageIndex, searchWords, searchCategory) {
         },
         error:function(response){
             console.log(response);
-            alert('검색에 실패하였습니다. 다시 시도해주세요 ㅎㅎ');
+            toastr['info']('검색에 실패하였습니다. 다시 시도해주세요');
         }
     });
 }

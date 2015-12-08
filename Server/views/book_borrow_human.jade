@@ -7,47 +7,46 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .page-header
-        .container
-            h3 인문도서대여
-    article.container
-        .modal.fade
-            .modal-dialog
-                .modal-content
-                    .modal-header
-                        h4.modal-title
-                    .modal-body
-                    .modal-footer
-                        button#request.btn.btn-primary(type='button') 대여
-                        button#reserve.btn.btn-success(type='button') 예약
-                        button#missing.btn.btn-danger(type='button') 분실신고
-                        button.btn.btn-default(type='button', data-dismiss='modal') 뒤로가기
-        #booksearch.row
-            .col-xs-12
-                button#borrowUsingQRcode.btn.btn-warning.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
-                br
-                .input-group
-                    .input-group-btn
-                        button#bookSearchCategory.btn.btn-default(type='button') 도서명
-                            button.btn.btn-info.dropdown-toggle(type='button', data-toggle='dropdown')
-                                span.caret
-                            ul#categoryDropdown.dropdown-menu.pull-left
-                                li
-                                    a(href='#') 도서명
-                                li
-                                    a(href='#') 저자
-                                li
-                                    a(href='#') 출판사
-                    input#bookSearchWords.form-control(type='text', placeholder='검색어를 입력하세요')
-                    span.input-group-btn
-                        button#bookSearchBtn.btn.btn-info(type='button') 검색
-        #noti
-            hr
-            h4 이번달 들어온 기술도서목록입니다^^
+    .container.contents
+        h3 인문학도서 대여
         hr
-        table#booklist.table.table-hover.table-bordered.table-condensed
-        .pageArea
-            ul.pagination(style='text-align:center')
+        .content
+            #booksearch
+                button#borrowUsingQRcode.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
+                .input-group
+                    button#bookSearchCategory(type='button') 도서명
+                        button.dropdown-toggle(type='button', data-toggle='dropdown')
+                            span.caret
+                        ul#categoryDropdown.dropdown-menu
+                            li
+                                a(href='#') 도서명
+                            li
+                                a(href='#') 저자
+                            li
+                                a(href='#') 출판사
+                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
+                    button#bookSearchBtn(type='button') 검색
+            #noti
+                hr
+                h4 이번달 들어온 인문학도서목록
+                hr
+            table#booklist.table.table-hover.table-bordered.table-condensed
+            .pageArea
+                ul.pagination
+
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title
+                .modal-body
+                .modal-footer
+                    button#request(type='button') 대여
+                    button#reserve(type='button') 예약
+                    button#missing(type='button') 분실신고
+                    button#return(type='button', data-dismiss='modal') 닫기
 append foot
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../javascripts/book_borrow_index.js')
