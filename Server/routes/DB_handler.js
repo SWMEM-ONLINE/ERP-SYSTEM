@@ -14,8 +14,8 @@ function connectDB(){
         host : '127.0.0.1',
         user : 'root',
         port : '3306',
-        password : 'qwer1234',
-        database : 'swmem'
+        password : 'admin',
+        database : 'hardware'
     });
     connection.connect(function(err){
         if(err){

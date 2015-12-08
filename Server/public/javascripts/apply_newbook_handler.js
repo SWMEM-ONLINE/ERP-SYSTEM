@@ -1,7 +1,4 @@
 /**
- * Created by jung-inchul on 2015. 11. 26..
- */
-/**
  * Created by jung-inchul on 2015. 11. 15..
  */
 function loadMyapply(con, userId, res){
