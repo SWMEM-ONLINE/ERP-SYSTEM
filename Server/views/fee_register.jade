@@ -1,0 +1,48 @@
+//
+   Created by KIMDONGWON on 2015-12-09.
+extends main_layout
+
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/fee_register.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .container.contents
+      h3 회비 내역 등록
+      hr
+      .content
+         table.table#addlist
+            thead
+               tr
+                  th 날짜
+                  th 수입/지출
+                  th 사용내역
+                  th 금액
+                  th 추가/삭제
+            tbody
+               tr
+                  td
+                     input.datepicker#date_0(type='text' placeholder='날짜선택', onclick='calendar(this)')
+                  td
+                     .btn-group
+                        button#type_0.btndropdown-toggle(type='button', data-toggle='dropdown') 구분
+                        ul.dropdown-menu
+                           li#expense_0(onclick='expense(this.id)')
+                              a 지출
+                           li#income_0(onclick='income(this.id)')
+                              a 수입
+                  td
+                     input#content_0(type='text' placeholder='사용내역')
+                  td
+                     input#price_0(type='text' placeholder='숫자만 입력')
+                  td
+                     button#plus.plusminus(type='button' ,onclick='addList()') +
+         button#submit(type='button') 등록
+append script
+   script(src='../javascripts/bootstrap-datepicker.js')
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/fee_register_index.js')
