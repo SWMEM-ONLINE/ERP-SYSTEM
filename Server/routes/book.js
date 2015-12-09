@@ -6,16 +6,16 @@ var DB_handler = require('./DB_handler');
 
 var con = DB_handler.connectDB();
 var router = express.Router();
-var book_borrow_handler = require('./book_borrow_handler');
+var book_borrow_handler = require('./book_handler');
 var book_my_handler = require('./book_mybook_handler');
 
 router.get('/tech', function(req, res, next) {
-    res.render('book_borrow_tech', { title: '기술도서 대여' });
+    res.render('book_tech', { title: '기술도서 대여' });
     //book_handler.loadNewest(con, res);
 });
 
 router.get('/humanities', function(req, res, next) {
-    res.render('book_borrow_human', { title: '인문도서 대여' });
+    res.render('book_humanities', { title: '인문도서 대여' });
     //book_handler.loadNewest(con, res);
 });
 
@@ -23,8 +23,12 @@ router.get('/mybook', function(req, res, next){
     res.render('book_mybook', { title : '내 도서 현황' });
 });
 
-router.post('/loadNewest', function(req, res){
-   book_borrow_handler.loadNewest(con, res);
+router.post('/loadNewHumanitiesbook', function(req, res){
+   book_borrow_handler.loadNewHumanitiesbook(con, res);
+});
+
+router.post('/loadNewTechbook', function(req, res){
+    book_borrow_handler.loadNewTechbook(con, res);
 });
 
 router.post('/searchBook', function(req, res){
