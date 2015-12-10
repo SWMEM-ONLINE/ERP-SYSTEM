@@ -1,0 +1,27 @@
+//
+   Created by KIMDONGWON on 2015-11-27.
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .container.contents
+      h3 프로젝트실 신청
+      hr
+      .content
+         table.table
+            thead
+               tr
+                  th Google Docs link
+                  th 신청하기
+            tbody
+               tr
+                  td
+                     a(href='#') http://www.google.com
+                  td
+                     button#push-room 신청하기
+append script
+   script(src='../javascripts/apply_gcm.js')
