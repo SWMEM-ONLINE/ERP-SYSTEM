@@ -19,7 +19,8 @@ router.get('/register', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.post('/register/add', util.ensureAuthenticated, function(req, res, next) {
-    /* get json data */
+    var json = req.body;
+    console.log(json.length);  //row의 갯수 출력
     res.json({status:'0'});
 });
 

@@ -109,7 +109,7 @@ $('#submit').click(function(){
     var price;
     var type;
     var count = 0;
-    var json = [];
+    var arr = new Array();
     var complete = true;
     for ( var i = 0; i < rowCount; i++) {
         date = $("#date_" + i).val();
@@ -117,48 +117,60 @@ $('#submit').click(function(){
         price = $('#price_' + i).val();
         type = $('#type_'+i).html();
         /* check value */
-        if(type === '구분'){
-            complete = false;
-            break;
-        }
-        else{
-            if(type === '지출' || type === '수입'){
-                complete = true;
+        if(type != undefined){
+            if(type === '구분'){
+                complete = false;
+                break;
             }
             else{
-                complete = false;
+                if(type === '지출' || type === '수입'){
+                    complete = true;
+                }
+                else{
+                    complete = false;
+                }
             }
-        }
 
-        if (date == ""){
-            complete = false;
-            break;
-        }
-        else if (content == ""){
-            complete = false;
-            break;
-        }
-        else if (price == ""){
-            complete = false;
-            break;
-        }
+            if (date == ""){
+                complete = false;
+                break;
+            }
+            else if (content == ""){
+                complete = false;
+                break;
+            }
+            else if (price == ""){
+                complete = false;
+                break;
+            }
 
-        var sub = {};
-        sub.date = date;
-        sub.type = type;
-        sub.content = content;
-        sub.price = price;
-        json.push(sub);
+            var sData = {
+                Date:date,
+                Type:type,
+                Content:content,
+                Price:price
+            };
+            arr.push(sData);
+        }
+        if(!complete) break;
     }
+
     if(!complete){
         toastr['info']('입력을 확인하세요');
     }
     else{
-        $.post('/fee/register/add', json, function(data) {
-            if(data.status === '0'){
-                toastr['success']('성공');
+        var temp = JSON.stringify(arr);
+
+        $.ajax({
+            type:'post',
+            url:'/fee/register/add',
+            data:temp,
+            contentType:'application/json',
+            success: function(data){
+                if(data.status === '0'){
+                    toastr['success']('성공');
+                }
             }
         });
-
     }
 });
