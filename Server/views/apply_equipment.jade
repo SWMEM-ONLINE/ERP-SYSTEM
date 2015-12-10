@@ -1,12 +1,27 @@
 //
    Created by KIMDONGWON on 2015-11-27.
-
-doctype html
-html
-   head
-      title
-   body
-      h1= title
-      button#push-equipment push
-      script(src='http://code.jquery.com/jquery.js')
-      script(src='./../javascripts/apply_gcm.js')
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .container.contents
+      h3 비품 신청
+      hr
+      .content
+         table.table
+            thead
+               tr
+                  th Google Docs link
+                  th 신청하기
+            tbody
+               tr
+                  td
+                     a(href='#') http://www.google.com
+                  td
+                     button#push-equipment 신청하기
+append script
+   script(src='../javascripts/apply_gcm.js')

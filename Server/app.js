@@ -7,9 +7,6 @@ var bodyParser = require('body-parser');
 var http = require('http');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var apply_server = require('./routes/apply_server');
-var apply_room = require('./routes/apply_room');
-var apply_equipment = require('./routes/apply_equipment');
 var app = express();
 
 // view engine setup
@@ -26,10 +23,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-
-app.use('/apply/server',apply_server);
-app.use('/apply/room',apply_room);
-app.use('/apply/equipment',apply_equipment);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -62,9 +55,4 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
 module.exports = app;
-
-http.createServer(app).listen(3000, function() {
-  console.log('Express server listening on port ' + 3000);
-});
