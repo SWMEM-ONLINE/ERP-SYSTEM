@@ -6,6 +6,7 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/apply_another.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
    .container.contents
@@ -22,6 +23,6 @@ block content
                   td
                      a(href='#') http://www.google.com
                   td
-                     button#push-server 신청하기
+                     button#push-server.push 신청하기
 append script
    script(src='../javascripts/apply_gcm.js')
