@@ -32,6 +32,26 @@ function calendar(obj) {
     }).datepicker("show");
 }
 
+function isNumberKey(obj) {
+    e = window.event;
+    if ((e.keyCode >= 48 && e.keyCode <= 57)
+        || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 8
+        || e.keyCode == 46 || e.keyCode == 37 || e.keyCode == 39
+        || e.keyCode == 35 || e.keyCode == 36 || e.keyCode == 9) {
+        if (e.keyCode == 48 || e.keyCode == 96) {
+            if (obj.value == "" || obj.value == "0") {
+                e.returnValue = false;
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+    } else {
+        e.returnValue = false;
+    }
+}
+
 function addList() {
     var table = document.getElementById('addlist');
     var lastRow = table.rows.length;
@@ -49,7 +69,7 @@ function addList() {
     type.innerHTML = str1;
     var str2 = '<input id="content_'+rowCount+'" type="text" placeholder="사용내역"/>';
     content.innerHTML = str2;
-    var str3 = '<input id="price_' + rowCount + '" type="text" placeholder="숫자만 입력"/>';
+    var str3 = '<input id="price_' + rowCount + '" type="text" placeholder="숫자만 입력" onkeydown="isNumberKey(this)"/>';
     price.innerHTML = str3;
     var str4 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
     addBtn.innerHTML = str4;

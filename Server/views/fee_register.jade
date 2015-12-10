@@ -26,7 +26,7 @@ block content
             tbody
                tr
                   td
-                     input.datepicker#date_0(type='text' placeholder='날짜선택', onclick='calendar(this)' readonly="readonly")
+                     input.datepicker#date_0(type='text', placeholder='날짜선택', onclick='calendar(this)', readonly="readonly")
                   td
                      .btn-group
                         button#type_0.btndropdown-toggle(type='button', data-toggle='dropdown') 구분
@@ -36,11 +36,11 @@ block content
                            li#income_0(onclick='income(this.id)')
                               a 수입
                   td
-                     input#content_0(type='text' placeholder='사용내역')
+                     input#content_0(type='text', placeholder='사용내역')
                   td
-                     input#price_0(type='text' placeholder='숫자만 입력')
+                     input#price_0(type='text', placeholder='숫자만 입력',onkeydown='isNumberKey(this)')
                   td
-                     button#plus.plusminus(type='button' ,onclick='addList()') +
+                     button#plus.plusminus(type='button', onclick='addList()') +
          button#submit(type='button') 등록
 append script
    script(src='../javascripts/bootstrap-datepicker.js')
