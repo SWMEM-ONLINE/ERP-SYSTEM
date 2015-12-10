@@ -49,8 +49,7 @@ $('#newbookSearchBtn').click(function() {
 });
 
 $('#loadMyapplication').click(function(){
-    var user = 'temp';
-    $.post('/apply/newbook/loadMyapply', {userId : user}, function(res){
+    $.post('/apply/newbook/loadMyapply', function(res){
         settingHTML(res, 1);
         clickEvent(res, 1);
     });
@@ -78,10 +77,10 @@ function settingHTML(datalist, flag){
                 htmlString += '<p>' + ' 저자 : ' + data.author + '</p><p>' + " 출판사 : " + data.publisher + '</p><p>' + "정가 : " + data.priceStandard + '원</p></div></td>';
                 htmlString += '</tr>';
             }else{
-                htmlString += '<td><img class="bookSmallImg" src="' + data.b_img + '"></td>';
+                htmlString += '<td><img class="bookSmallImg" src="' + data.img + '"></td>';
                 htmlString += '<td><div class="bookInfo">';
-                htmlString += '<h4 class="bookTitle">' + data.b_name + '</h4>';
-                htmlString += '<p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p><p>' + "정가 : " + data.b_price + '원</p></div></td>';
+                htmlString += '<h4 class="bookTitle">' + data.ba_name + '</h4>';
+                htmlString += '<p>' + ' 저자 : ' + data.ba_author + '</p><p>' + " 출판사 : " + data.ba_publisher + '</p><p>' + "정가 : " + data.ba_price + '원</p></div></td>';
                 htmlString += '</tr>';
             }
         });
@@ -120,11 +119,11 @@ function clickEvent(datalist, flag){
         $('div.modal-body').html(string);
         $('button#request').unbind().click(function(){
             if(flag == 0){
-                $.post("/apply/newbook/request", {b_isbn: datalist[index].isbn, b_name: datalist[index].title, b_author: datalist[index].author, b_publisher: datalist[index].publisher, b_price: datalist[index].priceStandard, b_img: datalist[index].coverLargeUrl}, function(data){
+                $.post("/apply/newbook/request", datalist[index], function(data){
                     alert(data);
                 });
             }else{
-                $.post("/apply/newbook/deleteMyapply", {b_isbn: datalist[index].b_isbn}, function (data) {
+                $.post("/apply/newbook/deleteMyapply", datalist[index], function (data) {
                     alert(data);
                     window.location.reload();
                 });

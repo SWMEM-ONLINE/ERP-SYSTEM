@@ -47,16 +47,28 @@ router.post('/missingBook', function(req, res){
     book_borrow_handler.missingBook(con, req, res);
 });
 
-router.post('/my/borrowed', function(req, res){
+router.post('/mybook/borrowed', function(req, res){
     book_my_handler.loadBorrowedBook(con, req, res);
 });
 
-router.post('/my/reserved', function(req, res){
+router.post('/mybook/reserved', function(req, res){
     book_my_handler.loadReservedBook(con, req, res);
 });
 
-router.post('/my/applied', function(req, res){
+router.post('/mybook/applied', function(req, res){
     book_my_handler.loadAppliedBook(con, req, res);
+});
+
+router.post('/mybook/turnIn', function(req, res){
+    book_my_handler.turninBook(con, req, res);
+});
+
+router.post('/mybook/postpone', function(req, res){
+    book_my_handler.postponeBook(con, req, res);
+});
+
+router.post('/mybook/cancelAppliedbook', function(req, res){
+    book_my_handler.cancelAppliedBook(con, req, res);
 });
 
 module.exports = router;

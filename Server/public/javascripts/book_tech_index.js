@@ -47,8 +47,11 @@ function settingHTML(datalist){
         }
         htmlString += '<td><img class="bookSmallImg" src="' + data.b_photo_url + '"></td>';
         htmlString += '<td><div class="bookInfo">';
-        htmlString += '<h4 class="bookTitle">' + data.b_name + '</h4>';
-        htmlString += '<p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
+        htmlString += '<h4 class="bookTitle">' + data.b_name;
+        if(data.b_state === 1)  htmlString += '&nbsp<span class="label label-primary">대여중</span>';
+        else if(data.b_state === 2) htmlString += '&nbsp<span class="label label-primary">대여중</span>&nbsp<span class="label label-warning">예약중</span>';
+        else if(data.b_state === 3) htmlString += '&nbsp<span class="label label-danger">분실도서</span>';
+        htmlString += '</h4><p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
         htmlString += '</tr>';
     });
     htmlString += '</tbody>';
@@ -60,33 +63,43 @@ function clickEvent(datalist){
     $('tr').click(function() {
         var index = $(this).index();
         var string = '';
-        //string += '<p> 신청을 취소하려면 <span style="color:red;font-weight:bold;">하단의 신청취소</span>를 눌러요 ^^ </p>';
         string += '<img class="bookLargeImg" src="' + datalist[index].b_photo_url + '"/>';
         string += '<h4 class="bookTitle">' + datalist[index].b_name + '</h4>';
         string += '<p>' + '저자 : ' + datalist[index].b_author + '</p><p>출판사 : ' + datalist[index].b_publisher + '</p>';
-
+        if(datalist[index].b_state != 0){
+            $('#request').addClass('disabled');
+            $('#request').text('대여불가');
+        }else{
+            $('#request').removeClass('disabled');
+            $('#request').text('대여');
+        }
         $('div.modal-body').html(string);
         $('button#request').unbind().click(function(){
-            $.post("/book/borrowBook", {b_id : datalist[index].b_id}, function (data) {
-                alert(data);
+            if(datalist[index].b_state === 0){
+                $.post("/book/borrowBook", {id : datalist[index].b_id, name: datalist[index].b_name}, function (data) {
+                    alert(data);
+                });
+                $('div.modal').modal('hide');
                 window.location.reload();
-            });
-            $('div.modal').modal('hide');
+            }
         });
+
         $('button#reserve').unbind().click(function(){
-            $.post("/book/reserveBook", {b_id: datalist[index].b_id}, function (data) {
+            $.post("/book/reserveBook", {id : datalist[index].b_id, name: datalist[index].b_name}, function (data) {
                 alert(data);
-                window.location.reload();
             });
             $('div.modal').modal('hide');
+            window.location.reload();
         });
+
         $('button#missing').unbind().click(function(){
-            $.post("/book/missingBook", {b_id: datalist[index].b_id}, function (data) {
+            $.post("/book/missingBook", function (data) {
                 alert(data);
-                window.location.reload();
             });
             $('div.modal').modal('hide');
+            window.location.reload();
         });
+
         $('div.modal').modal();
     });
 }
