@@ -21,6 +21,7 @@ var apply = require('./routes/apply');
 var book = require('./routes/book');
 var db_handler = require('./routes/DB_handler');
 var fee = require('./routes/fee');
+var hardware = require('./routes/hardware');
 /* routing pages@ */
 
 var util = require('./routes/util');
@@ -135,6 +136,7 @@ app.use('/main', index_main);
 app.use('/apply', apply);
 app.use('/book', book);
 app.use('/fee',fee);
+app.use('/hardware', hardware);
 
 app.get('/',
     function(req, res) {

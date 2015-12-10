@@ -1,0 +1,35 @@
+//
+    by jung-inchul on 2015. 12. 7..
+
+doctype html
+html(lang='ko')
+    head
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        title Title
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+        link(href='../stylesheets/hardware_style.css', rel='stylesheet')
+    body
+        .page-header
+            .container
+                h3 하드웨어 대여 신청
+        article.container
+            .modal.fade
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            h4.modal-title
+                        .modal-body
+                        .modal-footer
+                            button#request.btn(type='button') 
+                            button.btn.btn-default(type='button', data-dismiss='modal') 뒤로가기
+            ul.nav.nav-pills.nav-justified
+                li.active
+                    a(href="#") 일반 하드웨어
+                li
+                    a(href="#") 운영실 하드웨어
+            hr
+            table#normalHardware.table.table-hover.table-bordered.table-condensed.table-striped
+            table#specialHardware.table.table-hover.table-bordered.table-condensed.table-striped.hidden
+        script(type='text/javascript', src='http://code.jquery.com/jquery-1.11.3.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+        script(src='../javascripts/hardware_list.js', type='text/javascript')
