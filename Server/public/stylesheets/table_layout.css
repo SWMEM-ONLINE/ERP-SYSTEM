@@ -1,47 +1,46 @@
+@media(max-width:992px){
+    div.container{
+        padding: 0;
+    }
+
+    div.content{
+        width: 100%;
+        margin-top:0;
+    }
+
+    div.content-header {
+        padding:0;
+        margin:0;
+        overflow:hidden;
+        width:100%;
+        height: 100px;
+    }
+
+    div.content-header h5{
+        font-size: 20px;
+        width: 150px;
+    }
+
+    div.content-header h4{
+        font-size: 13px;
+        width: 250px;
+    }
+
+    div.back{
+        height: 100px;
+    }
+}
+
+
 div.contents{
     position: relative;
     text-align: center;
-}
-div.content-header {
-    background-size:cover;
-    padding:0px;
-    width: 100%;
-    overflow:hidden;
-    display:inline-block;
-    height: 180px;
-    transition:0.3s all;
 }
 
 div.content{
     width:900px;
     margin:0 auto;
     margin-top:20px;
-}
-
-div.back{
-    height: 180px;
-}
-
-div.content-header h5{
-    color: black;
-    width: 200px;
-    font-size: 25px;
-    margin-left: 20px;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    background: rgba(255, 255, 255, 0.9);
-    transition:0.3s all;
-}
-
-div.content-header h4{
-    color:black;
-    width:400px;
-    font-size: 20px;
-    margin-left: 20px;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    background: rgba(255, 255, 255, 0.9);
-    transition:0.3s all;
 }
 
 div.content a{
@@ -93,36 +92,3 @@ div.content input.datepicker{
 input.datepicker::-webkit-input-placeholder { color:black; }
 input.datepicker::-moz-placeholder { color:black; }
 input.datepicker:-ms-input-placeholder { color:black; }
-
-@media(max-width:992px){
-    div.container{
-        padding: 0;
-    }
-
-    div.content{
-        width: 100%;
-        margin-top:0;
-    }
-
-    div.content-header {
-    padding:0;
-    margin:0;
-    overflow:hidden;
-    width:100%;
-    height: 100px;
-    }
-
-    div.content-header h5{
-        font-size: 20px;
-        width: 150px;
-    }
-
-    div.content-header h4{
-        font-size: 13px;
-        width: 250px;
-    }
-
-    div.back{
-        height: 100px;
-    }
-}

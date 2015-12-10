@@ -15,13 +15,35 @@
 
 div.content table{
     margin:auto;
-    color: black;
 }
 
 div.content table input{
     text-align: center;
+    width: 100%;
     border:1px solid #cccccc;
+    height: 36px;
     border-radius: 4px;
+}
+
+div.content button{
+    text-align: center;
+    border:none;
+    height: 34px;
+    border-radius: 4px;
+    background-color: #122359;
+    color: white;
+}
+
+div.content button.plusminus{
+    width: 34px;
+}
+
+div.content button#minus{
+    background-color: #ff000d;
+}
+
+div.content table #type{
+    width: 100%;
 }
 
 div.content .table>tbody>tr>td{
@@ -32,35 +54,16 @@ div.content table thead{
     border-bottom: 2px solid #dddddd;
 }
 
-div.content table tfoot{
-    border-top: 2px solid #dddddd;
-}
-
 div.content table,th,tr,td{
     text-align: center;
     transition: 0.5s all;
 }
 
+div.content button#submit{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
 hr {
     border:1px solid #dddddd;
-}
-
-.text-primary{
-    color: #171bff;
-}
-
-div.content table #excelSave{
-    width: 100%;
-    height: 40px;
-    color: white;
-    background-color: #122359;
-    border:none;
-    border-radius: 4px;
-    margin-top:20px;
-}
-
-div.content table #excelSave:hover{
-    background-color: #cccccc;
-    color: #34495e;
-    transition: 0.3s all;
 }
