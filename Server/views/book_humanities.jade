@@ -1,5 +1,6 @@
-//Created by jung-inchul on 2015. 11. 20..
+//Created by jung-inchul on 2015. 11. 25..
 extends main_layout
+
 append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
@@ -9,10 +10,11 @@ append head
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
     .container.contents
-        h3 새 책 신청
+        h3 인문학도서 대여
         hr
         .content
-            #interparkBooksearch
+            #booksearch
+                button#borrowUsingQRcode.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
                 .input-group
                     button#bookSearchCategory(type='button') 도서명
                         button.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -24,10 +26,13 @@ block content
                                 a(href='#') 저자
                             li
                                 a(href='#') 출판사
-                    input#newbookSearchWords(type='text', placeholder='검색어를 입력해주세요')
-                    button#newbookSearchBtn(type='button') 검색
-                    button#loadMyapplication(type='button') 내 신청목록
-            table#newbooklist.table.table-hover.table-bordered.table-condensed
+                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
+                    button#bookSearchBtn(type='button') 검색
+            #noti
+                hr
+                h4 이번달 들어온 인문학도서목록
+                hr
+            table#booklist.table.table-hover.table-bordered.table-condensed
             .pageArea
                 ul.pagination
     .modal.fade
@@ -37,8 +42,10 @@ block content
                     h4.modal-title
                 .modal-body
                 .modal-footer
-                    button#request(type='button')
-                    button#return(type='button', data-dismiss='modal') 닫기
+                    button#request.btn(type='button') 대여
+                    button#reserve.btn(type='button') 예약
+                    button#missing.btn(type='button') 분실신고
+                    button#return.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-    script(src='../javascripts/apply_newbook_index.js')
+    script(src='../javascripts/book_humanities_index.js')

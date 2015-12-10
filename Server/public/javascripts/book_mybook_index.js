@@ -30,46 +30,42 @@ $('ul.nav-pills li').click(function(){
 loadBorrowedBooklist();
 
 function loadBorrowedBooklist(){
-    $.post('/book/my/borrowed', { userId : 'temp'}, function(datalist){
-        console.log(datalist);
+    $.post('/book/mybook/borrowed', function(datalist){
         if(datalist.length === 0){
             $('div#myBorrowedBook').html('<br><br><h4 class="text-center">대여한 도서가 없습니다.</h4>');
             return;
         }
-        var date = new Date();
-        date.setHours(9, 0, 0, 0);
-
+        var date = new Date();      // 이걸 조회하는 날의 날짜
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><br>';
-            htmlString += calReturnDate(date, data.b_duedate);
+            htmlString += '<td><h4 class="bookTitle">' + data.br_book_name + '</h4><br>';
+            htmlString += calReturnDate(date, data.br_due_date);
             htmlString += '</td><td width="5%">';
             htmlString += '<div class="btn-group-vertical">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 도서반납 </button>';
-            htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
+            if(data.br_extension_cnt === 0 && data.br_reserved_cnt === 0)   htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm disabled"> 대여연장 </button>';
+            else    htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
             htmlString += '<button id="missing" type="button" class="btn btn-danger btn-sm"> 분실신고 </button></div>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
         $('#myBorrowedBook').html(htmlString);
+        // 도서반납, 대여연장, 분실도서 등록 클릭펑션
     });
 }
 
 function loadReservedBooklist(){
-    $.post('/book/my/reserved', { userId : 'temp'}, function(datalist){
-        console.log(datalist);
+    $.post('/book/mybook/reserved', function(datalist){
         if(datalist.length === 0){
             $('div#myReservedBook').html('<br><br><h4 class="text-center">예약한 도서가 없습니다.</h4>');
             return;
         }
-        var date = new Date();
-        date.setHours(9, 0, 0, 0);
-
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><div> 0번째 중 0번째 예약자입니다</div>';
+            htmlString += '<td><h4 class="bookTitle">' + data.bre_book_name + '</h4><div> 0번째 중 0번째 예약자입니다</div>';
+            // 몇번째 중 몇번째 예약자인지 정확하게 찾아내서 해야할 것이다.
             htmlString += '</td><td width="5%">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-warning btn-sm"> 예약취소 </button>';
             htmlString += '</td></tr>';
@@ -80,8 +76,7 @@ function loadReservedBooklist(){
 }
 
 function loadAppliedBooklist(){
-    $.post('/book/my/applied', { userId : 'temp'}, function(datalist){
-        console.log(datalist);
+    $.post('/book/mybook/applied', function(datalist){
         if(datalist.length === 0){
             $('div#myAppliedBook').html('<br><br><h4 class="text-center">신청한 도서가 없습니다.</h4>');
             return;
@@ -89,13 +84,14 @@ function loadAppliedBooklist(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><div>저자 : ' + data.b_author + '&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp출판사 : ' + data.b_publisher;
+            htmlString += '<td><h4 class="bookTitle">' + data.ba_name + '</h4><div>저자 : ' + data.ba_author + '&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp출판사 : ' + data.ba_publisher;
             htmlString += '</td><td width="5%">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-info btn-sm"> 신청취소 </button></div>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
         $('#myAppliedBook').html(htmlString);
+        // 도서신청 취소 펑션
     });
 }
 

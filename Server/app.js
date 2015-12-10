@@ -106,15 +106,15 @@ passport.use(new LocalStrategy({
 
 // 인증 후, 사용자 정보를 Session에 저장함
 passport.serializeUser(function(user, done) {
-  console.log('serialize');
+  //console.log('serialize');
   done(null, user);
 });
 
 // 인증 후, 페이지 접근시 마다 사용자 정보를 Session에서 읽어옴.
 passport.deserializeUser(function(user, done) {
   //findById(id, function (err, user) {
-  console.log('deserialize');
-  console.log(user);
+  //console.log('deserialize');
+  //console.log(user);
   done(null, user);
   //});
 });
@@ -149,9 +149,9 @@ app.get('/',
 app.post('/',
     passport.authenticate('local', { failureRedirect: '/', failureFlash: true  }),
     function(req, res) {
-      console.log("login post app.js");
+      //console.log("login post app.js");
 
-      console.log(req.session);
+      //console.log(req.session);
       //console.log(req.session.passport.user);
       res.redirect('/main');
     });
