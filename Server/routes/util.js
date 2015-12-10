@@ -12,6 +12,17 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/');
 };
 
+function getDate(){
+
+    var now = new Date();
+    var datetime = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate();
+    datetime += ' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+
+    return datetime;
+}
+
+
 exports.ensureAuthenticated = ensureAuthenticated;
+exports.getDate = getDate;
 
 
