@@ -7,17 +7,15 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
-   link(rel='stylesheet', type='text/css', href='../stylesheets/common.css')
-   link(rel='stylesheet', type='text/css', href='../stylesheets/table_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/fee_unpaid.css')
 block content
    .container.contents
+      h3 회비 미납내역
+      h5 3개월 회비 미납부터 매월 벌당직 3일씩 부과
+      hr
       .content
-         .back
-            .content-header
-               h5 회비 미납내역
-               h4 3개월 회비 미납부터 매월 벌당직 3일씩 부과
-         table
+         table.table
             thead
                tr
                   th 구분
@@ -32,6 +30,6 @@ block content
                   td 삼과비
                   td 2
                   td 5,000
-apeend script
+append script
    script(src='../javascripts/bootstrap-datepicker.js')
    script(src='../javascripts/apply-datepicker.js')

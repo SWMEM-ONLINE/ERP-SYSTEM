@@ -7,4 +7,4 @@ $('.datepicker').datepicker({
     //    startDate: new Date(2014, 0, 1),
         endDate: '+1d',
         autoclose: true
-    });
+});

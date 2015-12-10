@@ -1,3 +1,40 @@
-div.content-header {
-    background: url('../images/fee.jpg') no-repeat ;
+@media(min-width:993px){
+    div.content table{
+        width: 993px;
+    }
+}
+
+@media(max-width:992px){
+    div.container{
+        padding:0;
+    }
+    div.content table{
+        font-size: 14px;
+    }
+}
+
+div.content table{
+    margin:auto;
+    color: black;
+}
+
+div.content .table>tbody>tr>td{
+    padding: 5px;
+}
+
+div.content table thead{
+    border-bottom: 2px solid #dddddd;
+}
+
+div.content table tfoot{
+    border-top: 2px solid #dddddd;
+}
+
+div.content table,th,tr,td{
+    text-align: center;
+    transition: 0.5s all;
+}
+
+hr {
+    border:1px solid #dddddd;
 }
