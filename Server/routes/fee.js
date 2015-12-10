@@ -18,6 +18,11 @@ router.get('/register', util.ensureAuthenticated, function(req, res, next) {
     res.render('fee_register', { title: '회비등록' });
 });
 
+router.post('/register/add', util.ensureAuthenticated, function(req, res, next) {
+    /* get json data */
+    res.json({status:'0'});
+});
+
 router.post('/', util.ensureAuthenticated, function(req, res, next) {
 
     console.log(req);

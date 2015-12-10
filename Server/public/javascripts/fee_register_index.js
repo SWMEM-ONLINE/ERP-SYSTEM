@@ -4,6 +4,24 @@
 
 var rowCount = 1;
 
+toastr.options = {
+    'closeButton': false,
+    'debug': false,
+    'newestOnTop': false,
+    'progressBar': false,
+    'positionClass': 'toast-top-right',
+    'preventDuplicates': false,
+    'onclick': null,
+    'showDuration': '300',
+    'hideDuration': '1000',
+    'timeOut': '5000',
+    'extendedTimeOut': '1000',
+    'showEasing': 'swing',
+    'hideEasing': 'linear',
+    'showMethod': 'fadeIn',
+    'hideMethod': 'fadeOut'
+};
+
 function calendar(obj) {
     $(obj).datepicker({
         format : "yyyy-mm-dd",
@@ -24,7 +42,7 @@ function addList() {
     var price = newRow.insertCell(3);
     var addBtn = newRow.insertCell(4);
 
-    var str0 = '<input id="date_'+rowCount+'" type="text" placeholder="날짜선택" onclick="calendar(this)" class="datepicker">';
+    var str0 = '<input id="date_'+rowCount+'" type="text" placeholder="날짜선택" onclick="calendar(this)" class="datepicker" readonly="readonly">';
     date.innerHTML = str0;
 
     var str1 ='<div class="btn-group"><button id="type_'+rowCount+'" type="button" data-toggle="dropdown" class="btndropdown-toggle">구분</button><ul class="dropdown-menu"><li id="expense_'+rowCount+'" onclick="expense(this.id)"><a href="#">지출</a></li><li id="income_'+rowCount+'" onclick="income(this.id)"><a href="#">수입</a></li></ul></div>';
@@ -70,22 +88,57 @@ $('#submit').click(function(){
     var content;
     var price;
     var type;
-    var count = 1;
+    var count = 0;
+    var json = [];
+    var complete = true;
     for ( var i = 0; i < rowCount; i++) {
         date = $("#date_" + i).val();
         content = $('#content_' + i).val();
         price = $('#price_' + i).val();
         type = $('#type_'+i).html();
-        count++;
         /* check value */
         if(type === '구분'){
-            alert('구분');
+            complete = false;
+            break;
         }
-        if(type === '지출'){
+        else{
+            if(type === '지출' || type === '수입'){
+                complete = true;
+            }
+            else{
+                complete = false;
+            }
+        }
 
+        if (date == ""){
+            complete = false;
+            break;
         }
-        if(type === '수입'){
+        else if (content == ""){
+            complete = false;
+            break;
+        }
+        else if (price == ""){
+            complete = false;
+            break;
+        }
 
-        }
+        var sub = {};
+        sub.date = date;
+        sub.type = type;
+        sub.content = content;
+        sub.price = price;
+        json.push(sub);
+    }
+    if(!complete){
+        toastr['info']('입력을 확인하세요');
+    }
+    else{
+        $.post('/fee/register/add', json, function(data) {
+            if(data.status === '0'){
+                toastr['success']('성공');
+            }
+        });
+
     }
 });
