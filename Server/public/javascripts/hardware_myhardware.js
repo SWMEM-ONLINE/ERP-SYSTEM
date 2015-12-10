@@ -21,7 +21,7 @@ loadMynormalHardware();
 var temp = 0;
 
 function loadMynormalHardware(){
-    $.post('/hardware/my/normal', function(datalist){
+    $.post('/hardware/myhardware/normal', function(datalist){
         if(datalist.length === 0){
             $('div#myNormalHardware').html('<br><br><h4 class="text-center">예약한 일반 하드웨어가 없습니다.</h4>');
             return;
@@ -45,7 +45,7 @@ function loadMynormalHardware(){
         $('button#turnIn').each(function(index){
             $(this).unbind().click(function(event){
                 console.log('turnIn: '+datalist[index].name);
-                $.post("/hardware/my/turnIn", {id: datalist[index].id}, function (data) {
+                $.post("/hardware/myhardware/turnIn", {id: datalist[index].id}, function (data) {
                     console.log(data);
                 });
             });
@@ -53,7 +53,7 @@ function loadMynormalHardware(){
         $('button#postpone').each(function(index){
             $(this).unbind().click(function(){
                 console.log('postpone: '+datalist[index].name);
-                $.post("/hardware/my/postpone", {id: datalist[index].id}, function (data) {
+                $.post("/hardware/myhardware/postpone", {id: datalist[index].id}, function (data) {
                     console.log(data);
                 });
             });
@@ -62,7 +62,7 @@ function loadMynormalHardware(){
 }
 
 function loadMyspecialHardware(){
-    $.post('/hardware/my/special', function(datalist){
+    $.post('/hardware/myhardware/special', function(datalist){
         if(datalist.length === 0){
             $('div#mySpecialHardware').html('<br><br><h4 class="text-center">예약한 운영실 하드웨어가 없습니다.</h4>');
             return;
@@ -86,7 +86,7 @@ function loadMyspecialHardware(){
             index = index-temp;
             $(this).unbind().click(function(event){
                 console.log('turnIn: '+ datalist[index].name);
-                $.post("/hardware/my/turnIn", {id: datalist[index].id}, function (data) {
+                $.post("/hardware/myhardware/turnIn", {id: datalist[index].id}, function (data) {
                     console.log(data);
                 });
             });
