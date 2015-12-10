@@ -4,9 +4,10 @@
 var express = require('express');
 var router = express.Router();
 var db_handler = require('./DB_handler');
+var util = require('./util');
 
 /* GET home page. */
-router.post('/', function(req, res) {
+router.post('/', util.ensureAuthenticated, function(req, res) {
     var id = req.body.userid;
     var connection = db_handler.connectDB();
 

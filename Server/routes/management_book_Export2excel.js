@@ -3,7 +3,7 @@
  */
 
 var excel = require('node-excel-export');   // https://github.com/andreyan-andreev/node-excel-export
-var DBhandler = require('../../DB_handler');
+var DBhandler = require('./DB_handler');
 var fs = require('fs');
 
 /*
