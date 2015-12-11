@@ -16,17 +16,26 @@ block content
          table.table
             thead
                tr
-                  th Google Docs link
+                  th 년월
+                  th 항목
+                  th link
                   th 신청하기
             tbody
-               for list,i in lists
+               if lists.length === 0
                   tr
-                     td
-                        a(href='#')= list.url
-                     td
-                        if i === 0
-                           button.btn.push-room.push 신청하기
-                        else
-                           button.btn.push-room.push.disabled 읽기전용
+                     td(colspan=4)
+                        h4 신청서가 없습니다
+               else
+                  for list,i in lists
+                     tr
+                        td 2015 10월
+                        td test
+                        td
+                           a(href='#')= list.url
+                        td
+                           if i === 0
+                              button.btn.push-room.push 신청하기
+                           else
+                              button.btn.push.disabled 읽기전용
 append script
    script(src='../javascripts/apply_gcm.js')

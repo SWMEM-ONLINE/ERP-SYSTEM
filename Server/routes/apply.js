@@ -31,7 +31,12 @@ router.post('/newbook/deleteMyapply', util.ensureAuthenticated,  function(req, r
 /* apply push */
 /* @room */
 router.get('/room', util.ensureAuthenticated, function(req, res, next) {
-    res.render('apply_room', { title: '프로젝트실 신청',lists:[{url:'http://www.google.com'},{url:'http://www.naver.com'},{url:'http://www.hanyang.ac.kr'}] });
+    var query = 'SELECT * FROM t_url'; //query change absolutely
+    con.query(query, function(err, response){
+        var room_send = JSON.stringify(response);
+        res.render('apply_room', {title: '프로젝트실 신청', lists: JSON.parse(room_send)});
+    });
+    DB_handler.disconnectDB(con);
 });
 router.post('/room/complete', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
@@ -42,7 +47,12 @@ router.post('/room/complete', util.ensureAuthenticated, function(req, res, next)
 
 /* @server */
 router.get('/server', util.ensureAuthenticated, function(req, res, next) {
-    res.render('apply_server', { title: '서버 신청' });
+    var query = 'SELECT * FROM t_url'; //query change absolutely
+    con.query(query, function(err, response){
+        var server_send = JSON.stringify(response);
+        res.render('apply_server', {title: '서버 신청', lists: JSON.parse(server_send)});
+    });
+    DB_handler.disconnectDB(con);
 });
 router.post('/server/complete', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
@@ -53,7 +63,12 @@ router.post('/server/complete', util.ensureAuthenticated, function(req, res, nex
 
 /* @equipment */
 router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
-    res.render('apply_equipment', { title: '비품 신청' });
+    var query = 'SELECT * FROM t_url'; //query change absolutely
+    con.query(query, function(err, response){
+        var equipment_send = JSON.stringify(response);
+        res.render('apply_equipment', {title: '비품 신청', lists: JSON.parse(equipment_send)});
+    });
+    DB_handler.disconnectDB(con);
 });
 router.post('/equipment/complete', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
