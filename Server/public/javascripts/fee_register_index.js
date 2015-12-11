@@ -69,7 +69,7 @@ function addList() {
     type.innerHTML = str1;
     var str2 = '<input id="content_'+rowCount+'" type="text" placeholder="사용내역"/>';
     content.innerHTML = str2;
-    var str3 = '<input id="price_' + rowCount + '" type="text" placeholder="숫자만 입력" onkeydown="isNumberKey(this)"/>';
+    var str3 = '<input id="price_' + rowCount + '" type="text" placeholder="숫자만 입력", maxlength="8", onkeydown="isNumberKey(this)"/>';
     price.innerHTML = str3;
     var str4 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
     addBtn.innerHTML = str4;
@@ -118,6 +118,7 @@ $('#submit').click(function(){
         type = $('#type_'+i).html();
         /* check value */
         if(type != undefined){
+            count++;
             if(type === '구분'){
                 complete = false;
                 break;
@@ -169,6 +170,13 @@ $('#submit').click(function(){
             success: function(data){
                 if(data.status === '0'){
                     toastr['success']('성공');
+                    for(var i=1;i<count;i++){
+                        document.getElementById('addlist').deleteRow(1);
+                    }
+                    $('#date_'+(rowCount-1)).val('');
+                    $('#content_'+(rowCount-1)).val('');
+                    $('#price_'+(rowCount-1)).val('');
+                    $('#type_'+(rowCount-1)).html('구분');
                 }
             }
         });
