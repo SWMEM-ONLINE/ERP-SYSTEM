@@ -32,7 +32,14 @@ router.get('/register', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.post('/register/add', util.ensureAuthenticated, function(req, res, next) {
+<<<<<<< HEAD
     /* get json data */
+=======
+    var json = req.body;
+    console.log(json.length);  //row의 갯수 출력
+    res.json({status:'0'});
+});
+>>>>>>> 9bda7c7090def31c9b43d465874c4888612538eb
 
     console.log(req.body);
 
