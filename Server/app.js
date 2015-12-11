@@ -62,6 +62,7 @@ app.use(multer({ dest: './uploads/',
 passport.use(new LocalStrategy({
       usernameField : 'id',
       passwordField : 'password',
+      gradeField : 'grade',
       passReqToCallback : true
     }
     ,function(req,id, password, done) {
@@ -79,7 +80,8 @@ passport.use(new LocalStrategy({
           if(encPW == rows[0].u_password){
             //성공
             var user = { 'id':rows[0].u_id,
-              'password':rows[0].u_password};
+              'password':rows[0].u_password,
+              'grade':rows[0].u_state};
 
             req.logIn(user, function(err) {
               if (err) { return next(err); }
@@ -112,8 +114,8 @@ passport.serializeUser(function(user, done) {
 // 인증 후, 페이지 접근시 마다 사용자 정보를 Session에서 읽어옴.
 passport.deserializeUser(function(user, done) {
   //findById(id, function (err, user) {
-  console.log('deserialize');
-  console.log(user);
+  //console.log('deserialize');
+  //console.log(user);
   done(null, user);
   //});
 });
