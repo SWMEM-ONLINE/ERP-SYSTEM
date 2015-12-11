@@ -21,8 +21,27 @@ function getDate(){
     return datetime;
 }
 
+function getUserInfo(req){
+    return req.session.passport.user;
+}
+
+function getUserId(req){
+    return req.session.passport.user.id;
+}
+
+function getUserGrade(req){
+    return req.session.passport.user.grade;
+}
+
+function getUserName(req){
+    return req.session.passport.user.name;
+}
 
 exports.ensureAuthenticated = ensureAuthenticated;
 exports.getDate = getDate;
+exports.getUserInfo = getUserInfo;
+exports.getUserId = getUserId;
+exports.getUserGrade = getUserGrade;
+exports.getUserName = getUserName;
 
 
