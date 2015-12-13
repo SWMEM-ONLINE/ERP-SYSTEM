@@ -65,7 +65,7 @@ router.post('/category', util.ensureAuthenticated, function(req, res, next) {
 router.get('/history', util.ensureAuthenticated, function(req, res, next) {
 
     var date = '\''+util.getCurDate().substring(0,7)+'%\'';
-    var query = 'select * from t_fee_manage where fm_date like '+date;
+    var query = 'select * from t_fee_manage where fm_date like '+date+' Order by fm_date DESC';
 
     var connection = db_handler.connectDB();
 
@@ -75,8 +75,8 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
             throw err;
         }
 
+        console.log(rows);
         if(0<rows.length){
-            console.log(rows[0]);
             res.render('fee_history', { title: '회비내역', result:rows});
             db_handler.disconnectDB(connection);
         }else{
@@ -93,7 +93,7 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
 router.post('/history', util.ensureAuthenticated, function(req, res, next) {
 
     var date = '\''+req.body.date+'%\'';
-    var query = 'select * from t_fee_manage where fm_date like '+date;
+    var query = 'select * from t_fee_manage where fm_date like '+date+' Order by fm_date DESC';
 
     var connection = db_handler.connectDB();
 
@@ -133,6 +133,8 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
 
         var id = 0;
         var money_type = false;
+        console.log("머니타입");
+        console.log(arr[i].Type);
         if(arr[i].money_type == '지출'){
             money_type = true;
         }
