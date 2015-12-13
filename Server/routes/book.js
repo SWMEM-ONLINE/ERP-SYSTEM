@@ -11,12 +11,10 @@ var book_my_handler = require('./book_mybook_handler');
 
 router.get('/tech', function(req, res, next) {
     res.render('book_tech', { title: '기술도서 대여' });
-    //book_handler.loadNewest(con, res);
 });
 
 router.get('/humanities', function(req, res, next) {
     res.render('book_humanities', { title: '인문도서 대여' });
-    //book_handler.loadNewest(con, res);
 });
 
 router.get('/mybook', function(req, res, next){
@@ -60,15 +58,24 @@ router.post('/mybook/applied', function(req, res){
 });
 
 router.post('/mybook/turnIn', function(req, res){
+    console.log(req);
     book_my_handler.turninBook(con, req, res);
+});
+
+router.post('/mybook/cancelReservation', function(req, res){
+    book_my_handler.cancelReservation(con, req, res);
 });
 
 router.post('/mybook/postpone', function(req, res){
     book_my_handler.postponeBook(con, req, res);
 });
 
+router.post('/mybook/missing', function(req, res){
+    book_my_handler.missingBook(con, req, res);
+});
+
 router.post('/mybook/cancelAppliedbook', function(req, res){
-    book_my_handler.cancelAppliedBook(con, req, res);
+    book_my_handler.cancelAppliedbook(con, req, res);
 });
 
 module.exports = router;

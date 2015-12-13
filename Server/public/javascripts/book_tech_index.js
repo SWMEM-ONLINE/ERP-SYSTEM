@@ -49,8 +49,8 @@ function settingHTML(datalist){
         htmlString += '<td><div class="bookInfo">';
         htmlString += '<h4 class="bookTitle">' + data.b_name;
         if(data.b_state === 1)  htmlString += '&nbsp<span class="label label-primary">대여중</span>';
-        else if(data.b_state === 2) htmlString += '&nbsp<span class="label label-primary">대여중</span>&nbsp<span class="label label-warning">예약중</span>';
         else if(data.b_state === 3) htmlString += '&nbsp<span class="label label-danger">분실도서</span>';
+        if(data.b_reserved_cnt > 0) htmlString += '&nbsp<span class="label label-warning">예약중</span>';
         htmlString += '</h4><p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
         htmlString += '</tr>';
     });
@@ -64,8 +64,10 @@ function clickEvent(datalist){
         var index = $(this).index();
         var string = '';
         string += '<img class="bookLargeImg" src="' + datalist[index].b_photo_url + '"/>';
-        string += '<h4 class="bookTitle">' + datalist[index].b_name + '</h4>';
+        string += '<h4 class="bookTitle">' + datalist[index].b_name + '&nbsp<span class="label label-info">' + datalist[index].b_location + '</span>&nbsp<span class="label label-default">총 ' + datalist[index].b_total + '권</span></h4>';
         string += '<p>' + '저자 : ' + datalist[index].b_author + '</p><p>출판사 : ' + datalist[index].b_publisher + '</p>';
+        if(datalist[index].b_state === 1)   string += '<p>반납예정일 : ' + datalist[index].b_due_date + '&nbsp&nbsp|&nbsp&nbsp대여자 : '+datalist[index].b_rental_username + '</p>';
+        if(datalist[index].b_reserved_cnt != 0) string += '<p>예약자 : ' + datalist[index].b_reserved_cnt + '명</p>';
         if(datalist[index].b_state != 0){
             $('#request').addClass('disabled');
             $('#request').text('대여불가');
@@ -74,32 +76,51 @@ function clickEvent(datalist){
             $('#request').text('대여');
         }
         $('div.modal-body').html(string);
+        var today = getDate();
         $('button#request').unbind().click(function(){
             if(datalist[index].b_state === 0){
-                $.post("/book/borrowBook", {id : datalist[index].b_id, name: datalist[index].b_name}, function (data) {
+                var due_date = calDuedate();
+                $.post("/book/borrowBook", {book_id : datalist[index].b_id, rental_date: today, due_date: due_date}, function (data) {
                     alert(data);
                 });
                 $('div.modal').modal('hide');
                 window.location.reload();
             }
         });
-
         $('button#reserve').unbind().click(function(){
-            $.post("/book/reserveBook", {id : datalist[index].b_id, name: datalist[index].b_name}, function (data) {
-                alert(data);
+            $.post("/book/reserveBook", {book_id : datalist[index].b_id, reserve_date: today, reserve_cnt: datalist[index].b_reserved_cnt}, function (data) {
+                $('div.modal').modal('hide');
+                if(data === 'failed'){
+                    alert('이미 대여했거나 예약중이시므로, 추가예약이 불가능합니다.');
+                }else{
+                    alert('대여에 성공했습니다');
+                }
             });
-            $('div.modal').modal('hide');
-            window.location.reload();
+            //window.location.reload();
         });
 
         $('button#missing').unbind().click(function(){
-            $.post("/book/missingBook", function (data) {
+            $.post("/book/missingBook", {book_id : datalist[index].b_id, loss_date: today}, function (data) {
                 alert(data);
             });
             $('div.modal').modal('hide');
             window.location.reload();
         });
-
         $('div.modal').modal();
     });
+}
+
+function getDate(){
+    var date = new Date();
+    date.setHours(9);
+    var result = date.getFullYear()+ '-'+(date.getMonth()+1)+'-'+date.getDate();
+    return result;
+}
+
+function calDuedate(){
+    var date = new Date();
+    date.setHours(10);
+    date.setDate(date.getDate() + 14);
+    var result = date.getFullYear()+ '-'+(date.getMonth()+1)+'-'+date.getDate();
+    return result;
 }
