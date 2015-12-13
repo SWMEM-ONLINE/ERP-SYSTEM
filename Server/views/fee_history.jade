@@ -30,12 +30,12 @@ block content
                         for row in result
                             tr
                                 td= row.fm_date
-                                if row.fm_money_type === '1'
+                                if row.fm_money_type === 1
                                     td.text-danger 지출
                                 else
                                     td.text-primary 수입
                                 td= row.fm_money_content
-                                if row.fm_money_type === '1'
+                                if row.fm_money_type === 1
                                     td.text-danger= row.fm_price
                                 else
                                     td.text-primary= row.fm_price
