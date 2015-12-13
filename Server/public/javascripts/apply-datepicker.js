@@ -17,11 +17,11 @@ $('.datepicker').on('changeDate',function(event){
         }
         var date = year +'/'+month;
         var string = '';
+        var tfoot = '';
         $.post('/fee/history',{date:date},function(data){
                 var rows = data.result;
                 var deposit = data.deposit;
                 var withdraw = data.withdraw;
-
                 if(rows.length === 0){
                         string += '<tr>';
                         string += '<td colspan=4>';
@@ -51,7 +51,11 @@ $('.datepicker').on('changeDate',function(event){
                                 }
                                 string += '</tr>';
                         }
+                        tfoot += '<tr><td></td><td></td><th>월 수입</th><td class="text-primary">'+ deposit + '</td></tr>';
+                        tfoot += '<tr><td></td><td></td><th>월 지출</th><td class="text-danger">' + withdraw + '</td></tr>';
+                        tfoot += '<tr><td colspan="4"><button id="excelSave" type="button">엑셀로 저장</button></td></tr>';
                 }
                 $('.table tbody').html(string);
+                $('.table tfoot').html(tfoot);
         });
 });
