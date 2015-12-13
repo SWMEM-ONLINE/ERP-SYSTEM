@@ -153,6 +153,10 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
 
 });
 
+router.get('/charge', util.ensureAuthenticated, function(req, res, next) {
+  res.render('fee_charge',{title:'회비 추가'});
+});
+
 function getFeeList(date){
 
     var connection = db_handler.connectDB();

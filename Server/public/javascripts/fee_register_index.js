@@ -80,7 +80,7 @@ function addList() {
     changedRow.innerHTML = '<button id="minus" type="button" onclick="deleteRow(this)" class="plusminus">－</button>';
 
     rowCount = rowCount + 1;
-};
+}
 
 function deleteRow(obj){
     var tr = obj.parentNode.parentNode;

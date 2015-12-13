@@ -1,0 +1,49 @@
+//
+   Created by KIMDONGWON on 2015-12-09.
+extends main_layout
+
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/fee_charge.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .container.contents
+      h3 회비 추가
+      hr
+      .content
+         table.table#addlist
+            thead
+               tr
+                  th 날짜
+                  th 카테고리
+                  th 해당회원
+                  th 금액
+                  th 추가/삭제
+            tbody
+               tr
+                  td
+                     input.datepicker#date_0(type='text', placeholder='날짜선택', onclick='calendar(this)', class="datepicker", readonly='readonly')
+                  td
+                     input#category_0(type='text', placeholder='카테고리')
+                  td
+                     input#members_0(type='text', placeholder='회원선택' readonly='readonly', onclick='memberSelect(this)')
+                  td
+                     input(type='text', placeholder='금액만 입력',onkeydown='isNumberKey(this)')
+                  td
+                     button#plus.plusminus(type='button', onclick='addList()') +
+         button#submit(type='button') 입력
+         .modal.fade
+            .modal-dialog
+               .modal-content
+                  .modal-header
+                     h4.modal-title
+                  .modal-body
+                  .modal-footer
+                     button.btn(type='button') 선택
+                     button.btn(type='button', data-dismiss='modal') 취소
+append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/fee_charge_index.js')
