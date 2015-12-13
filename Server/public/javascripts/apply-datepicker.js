@@ -19,25 +19,26 @@ $('.datepicker').on('changeDate',function(event){
         var string = '';
         $.post('/fee/history',{date:date},function(data){
                 var rows = data.result;
-                if(rows.length == 0){
+                if(rows.length === 0){
                         string += '<tr>';
                         string += '<td colspan=4>';
                         string += '<h3>데이터가 없습니다</h3>';
                         string += '</td>';
+                        string += '</tr>';
                 }
                 else{
                         for(var i=0;i<rows.length;i++){
                                 var row = rows[i];
                                 string += '<tr>';
                                 string += '<td>'+ row.fm_date + '</td>';
-                                if(row.fm_money_type === '1'){
+                                if(row.fm_money_type === 1){
                                         string += '<td class="text-danger">지출</td>';
                                 }
                                 else{
                                         string += '<td class="text-primary">수입</td>';
                                 }
                                 string += '<td>'+row.fm_money_content+'</td>';
-                                if(row.fm_money_type === '1'){
+                                if(row.fm_money_type === 1){
                                         string += '<td class="text-danger">' + row.fm_price + '</td>';
                                 }
                                 else{

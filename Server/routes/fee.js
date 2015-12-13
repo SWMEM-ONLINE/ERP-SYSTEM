@@ -95,8 +95,7 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
             throw err;
         }
         var send = JSON.stringify(rows);
-
-        res.render('fee_history', { title: '회비내역', result:JSON.parse(send)});
+        res.json({result:JSON.parse(send)});
     });
 
 
