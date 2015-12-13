@@ -11,6 +11,57 @@ router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
     res.render('fee_unpaid', { title: '회비미납내역' });
 });
 
+router.post('/unpaid/list', util.ensureAuthenticated, function(req, res, next) {
+    var category = req.body.Category;
+    var state = req.body.State.bool();
+
+    var connection = db_handler.connectDB();
+    var query = connection.query('select * from t_fee where f_type = ? AND f_state = ?', category,state, function(err,rows){
+
+        if (err) {
+            console.error(err);
+            res.json({status:'101'});
+            throw err;
+        }
+
+        console.log(rows);
+        if(0<rows.length){
+            res.json({status:'0',items:rows});
+            db_handler.disconnectDB(connection);
+        }else{
+            res.json({status:'0'});
+            db_handler.disconnectDB(connection);
+        }
+    });
+
+});
+
+router.post('/category', util.ensureAuthenticated, function(req, res, next) {
+
+    var connection = db_handler.connectDB();
+    var query = connection.query('select * from t_fee_type' , function(err,rows){
+
+        if (err) {
+            console.error(err);
+            res.json({status:'101'});
+            throw err;
+        }
+
+        console.log(rows);
+        if(0<rows.length){
+            res.json({status:'0',items:rows});
+            db_handler.disconnectDB(connection);
+        }else{
+            res.json({status:'0'});
+            db_handler.disconnectDB(connection);
+        }
+    });
+
+});
+
+
+
+
 router.get('/history', util.ensureAuthenticated, function(req, res, next) {
 
     res.render('fee_history', { title: '회비내역' });
@@ -28,11 +79,11 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
     var query = connection.query('select * from t_fee_manage where fm_date like \'%%s%\'' , date, function(err,rows){
         if (err) {
             console.error(err);
+            res.json({status:'101'});
             throw err;
         }
         console.log(rows);
         if(0<rows.length){
-            //비번 체크
 
             res.json({status:'0',items:rows});
             db_handler.disconnectDB(connection);
@@ -92,6 +143,7 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
     });
 
 });
+
 
 
 module.exports = router;

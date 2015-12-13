@@ -12,32 +12,8 @@ router.get('/', function(req, res, next) {
     res.render('index_signup', { title: '회원가입' });
 });
 
-router.post('/checkid', function(req, res) {
-    var id = req.body.userid;
-    var connection = db_handler.connectDB();
-
-    connection.query('select * from t_user where u_id=?',id,function(err,data){
-        if(err){
-            console.log(err);
-        }
-        else {
-            if (data.length > 0 || id === '') { //impossible
-                res.json({status: '0'});
-            }
-            else{
-                res.json({status: '1'}); //possible
-            }
-        }
-        db_handler.disconnectDB(connection);
-    });
-});
-
 router.post('/', function(req, res, next) {
 
-    /*
-    console.log(req.body) // form fields
-    console.log(req.files) // form files
-*/
     var uId = req.body.id;
     var encPW = crypto.createHash('sha256').update(req.body.password).digest('base64');
     var userName = req.body.username;
@@ -95,11 +71,28 @@ router.post('/', function(req, res, next) {
         res.render('index_login', { title: '로그인' });
     });
 
-    //res.json(req.body);
-    //res.send(req.body);
-
-   // repo.hasUserID(req.body, res);
 });
+
+router.post('/checkid', function(req, res) {
+    var id = req.body.userid;
+    var connection = db_handler.connectDB();
+
+    connection.query('select * from t_user where u_id=?',id,function(err,data){
+        if(err){
+            console.log(err);
+        }
+        else {
+            if (data.length > 0 || id === '') { //impossible
+                res.json({status: '0'});
+            }
+            else{
+                res.json({status: '1'}); //possible
+            }
+        }
+        db_handler.disconnectDB(connection);
+    });
+});
+
 
 exports.join = function(reqy, res){
 };
