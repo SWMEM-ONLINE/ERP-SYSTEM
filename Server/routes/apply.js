@@ -36,12 +36,12 @@ router.get('/room', util.ensureAuthenticated, function(req, res, next) {
         var room_send = JSON.stringify(response);
         res.render('apply_room', {title: '프로젝트실 신청', lists: JSON.parse(room_send)});
     });
-    DB_handler.disconnectDB(con);
 });
-router.post('/room/complete', util.ensureAuthenticated, function(req, res, next) {
+router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var content = '프로젝트실 신청 알림';
     gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
+    res.json({status:'success'});
 });
 /* room@ */
 
@@ -52,12 +52,12 @@ router.get('/server', util.ensureAuthenticated, function(req, res, next) {
         var server_send = JSON.stringify(response);
         res.render('apply_server', {title: '서버 신청', lists: JSON.parse(server_send)});
     });
-    DB_handler.disconnectDB(con);
 });
-router.post('/server/complete', util.ensureAuthenticated, function(req, res, next) {
+router.post('/server', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var content = '서버 신청 알림';
     gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
+    res.json({status:'success'});
 });
 /* server@ */
 
@@ -68,12 +68,26 @@ router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
         var equipment_send = JSON.stringify(response);
         res.render('apply_equipment', {title: '비품 신청', lists: JSON.parse(equipment_send)});
     });
-    DB_handler.disconnectDB(con);
 });
-router.post('/equipment/complete', util.ensureAuthenticated, function(req, res, next) {
+router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var content = '비품 신청 알림';
     gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
+    res.json({status:'success'});
 });
 /* equipment@ */
+
+/* @hardware */
+router.get('/hardware', util.ensureAuthenticated, function(req, res, next) {
+    res.render('apply_hardware', {title: '하드웨어 신청'});
+});
+router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
+    var query = 'INSERT into t_hardware SET ?';
+    console.log(req.body);
+    //con.query(query, data, function(err, response){
+    //    res.send('책이 신청되었습니다');
+    //});
+    res.send({status:'success'});
+});
+/* hardware@ */
 module.exports = router;

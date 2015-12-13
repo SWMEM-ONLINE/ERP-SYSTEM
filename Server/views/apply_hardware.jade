@@ -1,0 +1,70 @@
+//
+   Created by KIMDONGWON on 2015-11-27.
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/apply_hardware.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .container.contents
+      h3 하드웨어 신청
+      hr
+      .content
+         .noti
+            h4 PC에서 신청바랍니다
+         table.table#addlist
+            thead
+               tr
+                  th 사용 내역<br>(과제명)
+                  th 구분
+                  th 품목
+                  th 규격
+                  th 수량
+                  th 단가
+                  th 총액
+                  th Hardware 역할
+                  th 제조업체
+                  th 판매처명
+                  th 연락처
+                  th Link
+                  th 추가<br>삭제
+            tbody
+               tr
+                  td
+                     input#homework_0(type='text', placeholder='사용 내역(과제명)')
+                  td
+                     input#type_0(type='text', placeholder='구분')
+                  td
+                     input#label_0(type='text', placeholder='품목')
+                  td
+                     input#size_0(type='text', placeholder='규격')
+                  td
+                     input#count_0(type='text', placeholder='수량')
+                  td
+                     input#price_0(type='text', placeholder='단가')
+                  td
+                     input#total_0(type='text', placeholder='총액')
+                  td
+                     input#role_0(type='text', placeholder='Hardware 역할')
+                  td
+                     input#manufacturer_0(type='text', placeholder='제조업체')
+                  td
+                     input#seller_0(type='text', placeholder='판매처명')
+                  td
+                     input#phone_0(type='text', placeholder='연락처')
+                  td
+                     input#link_0(type='text', placeholder='Link')
+                  td
+                     button#plus.plusminus(type='button', onclick='addList()') +
+         p
+            입력한 정보를 꼭 확인 후 등록하세오
+         input#name.info(type='text', placeholder='과제명')
+         input#team.info(type='text', placeholder='팀명')
+         input#pl_name.info(type='text', placeholder='PL')
+         button#submit.info(type='button') 등록
+append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/apply_hardware_index.js')
