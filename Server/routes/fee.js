@@ -118,10 +118,8 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
 
         var id = 0;
         var money_type = false;
-        console.log("머니타입");
-        console.log(arr[i].Type);
-        if(arr[i].money_type == '지출'){
-            money_type = 1;
+        if(arr[i].Type == '1'){
+            money_type = true;
         }
         var money_content = arr[i].Content;
         var price = parseInt(arr[i].Price);
@@ -144,7 +142,6 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
             throw err;
             res.json({status:'101'});
         }
-        console.log(query);
         db_handler.disconnectDB(connection);
 
         res.json({status:'0'});
