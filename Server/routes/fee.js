@@ -74,8 +74,15 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
             console.error(err);
             throw err;
         }
-        var send = JSON.stringify(rows);
-        res.render('fee_history', { title: '회비내역', result:JSON.parse(send)});
+
+        if(0<rows.length){
+            var send = JSON.stringify(rows);
+            var deposit = getTotalDeposit(rows);
+            var withdraw = getTotalWithdraw(rows);
+            res.render('fee_history', { title: '회비내역', status:'0', result:JSON.parse(send), deposit:deposit,withdraw:withdraw});
+        }else{
+            res.render('fee_history', { title: '회비내역', status:'100'});
+        }
     });
 
 
@@ -86,7 +93,7 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
 
     var date = '\''+req.body.date+'%\'';
     var query = 'select * from t_fee_manage where fm_date like '+date+' Order by fm_date DESC';
-
+    console.log(query);
     var connection = db_handler.connectDB();
 
     var query = connection.query(query, function(err,rows){
@@ -94,9 +101,15 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
             console.error(err);
             throw err;
         }
-        var send = JSON.stringify(rows);
+        if(0<rows.length){
+            var send = JSON.stringify(rows);
+            var deposit = getTotalDeposit(rows);
+            var withdraw = getTotalWithdraw(rows);
+            res.render('fee_history', { title: '회비내역', status:'0', result:JSON.parse(send), deposit:deposit,withdraw:withdraw});
+        }else{
+            res.render('fee_history', { title: '회비내역', status:'100'});
+        }
 
-        res.render('fee_history', { title: '회비내역', result:JSON.parse(send)});
     });
 
 
@@ -170,6 +183,30 @@ function getFeeList(date){
         }
 
     });
+}
+
+function getTotalDeposit(arr){
+    var price = 0;
+    var length = arr.length;
+    for(var i=0; i<length; i++){
+        var obj = arr[i];
+        if(obj.fm_money_type == 0){
+            price += obj.fm_price;
+        }
+    }
+    return price;
+}
+
+function getTotalWithdraw(arr){
+    var price = 0;
+    var length = arr.length;
+    for(var i=0; i<length; i++){
+        var obj = arr[i];
+        if(obj.fm_money_type == 1){
+            price += obj.fm_price;
+        }
+    }
+    return price;
 }
 
 module.exports = router;
