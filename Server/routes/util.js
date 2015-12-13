@@ -12,11 +12,19 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/');
 };
 
-function getCurDate(){
+function getCurDateWithTime(){
 
     var now = new Date();
     var datetime = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate();
     datetime += ' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+
+    return datetime;
+}
+
+function getCurDate(){
+
+    var now = new Date();
+    var datetime = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate();
 
     return datetime;
 }
@@ -69,6 +77,7 @@ function getUserName(req){
 }
 
 exports.ensureAuthenticated = ensureAuthenticated;
+exports.getCurDateWithTime = getCurDateWithTime;
 exports.getCurDate = getCurDate;
 exports.getYear = getYear;
 exports.getMonth = getMonth;

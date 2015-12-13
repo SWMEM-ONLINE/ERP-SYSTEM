@@ -26,7 +26,7 @@ router.post('/unpaid/list', util.ensureAuthenticated, function(req, res, next) {
 
         console.log(rows);
         if(0<rows.length){
-            res.json({status:'0',items:rows});
+            res.json({status:'0',result:rows});
             db_handler.disconnectDB(connection);
         }else{
             res.json({status:'0'});
@@ -49,7 +49,7 @@ router.post('/category', util.ensureAuthenticated, function(req, res, next) {
 
         console.log(rows);
         if(0<rows.length){
-            res.json({status:'0',items:rows});
+            res.json({status:'0',result:rows});
             db_handler.disconnectDB(connection);
         }else{
             res.json({status:'0'});
@@ -64,28 +64,47 @@ router.post('/category', util.ensureAuthenticated, function(req, res, next) {
 
 router.get('/history', util.ensureAuthenticated, function(req, res, next) {
 
-    res.render('fee_history', { title: '회비내역' });
+    var date = '\''+util.getCurDate().substring(0,7)+'%\'';
+    var query = 'select * from t_fee_manage where fm_date like '+date;
+
+    var connection = db_handler.connectDB();
+
+    var query = connection.query(query, function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+
+        if(0<rows.length){
+            console.log(rows[0]);
+            res.render('fee_history', { title: '회비내역', result:rows});
+            db_handler.disconnectDB(connection);
+        }else{
+            res.render('fee_history', { title: '회비내역'});
+            db_handler.disconnectDB(connection);
+        }
+
+    });
+
+
 
 });
 
 router.post('/history', util.ensureAuthenticated, function(req, res, next) {
 
-
-    var date = req.body.date;
+    var date = '\''+req.body.date+'%\'';
+    var query = 'select * from t_fee_manage where fm_date like '+date;
 
     var connection = db_handler.connectDB();
 
-
-    var query = connection.query('select * from t_fee_manage where fm_date like \'%%s%\'' , date, function(err,rows){
+    var query = connection.query(query, function(err,rows){
         if (err) {
             console.error(err);
-            res.json({status:'101'});
             throw err;
         }
         console.log(rows);
         if(0<rows.length){
-
-            res.json({status:'0',items:rows});
+            res.json({status:'0', result:rows});
             db_handler.disconnectDB(connection);
         }else{
             res.json({status:'0'});
@@ -94,7 +113,9 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
 
     });
 
+
 });
+
 
 router.get('/register', util.ensureAuthenticated, function(req, res, next) {
 
@@ -123,7 +144,7 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
         var writer = util.getUserId(req);
         var date = arr[i].Date;
 
-        values[i] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, util.getCurDate()];
+        values[i] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, util.getCurDateWithTime()];
 
     }
 
@@ -144,6 +165,26 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
 
 });
 
+function getFeeList(date){
 
+    var connection = db_handler.connectDB();
+
+
+    var query = connection.query('select * from t_fee_manage where fm_date like \'%%s%\'' , date, function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+        console.log(rows);
+        if(0<rows.length){
+            return rows;
+            db_handler.disconnectDB(connection);
+        }else{
+            return 0;
+            db_handler.disconnectDB(connection);
+        }
+
+    });
+}
 
 module.exports = router;
