@@ -24,7 +24,7 @@ toastr.options = {
 
 function calendar(obj) {
     $(obj).datepicker({
-        format : "yyyy-mm-dd",
+        format : "yyyy/mm/dd",
         keyboardNavigation : false,
         todayHighlight : true,
         endDate: "+1d",

@@ -12,13 +12,44 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/');
 };
 
-function getDate(){
+function getCurDate(){
 
     var now = new Date();
     var datetime = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate();
     datetime += ' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
 
     return datetime;
+}
+
+function getYear(date){
+    if(10<date.length){
+        return date.substring(0,4);
+    }
+    return 0;
+}
+
+function getMonth(date){
+    if(10<date.length){
+        return date.substring(5,7);;
+    }
+    return 0;
+}
+
+function getDay(date){
+    if(10<date.length){
+        return date.substring(8,10);
+    }
+    return 0;
+
+}
+function getTime(date){
+    if(17<date.length){
+        var arr = date.split(' ');
+        if(1<arr.length){
+            return arr[1];
+        }
+    }
+    return 0;
 }
 
 function getUserInfo(req){
@@ -38,7 +69,11 @@ function getUserName(req){
 }
 
 exports.ensureAuthenticated = ensureAuthenticated;
-exports.getDate = getDate;
+exports.getCurDate = getCurDate;
+exports.getYear = getYear;
+exports.getMonth = getMonth;
+exports.getDay = getDay;
+exports.getTime = getTime;
 exports.getUserInfo = getUserInfo;
 exports.getUserId = getUserId;
 exports.getUserGrade = getUserGrade;

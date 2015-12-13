@@ -47,7 +47,7 @@ app.use(multer({ dest: './uploads/',
     if(10<name.length){
       name = name.substring(0,9);
     }
-    return name+Date.now();
+    return name+util.getCurDate();
   },
   onFileUploadStart: function (file) {
     console.log(file.originalname + ' is starting ...');
