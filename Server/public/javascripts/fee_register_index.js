@@ -109,6 +109,7 @@ $('#submit').click(function(){
     var price;
     var type;
     var count = 0;
+    var how;
     var arr = new Array();
     var complete = true;
     for ( var i = 0; i < rowCount; i++) {
@@ -125,6 +126,12 @@ $('#submit').click(function(){
             }
             else{
                 if(type === '지출' || type === '수입'){
+                    if(type === '지출'){
+                        how = 1;
+                    }
+                    else{
+                        how = 0;
+                    }
                     complete = true;
                 }
                 else{
@@ -147,7 +154,7 @@ $('#submit').click(function(){
 
             var sData = {
                 Date:date,
-                Type:type,
+                Type:how,
                 Content:content,
                 Price:price
             };

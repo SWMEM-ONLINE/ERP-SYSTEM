@@ -74,16 +74,8 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
             console.error(err);
             throw err;
         }
-
-        console.log(rows);
-        if(0<rows.length){
-            res.render('fee_history', { title: '회비내역', result:rows});
-            db_handler.disconnectDB(connection);
-        }else{
-            res.render('fee_history', { title: '회비내역'});
-            db_handler.disconnectDB(connection);
-        }
-
+        var send = JSON.stringify(rows);
+        res.render('fee_history', { title: '회비내역', result:JSON.parse(send)});
     });
 
 
@@ -102,15 +94,8 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
             console.error(err);
             throw err;
         }
-        console.log(rows);
-        if(0<rows.length){
-            res.json({status:'0', result:rows});
-            db_handler.disconnectDB(connection);
-        }else{
-            res.json({status:'0'});
-            db_handler.disconnectDB(connection);
-        }
-
+        var send = JSON.stringify(rows);
+        res.render('fee_history', { title: '회비내역', result:JSON.parse(send)});
     });
 
 
@@ -136,7 +121,7 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
         console.log("머니타입");
         console.log(arr[i].Type);
         if(arr[i].money_type == '지출'){
-            money_type = true;
+            money_type = 1;
         }
         var money_content = arr[i].Content;
         var price = parseInt(arr[i].Price);
