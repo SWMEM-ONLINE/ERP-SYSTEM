@@ -39,20 +39,20 @@ block content
                                     td.text-danger= row.fm_price
                                 else
                                     td.text-primary= row.fm_price
-                tfoot
-                    tr
-                        td
-                        td
-                        th 월 수입
-                        td.text-primary 1,000,000
-                    tr
-                        td
-                        td
-                        th 월 지출
-                        td.text-danger 1,000,000
-                    tr
-                        td(colspan=4)
-                            button#excelSave(type='button') 엑셀로 저장
+                        tfoot
+                            tr
+                                td
+                                td
+                                th 월 수입
+                                td.text-primary= deposit
+                            tr
+                                td
+                                td
+                                th 월 지출
+                                td.text-danger= withdraw
+                            tr
+                                td(colspan=4)
+                                    button#excelSave(type='button') 엑셀로 저장
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='../javascripts/apply-datepicker.js')

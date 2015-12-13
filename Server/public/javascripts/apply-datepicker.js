@@ -19,14 +19,19 @@ $('.datepicker').on('changeDate',function(event){
         var string = '';
         $.post('/fee/history',{date:date},function(data){
                 var rows = data.result;
+                var deposit = data.deposit;
+                var withdraw = data.withdraw;
+
                 if(rows.length === 0){
                         string += '<tr>';
                         string += '<td colspan=4>';
                         string += '<h3>데이터가 없습니다</h3>';
                         string += '</td>';
                         string += '</tr>';
+                        $('.table tfoot').hide();
                 }
                 else{
+                        $('.table tfoot').show();
                         for(var i=0;i<rows.length;i++){
                                 var row = rows[i];
                                 string += '<tr>';
