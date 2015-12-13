@@ -100,7 +100,7 @@ function clickEvent(datalist){
         });
 
         $('button#missing').unbind().click(function(){
-            $.post("/book/missingBook", {book_id : datalist[index].b_id, loss_date: today}, function (data) {
+            $.post("/book/missingBook", {book_id : datalist[index].b_id, loss_date: today, isbn: datalist[index].b_isbn}, function (data) {
                 alert(data);
             });
             $('div.modal').modal('hide');

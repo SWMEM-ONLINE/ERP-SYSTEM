@@ -53,6 +53,8 @@ function searchBook(con, req, res){
 function missingBook(con, req, res){                       // 읽어버린 도서 등록
     var query = 'UPDATE t_book set b_state=3 where b_id="' + req.body.book_id +'"';
     con.query(query);
+    var query1 = 'update t_book set b_total=b_total-1 where b_isbn="' + req.body.isbn + '"';
+    con.query(query1);
     var query2 = 'insert into t_book_loss SET ?';
     var data = {
         brl_user : req.session.passport.user.id,
@@ -60,14 +62,14 @@ function missingBook(con, req, res){                       // 읽어버린 도�
         brl_loss_date : req.body.loss_date
     };
     con.query(query2, data);
-    var query3 = 'delete from t_book_rental where br_id="' + req.body.rental_id + '"';
+    var query3 = 'delete from t_book_rental where br_book_id="' + req.body.book_id + '"';
     con.query(query3);
     var query4 = 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '"';
     con.query(query4);
 }
 
 function reserveBook(con, req, res){                    // 도서 예약하기
-    var query = 'select br_user from t_book_rental where br_user="'+req.session.passport.user.id+'" UNION select bre_user from t_book_reserve where bre_user="' + req.session.passport.user.id + '"';
+    var query = 'select br_user from t_book_rental where br_user="'+req.session.passport.user.id+'" and br_book_id="' + req.body.book_id + '"UNION select bre_user from t_book_reserve where bre_user="' + req.session.passport.user.id + '" and bre_book_id="' + req.body.book_id + '"';
     con.query(query, function(err, rows, fields){
         if(rows.length != 0){
             res.send('failed');

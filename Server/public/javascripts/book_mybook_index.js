@@ -103,7 +103,7 @@ function loadReservedBooklist(){
         $('#myReservedBook').html(htmlString);
         $('button#cancelReservation').each(function(index){
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/cancelReservation', {reserve_id: datalist[index].bre_id, book_id: datalist[index].b_id}, function(data){
+                $.post('/book/mybook/cancelReservation', {reserve_id: datalist[index].bre_id, book_id: datalist[index].b_id, reserved_cnt: datalist[index].b_reserved_cnt}, function(data){
                     console.log(data);
                 });
                 window.location.reload();

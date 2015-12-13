@@ -41,10 +41,8 @@ function turninBook(con, req, res){
         반납일을 넘겼을 경우 자동 벌당직 부여하는곳.
         if(req.body.over > 0)   imposeBadduty(con, req.session.passport.user.id, req.body.over);
      */
-    /*
-        만약 예약자가 있다면, 그 예약자에게 책이 반납되었다는 push 알림을 보내준다.
-        if(req.body.reserved_cnt > 0)   pushSubscriber(con, req.session.passport.user.id, req.body.book_id);
-     */
+    if(req.body.reserved_cnt > 0)   push2Subscriber(con, req.session.passport.user.id, req.body.book_id);
+
 }
 
 function postponeBook(con, req, res){
@@ -64,6 +62,8 @@ function missingBook(con, req, res){
     con.query(query1, data);
     var query2 = 'update t_book set b_state=3 where b_id="' + req.body.book_id +'"';
     con.query(query2);
+    var query5 = 'update t_book set b_total=b_total-1 where b_isbn="' + req.body.isbn + '"';
+    con.query(query5);
     var query3 = 'delete from t_book_rental where br_id="' + req.body.rental_id + '"';
     con.query(query3);
     var query4 = 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '"';
@@ -71,8 +71,15 @@ function missingBook(con, req, res){
 }
 
 function cancelReservation(con, req, res){
-    var query1 = 'update t_book set b_reserved_cnt=b_reserved_cnt-1 where b_id="' + req.body.book_id + '"';
-    con.query(query1);
+    if(req.body.reserved_cnt > 1){
+        var query = 'select bre_myturn from t_book_reserve where bre_id="' + req.body.reserve_id + '"';
+        con.query(query, function(err, response){
+            var query1 = 'update t_book_reserve set bre_myturn=bre_myturn-1 where bre_myturn>'+ response[0].bre_myturn;
+            con.query(query1);
+        });
+    }
+    var query2 = 'update t_book set b_reserved_cnt=b_reserved_cnt-1 where b_id="' + req.body.book_id + '"';
+    con.query(query2);
     var query3 = 'delete from t_book_reserve where bre_id="' + req.body.reserve_id + '"';
     con.query(query3);
 }
@@ -88,10 +95,38 @@ function imposeBadduty(con, userId, overtime){
 }
 
 function push2Subscriber(con, userId, book_id){
-    var query = 'SELECT * FROM t_user a INNER JOIN t_book_reserve b ON a.u_id=b.bre_user where b.bre_book_id="' + book_id + '" and b.bre_myturn=1';
-    con.query(query, function(err, rows, fields){
-       // rows[0].u_token    이것이 예약 1순위자의 토큰. 이것을 이용해 푸시알림을 보내면되겠징???
+    var today = getDate(0);
+    var due_date = getDate(14);
+    var query1 = 'SELECT * FROM t_user a INNER JOIN t_book_reserve b ON a.u_id=b.bre_user where b.bre_book_id="' + book_id + '" and b.bre_myturn=1';
+    con.query(query1, function(err, response){
+        // response[0].u_token 여기로 푸쉬알림을 보낸다.
+        var query2 = 'UPDATE t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + response[0].u_name + '", b_reserved_cnt=b_reserved_cnt-1 where b_id="' + book_id + '"';
+        con.query(query2);
+        var query4 = 'insert into t_book_rental SET ?';
+        var queryData = {
+            br_user: response[0].u_id,
+            br_book_id: book_id,
+            br_rental_date: today
+        };
+        con.query(query4, queryData);
     });
+    var query3 = 'update t_book_reserve set bre_myturn=bre_myturn-1 where bre_book_id="' + book_id + '"';
+    con.query(query3);
+    // 여기까지가 예약자에 대한 처리 아래부터 예약자를 대여자로 바꾸는 처리.
+    //var query4 = 'SELECT u_name from t_user where u_id="' + userId + '"';
+    //con.query(query4, function(err, rows, fields){
+    //    var query5 = 'UPDATE t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + rows[0].u_name + '", b_reserved_cnt=b_reserved_cnt-1 where b_id="' + book_id + '"';
+    //    con.query(query5);
+    //});
+    var query5 = 'delete from t_book_reserve where bre_myturn=0 and bre_book_id="' + book_id + '"';
+    con.query(query5);
+}
+
+function getDate(plus){
+    var date = new Date();
+    date.setHours(9);
+    var result = date.getFullYear()+ '-'+(date.getMonth()+1)+'-'+(date.getDate()+plus);
+    return result;
 }
 
 exports.missingBook = missingBook;

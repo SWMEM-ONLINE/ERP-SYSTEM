@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad8320e1-59da-4c37-8f2e-556df173bb69" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/public/javascripts/apply_newbook_index.js" afterPath="$PROJECT_DIR$/Server/public/javascripts/apply_newbook_index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/public/javascripts/book_humanities_index.js" afterPath="$PROJECT_DIR$/Server/public/javascripts/book_humanities_index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/public/javascripts/book_mybook_index.js" afterPath="$PROJECT_DIR$/Server/public/javascripts/book_mybook_index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/public/javascripts/book_tech_index.js" afterPath="$PROJECT_DIR$/Server/public/javascripts/book_tech_index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/routes/apply.js" afterPath="$PROJECT_DIR$/Server/routes/apply.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/routes/apply_newbook_handler.js" afterPath="$PROJECT_DIR$/Server/routes/apply_newbook_handler.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/routes/book.js" afterPath="$PROJECT_DIR$/Server/routes/book.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/routes/book_handler.js" afterPath="$PROJECT_DIR$/Server/routes/book_handler.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/routes/book_mybook_handler.js" afterPath="$PROJECT_DIR$/Server/routes/book_mybook_handler.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/views/apply_newbook.jade" afterPath="$PROJECT_DIR$/Server/views/apply_newbook.jade" />
     </list>
     <ignored path="ERP-SYSTEM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,11 +30,11 @@
       <file leaf-file-name="book_mybook_index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_mybook_index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+            <state vertical-scroll-proportion="-12.222222">
+              <caret line="105" column="74" selection-start-line="105" selection-start-column="74" selection-end-line="105" selection-end-column="74" />
               <folding>
-                <marker date="1449867241000" expanded="true" signature="7337:7348" placeholder="..." />
-                <marker date="1449867241000" expanded="true" signature="7927:7949" placeholder="..." />
+                <marker date="1450020393000" expanded="true" signature="7383:7394" placeholder="..." />
+                <marker date="1450020393000" expanded="true" signature="7973:7995" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -60,7 +54,7 @@
         <entry file="file://$PROJECT_DIR$/Server/routes/book.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+              <caret line="60" column="21" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -70,7 +64,7 @@
         <entry file="file://$PROJECT_DIR$/Server/routes/book_handler.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="70" column="34" selection-start-line="70" selection-start-column="34" selection-end-line="70" selection-end-column="34" />
+              <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -83,37 +77,36 @@
               <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <marker date="1450014136000" expanded="true" signature="4977:5004" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="apply.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/routes/apply.js">
+      <file leaf-file-name="apply_newbook.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/routes/apply_newbook.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+              <caret line="22" column="49" selection-start-line="22" selection-start-column="49" selection-end-line="22" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="book_mybook_handler.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="book_mybook_handler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server/routes/book_mybook_handler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="49" column="3" selection-start-line="49" selection-start-column="3" selection-end-line="49" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.6614509">
+              <caret line="105" column="25" selection-start-line="105" selection-start-column="25" selection-end-line="105" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="book_humanities_index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="book_humanities_index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_humanities_index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.70042795">
-              <caret line="120" column="1" selection-start-line="120" selection-start-column="1" selection-end-line="120" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="86" column="31" selection-start-line="86" selection-start-column="31" selection-end-line="86" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -124,11 +117,9 @@
       <file leaf-file-name="book_tech_index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_tech_index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="33" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
-              <folding>
-                <marker date="1449845963000" expanded="true" signature="2701:2927" placeholder="..." />
-              </folding>
+            <state vertical-scroll-proportion="-18.925926">
+              <caret line="102" column="12" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="12" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -137,7 +128,7 @@
         <entry file="file://$PROJECT_DIR$/Server/routes/apply_newbook_handler.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
+              <caret line="38" column="36" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -174,16 +165,16 @@
         <option value="$PROJECT_DIR$/Server/views/book_tech.jade" />
         <option value="$PROJECT_DIR$/Server/views/book_humanities.jade" />
         <option value="$PROJECT_DIR$/Server/app.js" />
-        <option value="$PROJECT_DIR$/Server/routes/book_handler.js" />
-        <option value="$PROJECT_DIR$/Server/public/javascripts/book_tech_index.js" />
-        <option value="$PROJECT_DIR$/Server/routes/book_mybook_handler.js" />
-        <option value="$PROJECT_DIR$/Server/public/javascripts/book_mybook_index.js" />
         <option value="$PROJECT_DIR$/Server/public/javascripts/book_humanities_index.js" />
-        <option value="$PROJECT_DIR$/Server/routes/book.js" />
         <option value="$PROJECT_DIR$/Server/routes/apply.js" />
         <option value="$PROJECT_DIR$/Server/views/apply_newbook.jade" />
         <option value="$PROJECT_DIR$/Server/public/javascripts/apply_newbook_index.js" />
         <option value="$PROJECT_DIR$/Server/routes/apply_newbook_handler.js" />
+        <option value="$PROJECT_DIR$/Server/routes/book.js" />
+        <option value="$PROJECT_DIR$/Server/public/javascripts/book_mybook_index.js" />
+        <option value="$PROJECT_DIR$/Server/public/javascripts/book_tech_index.js" />
+        <option value="$PROJECT_DIR$/Server/routes/book_handler.js" />
+        <option value="$PROJECT_DIR$/Server/routes/book_mybook_handler.js" />
       </list>
     </option>
   </component>
@@ -461,9 +452,8 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28328007" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996973" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46223566" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996973" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2643794" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26384693" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996973" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -473,6 +463,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46223566" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -746,19 +737,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/routes/apply_newbook.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="18" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/views/book_humanities.jade">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.62963">
           <caret line="34" column="23" selection-start-line="34" selection-start-column="23" selection-end-line="34" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -774,7 +756,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -802,57 +783,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/routes/book.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/routes/book_mybook_handler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="3" selection-start-line="49" selection-start-column="3" selection-end-line="49" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/routes/book_handler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="70" column="34" selection-start-line="70" selection-start-column="34" selection-end-line="70" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/public/javascripts/apply_newbook_index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1450014136000" expanded="true" signature="4977:5004" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/routes/apply_newbook_handler.js">
+    <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_humanities_index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_mybook_index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+          <caret line="86" column="31" selection-start-line="86" selection-start-column="31" selection-end-line="86" selection-end-column="31" />
           <folding>
-            <marker date="1449867241000" expanded="true" signature="7337:7348" placeholder="..." />
-            <marker date="1449867241000" expanded="true" signature="7927:7949" placeholder="..." />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/routes/book.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="60" column="21" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -864,23 +819,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_tech_index.js">
+    <entry file="file://$PROJECT_DIR$/Server/routes/apply_newbook_handler.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="33" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
+          <caret line="38" column="36" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/routes/apply_newbook.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="49" selection-start-line="22" selection-start-column="49" selection-end-line="22" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_mybook_index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.222222">
+          <caret line="105" column="74" selection-start-line="105" selection-start-column="74" selection-end-line="105" selection-end-column="74" />
           <folding>
-            <marker date="1449845963000" expanded="true" signature="2701:2927" placeholder="..." />
+            <marker date="1450020393000" expanded="true" signature="7383:7394" placeholder="..." />
+            <marker date="1450020393000" expanded="true" signature="7973:7995" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_humanities_index.js">
+    <entry file="file://$PROJECT_DIR$/Server/public/javascripts/book_tech_index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70042795">
-          <caret line="120" column="1" selection-start-line="120" selection-start-column="1" selection-end-line="120" selection-end-column="1" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-18.925926">
+          <caret line="102" column="12" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/routes/book_handler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/routes/book_mybook_handler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6614509">
+          <caret line="105" column="25" selection-start-line="105" selection-start-column="25" selection-end-line="105" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>

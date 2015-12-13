@@ -58,7 +58,6 @@ router.post('/mybook/applied', function(req, res){
 });
 
 router.post('/mybook/turnIn', function(req, res){
-    console.log(req);
     book_my_handler.turninBook(con, req, res);
 });
 
