@@ -1,0 +1,52 @@
+//Created by jung-inchul on 2015. 12. 03..
+extends main_layout
+append head
+    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
+block content
+        .page-header
+            .container
+                h3 기술도서대여
+        article.container
+            .modal.fade
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            h4.modal-title
+                        .modal-body
+                        .modal-footer
+                            button#request.btn.btn-primary(type='button') 대여
+                            button#reserve.btn.btn-success(type='button') 예약
+                            button#missing.btn.btn-danger(type='button') 분실신고
+                            button.btn.btn-default(type='button', data-dismiss='modal') 뒤로가기
+            #booksearch.row
+                .col-xs-12
+                    button#borrowUsingQRcode.btn.btn-warning.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
+                    br
+                    .input-group
+                        .input-group-btn
+                            button#bookSearchCategory.btn.btn-default(type='button') 도서명
+                                button.btn.btn-info.dropdown-toggle(type='button', data-toggle='dropdown')
+                                    span.caret
+                                ul#categoryDropdown.dropdown-menu.pull-left
+                                    li
+                                        a(href='#') 도서명
+                                    li
+                                        a(href='#') 저자
+                                    li
+                                        a(href='#') 출판사
+                        input#bookSearchWords.form-control(type='text', placeholder='검색어를 입력하세요')
+                        span.input-group-btn
+                            button#bookSearchBtn.btn.btn-info(type='button') 검색
+            #noti
+                hr
+                h4 이번달 들어온 기술도서목록입니다^^
+            hr
+            table#booklist.table.table-hover.table-bordered.table-condensed
+            .pageArea
+                ul.pagination(style='text-align:center')
+apeend script
+    script(src='../javascripts/book_borrow_index.js')

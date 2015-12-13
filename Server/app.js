@@ -63,6 +63,8 @@ app.use(multer({ dest: './uploads/',
 passport.use(new LocalStrategy({
       usernameField : 'id',
       passwordField : 'password',
+      gradeField : 'grade',
+      nameField : 'name',
       passReqToCallback : true
     }
     ,function(req,id, password, done) {
@@ -80,7 +82,9 @@ passport.use(new LocalStrategy({
           if(encPW == rows[0].u_password){
             //성공
             var user = { 'id':rows[0].u_id,
-              'password':rows[0].u_password};
+              'password':rows[0].u_password,
+              'grade':rows[0].u_state,
+              'name':rows[0].u_name};
 
             req.logIn(user, function(err) {
               if (err) { return next(err); }

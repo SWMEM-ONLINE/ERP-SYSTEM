@@ -5,43 +5,55 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
-    link(rel='stylesheet', type='text/css', href='../stylesheets/common.css')
-    link(rel='stylesheet', type='text/css', href='../stylesheets/table_layout.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/fee_history.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
 block content
     .container.contents
+        h3 회비 수입/지출 내역
+        hr
         .content
-            .back
-                .content-header
-                    h5 회비 사용내역
-                    h4 월별 회비 사용 이력
-            table
+            table.table
                 thead
                     tr
                         th
-                            input.datepicker(type='text', placeholder='월 선택')
+                            input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
                         th 구분
                         th 내용
                         th 금액
                 tbody
-                    tr
-                        td 20151111
-                        td.text-primary 수입
-                        td 내꺼
-                        td.text-primary 5,000
-                    tr
-                        td 20151111
-                        td.text-danger 지출
-                        td 니꺼
-                        td.text-danger 5,000
-                tfoot
-                    tr
-                        th 월 수입
-                        td.text-primary 1,000,000
-                        th 월 지출
-                        td.text-danger 1,000,000
-append foot
+                    if result.length == 0
+                        tr
+                            td(colspan=4)
+                                h3 데이터가 없습니다
+                    else
+                        for row in result
+                            tr
+                                td= row.fm_date
+                                if row.fm_money_type === 1
+                                    td.text-danger 지출
+                                else
+                                    td.text-primary 수입
+                                td= row.fm_money_content
+                                if row.fm_money_type === 1
+                                    td.text-danger= row.fm_price
+                                else
+                                    td.text-primary= row.fm_price
+                        tfoot
+                            tr
+                                td
+                                td
+                                th 월 수입
+                                td.text-primary= deposit
+                            tr
+                                td
+                                td
+                                th 월 지출
+                                td.text-danger= withdraw
+                            tr
+                                td(colspan=4)
+                                    button#excelSave(type='button') 엑셀로 저장
+append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='../javascripts/apply-datepicker.js')
 
