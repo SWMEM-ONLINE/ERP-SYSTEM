@@ -73,9 +73,8 @@ function loadMyspecialHardware(con, req, res){
 
 function getDate(base, plus){
     var tempDate = new Date(base);
-    tempDate.setDate()
-    var date = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + (tempDate.getDate()+plus);
-    console.log(date);
+    tempDate.setDate(tempDate.getDate() + plus);
+    var date = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + (tempDate.getDate());
     return date;
 }
 

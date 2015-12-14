@@ -84,6 +84,7 @@ function loadMyspecialHardware(){
         htmlString += '</tbody>';
         $('#mySpecialHardware').html(htmlString);
         $('button#turnIn').each(function(index){
+            index = index-temp;
             $(this).unbind().click(function(event){
                 $.post("/hardware/myhardware/turnIn", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id, rental_date: datalist[index].hr_rental_date, due_date: datalist[index].hr_due_date}, function (data) {
                     console.log(data);
@@ -93,6 +94,7 @@ function loadMyspecialHardware(){
 
         });
         $('button#postpone').each(function(index){
+            index = index-temp;
             $(this).unbind().click(function(){
                 $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, due_date: datalist[index].hr_due_date}, function (data) {
                     console.log(data);
@@ -107,11 +109,8 @@ function makeProgressbar(t1, t2, t3){
     var string = '';
     var text = '';
     var now = new Date(t1);
-    now.setHours(9);
     var borrow_date = new Date(t2);
-    borrow_date.setHours(9);
     var due_date = new Date(t3);
-    due_date.setHours(9);
     if(due_date.getTime() <= now.getTime()){
         var gap = parseInt(now.getTime() - due_date.getTime()) / (3600000 * 24);
         overtime = gap;
