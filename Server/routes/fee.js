@@ -11,12 +11,12 @@ router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
     res.render('fee_unpaid', { title: '회비미납내역' });
 });
 
-router.post('/unpaid/list', util.ensureAuthenticated, function(req, res, next) {
+router.post('/unpaidList', util.ensureAuthenticated, function(req, res, next) {
     var category = req.body.Category;
     var state = req.body.State.bool();
 
     var connection = db_handler.connectDB();
-    var query = connection.query('select * from t_fee where f_type = ? AND f_state = ?', category,state, function(err,rows){
+    var query = connection.query('select * from t_fee where f_type = ? AND f_state = ? ORDER BY f_write_date', category,state, function(err,rows){
 
         if (err) {
             console.error(err);
