@@ -12,30 +12,30 @@ block content
    .container.contents
       .content
          .card
-            h1 25-2기 김동원
-            .profile-img
-               img(src='#')
-            .profile-content
-               table
-                  tbody
-                     tr
-                        td ID
-                        td dongwon632
-                        td
-                     tr
-                        td 생년월일
-                        td 90.04.30 (남)
-                        td
-                     tr
-                        td 모바일 디바이스 정보
-                        td aaabbbbccc
-                        td
-                           button.delete 삭제
-                     tr
-                        td Chrome 정보(PC 정보)
-                        td dddddeeeee
-                        td
-                           button.delete 삭제
+            for row in result
+               h1 #{row.u_period} #{row.u_name}
+               .profile-img
+                  img(src='http://localhost:3000/image?name=#{row.u_photo_url}')
+               .profile-content
+                  table
+                     tbody
+                        tr
+                           td ID
+                           td #{row.u_id}
+                           td
+                        tr
+                           td 생년월일
+                           td #{row.u_birth}
+                              if row.u_sex == 1
+                                 span (남)
+                              else
+                                 span (여)
+                           td
+                        tr
+                           td 모바일 디바이스 정보
+                           td #{row.u_device}
+                           td
+                              button.delete 삭제
          .card
             .edit-content
                table
