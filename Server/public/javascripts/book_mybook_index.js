@@ -6,19 +6,19 @@ $('ul.nav-pills li').click(function(){
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');
     switch(index){
-        case 0:
+        case 0:                                                             // case 0: show my book borrowed
             $('table#myBorrowedBook').removeClass('hidden');
             $('table#myReservedBook').addClass('hidden');
             $('table#myAppliedBook').addClass('hidden');
             loadBorrowedBooklist();
             break;
-        case 1:
+        case 1:                                                             // case 1: show my book reserved
             $('table#myBorrowedBook').addClass('hidden');
             $('table#myReservedBook').removeClass('hidden');
             $('table#myAppliedBook').addClass('hidden');
             loadReservedBooklist();
             break;
-        default:
+        default:                                                            // default: show my book applied
             $('table#myBorrowedBook').addClass('hidden');
             $('table#myReservedBook').addClass('hidden');
             $('table#myAppliedBook').removeClass('hidden');
@@ -27,11 +27,11 @@ $('ul.nav-pills li').click(function(){
     }
 });
 loadBorrowedBooklist();
-var today = getDate();
-var overtime = 0;
 
+/*
+    Load my book borrowed function.
+ */
 function loadBorrowedBooklist(){
-    overtime = 0;
     $.post('/book/mybook/borrowed', function(datalist){
         if(datalist.length === 0){
             $('div#myBorrowedBook').html('<tr><td><h4 class="text-center">대여한 도서가 없습니다.</h4></td></tr>');
@@ -41,7 +41,7 @@ function loadBorrowedBooklist(){
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
             htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><p><span class="label label-info">반납일 : ' + data.b_due_date + '</span>&nbsp&nbsp<span class="label label-warning">연장횟수 : ' + data.br_extension_cnt + '</span>&nbsp&nbsp<span class="label label-primary">예약자 : ' + data.b_reserved_cnt + '명</span></p>';
-            htmlString += makeProgressbar(today,data.br_rental_date, data.b_due_date);
+            htmlString += makeProgressbar(data.br_rental_date, data.b_due_date);
             htmlString += '</td><td width="5%">';
             htmlString += '<div class="btn-group-vertical">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 도서반납 </button>';
@@ -52,31 +52,30 @@ function loadBorrowedBooklist(){
         });
         htmlString += '</tbody>';
         $('#myBorrowedBook').html(htmlString);
-        $('button#turnIn').each(function(index){
+        $('button#turnIn').each(function(index){                            // turnIn button function.
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/turnIn', {rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, return_date: today, over: overtime, reserved_cnt: datalist[index].b_reserved_cnt}, function(data){
+                $.post('/book/mybook/turnIn', {rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, due_date: datalist[index].b_due_date, reserved_cnt: datalist[index].b_reserved_cnt}, function(data){
                     console.log(data);
                 });
                 window.location.reload();
             });
         });
-        $('button#postpone').each(function(index){
+        $('button#postpone').each(function(index){                          // postpone button function
             if(datalist[index].br_extension_cnt === 0 && datalist[index].b_reserved_cnt === 0) {
                 $(this).unbind().click(function (event) {
                     var due_date = new Date(datalist[index].b_due_date);
                     due_date.setDate(due_date.getDate() + 14);
                     var changedDate = due_date.getFullYear()+ '-'+(due_date.getMonth()+1)+'-'+due_date.getDate();
-                    console.log(changedDate);
-                    $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id, changed_due_date: changedDate}, function (data) {
+                    $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id}, function (data) {
                         console.log(data);
                     });
                     window.location.reload();
                 });
             }
         });
-        $('button#missing').each(function(index){
+        $('button#missing').each(function(index){                           // missing button function
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/missing', {rental_id: datalist[index].br_id, book_id : datalist[index].b_id, loss_date: today}, function(data){
+                $.post('/book/mybook/missing', {rental_id: datalist[index].br_id, book_id : datalist[index].b_id}, function(data){
                     console.log(data);
                 });
                 window.location.reload();
@@ -85,6 +84,9 @@ function loadBorrowedBooklist(){
     });
 }
 
+/*
+    Load my book reserved function.
+*/
 function loadReservedBooklist(){
     $.post('/book/mybook/reserved', function(datalist){
         if(datalist.length === 0){
@@ -101,7 +103,7 @@ function loadReservedBooklist(){
         });
         htmlString += '</tbody>';
         $('#myReservedBook').html(htmlString);
-        $('button#cancelReservation').each(function(index){
+        $('button#cancelReservation').each(function(index){                 // cancelReservation button function
             $(this).unbind().click(function(event){
                 $.post('/book/mybook/cancelReservation', {reserve_id: datalist[index].bre_id, book_id: datalist[index].b_id, reserved_cnt: datalist[index].b_reserved_cnt}, function(data){
                     console.log(data);
@@ -112,6 +114,9 @@ function loadReservedBooklist(){
     });
 }
 
+/*
+    Load my book applied function.
+*/
 function loadAppliedBooklist(){
     $.post('/book/mybook/applied', function(datalist){
         if(datalist.length === 0){
@@ -139,37 +144,29 @@ function loadAppliedBooklist(){
     });
 }
 
-function makeProgressbar(t1, t2, t3){
+function makeProgressbar(t2, t3){
     var string = '';
     var text = '';
-    var now = new Date(t1);
+    var today = new Date();
+    today.setHours(1);
     var borrow_date = new Date(t2);
     var due_date = new Date(t3);
-    if(due_date.getTime() <= now.getTime()){
-        var gap = parseInt(now.getTime() - due_date.getTime()) / (3600000* 24);
-        overtime = gap;
-        if(gap == 0) text = '대여 기한이 오늘까지입니다.';
+    if(due_date.getTime() <= today.getTime()){
+        var gap = parseInt(today.getTime() - due_date.getTime()) / (3600000* 24);
+        if(gap === 0) text = '대여 기한이 오늘까지입니다.';
         else text = gap + '일 지났습니다.';
         string += '<div class="progress progress-striped active">';
         string += '<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%">' + text;
-        string += '</div>';
-        string += '</div>';
+        string += '</div></div>';
     }
     else{
-        var numerator = parseInt((due_date.getTime() - now.getTime()) / (3600000 * 24));
+        var numerator = parseInt((due_date.getTime() - today.getTime()) / (3600000 * 24));
         var denominator = parseInt((due_date.getTime()-borrow_date.getTime()) / ( 3600000 * 24 ));
         var percent = (100 - (numerator / denominator * 100));
         text = numerator + '일 남았습니다.';
         string += '<div class="progress progress-striped active">';
         string += '<div class="progress-bar ' + (numerator > 7 ? 'progress-bar' : 'progress-bar-danger' ) + '" role="progressbar" style="width:' + percent + '%">' + text;
-        string += '</div>';
+        string += '</div></div>';
     }
     return string;
-}
-
-function getDate(){
-    var date = new Date();
-    date.setHours(9);
-    var result = date.getFullYear()+ '-'+(date.getMonth()+1)+'-'+date.getDate();
-    return result;
 }
