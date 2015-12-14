@@ -48,10 +48,10 @@ router.post('/myhardware/special',util.ensureAuthenticated, function(req, res){
 });
 
 router.post('/myhardware/turnIn',util.ensureAuthenticated, function(req, res){
-    console.log('/my/turnIn');
+    hardware_handler.turnInHardware(con, req, res);
 });
 
 router.post('/myhardware/postpone',util.ensureAuthenticated, function(req, res){
-    console.log('/my/postpone');
+    hardware_handler.postponeHardware(con, req, res);
 });
 module.exports = router;

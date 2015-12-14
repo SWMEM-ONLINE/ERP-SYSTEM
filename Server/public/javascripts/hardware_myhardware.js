@@ -19,6 +19,9 @@ $('ul.nav-pills li').click(function(){
 loadMynormalHardware();
 
 var temp = 0;
+var today = new Date();
+today.setHours(9);
+var overtime = 0;
 
 function loadMynormalHardware(){
     $.post('/hardware/myhardware/normal', function(datalist){
@@ -29,11 +32,10 @@ function loadMynormalHardware(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>';
-            htmlString += '<h5 class="hardwareTitle">' + data.h_name + '</h5>';
-            htmlString += calReturnDate();
-            // 남은 대여일 계산해서 htmlString 안에 넣어주는 내용의 코드
-            //htmlString += '</td><td width="20%">';
-            htmlString += '<div class="btn-group pull-right">';
+            htmlString += '<h5 class="hardwareTitle">' + data.h_name + '</h5><p><span class="label label-info">반납일 : ' + data.hr_due_date + '</span>&nbsp&nbsp<span class="label label-warning">연장횟수 : ' + data.hr_extension_cnt + '</span>';
+            htmlString += makeProgressbar(today, data.hr_rental_date, data.hr_due_date);
+            htmlString += '</td><td width="5%">';
+            htmlString += '<div class="btn-group-vertical">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 기기반납 </button>';
             htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
             htmlString += '</td></tr>';
@@ -41,23 +43,24 @@ function loadMynormalHardware(){
         });
         htmlString += '</tbody>';
         $('#myNormalHardware').html(htmlString);
-
         $('button#turnIn').each(function(index){
             $(this).unbind().click(function(event){
-                console.log('turnIn: '+datalist[index].name);
-                $.post("/hardware/myhardware/turnIn", {id: datalist[index].id}, function (data) {
+                $.post("/hardware/myhardware/turnIn", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id, rental_date: datalist[index].hr_rental_date, due_date: datalist[index].hr_due_date}, function (data) {
                     console.log(data);
                 });
+                window.location.reload();
             });
+
         });
         $('button#postpone').each(function(index){
             $(this).unbind().click(function(){
-                console.log('postpone: '+datalist[index].name);
-                $.post("/hardware/myhardware/postpone", {id: datalist[index].id}, function (data) {
+                $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, due_date: datalist[index].hr_due_date}, function (data) {
                     console.log(data);
                 });
+                window.location.reload();
             });
         });
+
     });
 }
 
@@ -70,61 +73,63 @@ function loadMyspecialHardware(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>';
-            htmlString += '<h5 class="hardwareTitle">' + data.name + '</h5>';
-            htmlString += calReturnDate();
-            // 남은 대여일 계산해서 htmlString 안에 넣어주는 내용의 코드
-            //htmlString += '</td><td width="20%">';
-            htmlString += '<div class="btn-group pull-right">';
+            htmlString += '<h5 class="hardwareTitle">' + data.h_name + '</h5><p><span class="label label-info">반납일 : ' + data.hr_due_date + '</span>&nbsp&nbsp<span class="label label-warning">연장횟수 : ' + data.hr_extension_cnt + '</span>';
+            htmlString += makeProgressbar(today, data.hr_rental_date, data.hr_due_date);
+            htmlString += '</td><td width="5%">';
+            htmlString += '<div class="btn-group-vertical">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 기기반납 </button>';
             htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
         $('#mySpecialHardware').html(htmlString);
-
-        $('button#turnIn').each(function(index){            // 이곳에서의 인덱스가.. 위에 normal 장치의 인덱스와 겹쳐져버리네?
-            index = index-temp;
+        $('button#turnIn').each(function(index){
             $(this).unbind().click(function(event){
-                console.log('turnIn: '+ datalist[index].name);
-                $.post("/hardware/myhardware/turnIn", {id: datalist[index].id}, function (data) {
+                $.post("/hardware/myhardware/turnIn", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id, rental_date: datalist[index].hr_rental_date, due_date: datalist[index].hr_due_date}, function (data) {
                     console.log(data);
                 });
+                window.location.reload();
             });
+
         });
         $('button#postpone').each(function(index){
-            index = index-temp;
             $(this).unbind().click(function(){
-                console.log('postpone: '+ datalist[index].name);
-                $.post("/hardware/my/postpone", {id: datalist[index].id}, function (data) {
+                $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, due_date: datalist[index].hr_due_date}, function (data) {
                     console.log(data);
                 });
+                window.location.reload();
             });
         });
     });
 }
 
-function calReturnDate(today, duedate){
+function makeProgressbar(t1, t2, t3){
     var string = '';
-    var diffdate;
-    //if(duedate.getTime() <= date.getTime()){
-    //diffdate = parseInt((date.getTime() - duedate.getTime()) / (1000 * 3600 * 24));
-    var warningtext = '임시';
-    //if(diffdate == 0) warningtext = '대여 기한이 오늘까지입니다.';
-    //else warningtext = '대여 기한이 ' + diffdate + '일 지났습니다.';
-    string += '<div class="progress progress-striped active">';
-    string += '<span class="progressbar-back-text"></span>';
-    string += '<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%">';
-    string += '<span class="progressbar-front-text" style="width:' + $('div#rentBook').width() + 'px">' + warningtext + '</span>';
-    string += '</div></div>';
-    //}
-    //else{
-    //    diffdate = (duedate.getTime() - date.getTime()) / (1000 * 3600 * 24);
-    //    string += '<div class="progress progress-striped active">';
-    //    string += '<span class="progressbar-back-text"></span>';
-    //    string += '<div class="progress-bar' + (diffdate < 4? ' progress-bar-warning' : ' progress-bar-success') + '" role="progressbar" aria-valuenow="8" aria-valuemin="0" aria-valuemax="14" style="width:' + parseInt((1 - diffdate / 14) * 100) + '%">';
-    //    string += '<span class="progressbar-front-text" style="width:' + $('div#rentBook').width() + 'px">' + duedate.getFullYear() + '년 ' + (duedate.getMonth()+1) + '월 ' + duedate.getDate() + '일 까지 대여중입니다.</span>';
-    //    string += '</div>';
-    //    string += '</div>';
-    //}
+    var text = '';
+    var now = new Date(t1);
+    now.setHours(9);
+    var borrow_date = new Date(t2);
+    borrow_date.setHours(9);
+    var due_date = new Date(t3);
+    due_date.setHours(9);
+    if(due_date.getTime() <= now.getTime()){
+        var gap = parseInt(now.getTime() - due_date.getTime()) / (3600000 * 24);
+        overtime = gap;
+        if(gap == 0) text = '대여 기한이 오늘까지입니다.';
+        else text = gap + '일 지났습니다.';
+        string += '<div class="progress progress-striped active">';
+        string += '<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%">' + text;
+        string += '</div>';
+        string += '</div>';
+    }
+    else{
+        var numerator = parseInt((due_date.getTime() - now.getTime()) / (3600000 * 24));
+        var denominator = parseInt((due_date.getTime()-borrow_date.getTime()) / ( 3600000 * 24 ));
+        var percent = (100 - (numerator / denominator * 100));
+        text = numerator + '일 남았습니다.';
+        string += '<div class="progress progress-striped active">';
+        string += '<div class="progress-bar ' + (numerator > 7 ? 'progress-bar' : 'progress-bar-danger' ) + '" role="progressbar" style="width:' + percent + '%">' + text;
+        string += '</div>';
+    }
     return string;
 }
