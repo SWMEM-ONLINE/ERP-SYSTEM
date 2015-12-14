@@ -2,21 +2,21 @@
  * Created by jung-inchul on 2015. 12. 7..
  */
 function loadNormalHardware(con, req, res){
-    var query = 'SELECT * FROM t_hardware where h_type=0';
+    var query = 'select * from t_hardware where h_type=0';
     con.query(query, function(err, response){
         res.send(response);
     });
 }
 
 function loadSpecialHardware(con, req, res){
-    var query = 'SELECT * FROM t_hardware where h_type=1';
+    var query = 'select * from t_hardware where h_type=1';
     con.query(query, function(err, response){
         res.send(response);
     })
 }
 
 function borrowHardware(con, req, res){
-    var query1 = 'INSERT into t_hardware_rental SET ?';
+    var query1 = 'insert into t_hardware_rental SET ?';
     var dataset = {
         hr_user : req.session.passport.user.id,
         hr_hardware_id : req.body.hardware_id,
