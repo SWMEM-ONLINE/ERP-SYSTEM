@@ -29,7 +29,7 @@ function loadMynormalHardware(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>';
-            htmlString += '<h5 class="hardwareTitle">' + data.name + '</h5>';
+            htmlString += '<h5 class="hardwareTitle">' + data.h_name + '</h5>';
             htmlString += calReturnDate();
             // 남은 대여일 계산해서 htmlString 안에 넣어주는 내용의 코드
             //htmlString += '</td><td width="20%">';

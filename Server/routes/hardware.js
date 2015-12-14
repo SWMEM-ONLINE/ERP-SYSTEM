@@ -25,8 +25,11 @@ router.post('/special',util.ensureAuthenticated,  function(req, res){
 });
 
 router.post('/borrow',util.ensureAuthenticated, function(req, res){
-    console.log('/borrow');
-    //hardware_handler.borrowHardware(con, req.body, res);
+    hardware_handler.borrowHardware(con, req, res);
+});
+
+router.post('/lender', util.ensureAuthenticated, function(req, res){
+    hardware_handler.loadLender(con, req, res);
 });
 
 /*
