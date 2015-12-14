@@ -51,7 +51,6 @@ function turnInHardware(con, req, res){
 }
 
 function postponeHardware(con, req, res){
-    console.log(req.body.due_date);
     var changed_date = getDate(req.body.due_date, 14);
     var query = 'update t_hardware_rental set hr_extension_cnt=hr_extension_cnt+1, hr_due_date="' + changed_date + '" where hr_id="' + req.body.rental_id + '"';
     con.query(query);
@@ -71,9 +70,9 @@ function loadMyspecialHardware(con, req, res){
     })
 }
 
-function getDate(base, plus){
+function getDate(base, plusDate){
     var tempDate = new Date(base);
-    tempDate.setDate(tempDate.getDate() + plus);
+    tempDate.setDate(tempDate.getDate() + plusDate);
     var date = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + (tempDate.getDate());
     return date;
 }
