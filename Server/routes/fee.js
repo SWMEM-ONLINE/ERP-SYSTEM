@@ -47,14 +47,28 @@ router.post('/category', util.ensureAuthenticated, function(req, res, next) {
             throw err;
         }
 
-        console.log(rows);
-        if(0<rows.length){
-            res.json({status:'0',result:rows});
-            db_handler.disconnectDB(connection);
-        }else{
-            res.json({status:'0'});
-            db_handler.disconnectDB(connection);
+        var send = JSON.stringify(rows);
+        res.json({result:JSON.parse(send)});
+
+    });
+
+});
+
+
+router.post('/userList', util.ensureAuthenticated, function(req, res, next) {
+
+    var connection = db_handler.connectDB();
+    var query = connection.query('select u_id, u_name from t_user where u_state = 2 OR u_state = 3 ORDER BY u_name' , function(err,rows){
+
+        if (err) {
+            console.error(err);
+            res.json({status:'101'});
+            throw err;
         }
+
+        var send = JSON.stringify(rows);
+        res.json({result:JSON.parse(send)});
+
     });
 
 });
@@ -154,30 +168,46 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
 });
 
 router.get('/charge', util.ensureAuthenticated, function(req, res, next) {
-  res.render('fee_charge',{title:'회비 추가'});
+    res.render('fee_charge',{title:'회비 추가'});
 });
 
-function getFeeList(date){
+router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
+
+    var arr = req.body;
+    var arrLength = arr.length;
+    var values = new Array(arrLength);
+
+    for(var i=0; i<arrLength; i++){
+
+        var id = 0;
+        var payer = arr[i].Payer;
+        var name = arr[i].Name;
+        var content = arr[i].Content;
+        var type = arr[i].Type;
+        var price =  parseInt(arr[i].Price);
+        var state = 0;
+        var date = util.getCurDateWithTime();
+
+        values[i] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, ];
+
+    }
 
     var connection = db_handler.connectDB();
 
-
-    var query = connection.query('select * from t_fee_manage where fm_date like \'%%s%\'' , date, function(err,rows){
+    var query = connection.query('insert into t_fee(f_id, f_payer, f_name,f_content,f_type,f_price,f_state,f_write_date) values ?', [values], function(err,result){
         if (err) {
             console.error(err);
             throw err;
+            res.json({status:'101'});
         }
-        console.log(rows);
-        if(0<rows.length){
-            return rows;
-            db_handler.disconnectDB(connection);
-        }else{
-            return 0;
-            db_handler.disconnectDB(connection);
-        }
+        db_handler.disconnectDB(connection);
 
+        res.json({status:'0'});
     });
-}
+
+
+});
+
 
 function getTotalDeposit(arr){
     var price = 0;
