@@ -1,0 +1,191 @@
+div.contents{
+    position: relative;
+    text-align: center;
+}
+
+div.content{
+    width:900px;
+    margin:0 auto;
+    margin-top:20px;
+}
+
+div.card{
+    background:#FFF;
+    border:1px solid #AAA;
+    border-bottom:3px solid #BBB;
+    padding-bottom:20px;
+    margin-top:20px;
+    overflow:hidden;
+    width: 900px;
+    height: 100%;
+    vertical-align: top;
+}
+
+div.card:last-child{
+    margin-bottom: 20px;
+}
+
+div.card h1{
+    font-size: 25px;
+    display: block;
+    text-align: left;
+    padding-left: 20px;
+    color: #333333;
+}
+
+div.card div.profile-img{
+width: 20%;
+}
+div.card div.profile-img img{
+    width: 100%;
+}
+
+div.profile-content{
+    width: 75%;
+    text-align: left;
+    color: #333333;
+}
+
+div.profile-content table td{
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+div.profile-content table td:last-child{
+        font-weight: bold;
+}
+
+div.edit-content{
+    width: 75%;
+    color: #333333;
+    margin:auto;
+}
+
+div.edit-content table td{
+        width: 300px;
+        text-align: left;
+        vertical-align:middle;
+}
+
+div.edit-content input{
+    width: 100%;
+    height: 44px;
+    border: none;
+    text-indent: 3.8%;
+    z-index: 10;
+    margin-bottom: 10px;
+    background-color: #dfdfdf;
+    transition: 0.5s all;
+}
+
+div.edit-content button.edit-image{
+    width: 100%;
+    height: 44px;
+    border: none;
+    text-indent: 3.8%;
+    z-index: 10;
+    margin-bottom: 10px;
+    background-color: #dfdfdf;
+}
+
+div.edit-content button.edit-save{
+    width: 100%;
+    height: 44px;
+    border: none;
+    margin-bottom: 10px;
+    color: white;
+    background-color: #122359;;
+}
+
+div.profile-content button.delete{
+ width: 100%;
+    height: 100%;
+    border: none;
+    color: white;
+    background-color: #122359;;
+}
+
+div.edit-content table td:last-child{
+    text-align: center;
+}
+
+@media(min-width:993px){
+    div.card div.profile-img{
+        float: left;
+        padding-left:25px;
+    }
+
+    div.profile-content{
+        border-left:1px solid #AAA;
+        padding-left:25px;
+        float: right;
+    }
+
+    div.profile-content table td:nth-child(2){
+        padding-left:50px;
+    }
+
+    div.profile-content table td:last-child{
+        padding-left:50px;
+    }
+
+    div.edit-content table{
+        margin:auto;
+        margin-top: 20px;
+    }
+
+    div.edit-content table tbody{
+        width: 100%;
+    }
+}
+
+@media(max-width:992px){
+     div.container{
+        padding: 0;
+    }
+
+    div.content{
+        width: 100%;
+        margin-top:0;
+    }
+
+    div.card{
+        width: 100%;
+        margin-top:0;
+    }
+
+    div.card:last-child{
+        margin-top:20px;
+    }
+    div.card h1{
+        text-align:center;
+        padding-left:0;
+    }
+
+    div.card{
+        padding: 0;
+    }
+
+    div.profile-content{
+    margin: auto;
+    width: 80%;
+    }
+
+    div.profile-content table{
+        width: 100%;
+        margin: auto;
+        margin-top:20px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+    div.card div.profile-img{
+        margin: auto;
+    }
+
+    div.edit-content table{
+        font-size: 13px;
+        margin-top: 10px;
+    }
+}
