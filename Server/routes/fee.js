@@ -58,19 +58,19 @@ router.post('/category', util.ensureAuthenticated, function(req, res, next) {
 router.post('/userList', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = db_handler.connectDB();
-    var query = connection.query('select u_id, u_name from t_user where u_state = 2 OR u_state = 3 ORDER BY u_name' , function(err,rows){
+    var query = connection.query('select u_id, u_name from t_user where u_state = 4 ORDER BY u_name' , function(err,rows){
+//var query = connection.query('select u_id, u_name from t_user where u_state = 2 OR u_state = 3 ORDER BY u_name' , function(err,rows){
 
-        if (err) {
-            console.error(err);
-            res.json({status:'101'});
-            throw err;
-        }
+            if (err) {
+                console.error(err);
+                res.json({status:'101'});
+                throw err;
+            }
 
-        var send = JSON.stringify(rows);
-        res.json({result:JSON.parse(send)});
+            var send = JSON.stringify(rows);
+            res.json({result:JSON.parse(send)});
 
-    });
-
+        });
 });
 
 

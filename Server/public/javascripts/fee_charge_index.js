@@ -2,7 +2,7 @@
  * Created by KIMDONGWON on 2015-12-14.
  */
 var rowCount = 1;
-
+var rowMembers = new Array();
 toastr.options = {
     'closeButton': false,
     'debug': false,
@@ -68,7 +68,7 @@ function addList() {
     category.innerHTML = str1;
     var str2 = '<input id="members_'+rowCount+'" type="text" placeholder="회원선택" readonly="readonly"  onclick="memberSelect(this)">';
     members.innerHTML = str2;
-    var str3 = '<input id="price_' + rowCount + '" type="text" placeholder="숫자만 입력", onkeydown="isNumberKey(this)"/>';
+    var str3 = '<input id="price_' + rowCount + '" type="text" placeholder="금액만 입력", onkeydown="isNumberKey(this)"/>';
     price.innerHTML = str3;
     var str4 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
     addBtn.innerHTML = str4;
@@ -89,5 +89,52 @@ function deleteRow(obj){
 }
 
 function memberSelect(obj){
+    var id = obj.id;
+    var idx = id.substr(8);
+    $.post('/fee/userList',function(req){
+        var string;
+        var data;
+        string = '<table id='+idx+'>';
+        string += '<thead>';
+        string += '<tr><th class="memberSelect">선택</th><th class="memberName">이름</th></tr>';
+        string += '</thead>';
+        string += '<tbody>';
+        data = req.result;
+        for(var i=0;i<data.length;i++){
+            var member = data[i];
+            string += '<tr>';
+            string += '<td><input id="check_'+i+'" type="checkbox" name="memberCheck[]" value = "'+member.u_id+'"></td><td>'+ member.u_name +'</td>';
+            string += '</tr>';
+        }
+        string += '</tbody></table>';
+        $('.modal-title').text('해당회원 선택');
+        $('div.modal .modal-body').html(string);
+    });
     $('div.modal').modal();
 }
+
+$('#selectAll').click(function(){
+    $("input[name='memberCheck[]']").each(function () {
+        $(this).attr('checked',true);
+    });
+});
+
+$('#select').click(function(){
+    var mem = new Array();
+    $("input[name='memberCheck[]']").each( function () {
+        if($(this).is(':checked') == true){
+            mem.push($(this).val());
+        }
+    });
+    var number = $('.modal-body>table').attr('id');
+    rowMembers[number] = mem;
+    var sentence;
+    if(mem.length == 1){
+        sentence = mem[0];
+    }
+    else{
+        sentence = mem[0] + ' 외 ' + (mem.length-1) + ' 명';
+    }
+    document.getElementById('members_'+ number).value = sentence;
+    $('div.modal').modal('hide');
+});
