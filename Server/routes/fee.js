@@ -8,9 +8,24 @@ var util = require('./util');
 var db_handler = require('./DB_handler');
 
 router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
-    res.render('fee_unpaid', { title: '회비미납내역' });
-});
 
+    var query = 'select * from t_fee where f_payer = '+util.getUserId()+' AND f_state = 0 ORDER BY f_write_date';
+    var connection = db_handler.connectDB();
+
+    connection.query(query, function(err,rows){
+
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+
+        var send = JSON.stringify(rows);
+        res.render('fee_unpaid', { title: '회비미납내역' result:JSON.parse(send)});
+    });
+
+
+});
+/*
 router.post('/unpaidList', util.ensureAuthenticated, function(req, res, next) {
     var category = req.body.Category;
     var state = req.body.State.bool();
@@ -35,6 +50,7 @@ router.post('/unpaidList', util.ensureAuthenticated, function(req, res, next) {
     });
 
 });
+*/
 
 router.post('/category', util.ensureAuthenticated, function(req, res, next) {
 
@@ -176,13 +192,11 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
     console.log('charge');
     var arr = req.body;
     var arrLength = arr.length;
-    var values = new Array(arrLength);
+    var values = new Array();
     console.log(arr);
     for(var i=0; i<arrLength; i++){
         var obj = arr[i];
-        console.log(obj);
         var id = 0;
-        var payer = obj.Payer;
         var content = obj.Content;
         var type = obj.Type;
         var price =  parseInt(obj.Price);
@@ -190,9 +204,11 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
         var date = obj.Date;
         var write_date = util.getCurDateWithTime();
 
-        values[i] = [id, payer, content, type, price, state, date, write_date];
-
-        console.log(values[i]);
+        var payerCnt = obj.Payer.length;
+        for(var i=0; i<payerCnt; i++) {
+            var payer = obj.Payer[i];
+            values[i] = [id, payer, content, type, price, state, date, write_date];
+        }
     }
 
     console.log('values');
