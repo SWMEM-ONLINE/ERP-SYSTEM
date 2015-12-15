@@ -129,14 +129,25 @@ function clickEvent(datalist, flag){
             string += '<p>' + '저자 : ' + datalist[index].b_author + '</p><p>출판사 : ' + datalist[index].b_publisher + '</p><p>정가 : ' + datalist[index].b_price + ' 원</p><p>';
         }
         $('div.modal-body').html(string);
+
+
+
         $('button#request').unbind().click(function(){
             if(flag === 0){
                 $.post("/apply/newbook/request", datalist[index], function(data){
-                    alert(data);
+                    if(data === 'failed'){
+                        console.log(data);
+                        toastr['error']('이미 누군가 신청한 책입니다');
+                    }
+                    else{
+                        console.log(data);
+                        toastr['info']('도서신청에 성공했습니다');
+                    }
                 });
             }else{
                 $.post("/apply/newbook/deleteMyapply", datalist[index], function (data) {
-                    alert(data);
+                    if(data === 'failed')   toastr['error']('신청취소 실패');
+                    else    toastr['info']('신청을 취소하였습니다');
                     window.location.reload();
                 });
             }

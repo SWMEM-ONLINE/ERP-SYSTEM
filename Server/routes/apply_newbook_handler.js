@@ -33,10 +33,10 @@ function request(con, req, res){
                 ba_price : req.body.priceStandard
             };
             con.query(query, data, function(err, response){
-                res.send('책이 신청되었습니다');
+                res.send('success');
             });
         }else{
-            res.send('이미 신청리스트에 존재하는 책입니다');
+            res.send('failed');
         }
     });
 }
@@ -48,8 +48,12 @@ function request(con, req, res){
 function deleteMyapply(con, req, res){
     var query = 'DELETE FROM t_book_apply WHERE ba_isbn="' + req.body.isbn + '"';
     con.query(query, function(err, response){
-        res.send('신청 취소되었습니다');
-    })
+        if(err){
+            res.send('failed');
+            throw err;
+        }
+        res.send('success');
+    });
 }
 
 function checkDuplication(con, req, res){

@@ -24,8 +24,8 @@ $('#bookSearchWords').keydown(function(){
 });
 
 $('#bookSearchBtn').click(function() {
-    var searchWords = $('#bookSearchWords').val();                  // Get typing data in textbox
-    if (searchWords.length == 0) {                                  // type nothing situation
+    var searchWords = $('#bookSearchWords').val();                      // Get typing data in textbox
+    if (searchWords.length == 0) {                                      // type nothing situation
         alert('검색어를 입력해주세요 ^^');
         return false;
     }else{
