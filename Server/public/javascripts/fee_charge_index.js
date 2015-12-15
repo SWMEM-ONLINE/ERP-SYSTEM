@@ -206,7 +206,7 @@ $('#submit').click(function(){
             var sData = {
                 Date:date,
                 Type:what,
-                Name:content,
+                Content:content,
                 Payer:rowMembers[i],
                 Price:price
             };

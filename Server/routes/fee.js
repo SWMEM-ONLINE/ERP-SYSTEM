@@ -16,7 +16,7 @@ router.post('/unpaidList', util.ensureAuthenticated, function(req, res, next) {
     var state = req.body.State.bool();
 
     var connection = db_handler.connectDB();
-    var query = connection.query('select * from t_fee where f_type = ? AND f_state = ? ORDER BY f_write_date', category,state, function(err,rows){
+    var query = connection.query('select * from t_fee where f_state = 0 ORDER BY f_write_date', function(err,rows){
 
         if (err) {
             console.error(err);
@@ -173,28 +173,33 @@ router.get('/charge', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
 
+    console.log('charge');
     var arr = req.body;
     var arrLength = arr.length;
     var values = new Array(arrLength);
     console.log(arr);
     for(var i=0; i<arrLength; i++){
-
+        var obj = arr[i];
+        console.log(obj);
         var id = 0;
-        var payer = arr[i].Payer;
-        var name = arr[i].Name;
-        var content = arr[i].Content;
-        var type = arr[i].Type;
-        var price =  parseInt(arr[i].Price);
+        var payer = obj.Payer;
+        var content = obj.Content;
+        var type = obj.Type;
+        var price =  parseInt(obj.Price);
         var state = 0;
-        var date = util.getCurDateWithTime();
+        var date = obj.Date;
+        var write_date = util.getCurDateWithTime();
 
-        values[i] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, ];
+        values[i] = [id, payer, content, type, price, state, date, write_date];
 
+        console.log(values[i]);
     }
 
+    console.log('values');
+    console.log(values);
     var connection = db_handler.connectDB();
 
-    var query = connection.query('insert into t_fee(f_id, f_payer, f_name,f_content,f_type,f_price,f_state,f_write_date) values ?', [values], function(err,result){
+    var query = connection.query('insert into t_fee(f_id, f_payer,f_content,f_type,f_price,f_state,f_date,f_write_date) values ?', [values], function(err,result){
         if (err) {
             console.error(err);
             throw err;
