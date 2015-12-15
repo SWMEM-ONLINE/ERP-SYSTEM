@@ -18,7 +18,8 @@ block content
             thead
                tr
                   th 날짜
-                  th 카테고리
+                  th 구분
+                  th 내용
                   th 해당회원
                   th 금액
                   th 추가/삭제
@@ -27,7 +28,17 @@ block content
                   td
                      input.datepicker#date_0(type='text', placeholder='날짜선택', onclick='calendar(this)', class="datepicker", readonly='readonly')
                   td
-                     input#category_0(type='text', placeholder='카테고리')
+                     .btn-group
+                        button#type_0.dropdown-toggle(type='button', data-toggle='dropdown') 구분
+                        ul.dropdown-menu
+                           li#type1_0(onclick='typecheck(this.id)')
+                              a 회비
+                           li#type2_0(onclick='typecheck(this.id)')
+                              a 삼과비
+                           li#type3_0(onclick='typecheck(this.id)')
+                              a 기타
+                  td
+                     input#content_0(type='text', placeholder='내용')
                   td
                      input#members_0(type='text', placeholder='회원선택' readonly='readonly', onclick='memberSelect(this)')
                   td
