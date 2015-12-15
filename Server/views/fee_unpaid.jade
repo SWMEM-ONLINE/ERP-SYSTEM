@@ -18,18 +18,29 @@ block content
          table.table
             thead
                tr
+                  th 날짜
                   th 구분
-                  th 미납 개월
+                  th 내용
                   th 금액
             tbody
-               tr
-                  td 회비
-                  td 1
-                  td 5,000
-               tr
-                  td 삼과비
-                  td 2
-                  td 5,000
+               if result.length == 0
+                  tr
+                     td(colspan=4)
+                        h3 미납내역이 없습니다
+               else
+                  for row in result
+                     tr
+                        td= row.f_date
+                        td
+                           if row.f_type == 1
+                              span 회비
+                           else if row.f_type == 2
+                              span 삼과비
+                           else
+                              span 기타
+                        td= row.f_content
+                        td= row.f_price
+
 append script
    script(src='../javascripts/bootstrap-datepicker.js')
    script(src='../javascripts/apply-datepicker.js')
