@@ -9,18 +9,16 @@ var db_handler = require('./DB_handler');
 
 router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
 
-    var query = 'select * from t_fee where f_payer = '+util.getUserId()+' AND f_state = 0 ORDER BY f_write_date';
+    var query = 'select * from t_fee where f_payer = "'+util.getUserId(req)+'" AND f_state = 0 ORDER BY f_write_date';
     var connection = db_handler.connectDB();
-
     connection.query(query, function(err,rows){
-
         if (err) {
             console.error(err);
             throw err;
         }
 
         var send = JSON.stringify(rows);
-        res.render('fee_unpaid', { title: '회비미납내역' result:JSON.parse(send)});
+        res.render('fee_unpaid', { title: '회비미납내역',result:JSON.parse(send)});
     });
 
 
