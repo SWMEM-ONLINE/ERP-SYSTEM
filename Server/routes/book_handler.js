@@ -42,25 +42,34 @@ function loadNewHumanitiesbook(con, res){
 function borrowBook(con, req, res){
     var today = getDate(new Date(), 0);
     var due_date = getDate(new Date(), 14);
-    var query1 = 'select u_name from t_user where u_id="' + req.session.passport.user.id + '"';
-    var query3 = 'insert into t_book_rental SET ?';
-    var queryData = {
-        br_user: req.session.passport.user.id,
-        br_book_id: req.body.book_id,
-        br_rental_date: today
-    };
-    con.query(query1, function (err, response) {
-        var query2 = 'update t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + response[0].u_name + '" where b_id="' + req.body.book_id + '"';
-        con.query(query2);
+
+    var query = 'select * from t_book_rental where br_book_id="' + req.body.book_id + '"';
+    con.query(query, function(err, res) {
+        if (res.length === 0) {
+            var query1 = 'select u_name from t_user where u_id="' + req.session.passport.user.id + '"';
+            var query3 = 'insert into t_book_rental SET ?';
+            var queryData = {
+                br_user: req.session.passport.user.id,
+                br_book_id: req.body.book_id,
+                br_rental_date: today
+            };
+            con.query(query1, function (err, response) {
+                var query2 = 'update t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + response[0].u_name + '" where b_id="' + req.body.book_id + '"';
+                con.query(query2);
+            });
+            con.query(query3, queryData);
+        } else {
+            res.send('이미 대여중인 책입니다');
+        }
     });
-    con.query(query3, queryData);
 }
+
 
 /*
     Search Book Process
  */
 function searchBook(con, req, res){
-    var query = 'select * from t_book where ' + req.body.category + ' like "%' + req.body.searchword + '%" and not (b_state=3)';
+    var query = 'fselect * from t_book where ' + req.body.category + ' like "%' + req.body.searchword + '%" and not (b_state=3)';
     if(req.body.flag === 'tech')    query += 'and b_type=0';
     else    query += 'and b_type=1';
     con.query(query, function(err, response){

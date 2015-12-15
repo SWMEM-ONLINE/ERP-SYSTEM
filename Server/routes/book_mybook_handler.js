@@ -47,10 +47,17 @@ function turninBook(con, req, res){
 }
 
 function postponeBook(con, req, res){
+    var query = 'select * from t_book a inner join t_book_rental b on a.b_id=b.br_book where b.br_id="' + req.body.rental_id + '"';
     var query1 = 'update t_book_rental set br_extension_cnt=br_extension_cnt+1 where br_id=' + req.body.rental_id;
     var query2 = 'update t_book set b_due_date="' + req.body.changed_due_date + '" where b_id="' + req.body.book_id + '"';
-    con.query(query1);
-    con.query(query2);
+    con.query(query, function(err, response){
+       if(response[0].br_extenstion_cnt === 1 || response[0].b_reserved_cnt != 0){
+            res.send('연장할 수 없습니다');
+       }else{
+           con.query(query1);
+           con.query(query2);
+       }
+    });
 }
 
 function missingBook(con, req, res){
