@@ -20,10 +20,10 @@ block content
               input#sign_up_name.input-box(type='text', name='username', placeholder='이름', data-required='required')
               input#sign_up_birth.input-box(type='text', name='birth', placeholder='생일 ex)900430', data-required='required')
               div
-                input#sex_male.blind(type='radio', name='sex_info', value='male', checked='checked')
-                input#sex_female.blind(type='radio', name='sex_info', value='female')
-              button#sign_up_male.input-button(type='button', name='male') 남자
-              button#sign_up_female.input-button(type='button', name='female') 여자
+                input#sex_male(type='radio', name='sex_info', value='male', checked='checked')
+                label(id='sign_up_male',for='sex_male') 남자
+                input#sex_female(type='radio', name='sex_info', value='female')
+                label(id='sign_up_female',for='sex_female') 여자
               input#sign_up_period.input-box(type='text', name='period', placeholder='기수 ex)25-2', data-required='required')
               input#sign_up_phone.input-box(type='tel', name='phone', placeholder='전화번호', data-required='required')
               input#sign_up_mail.input-box(type='text', name='mail', placeholder='E-Mail', data-required='required')

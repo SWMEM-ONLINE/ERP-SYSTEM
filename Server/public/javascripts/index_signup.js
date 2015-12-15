@@ -8,6 +8,8 @@ var inputPeriod = $('#sign_up_period');
 var inputPhone = $('#sign_up_phone');
 var inputMail = $('#sign_up_mail');
 var inputImg = $('#sign_up_img');
+var male=$('#sex_male');
+var female=$('#sex_female');
 
 /* @regex */
 var idReg= /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
@@ -77,28 +79,14 @@ inputId.focusout(function(){
     });
 });
 
-$(document).ready(function(){
+
     /* @gender select */
     btn_male.on('click',function(){
-        var male=$('#sex_male');
-        var female=$('#sex_female');
         male.checked = true;
-        female.checked = false;
-        btn_male.css('backgroundColor','#1E2858');
-        btn_female.css('backgroundColor','#dfdfdf');
-        btn_male.css('color','#fff');
-        btn_female.css('color','black');
     });
 
     btn_female.on('click',function(){
-        var male=$('#sex_male');
-        var female=$('#sex_female');
         female.checked = true;
-        male.checked = false;
-        btn_female.css('backgroundColor','#1E2858');
-        btn_male.css('backgroundColor','#dfdfdf');
-        btn_female.css('color','#fff');
-        btn_male.css('color','black');
     });
     /* gender select@ */
 
@@ -121,7 +109,6 @@ $(document).ready(function(){
         var id = inputId.val();
         var pw = inputPw.val();
         var confirm = inputPwConfirm.val();
-        var name = inputName.val();
         var birth = inputBirth.val();
         var period = inputPeriod.val();
         var phone = inputPhone.val();
@@ -159,12 +146,6 @@ $(document).ready(function(){
             result += pwDiff;
         }
         /* password check@ */
-
-        /* @name check */
-        /*if(){ db check
-            result += nameErr;
-        }*/
-        /* name check@ */
 
         /* @birth check */
         if(!birthReg.test(birth)){
@@ -213,4 +194,3 @@ $(document).ready(function(){
             return signup_success;
     });
     /* sign form submit event@ */
-});

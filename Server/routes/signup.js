@@ -68,7 +68,7 @@ router.post('/', function(req, res, next) {
         console.log(query);
         db_handler.disconnectDB(connection);
 
-        res.render('index_login', { title: '로그인' });
+        res.redirect('/');
     });
 
 });

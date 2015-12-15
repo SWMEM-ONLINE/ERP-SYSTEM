@@ -1,0 +1,71 @@
+//
+   Created by KIMDONGWON on 2015-12-14.
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/user_info.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .container.contents
+      .content
+         .card
+            for row in result
+               h1 #{row.u_period} #{row.u_name}
+               .profile-img
+                  img(src='http://localhost:3000/image?name=#{row.u_photo_url}')
+               .profile-content
+                  table
+                     tbody
+                        tr
+                           td ID
+                           td #{row.u_id}
+                           td
+                        tr
+                           td 생년월일
+                           td #{row.u_birth}
+                              if row.u_sex == 1
+                                 span (남)
+                              else
+                                 span (여)
+                           td
+                        tr
+                           td 모바일 디바이스 정보
+                           td #{row.u_device}
+                           td
+                              button.delete 삭제
+         .card
+            .edit-content
+               table
+                  tr
+                     td 기존 비밀번호
+                     td
+                        input(type='password')
+                  tr
+                     td 새 비밀번호
+                     td
+                        input(type='password')
+                  tr
+                     td 비밀번호 확인
+                     td
+                        input(type='password')
+                  tr
+                     td 전화번호
+                     td
+                        input(type='text')
+                  tr
+                     td E-mail
+                     td
+                        input(type='text')
+                  tr
+                     td 사진
+                     td
+                        button.edit-image
+                  tr
+                     td(colspan='2')
+                        button.edit-save Save
+                  tr
+                     td(colspan='2') 비밀번호를 수정하지 않으시려면 비밀번호 칸을 비우세요.
+append script
