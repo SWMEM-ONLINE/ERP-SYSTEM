@@ -16,9 +16,10 @@ block content
          table.table
             thead
                tr
-                  th 년월
-                  th 항목
-                  th link
+                  th 날짜
+                  th 내용
+                  th 기한
+                  th Link
                   th 신청하기
             tbody
                if lists.length === 0
@@ -26,17 +27,16 @@ block content
                      td(colspan=4)
                         h4 신청서가 없습니다
                else
-                  for list,i in lists
+                  for list in lists
                      tr
-                        td 2015 10월
-                        td test
+                        td= list.a_date
+                        td= list.a_title
+                        td= list.a_due_date
                         td
-                           a(href=list.url,target='_blank')= list.url
+                           a(href=list.a_weblink,target='_blank') 바로가기
                         td
-                           if i === 0
-                              button.btn.push-server.push 신청하기
-                           else
-                              button.btn.push.disabled 읽기전용
+                           button.btn.push-server.push 신청하기
+
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/apply_gcm.js')

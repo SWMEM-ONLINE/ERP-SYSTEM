@@ -1,0 +1,63 @@
+//
+   Created by KIMDONGWON on 2015-12-15.
+
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/apply_manage.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap-datepicker3.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .container.contents
+      h3 서버 신청 관리
+      hr
+      .content
+         table.table#addlist
+            thead
+               tr
+                  th 날짜
+                  th 내용
+                  th Link
+                  th 기한
+                  th 추가/삭제
+            tbody
+               tr
+                  td
+                     input.datepicker#date_0(type='text', placeholder='날짜선택', onclick='calendar(this)', class="datepicker", readonly='readonly')
+                  td
+                     input#content_0(type='text', placeholder='내용')
+                  td
+                     input#link_0(type='text', placeholder='Link')
+                  td
+                     input.datepicker#due_0(type='text', placeholder='날짜선택', onclick='calendar_expire(this)', class="datepicker", readonly='readonly')
+                  td
+                     button#plus.plusminus(type='button', onclick='addList()') +
+         button#submit_server(type='button') 입력
+      .content
+         h4 신청서 이력
+         hr
+         table.table#history(number=2)
+            thead
+               tr
+                  th 날짜
+                  th 내용
+                  th Link
+                  th 기한
+            tbody
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title
+            .modal-body
+            .modal-footer
+               button#delete.btn(type='button') 삭제
+               button#edit.btn(type='button') 수정
+               button.btn(type='button', data-dismiss='modal') 취소
+append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../../javascripts/bootstrap-datepicker.js')
+   script(src='../../javascripts/apply_manage_index.js')

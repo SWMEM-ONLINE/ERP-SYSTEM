@@ -149,26 +149,23 @@ router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
 });
 /* hardware@ */
 
-router.get('/setApplyList', util.ensureAuthenticated, function(req, res, next) {
-
+router.post('/setApplyList/:num', util.ensureAuthenticated, function(req, res, next) {
     var arr = req.body;
     var arrLength = arr.length;
-    var values = new Array(arrLength);
-
+    var values = new Array();
     for(var i=0; i<arrLength; i++){
-
+        var obj = arr[i];
         var a_id = 0;
-        var a_apply_type = arr[i].Type;
-        var a_title = arr[i].Content;
-        var a_weblink = arr[i].Link;
-        var a_write_date = arr[i].Date;
-        var a_writer = util.getUserId();
-
-        values[i] = [a_id, a_apply_type, a_title, a_weblink, a_write_date, a_writer];
-
+        var a_apply_type = req.params.num;
+        var a_title = obj.Content;
+        var a_weblink = obj.Link;
+        var a_write_date = obj.Date; //modify need
+        var a_date = obj.Date;
+        var a_due_date = obj.Due;
+        var a_writer = util.getUserId(req);
+        values[i] = [a_id, a_apply_type, a_title, a_weblink, a_date,a_due_date,a_write_date, a_writer];
     }
-
-    var query = connection.query('insert into t_apply(a_id, a_apply_type, a_title,a_weblink,a_write_date,a_writer) values ?', [values], function(err,result){
+    con.query('insert into t_apply(a_id, a_apply_type, a_title, a_weblink, a_date,a_due_date,a_write_date, a_writer) values ?', [values], function(err,result){
         if (err) {
             console.error(err);
             throw err;
@@ -176,7 +173,47 @@ router.get('/setApplyList', util.ensureAuthenticated, function(req, res, next) {
         }
         res.json({status:'0'});
     });
+});
 
+router.get('/getApplyList/:num', util.ensureAuthenticated, function(req, res, next) {
+    var query = 'select * from t_apply where a_writer = "'+util.getUserId(req)+'" and a_apply_type = '+ req.params.num;
+    con.query(query, function(err,result){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+        var send = JSON.stringify(result);
+        res.json({list:JSON.parse(send)});
+    });
+});
+
+router.get('/server/manage', util.ensureAuthenticated, function(req, res, next) {
+    res.render('apply_server_manage',{title:'서버신청관리'});
+});
+
+router.post('/edit/:num', util.ensureAuthenticated, function(req, res, next) {
+    var arr = req.body;
+    var arrLength = arr.length;
+    var values = new Array();
+    for(var i=0; i<arrLength; i++){
+        var obj = arr[i];
+        var a_apply_type = req.params.num;
+        var a_title = obj.Content;
+        var a_weblink = obj.Link;
+        var a_write_date = obj.Date; //modify need
+        var a_date = obj.Date;
+        var a_due_date = obj.Due;
+        var a_writer = util.getUserId(req);
+        values[i] = [a_id, a_apply_type, a_title, a_weblink, a_date,a_due_date,a_write_date, a_writer];
+    }
+    con.query('insert into t_apply(a_id, a_apply_type, a_title, a_weblink, a_date,a_due_date,a_write_date, a_writer) values ?', [values], function(err,result){
+        if (err) {
+            console.error(err);
+            throw err;
+            res.json({status:'101'});
+        }
+        res.json({status:'0'});
+    });
 });
 
 module.exports = router;
