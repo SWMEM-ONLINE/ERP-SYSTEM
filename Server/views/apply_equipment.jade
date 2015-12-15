@@ -6,6 +6,7 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/apply_another.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
    .container.contents
@@ -15,13 +16,27 @@ block content
          table.table
             thead
                tr
-                  th Google Docs link
+                  th 년월
+                  th 항목
+                  th link
                   th 신청하기
             tbody
-               tr
-                  td
-                     a(href='#') http://www.google.com
-                  td
-                     button#push-equipment 신청하기
+               if lists.length === 0
+                  tr
+                     td(colspan=4)
+                        h4 신청서가 없습니다
+               else
+                  for list,i in lists
+                     tr
+                        td 2015 10월
+                        td test
+                        td
+                           a(href=list.url,target='_blank')= list.url
+                        td
+                           if i === 0
+                              button.btn.push-equipment.push 신청하기
+                           else
+                              button.btn.push.disabled 읽기전용
 append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/apply_gcm.js')

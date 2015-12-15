@@ -120,11 +120,11 @@ function clickEvent(datalist, flag){
         $('button#request').unbind().click(function(){
             if(flag == 0){
                 $.post("/apply/newbook/request", datalist[index], function(data){
-                    alert(data);
+                    toastr['info'](data);
                 });
             }else{
                 $.post("/apply/newbook/deleteMyapply", datalist[index], function (data) {
-                    alert(data);
+                    toastr['info'](data);
                     window.location.reload();
                 });
             }

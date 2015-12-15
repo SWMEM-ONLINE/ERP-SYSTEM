@@ -48,7 +48,6 @@ function getDay(date){
         return date.substring(8,10);
     }
     return 0;
-
 }
 function getTime(date){
     if(17<date.length){
