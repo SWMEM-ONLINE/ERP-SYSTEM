@@ -30,6 +30,10 @@ router.post('/newbook/loadMyapply', util.ensureAuthenticated, function(req, res)
 router.post('/newbook/deleteMyapply', util.ensureAuthenticated,  function(req, res){
     apply_newbook_handler.deleteMyapply(con, req, res);   // { b_isbn : 숫자 } 형태
 });
+
+router.post('/newbook/checkDuplication', function(req, res){
+    apply_newbook_handler.checkDuplication(con, req, res);
+});
 /* book@ */
 
 /* apply push */

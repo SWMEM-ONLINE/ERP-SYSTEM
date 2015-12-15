@@ -6,19 +6,19 @@ $('ul.nav-pills li').click(function(){
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');
     switch(index){
-        case 0:
+        case 0:                                                             // case 0: show my book borrowed
             $('table#myBorrowedBook').removeClass('hidden');
             $('table#myReservedBook').addClass('hidden');
             $('table#myAppliedBook').addClass('hidden');
             loadBorrowedBooklist();
             break;
-        case 1:
+        case 1:                                                             // case 1: show my book reserved
             $('table#myBorrowedBook').addClass('hidden');
             $('table#myReservedBook').removeClass('hidden');
             $('table#myAppliedBook').addClass('hidden');
             loadReservedBooklist();
             break;
-        default:
+        default:                                                            // default: show my book applied
             $('table#myBorrowedBook').addClass('hidden');
             $('table#myReservedBook').addClass('hidden');
             $('table#myAppliedBook').removeClass('hidden');
@@ -26,59 +26,101 @@ $('ul.nav-pills li').click(function(){
             break;
     }
 });
-
 loadBorrowedBooklist();
 
+/*
+    Load my book borrowed function.
+ */
 function loadBorrowedBooklist(){
     $.post('/book/mybook/borrowed', function(datalist){
         if(datalist.length === 0){
-            $('div#myBorrowedBook').html('<br><br><h4 class="text-center">대여한 도서가 없습니다.</h4>');
+            $('div#myBorrowedBook').html('<tr><td><h4 class="text-center">대여한 도서가 없습니다.</h4></td></tr>');
             return;
         }
-        var date = new Date();      // 이걸 조회하는 날의 날짜
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.br_book_name + '</h4><br>';
-            htmlString += calReturnDate(date, data.br_due_date);
+            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><p><span class="label label-info">반납일 : ' + data.b_due_date + '</span>&nbsp&nbsp<span class="label label-warning">연장횟수 : ' + data.br_extension_cnt + '</span>&nbsp&nbsp<span class="label label-primary">예약자 : ' + data.b_reserved_cnt + '명</span></p>';
+            htmlString += makeProgressbar(data.br_rental_date, data.b_due_date);
             htmlString += '</td><td width="5%">';
             htmlString += '<div class="btn-group-vertical">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 도서반납 </button>';
-            if(data.br_extension_cnt === 0 && data.br_reserved_cnt === 0)   htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm disabled"> 대여연장 </button>';
-            else    htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
+            if(data.br_extension_cnt === 0 && data.b_reserved_cnt === 0)   htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
+            else    htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm disabled"> 대여연장 </button>';
             htmlString += '<button id="missing" type="button" class="btn btn-danger btn-sm"> 분실신고 </button></div>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
         $('#myBorrowedBook').html(htmlString);
-        // 도서반납, 대여연장, 분실도서 등록 클릭펑션
+        $('button#turnIn').each(function(index){                            // turnIn button function.
+            $(this).unbind().click(function(event){
+                $.post('/book/mybook/turnIn', {rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, due_date: datalist[index].b_due_date, reserved_cnt: datalist[index].b_reserved_cnt}, function(data){
+                    console.log(data);
+                });
+                window.location.reload();
+            });
+        });
+        $('button#postpone').each(function(index){                          // postpone button function
+            if(datalist[index].br_extension_cnt === 0 && datalist[index].b_reserved_cnt === 0) {
+                $(this).unbind().click(function (event) {
+                    var due_date = new Date(datalist[index].b_due_date);
+                    due_date.setDate(due_date.getDate() + 14);
+                    var changedDate = due_date.getFullYear()+ '-'+(due_date.getMonth()+1)+'-'+due_date.getDate();
+                    $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id}, function (data) {
+                        console.log(data);
+                    });
+                    window.location.reload();
+                });
+            }
+        });
+        $('button#missing').each(function(index){                           // missing button function
+            $(this).unbind().click(function(event){
+                $.post('/book/mybook/missing', {rental_id: datalist[index].br_id, book_id : datalist[index].b_id}, function(data){
+                    console.log(data);
+                });
+                window.location.reload();
+            });
+        });
     });
 }
 
+/*
+    Load my book reserved function.
+*/
 function loadReservedBooklist(){
     $.post('/book/mybook/reserved', function(datalist){
         if(datalist.length === 0){
-            $('div#myReservedBook').html('<br><br><h4 class="text-center">예약한 도서가 없습니다.</h4>');
+            $('div#myReservedBook').html('<tr><td><h4 class="text-center">예약한 도서가 없습니다.</h4></td></tr>');
             return;
         }
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.bre_book_name + '</h4><div> 0번째 중 0번째 예약자입니다</div>';
-            // 몇번째 중 몇번째 예약자인지 정확하게 찾아내서 해야할 것이다.
+            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><p>' + data.b_reserved_cnt + '명 중 ' + data.bre_myturn + '번째 예약중입니다.</p>';
             htmlString += '</td><td width="5%">';
-            htmlString += '<button id="turnIn" type="button" class="btn btn-warning btn-sm"> 예약취소 </button>';
+            htmlString += '<button id="cancelReservation" type="button" class="btn btn-warning btn-sm"> 예약취소 </button>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
         $('#myReservedBook').html(htmlString);
+        $('button#cancelReservation').each(function(index){                 // cancelReservation button function
+            $(this).unbind().click(function(event){
+                $.post('/book/mybook/cancelReservation', {reserve_id: datalist[index].bre_id, book_id: datalist[index].b_id, reserved_cnt: datalist[index].b_reserved_cnt}, function(data){
+                    console.log(data);
+                });
+                window.location.reload();
+            });
+        });
     });
 }
 
+/*
+    Load my book applied function.
+*/
 function loadAppliedBooklist(){
     $.post('/book/mybook/applied', function(datalist){
         if(datalist.length === 0){
-            $('div#myAppliedBook').html('<br><br><h4 class="text-center">신청한 도서가 없습니다.</h4>');
+            $('div#myAppliedBook').html('<tr><td><h4 class="text-center">신청한 도서가 없습니다.</h4></td></tr>');
             return;
         }
         var htmlString = '<tbody>';
@@ -86,38 +128,45 @@ function loadAppliedBooklist(){
             htmlString += '<tr>';
             htmlString += '<td><h4 class="bookTitle">' + data.ba_name + '</h4><div>저자 : ' + data.ba_author + '&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp출판사 : ' + data.ba_publisher;
             htmlString += '</td><td width="5%">';
-            htmlString += '<button id="turnIn" type="button" class="btn btn-info btn-sm"> 신청취소 </button></div>';
+            htmlString += '<button id="cancelAppliedbook" type="button" class="btn btn-info btn-sm"> 신청취소 </button></div>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
         $('#myAppliedBook').html(htmlString);
-        // 도서신청 취소 펑션
+        $('button#cancelAppliedbook').each(function(index){
+            $(this).unbind().click(function(event){
+                $.post('/book/mybook/cancelAppliedbook', {apply_id: datalist[index].ba_id}, function(data){
+                    console.log(data);
+                });
+                window.location.reload();
+            });
+        });
     });
 }
 
-function calReturnDate(today, duedate){
+function makeProgressbar(t2, t3){
     var string = '';
-    var diffdate;
-    //if(duedate.getTime() <= date.getTime()){
-        //diffdate = parseInt((date.getTime() - duedate.getTime()) / (1000 * 3600 * 24));
-        var warningtext = '임시';
-        //if(diffdate == 0) warningtext = '대여 기한이 오늘까지입니다.';
-        //else warningtext = '대여 기한이 ' + diffdate + '일 지났습니다.';
+    var text = '';
+    var today = new Date();
+    today.setHours(1);
+    var borrow_date = new Date(t2);
+    var due_date = new Date(t3);
+    if(due_date.getTime() <= today.getTime()){
+        var gap = parseInt(today.getTime() - due_date.getTime()) / (3600000* 24);
+        if(gap === 0) text = '대여 기한이 오늘까지입니다.';
+        else text = gap + '일 지났습니다.';
         string += '<div class="progress progress-striped active">';
-        string += '<span class="progressbar-back-text"></span>';
-        string += '<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%">';
-        string += '<span class="progressbar-front-text" style="width:' + $('div#rentBook').width() + 'px">' + warningtext + '</span>';
-        string += '</div>';
-        string += '</div>';
-    //}
-    //else{
-    //    diffdate = (duedate.getTime() - date.getTime()) / (1000 * 3600 * 24);
-    //    string += '<div class="progress progress-striped active">';
-    //    string += '<span class="progressbar-back-text"></span>';
-    //    string += '<div class="progress-bar' + (diffdate < 4? ' progress-bar-warning' : ' progress-bar-success') + '" role="progressbar" aria-valuenow="8" aria-valuemin="0" aria-valuemax="14" style="width:' + parseInt((1 - diffdate / 14) * 100) + '%">';
-    //    string += '<span class="progressbar-front-text" style="width:' + $('div#rentBook').width() + 'px">' + duedate.getFullYear() + '년 ' + (duedate.getMonth()+1) + '월 ' + duedate.getDate() + '일 까지 대여중입니다.</span>';
-    //    string += '</div>';
-    //    string += '</div>';
-    //}
+        string += '<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%">' + text;
+        string += '</div></div>';
+    }
+    else{
+        var numerator = parseInt((due_date.getTime() - today.getTime()) / (3600000 * 24));
+        var denominator = parseInt((due_date.getTime()-borrow_date.getTime()) / ( 3600000 * 24 ));
+        var percent = (100 - (numerator / denominator * 100));
+        text = numerator + '일 남았습니다.';
+        string += '<div class="progress progress-striped active">';
+        string += '<div class="progress-bar ' + (numerator > 7 ? 'progress-bar' : 'progress-bar-danger' ) + '" role="progressbar" style="width:' + percent + '%">' + text;
+        string += '</div></div>';
+    }
     return string;
 }

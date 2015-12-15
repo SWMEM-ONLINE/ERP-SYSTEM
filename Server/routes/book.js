@@ -11,12 +11,10 @@ var book_my_handler = require('./book_mybook_handler');
 var util = require('./util');
 router.get('/tech', util.ensureAuthenticated, function(req, res, next) {
     res.render('book_tech', { title: '기술도서 대여' });
-    //book_handler.loadNewest(con, res);
 });
 
 router.get('/humanities', util.ensureAuthenticated, function(req, res, next) {
     res.render('book_humanities', { title: '인문도서 대여' });
-    //book_handler.loadNewest(con, res);
 });
 
 router.get('/mybook', util.ensureAuthenticated, function(req, res, next){
@@ -63,12 +61,20 @@ router.post('/mybook/turnIn', util.ensureAuthenticated, function(req, res){
     book_my_handler.turninBook(con, req, res);
 });
 
+router.post('/mybook/cancelReservation', util.ensureAuthenticated, function(req, res){
+    book_my_handler.cancelReservation(con, req, res);
+});
+
 router.post('/mybook/postpone', util.ensureAuthenticated, function(req, res){
     book_my_handler.postponeBook(con, req, res);
 });
 
-router.post('/mybook/cancelAppliedbook', util.ensureAuthenticated, function(req, res){
-    book_my_handler.cancelAppliedBook(con, req, res);
+router.post('/mybook/missing',util.ensureAuthenticated, function(req, res){
+    book_my_handler.missingBook(con, req, res);
+});
+
+router.post('/mybook/cancelAppliedbook',util.ensureAuthenticated, function(req, res){
+    book_my_handler.cancelAppliedbook(con, req, res);
 });
 
 module.exports = router;
