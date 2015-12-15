@@ -38,9 +38,7 @@ router.get('/room', util.ensureAuthenticated, function(req, res, next) {
 
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_ROOM+' Order by a_write_date';
 
-    var connection = db_handler.connectDB();
-
-    var query = connection.query(query, function(err,rows){
+    con.query(query, function(err,rows){
         if (err) {
             console.error(err);
             throw err;
@@ -72,9 +70,7 @@ router.get('/server', util.ensureAuthenticated, function(req, res, next) {
 
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_SERVER+' Order by a_write_date';
 
-    var connection = db_handler.connectDB();
-
-    var query = connection.query(query, function(err,rows){
+    con.query(query, function(err,rows){
         if (err) {
             console.error(err);
             throw err;
@@ -106,9 +102,7 @@ router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
 
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_EQUIPMENT+' Order by a_write_date';
 
-    var connection = db_handler.connectDB();
-
-    var query = connection.query(query, function(err,rows){
+    con.query(query, function(err,rows){
         if (err) {
             console.error(err);
             throw err;
@@ -169,8 +163,6 @@ router.get('/setApplyList', util.ensureAuthenticated, function(req, res, next) {
         values[i] = [a_id, a_apply_type, a_title, a_weblink, a_write_date, a_writer];
 
     }
-
-    var connection = db_handler.connectDB();
 
     var query = connection.query('insert into t_apply(a_id, a_apply_type, a_title,a_weblink,a_write_date,a_writer) values ?', [values], function(err,result){
         if (err) {
