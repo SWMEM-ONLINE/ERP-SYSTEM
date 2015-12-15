@@ -3,6 +3,7 @@
  */
 var rowCount = 1;
 var rowMembers = new Array();
+var rowMembersName = new Array();
 toastr.options = {
     'closeButton': false,
     'debug': false,
@@ -112,7 +113,7 @@ function memberSelect(obj){
         for(var i=0;i<data.length;i++){
             var member = data[i];
             string += '<tr>';
-            string += '<td><input id="check_'+i+'" type="checkbox" name="memberCheck[]" value = "'+member.u_id+'"></td><td>'+ member.u_name +'</td>';
+            string += '<td><input id="'+member.u_name+'" type="checkbox" name="memberCheck[]" value = "'+member.u_id+'"></td><td>'+ member.u_name +'('+member.u_id+')</td>';
             string += '</tr>';
         }
         string += '</tbody></table>';
@@ -130,19 +131,21 @@ $('#selectAll').click(function(){
 
 $('#select').click(function(){
     var mem = new Array();
+    var name = new Array();
     $("input[name='memberCheck[]']").each( function () {
         if($(this).is(':checked') == true){
             mem.push($(this).val());
+            name.push($(this).attr('id'));
         }
     });
     var number = $('.modal-body>table').attr('id');
     rowMembers[number] = mem;
     var sentence;
     if(mem.length == 1){
-        sentence = mem[0];
+        sentence = name[0];
     }
     else{
-        sentence = mem[0] + ' 외 ' + (mem.length-1) + ' 명';
+        sentence = name[0] + ' 외 ' + (mem.length-1) + ' 명';
     }
     document.getElementById('members_'+ number).value = sentence;
     $('div.modal').modal('hide');
