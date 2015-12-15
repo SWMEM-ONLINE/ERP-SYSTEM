@@ -176,7 +176,7 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
     var arr = req.body;
     var arrLength = arr.length;
     var values = new Array(arrLength);
-
+    console.log(arr);
     for(var i=0; i<arrLength; i++){
 
         var id = 0;

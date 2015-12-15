@@ -150,3 +150,94 @@ $('#select').click(function(){
     document.getElementById('members_'+ number).value = sentence;
     $('div.modal').modal('hide');
 });
+
+$('#submit').click(function(){
+    var date;
+    var type;
+    var content;
+    var price;
+    var count = 0;
+    var arr = new Array();
+    var what;
+    var complete = true;
+    for ( var i = 0; i < rowCount; i++) {
+        date = $("#date_" + i).val();
+        content = $('#content_' + i).val();
+        price = $('#price_' + i).val();
+        type = $('#type_'+i).html();
+        /* check value */
+        if(type != undefined){
+            count++;
+            if(type === '구분'){
+                complete = false;
+                break;
+            }
+            else{
+                if(type === '회비' || type === '삼과비' || type === '기타'){
+                    if(type === '회비'){
+                        what = 1;
+                    }
+                    else if(type === '삼과비'){
+                        what = 2;
+                    }
+                    else{
+                        what = 3;
+                    }
+                    complete = true;
+                }
+                else{
+                    complete = false;
+                }
+            }
+
+            if (date == ""){
+                complete = false;
+                break;
+            }
+            else if (content == ""){
+                complete = false;
+                break;
+            }
+            else if (price == ""){
+                complete = false;
+                break;
+            }
+
+            var sData = {
+                Date:date,
+                Type:what,
+                Name:content,
+                Payer:rowMembers[i],
+                Price:price
+            };
+            arr.push(sData);
+            console.log(arr);
+        }
+        if(!complete) break;
+    }
+
+    if(!complete){
+        toastr['info']('입력을 확인하세요');
+    }
+    else{
+        var temp = JSON.stringify(arr);
+        $.ajax({
+            type:'post',
+            url:'/fee/charge',
+            data:temp,
+            contentType:'application/json',
+            success: function(data){
+                if(data.status === '0'){
+                    toastr['success']('성공');
+                    for(var i=1;i<count;i++){
+                        document.getElementById('addlist').deleteRow(1);
+                    }
+                    $('#date_'+(rowCount-1)).val('');
+                    $('#content_'+(rowCount-1)).val('');
+                    $('#price_'+(rowCount-1)).val('');
+                    $('#type_'+(rowCount-1)).html('구분');
+                }
+            }
+        });
+    }
+});
