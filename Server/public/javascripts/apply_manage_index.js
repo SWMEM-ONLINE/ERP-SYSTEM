@@ -25,7 +25,7 @@ function reloadList(thisPage){
         var result = data.list;
         $('#history tbody').empty();
         if(result.length == 0){
-            $('#history tbody').append('<tr><td colspan="4"><h4>신청서가 없습니다</h4></td></tr>');
+            $('#history tbody').append('<tr class="empty"><td colspan="4"><h4>신청서가 없습니다</h4></td></tr>');
         }
         else{
             for(var i=0;i<result.length;i++){
@@ -160,7 +160,7 @@ $('#submit_server').click(function(){
     }
 });
 
-$('#history tbody').on('click','tr', function () {
+$('#history tbody').on('click','tr:not(.empty)',function () {
     var string = '';
     var arr = new Array();
     $(this).children('td').map(function () {
