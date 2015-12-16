@@ -6,11 +6,11 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
-   link(rel='stylesheet', type='text/css', href='../stylesheets/apply_another.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/apply_room_server_equip.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
    .container.contents
-      h3 프로젝트실 신청
+      h3 #{title}
       hr
       .content
          table.table
@@ -35,7 +35,13 @@ block content
                         td
                            a(href=list.a_weblink,target='_blank') 바로가기
                         td
-                           button.btn.push-room.push 신청하기
+                           - type = list.a_apply_type
+                           if type == 1
+                              button.btn.push-room.push 신청하기
+                           else if type == 2
+                              button.btn.push-server.push 신청하기
+                           else if type == 3
+                              button.btn.push-equipment.push 신청하기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-   script(src='../javascripts/apply_gcm.js')
+   script(src='../javascripts/apply_room_server_equip.js')
