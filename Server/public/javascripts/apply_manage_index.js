@@ -1,22 +1,39 @@
 /**
  * Created by KIMDONGWON on 2015-12-15.
  */
-//$.post('/apply/server/manage/history',function(data){
-//
-//});
 
 var rowCount = 1;
-function reload(){
-    $.get('/apply/getApplyList/2',function(data){
+var APPLY_ROOM = '/apply/room/manage';  //1
+var APPLY_SERVER = '/apply/server/manage';  //2
+var APPLY_EQUIPMENT = '/apply/equipment/manage';  //3
+var thisPage;
+
+if(location.pathname == APPLY_ROOM){
+    thisPage = 1;
+}
+else if(location.pathname == APPLY_SERVER){
+    thisPage = 2;
+}
+else if(location.pathname == APPLY_EQUIPMENT){
+    thisPage = 3;
+}
+
+reloadList(thisPage);
+
+function reloadList(thisPage){
+    $.get('/apply/getApplyList/'+thisPage,function(data){
         var result = data.list;
         $('#history tbody').empty();
-        for(var i=0;i<result.length;i++){
-            $('#history tbody').append('<tr><td>'+result[i].a_date+'</td><td>'+result[i].a_title+'</td><td class="ellipsis">'+result[i].a_weblink+'</td><td>'+result[i].a_due_date+'</td></tr>');
+        if(result.length == 0){
+            $('#history tbody').append('<tr><td colspan="4"><h4>신청서가 없습니다</h4></td></tr>');
+        }
+        else{
+            for(var i=0;i<result.length;i++){
+                $('#history tbody').append('<tr><td class="hidden">'+result[i].a_id+'</td></td><td>'+result[i].a_date+'</td><td>'+result[i].a_title+'</td><td class="ellipsis">'+result[i].a_weblink+'</td><td>'+result[i].a_due_date+'</td></tr>');
+            }
         }
     });
 }
-
-reload();
 
 function calendar(obj) {
     $(obj).datepicker({
@@ -54,7 +71,7 @@ function addList() {
     content.innerHTML = str1;
     var str2 = '<input id="link_'+rowCount+'" type="text" placeholder="Link">';
     link.innerHTML = str2;
-    var str3 = '<input id="expire_'+rowCount+'" type="text" placeholder="날짜선택" onclick="calendar(this)" readonly="readonly" class="datepicker">';
+    var str3 = '<input id="due_'+rowCount+'" type="text" placeholder="날짜선택" onclick="calendar_expire(this)" readonly="readonly" class="datepicker">';
     expire.innerHTML = str3;
     var str4 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
     addBtn.innerHTML = str4;
@@ -74,182 +91,69 @@ function deleteRow(obj){
     table.deleteRow(index);
 }
 
-$('#submit_room').click(function(){
-    var date;
-    var content;
-    var link;
-    var due;
-    var complete = true;
-    var arr = new Array();
-    for ( var i = 0; i < rowCount; i++) {
-        date = $("#date_" + i).val();
-        content = $('#content_' + i).val();
-        link = $('#link_' + i).val();
-        due = $('#due_' + i).val();
-        if(date != undefined){
-            if(date != '' && content != '' && link != '' && due != ''){
-                var sData = {
-                    Date:date,
-                    Content:content,
-                    Link:link,
-                    Due:due
-                };
-                arr.push(sData);
-                complete = true;
-            }
-            else{
-                complete = false;
-                break;
-            }
-        }
-        else{
-            complete = false;
-            break;
-        }
-    }
-    arr = JSON.stringify(arr);
-
-    if(!complete){
-        toastr['info']('입력을 확인하세요');
-    }
-    else{
-        $.ajax({
-            type:'post',
-            url:'/apply/setApplyList/1',
-            data:arr,
-            contentType:'application/json',
-            success: function(data){
-                if(data.status === '0'){
-                    toastr['success']('성공');
-                    for(var i=1;i<count;i++){
-                        document.getElementById('addlist').deleteRow(1);
-                    }
-                    $('#date_'+(rowCount-1)).val('');
-                    $('#content_'+(rowCount-1)).val('');
-                    $('#link'+(rowCount-1)).val('');
-                    $('#due'+(rowCount-1)).val('');
-                }
-            }
-        });
-    }
-});
-
-
 $('#submit_server').click(function(){
     var date;
     var content;
     var link;
     var due;
     var complete = true;
+    var count = 0;
     var arr = new Array();
     for ( var i = 0; i < rowCount; i++) {
         date = $("#date_" + i).val();
         content = $('#content_' + i).val();
         link = $('#link_' + i).val();
         due = $('#due_' + i).val();
-        if(date != undefined){
-            if(date != '' && content != '' && link != '' && due != ''){
-                var sData = {
-                    Date:date,
-                    Content:content,
-                    Link:link,
-                    Due:due
-                };
-                arr.push(sData);
-                complete = true;
-            }
-            else{
-                complete = false;
-                break;
-            }
-        }
-        else{
-            complete = false;
-            break;
-        }
-    }
-    arr = JSON.stringify(arr);
-
-    if(!complete){
-        toastr['info']('입력을 확인하세요');
-    }
-    else{
-        $.ajax({
-            type:'post',
-            url:'/apply/setApplyList/2',
-            data:arr,
-            contentType:'application/json',
-            success: function(data){
-                if(data.status === '0'){
-                    toastr['success']('성공');
-                    //for(var i=1;i<count;i++){
-                    //    document.getElementById('addlist').deleteRow(1);
-                    //}
-                    //$('#date_'+(rowCount-1)).val('');
-                    //$('#content_'+(rowCount-1)).val('');
-                    //$('#link'+(rowCount-1)).val('');
-                    //$('#due'+(rowCount-1)).val('');
-                    reload();
+        if(date != undefined) {
+            if (date != '' && content != '' && link != '' && due != '') {
+                if(date <= due) {
+                    var sData = {
+                        Date: date,
+                        Content: content,
+                        Link: link,
+                        Due: due
+                    };
+                    arr.push(sData);
+                    count++;
+                    complete = true;
+                }
+                else{
+                    console.log("dayProblem : " + i);
+                    complete = false;
+                    break;
                 }
             }
-        });
-    }
-});
-
-$('#submit_equipment').click(function(){
-    var date;
-    var content;
-    var link;
-    var due;
-    var complete = true;
-    var arr = new Array();
-    for ( var i = 0; i < rowCount; i++) {
-        date = $("#date_" + i).val();
-        content = $('#content_' + i).val();
-        link = $('#link_' + i).val();
-        due = $('#due_' + i).val();
-        if(date != undefined){
-            if(date != '' && content != '' && link != '' && due != ''){
-                var sData = {
-                    Date:date,
-                    Content:content,
-                    Link:link,
-                    Due:due
-                };
-                arr.push(sData);
-                complete = true;
-            }
-            else{
+            else {
+                console.log("null : " + i);
                 complete = false;
                 break;
             }
         }
-        else{
-            complete = false;
-            break;
-        }
     }
-    arr = JSON.stringify(arr);
-
     if(!complete){
         toastr['info']('입력을 확인하세요');
     }
     else{
+        arr = JSON.stringify(arr);
         $.ajax({
             type:'post',
-            url:'/apply/setApplyList/3',
+            url:'/apply/setApplyList/'+thisPage,
             data:arr,
             contentType:'application/json',
-            success: function(data){
-                if(data.status === '0'){
+            success: function(data) {
+                if (data.status === '0') {
                     toastr['success']('성공');
-                    for(var i=1;i<count;i++){
+
+                    for (var i = 1; i < count; i++) {
                         document.getElementById('addlist').deleteRow(1);
                     }
-                    $('#date_'+(rowCount-1)).val('');
-                    $('#content_'+(rowCount-1)).val('');
-                    $('#link'+(rowCount-1)).val('');
-                    $('#due'+(rowCount-1)).val('');
+
+                    $('#date_' + (rowCount - 1)).val('');
+                    $('#content_' + (rowCount - 1)).val('');
+                    $('#link_' + (rowCount - 1)).val('');
+                    $('#due_' + (rowCount - 1)).val('');
+
+                    reloadList(thisPage);
                 }
             }
         });
@@ -263,26 +167,43 @@ $('#history tbody').on('click','tr', function () {
         arr.push($(this).text());
     });
     $('.modal-title').text('신청서 이력');
-    $('#edit').attr('number',$('#history').attr('number'));
+    $('#edit').attr('number',thisPage);
+    string += '<div class="hidden">'+arr[0]+'</div>';
     string += '<h5>날짜</h5>';
-    string += '<input id="edit_date" value="' + arr[0] + '" onclick="calendar(this)", class="datepicker", readonly="readonly">';
+    string += '<input id="edit_date" value="' + arr[1] + '" onclick="calendar(this)", class="datepicker", readonly="readonly">';
     string += '<h5>내용</h5>';
-    string += '<input id="edit_content" value="' + arr[1] + '">';
+    string += '<input id="edit_content" value="' + arr[2] + '">';
     string += '<h5>Link</h5>';
-    string += '<input id="edit_link" value="' + arr[2] + '">';
+    string += '<input id="edit_link" value="' + arr[3] + '">';
     string += '<h5>기한</h5>';
-    string += '<input id="edit_expire" value="' + arr[3] + '" onclick="calendar_expire(this)", class="datepicker", readonly="readonly">';
+    string += '<input id="edit_expire" value="' + arr[4] + '" onclick="calendar_expire(this)", class="datepicker", readonly="readonly">';
     $('div.modal .modal-body').html(string);
     $('div.modal').modal();
 });
 
+$('#delete').click(function(){
+    var id = $('.modal-body .hidden').html();
+    var type = $('#edit').attr('number');
+    $.post('/apply/delete/'+type,{delete_id:id}, function(data){
+        if(data.status === '0'){
+            toastr['success']('성공');
+            $('div.modal').modal('hide');
+            reloadList(thisPage);
+            console.log(thisPage);
+        }
+    });
+});
+
 $('#edit').click(function(){
+    var id = $('.modal-body .hidden').html();
     var edit_date = $('#edit_date').val();
     var edit_content = $('#edit_content').val();
     var edit_link = $('#edit_link').val();
     var edit_expire = $('#edit_expire').val();
-    var type = $('#edit').attr('number');
+    var type = thisPage;
+
     var sdata = {
+        Id:id,
         Date:edit_date,
         Content:edit_content,
         Link:edit_link,
@@ -290,21 +211,11 @@ $('#edit').click(function(){
     };
 
     var send = JSON.stringify(sdata);
-    $.ajax({
-        type:'post',
-        url:'/apply/edit/:'+type,
-        data:JSON.parse(send),
-        contentType:'application/json',
-        success: function(data){
-            if(data.status === '0'){
-                toastr['success']('성공');
-                $.post('/apply/edit/:'+type,function(data){
-                    var string = '';
-                    for(row in data){
-                        console.log(row);
-                    }
-                });
-            }
+    $.post('/apply/edit/'+type, JSON.parse(send), function(data){
+        if(data.status === '0') {
+            toastr['success']('성공');
+            $('div.modal').modal('hide');
+            reloadList(thisPage);
         }
     });
 });

@@ -12,7 +12,7 @@ append head
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
    .container.contents
-      h3 서버 신청 관리
+      h3 #{title}
       hr
       .content
          table.table#addlist
@@ -39,9 +39,10 @@ block content
       .content
          h4 신청서 이력
          hr
-         table.table#history(number=2)
+         table.table#history
             thead
                tr
+                  th.hidden 식별
                   th 날짜
                   th 내용
                   th Link
