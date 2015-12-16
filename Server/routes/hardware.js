@@ -76,14 +76,11 @@ router.post('/manage/enroll', util.ensureAuthenticated, function(req, res){
 });
 
 router.post('/manage/alter', util.ensureAuthenticated, function(req, res){
-    var query = 'select * from t_hardware';
-    con.query(query, function(err, response){
-
-    });
+    hardware_handler.alterHardware(con, req, res);
 });
 
-router.post('/manager/delete', util.ensureAuthenticated, function(req, res){
-    var query = ''
+router.get('/manage/request', util.ensureAuthenticated, function(req, res){
+
 });
 
 module.exports = router;

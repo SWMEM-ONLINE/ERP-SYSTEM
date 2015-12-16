@@ -95,13 +95,23 @@ function cancelmyApply(con, req, res){
 
 function enrollHardware(con, req, res){
     var query = 'insert into t_hardware set ?';
-    var queryData = {
-        h_name : req.body.name,
-        h_total : req.body.amount,
-        h_serial : req.body.serial,
-        h_remaining : req.body.amount
-    };
-    con.query(query, queryData);
+    for(var i = 0; i < req.body.length; i++){
+        var item = {
+            h_name : req.body[i].name,
+            h_total : req.body[i].amount,
+            h_remaining : req.body[i].amount,
+            h_serial : req.body[i].serial
+        };
+        con.query(query, item);
+    }
+    res.send('success');
+}
+
+function alterHardware(con, req, res){
+    var query = 'select * from t_hardware';
+    con.query(query, function(err, response){
+        res.send(response);
+    });
 }
 
 function getDate(base, plusDate){
@@ -111,6 +121,7 @@ function getDate(base, plusDate){
     return date;
 }
 
+exports.alterHardware = alterHardware;
 exports.enrollHardware = enrollHardware;
 exports.cancelmyApply = cancelmyApply;
 exports.loadmyappliedHardware = loadmyappliedHardware;
