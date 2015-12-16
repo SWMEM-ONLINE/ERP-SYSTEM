@@ -9,6 +9,7 @@ var router = express.Router();
 var book_borrow_handler = require('./book_handler');
 var book_my_handler = require('./book_mybook_handler');
 var util = require('./util');
+
 router.get('/tech', util.ensureAuthenticated, function(req, res, next) {
     res.render('book_tech', { title: '기술도서 대여' });
 });

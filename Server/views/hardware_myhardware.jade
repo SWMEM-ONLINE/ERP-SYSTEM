@@ -17,11 +17,23 @@ block content
         .content
             ul.nav.nav-pills.nav-justified
                 li.active
-                    a(href="#") 일반 하드웨어
+                    a(href="#") 대여한 하드웨어
                 li
-                    a(href="#") 운영실 하드웨어
+                    a(href="#") 요청 처리
+                li
+                    a(href="#") 신청한 하드웨어
             hr
-            table#myNormalHardware.table.table-hover.table-condensed.table-striped
-            table#mySpecialHardware.table.table-hover.table-condensed.table-striped.hidden
+            table#myHardware.table.table-hover.table-condensed.table-striped
+            table#myrequestedHardware.table.table-hover.table-condensed.table-striped.hidden
+            table#myappliedHardware.table.table-hover.table-condensed.table-striped.hidden
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title
+                .modal-body
+                .modal-footer
+                    button#cancelmyappliedHardware.btn.btn-danger(type='button') 신청취소
+                    button.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='../javascripts/hardware_myhardware.js')

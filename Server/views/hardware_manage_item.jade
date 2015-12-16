@@ -1,0 +1,60 @@
+//
+    by jung-inchul on 2015. 12. 16..
+
+extends main_layout
+
+append head
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/hardware_myhardware.css')
+
+block content
+    .container.contents
+        h3 하드웨어 관리
+        hr
+        .content
+            ul.nav.nav-pills.nav-justified
+                li.active
+                    a(href="#") 등록
+                li
+                    a(href="#") 변경
+                li
+                    a(href="#") 삭제
+            hr
+            #addhardwareForm
+                table.table.table-condensed
+                    thead
+                        tr
+                            th 이름
+                            th 수량
+                            th 시리얼넘버(선택)
+                            th 추가/삭제
+                    tbody
+                        tr
+                            td
+                                input#add_hardwareName(type='text', placeholder='ex> Galaxy Gear S2')
+                            td
+                                input#add_hardwareAmount(type='text', placeholder='ex> 3')
+                            td
+                                input#add_hardwareSerial(type='text', placeholder='ex> SWMEM-8F-LAONJENA')
+                            td
+                                button#plus.plusminus(type='button', onclick='addList()') +
+                p
+                button#enroll(type='button' style="width:20%") 등록
+            table#alterhardwareTable.table.table-striped
+            table#deletehardwareTable.table.table-striped
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title
+                .modal-body
+                .modal-footer
+                    button#alterButton.btn.btn-danger(type='button') 변경
+                    button.btn(type='button', data-dismiss='modal') 닫기
+append script
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../../javascripts/hardware_manage.js')

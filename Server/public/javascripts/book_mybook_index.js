@@ -126,9 +126,9 @@ function loadAppliedBooklist(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.ba_name + '</h4><div>저자 : ' + data.ba_author + '&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp출판사 : ' + data.ba_publisher;
+            htmlString += '<td><h4 class="bookTitle">' + data.ba_name + '</h4><div><span class="label label-info"> 저자 : ' + data.ba_author + '</span>&nbsp&nbsp&nbsp<span class="label label-warning">출판사 : ' + data.ba_publisher + '</span>';
             htmlString += '</td><td width="5%">';
-            htmlString += '<button id="cancelAppliedbook" type="button" class="btn btn-info btn-sm"> 신청취소 </button></div>';
+            htmlString += '<button id="cancelAppliedbook" type="button" class="btn btn-danger btn-sm"> 신청취소 </button></div>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';

@@ -9,10 +9,13 @@
     h3{
         font-size: 30px;
     }
+    div.content table{
+        width: 993px;
+    }
 }
-@media(min-width:992px) {
+@media(min-width:993px) {
     div.content{
-        width:900px;
+        width:993px;
         margin:auto;
     }
 }
@@ -29,10 +32,25 @@
     vertical-align: middle;
 }
 
-button#turnIn{
-    vertical-align: middle;
-}
-
 hr{
     border:1px solid #e7e9ec;
+}
+
+div.contents{
+    position: relative;
+    text-align: center;
+}
+
+div.content table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.content button{
+    text-align: center;
+    border:none;
+    height: 34px;
+    border-radius: 4px;
+    background-color: #122359;
+    color: white;
 }

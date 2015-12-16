@@ -28,13 +28,31 @@ body
                            a(href='/book/tech') 기술도서대여
                         li
                            a(href='/book/mybook') 내도서현황
+                        li.divider
+                        li
+                           a(href='#') 도서관리
+                        li
+                           a(href='#') 신청도서 관리
+                        li
+                           a(href='#') 대여 기록
+                        li
+                           a(href='#') 연체자 목록
+                        li
+                           a(href='#') 분실도서 목록
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 하드웨어
                      ul.dropdown-menu
                         li
-                           a(href='/hardware/list') 대여신청
+                           a(href='/hardware/assign') 대여신청
                         li
                            a(href='/hardware/myhardware') 대여확인
+                        li.divider
+                        li
+                           a(href='/hardware/manage/item') 하드웨어 관리
+                        li
+                           a(href='#') 신청 관리
+                        li
+                           a(href='#') 대여기록
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 회비
                      ul.dropdown-menu
