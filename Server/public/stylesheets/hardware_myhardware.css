@@ -36,6 +36,14 @@ hr{
     border:1px solid #e7e9ec;
 }
 
+table th{
+    text-align: center;
+}
+
+table td{
+    text-align: center;
+}
+
 div.contents{
     position: relative;
     text-align: center;

@@ -13,7 +13,7 @@ append head
 
 block content
     .container.contents
-        h3 하드웨어 관리
+        h3 하드웨어 신청 관리
         hr
         .content
             ul.nav.nav-pills.nav-justified
@@ -26,27 +26,10 @@ block content
                 li
                     a(href="#") 구매
             hr
-            #addhardwareForm
-                table.table.table-condensed
-                    thead
-                        tr
-                            th 이름
-                            th 수량
-                            th 시리얼넘버(선택)
-                            th 추가/삭제
-                    tbody
-                        tr
-                            td
-                                input#add_hardwareName0(type='text', placeholder='ex> Galaxy Gear S2')
-                            td
-                                input#add_hardwareAmount0(type='text', placeholder='ex> 3')
-                            td
-                                input#add_hardwareSerial0(type='text', placeholder='ex> SWMEM-8F-LAONJENA')
-                            td
-                                button#plus.plusminus(type='button', onclick='addList()') +
-                p
-                button#enroll(type='button' style="width:20%") 등록
-            table#alterhardwareTable.table.table-striped
+            table#borrowrequestTable.table.table-striped.table-hover
+            table#postponerequestTable.table.table-striped.table-hover.hidden
+            table#turninrequestTable.table.table-striped.table-hover.hidden
+            table#applyrequestTable.table.table-striped.table-hover.hidden
     .modal.fade
         .modal-dialog
             .modal-content
@@ -58,4 +41,4 @@ block content
                     button.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-    script(src='../../javascripts/hardware_manage.js')
+    script(src='../../javascripts/hardware_manage_request.js')

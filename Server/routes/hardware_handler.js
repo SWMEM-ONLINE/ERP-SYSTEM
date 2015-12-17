@@ -108,10 +108,25 @@ function enrollHardware(con, req, res){
 }
 
 function alterHardware(con, req, res){
-    var query = 'select * from t_hardware';
+    var query = 'update t_hardware set h_name="' + req.body.name + '", h_total=' + req.body.total + ', h_remaining=' + req.body.remaining + ', h_serial="' + req.body.serial + '" where h_id=' + req.body.id;
     con.query(query, function(err, response){
-        res.send(response);
+        if(err){
+            res.send('failed');
+            throw err;
+        }
+        res.send('success');
     });
+}
+
+function deleteHardware(con, req, res){
+    var query = 'delete from t_hardware where h_id="' + req.body.hardware_id + '"';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err;
+        }
+        res.send('success');
+    })
 }
 
 function getDate(base, plusDate){
@@ -121,6 +136,7 @@ function getDate(base, plusDate){
     return date;
 }
 
+exports.deleteHardware = deleteHardware;
 exports.alterHardware = alterHardware;
 exports.enrollHardware = enrollHardware;
 exports.cancelmyApply = cancelmyApply;

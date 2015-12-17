@@ -35,7 +35,7 @@ block content
                             td
                                 input#add_hardwareName0(type='text', placeholder='ex> Galaxy Gear S2')
                             td
-                                input#add_hardwareAmount0(type='text', placeholder='ex> 3')
+                                input#add_hardwareAmount0(type='number', value="1" min="1")
                             td
                                 input#add_hardwareSerial0(type='text', placeholder='ex> SWMEM-8F-LAONJENA')
                             td
@@ -47,10 +47,11 @@ block content
         .modal-dialog
             .modal-content
                 .modal-header
-                    h4.modal-title
+                    h4.modal-title 하드웨어 데이터 수정
                 .modal-body
                 .modal-footer
-                    button#alterButton.btn.btn-danger(type='button') 변경
+                    button#alterButton.btn.btn-info(type='button') 변경
+                    button#deleteButton.btn.btn-danger(type='button') 삭제
                     button.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

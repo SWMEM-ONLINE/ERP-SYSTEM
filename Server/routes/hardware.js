@@ -79,8 +79,16 @@ router.post('/manage/alter', util.ensureAuthenticated, function(req, res){
     hardware_handler.alterHardware(con, req, res);
 });
 
-router.get('/manage/request', util.ensureAuthenticated, function(req, res){
+router.post('/manage/delete', util.ensureAuthenticated, function(req, res){
+    hardware_handler.deleteHardware(con, req, res);
+});
 
+router.get('/manage/request', util.ensureAuthenticated, function(req, res){
+    res.render('hardware_manage_request', {title: '하드웨어 요청 관리'});
+});
+
+router.get('/manage/history', util.ensureAuthenticated, function(req, res){
+    res.render('hardware_manage_history', {title : '하드웨어 대여기록'});
 });
 
 module.exports = router;

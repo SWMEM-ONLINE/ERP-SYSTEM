@@ -125,7 +125,7 @@ function addHardware(){
 }
 
 function alterHardware(){
-    $.post('/hardware/manage/alter', function(datalist){
+    $.post('/hardware/loadHardwarelist', function(datalist){
         var htmlString = '<thead><tr><th>이름</th><th>총 갯수</th><th>남은 갯수</th><th>시리얼넘버</th></tr></thead><tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>' + data.h_name + '</td>';
@@ -140,57 +140,42 @@ function alterHardware(){
 }
 
 function clickHardware(datalist){
-    $('tr').click.(function(){
+    $('tr').unbind().click(function(){
         var index = $(this).index();
         var modalString = '';
-        modalString += '';
-    });
+        modalString += '<table class="table table-striped">';
+        modalString += '<tr class="warning"><td>하드웨어 이름</td><td><input type="text" id="hardwareName" value="' + datalist[index].h_name + '"></td></tr>';
+        modalString += '<tr><td>총 수량</td><td><input type="number" id="hardwareTotal" value="' + datalist[index].h_total + '" min="0"></td></tr>';
+        modalString += '<tr><td>남은 수량</td><td><input type="number" id="hardwareRemaining" value="' + datalist[index].h_remaining + '" min="0"></td></tr>';
+        modalString += '<tr><td>시리얼번호</td><td><input type="text" id="hardwareSerial" value="' + datalist[index].h_serial + '"</td></tr></table>';
+        $('div.modal-body').html(modalString);
+        $('div.modal').modal();
 
-    $('tr').click(function() {
-        var index = $(this).index();
-        var string = '';
-        string += '<img class="bookLargeImg" src="' + datalist[index].b_photo_url + '"/>';
-        string += '<h4 class="bookTitle">' + datalist[index].b_name + '&nbsp<span class="label label-info">' + datalist[index].b_location + '</span>&nbsp<span class="label label-default">총 ' + datalist[index].b_total + '권</span></h4>';
-        string += '<p>' + '저자 : ' + datalist[index].b_author + '</p><p>출판사 : ' + datalist[index].b_publisher + '</p>';
-        if(datalist[index].b_state === 1)   string += '<p>반납예정일 : ' + datalist[index].b_due_date + '&nbsp&nbsp|&nbsp&nbsp대여자 : '+datalist[index].b_rental_username + '</p>';
-        if(datalist[index].b_reserved_cnt != 0) string += '<p>예약자 : ' + datalist[index].b_reserved_cnt + '명</p>';
-        if(datalist[index].b_state != 0){                               // Add disabled class to request button not in waiting state
-            $('#request').addClass('disabled');
-            $('#request').text('대여불가');
-        }else{
-            $('#request').removeClass('disabled');
-            $('#request').text('대여');
-        }
-        $('div.modal-body').html(string);
-
-        $('button#request').unbind().click(function(){                  // Request button to borrow book.
-            if(datalist[index].b_state === 0){
-                $.post("/book/borrowBook", {book_id : datalist[index].b_id}, function (data) {
-                    if(data === 'failed')   toastr['error']('책 대여 실패');
-                    else    toastr['info']('책 대여 성공');
+        $('button#alterButton').unbind().click(function(){
+            var n1 = $('#hardwareTotal').val();
+            var n2 = $('#hardwareRemaining').val();
+            if(n2 > n1){
+                toastr['error']('남은 갯수는 총 갯수를 초과할 수 없습니다');
+            }else{
+                var alterData = {
+                    id : datalist[index].h_id,
+                    name : $('#hardwareName').val(),
+                    total : n1,
+                    remaining : n2,
+                    serial : $('#hardwareSerial').val()
+                };
+                $.post('/hardware/manage/alter', alterData, function(response){
+                    if(response === 'success')  toastr['success']('변경 성공');
+                    else    toastr['error']('변경 실패');
                 });
-                $('div.modal').modal('hide');
-                window.location.reload();
             }
         });
-        $('button#reserve').unbind().click(function(){                  // Reserve button to reserve book.
-            $.post("/book/reserveBook", {book_id : datalist[index].b_id, reserve_cnt: datalist[index].b_reserved_cnt}, function (data) {
+        $('button#deleteButton').unbind().click(function(){
+            $.post('/hardware/manage/delete', {hardware_id : datalist[index].h_id}, function(response){
+                if(response === 'success')   toastr['success']('삭제 성공');
+                else    toastr['error']('삭제 실패');
                 $('div.modal').modal('hide');
-                if(data === 'failed'){
-                    toastr['error']('이미 대여했거나 예약중이시므로, 추가예약이 불가능합니다.');
-                }else{
-                    toastr['info']('책 예약 성공');
-                }
             });
-            //window.location.reload();
         });
-        $('button#missing').unbind().click(function(){                  // Missing button to enroll missingbook list.
-            $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (data) {
-                toastr['info']('분실도서 등록 완료');
-            });
-            $('div.modal').modal('hide');
-            window.location.reload();
-        });
-        $('div.modal').modal();
     });
 }
