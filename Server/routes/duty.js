@@ -55,4 +55,6 @@ router.post('/myhardware/turnIn',util.ensureAuthenticated, function(req, res){
 router.post('/myhardware/postpone',util.ensureAuthenticated, function(req, res){
     duty_handler.postponeHardware(con, req, res);
 });
+
+
 module.exports = router;
