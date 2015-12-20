@@ -1,0 +1,61 @@
+@media(min-width:993px){
+    div.content{
+        width: 993px;
+        margin:auto;
+    }
+}
+
+@media(max-width:992px){
+    div.container{
+        padding:0;
+    }
+    div.content table{
+        font-size: 14px;
+    }
+}
+
+div.content table{
+    margin:auto;
+}
+
+div.content table#memberList{
+    margin-top:10px;
+}
+
+div.content table,th,tr,td{
+    text-align: center;
+    transition: 0.5s all;
+}
+
+hr {
+    border:1px solid #dddddd;
+}
+
+a{
+    color:#34495e;
+}
+
+button.default{
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom: 0;
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+
+button.unactive:hover{
+    background-color: #f5f5f5;
+}
+
+button.active{
+    border-bottom: 2px solid #fff;
+}
+button.unactive{
+    border-bottom: none;
+}

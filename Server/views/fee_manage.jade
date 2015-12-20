@@ -1,0 +1,43 @@
+//
+   Created by KIMDONGWON on 2015-12-17.
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/fee_manage.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .container.contents
+      h3 회비 관리
+      hr
+      .content
+         ul.nav.nav-tabs
+            li.active
+               a(href='/fee/manage/all') 전체
+            li
+               a(href='/fee/manage/fee') 회비
+            li
+               a(href='/fee/manage/ssf') 삼과비
+            li
+               a(href='/fee/manage/etc') 기타
+         table.table#memberList
+            thead
+            tbody
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title
+            .modal-body
+            .modal-footer
+               button#selectAll.btn(type='button') 전체
+               button#select.btn(type='button') 선택
+               button.btn(type='button', data-dismiss='modal') 취소
+append script
+   script(src='../javascripts/bootstrap-datepicker.js')
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/fee_manage_index.js')
+
