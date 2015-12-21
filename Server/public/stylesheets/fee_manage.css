@@ -1,21 +1,9 @@
-@media(min-width:993px){
-    div.content{
-        width: 993px;
-        margin:auto;
-    }
+article.container{
+    text-align: center;
 }
 
-@media(max-width:992px){
-    div.container{
-        padding:0;
-    }
-    div.content table{
-        font-size: 14px;
-    }
-}
-
-div.content table{
-    margin:auto;
+div.content{
+    text-align: right;
 }
 
 div.content table#memberList{
@@ -31,31 +19,58 @@ hr {
     border:1px solid #dddddd;
 }
 
-a{
-    color:#34495e;
+button {
+    background-color: #122359;
+    border: none;
+    color: white;
+    height: 45px;
+    border-radius: 4px;
+    transition: 0.3s all;
+    margin:5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+button.condition{
+    background-color: white;
+    border:2px solid #122359;
+    color: #161616;
 }
 
-button.default{
-    color: #555;
-    cursor: default;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-bottom: 0;
-    margin-right: 2px;
-    line-height: 1.42857143;
-    border-radius: 4px 4px 0 0;
-    position: relative;
-    display: block;
-    padding: 10px 15px;
+button.condition:hover{
+    background-color: #dfdfdf;
+    color:black;
 }
 
-button.unactive:hover{
-    background-color: #f5f5f5;
+input{
+    text-align: center;
+    border:2px solid #cccccc;
+    height: 45px;
+    width:150px;
+    border-radius: 4px;
 }
 
-button.active{
-    border-bottom: 2px solid #fff;
+#memberList>tbody>tr:hover{
+    background-color: #dfdfdf;
 }
-button.unactive{
-    border-bottom: none;
+
+@media(min-width:993px){
+    div.content{
+        width: 993px;
+        margin:auto;
+    }
+}
+
+@media(max-width:992px){
+    div.container{
+        padding:0;
+    }
+    div.content table{
+        font-size: 14px;
+    }
+    button{
+        height: 36px;
+    }
+    input{
+        height: 36px;
+    }
 }

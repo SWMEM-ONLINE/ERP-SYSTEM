@@ -252,4 +252,96 @@ function getTotalWithdraw(arr){
     return price;
 }
 
+router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
+    res.render('fee_manage',{title:'회비 관리'});
+});
+
+router.post('/manage/search', util.ensureAuthenticated, function(req, res, next) {
+    var con = db_handler.connectDB();
+    var term = req.body[0];
+    var fee = req.body[1];
+    var paid = req.body[2];
+    var name = req.body[3];
+    var flag = 0;
+    var query = 'select * from t_fee a INNER JOIN t_user b ON a.f_payer = b.u_id';
+    console.log(term);
+    console.log(fee);
+    console.log(paid);
+    console.log(name);
+
+    if((term != null && term < 4) || (fee != null && fee < 4 )|| (paid != null && paid < 2) || name != ''){
+        query += ' where';
+    }
+    if(term != null){
+        if(term < 4){
+            var curDate = new Date();
+            var during;
+            curDate.setMonth(curDate.getMonth() - term);
+            during = curDate.getFullYear()+'/'+(curDate.getMonth()+1)+'/'+curDate.getDate();
+            query += ' f_date > ' + during;
+            flag = 1;
+        }
+    }
+
+    if(fee != null){
+        if(flag){
+            query += ' and';
+        }
+        if(fee < 4){
+            query += ' f_type = '+ fee;
+            flag = 1;
+        }
+    }
+
+    if(paid != null){
+        if(flag){
+            query += ' and';
+        }
+        if(paid < 2){
+            query += ' f_state = '+ paid;
+            flag = 1;
+        }
+    }
+
+    if(name != '' && name != undefined){
+        if(flag){
+            query += ' and';
+        }
+        query += ' u_name = "'+ name +'"';
+    }
+    query += ' order by f_date DESC';
+    console.log(query);
+    con.query(query,function(err,data){
+        var rows = JSON.stringify(data);
+        res.json(JSON.parse(rows));
+    });
+});
+
+router.post('/manage/delete', util.ensureAuthenticated, function(req, res, next) {
+    var con = db_handler.connectDB();
+    var id = req.body.id;
+    var query = 'delete from t_fee where f_id="'+id+'"';
+    con.query(query,function(err,data){
+        if (err) {
+            console.error(err);
+            throw err;
+            res.json({status:'101'});
+        }
+        res.json({status:'0'});
+    });
+});
+
+router.post('/manage/paid', util.ensureAuthenticated, function(req, res, next) {
+    var con = db_handler.connectDB();
+    var query = 'update t_fee set f_state=1 where f_id="'+req.body.id+'"';
+    con.query(query,function(err,data){
+        if (err) {
+            console.error(err);
+            throw err;
+            res.json({status:'101'});
+        }
+        res.json({status:'0'});
+    });
+});
+
 module.exports = router;

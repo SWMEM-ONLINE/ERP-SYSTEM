@@ -10,22 +10,54 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-   .container.contents
-      h3 회비 관리
-      hr
-      .content
-         ul.nav.nav-tabs
-            li.active
-               a(href='/fee/manage/all') 전체
-            li
-               a(href='/fee/manage/fee') 회비
-            li
-               a(href='/fee/manage/ssf') 삼과비
-            li
-               a(href='/fee/manage/etc') 기타
-         table.table#memberList
-            thead
-            tbody
+   .wrapper
+      article.container
+         h3 회비 관리
+         hr
+         .content
+            .btn-group
+               button#term.dropdown-toggle.condition(type='button', data-toggle='dropdown') 기간
+               ul.dropdown-menu
+                  li#termAll(onclick='selectCondition(this.id)')
+                     a 전체
+                  li#termOne(onclick='selectCondition(this.id)')
+                     a 1개월
+                  li#termtwo(onclick='selectCondition(this.id)')
+                     a 2개월
+                  li#termThree(onclick='selectCondition(this.id)')
+                     a 3개월
+            .btn-group
+               button#type.dropdown-toggle.condition(type='button', data-toggle='dropdown') 회비 구분
+               ul.dropdown-menu
+                  li#typeAll(onclick='selectCondition(this.id)')
+                     a 전체
+                  li#typeFee(onclick='selectCondition(this.id)')
+                     a 회비
+                  li#typeSsf(onclick='selectCondition(this.id)')
+                     a 삼과비
+                  li#typeEtc(onclick='selectCondition(this.id)')
+                     a 기타
+            .btn-group
+               button#paid.dropdown-toggle.condition(type='button', data-toggle='dropdown') 납부 여부
+               ul.dropdown-menu
+                  li#paidAll(onclick='selectCondition(this.id)')
+                     a 전체
+                  li#paidYet(onclick='selectCondition(this.id)')
+                     a 미납
+                  li#paidYes(onclick='selectCondition(this.id)')
+                     a 납부
+            .btn-group
+               input#searchName(type='text' placeholder='이름')
+               button#search(type='button') 조회
+            hr
+            table.table#memberList
+               thead
+                  tr
+                     td 날짜
+                     td 구분
+                     td 이름
+                     td 상태
+               tbody
    .modal.fade
       .modal-dialog
          .modal-content
@@ -33,9 +65,9 @@ block content
                h4.modal-title
             .modal-body
             .modal-footer
-               button#selectAll.btn(type='button') 전체
-               button#select.btn(type='button') 선택
-               button.btn(type='button', data-dismiss='modal') 취소
+               button#delete.btn(type='button') 삭제
+               button#pay.btn(type='button') 납부
+               button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='../javascripts/bootstrap-datepicker.js')
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
