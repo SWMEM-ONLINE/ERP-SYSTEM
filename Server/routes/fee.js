@@ -186,12 +186,12 @@ router.get('/charge', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
-
-    console.log('charge');
     var arr = req.body;
     var arrLength = arr.length;
     var values = new Array();
-    console.log(arr);
+    var payerRow = 0;
+    var j = 0;
+
     for(var i=0; i<arrLength; i++){
         var obj = arr[i];
         var id = 0;
@@ -201,16 +201,15 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
         var state = 0;
         var date = obj.Date;
         var write_date = util.getCurDateWithTime();
-
         var payerCnt = obj.Payer.length;
-        for(var i=0; i<payerCnt; i++) {
-            var payer = obj.Payer[i];
-            values[i] = [id, payer, content, type, price, state, date, write_date];
+        var payerIndex = 0;
+        for(;j<payerRow+payerCnt; j++) {
+            var payer = obj.Payer[payerIndex++];
+            values[j] = [id, payer, content, type, price, state, date, write_date];
         }
+        payerRow += payerCnt;
+        j = payerRow;
     }
-
-    console.log('values');
-    console.log(values);
     var connection = db_handler.connectDB();
 
     var query = connection.query('insert into t_fee(f_id, f_payer,f_content,f_type,f_price,f_state,f_date,f_write_date) values ?', [values], function(err,result){
@@ -264,10 +263,6 @@ router.post('/manage/search', util.ensureAuthenticated, function(req, res, next)
     var name = req.body[3];
     var flag = 0;
     var query = 'select * from t_fee a INNER JOIN t_user b ON a.f_payer = b.u_id';
-    console.log(term);
-    console.log(fee);
-    console.log(paid);
-    console.log(name);
 
     if((term != null && term < 4) || (fee != null && fee < 4 )|| (paid != null && paid < 2) || name != ''){
         query += ' where';

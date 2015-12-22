@@ -67,7 +67,7 @@ function addList() {
     date.innerHTML = str0;
     var str1 = '<div class="btn-group"><button id="type_'+rowCount+'" type="button" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">구분</button><ul class="dropdown-menu"><li id="type1_'+rowCount+'" onclick="typecheck(this.id)"><a>회비</a></li><li id="type2_'+rowCount+'" onclick="typecheck(this.id)"><a>삼과비</a></li><li id="type3_'+rowCount+'" onclick="typecheck(this.id)"><a>기타</a></li></ul></div>';
     type.innerHTML = str1;
-    var str2 ='<input id="content'+rowCount+'" type="text" placeholder="내용">';
+    var str2 ='<input id="content_'+rowCount+'" type="text" placeholder="내용">';
     content.innerHTML = str2;
     var str3 = '<input id="members_'+rowCount+'" type="text" placeholder="회원선택" readonly="readonly"  onclick="memberSelect(this)">';
     members.innerHTML = str3;
@@ -160,6 +160,7 @@ $('#submit').click(function(){
     var arr = new Array();
     var what;
     var complete = true;
+    console.log(rowMembers);
     for ( var i = 0; i < rowCount; i++) {
         date = $("#date_" + i).val();
         content = $('#content_' + i).val();
@@ -211,11 +212,11 @@ $('#submit').click(function(){
                 Price:price
             };
             arr.push(sData);
-            console.log(arr);
+
         }
         if(!complete) break;
     }
-
+    console.log(arr);
     if(!complete){
         toastr['info']('입력을 확인하세요');
     }
@@ -235,6 +236,7 @@ $('#submit').click(function(){
                     $('#date_'+(rowCount-1)).val('');
                     $('#content_'+(rowCount-1)).val('');
                     $('#price_'+(rowCount-1)).val('');
+                    $('#members_'+(rowCount-1)).val('');
                     $('#type_'+(rowCount-1)).html('구분');
                 }
             }
