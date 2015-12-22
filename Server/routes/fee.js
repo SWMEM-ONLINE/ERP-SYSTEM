@@ -279,20 +279,20 @@ router.post('/manage/search', util.ensureAuthenticated, function(req, res, next)
     }
 
     if(fee != null){
-        if(flag){
-            query += ' and';
-        }
         if(fee < 4){
+            if(flag){
+                query += ' and';
+            }
             query += ' f_type = '+ fee;
             flag = 1;
         }
     }
 
     if(paid != null){
-        if(flag){
-            query += ' and';
-        }
         if(paid < 2){
+            if(flag){
+                query += ' and';
+            }
             query += ' f_state = '+ paid;
             flag = 1;
         }
