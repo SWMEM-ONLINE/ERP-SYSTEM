@@ -18,6 +18,9 @@ $('.datepicker').on('changeDate',function(event){
         var date = year +'/'+month;
         var string = '';
         var tfoot = '';
+
+
+
         $.post('/fee/history',{date:date},function(data){
                 var rows = data.result;
                 var deposit = data.deposit;
@@ -29,7 +32,7 @@ $('.datepicker').on('changeDate',function(event){
                         string += '</td>';
                         string += '</tr>';
                         $('.table tfoot').hide();
-                }
+        }
                 else{
                         $('.table tfoot').show();
                         for(var i=0;i<rows.length;i++){

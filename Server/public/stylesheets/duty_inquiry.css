@@ -1,0 +1,19 @@
+@media(min-width:993px){
+    div.content table{
+        width: 993px;
+    }
+}
+
+@media(max-width:992px){
+    div.container{
+        padding:0;
+    }
+    div.content table{
+        font-size: 14px;
+    }
+}
+
+p.blur{
+    color: dimgray;
+    font-size: 16px;
+}

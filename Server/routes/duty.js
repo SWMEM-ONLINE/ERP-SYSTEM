@@ -13,48 +13,49 @@ var duty_handler = require('./duty_handler');
 /*
  *  Part. Borrow hardware
  */
-router.get('/list', util.ensureAuthenticated, function(req, res, next) {
-    res.render('hardware_list', { title: '하드웨어 대여' });
+router.get('/inquiry', util.ensureAuthenticated, function(req, res, next) {
+    res.render('duty_inquiry', { title: '당직 조회' });
+
 });
 
-router.post('/normal', util.ensureAuthenticated, function(req, res){
-    duty_handler.loadNormalHardware(con, req, res);
+router.get('/change', util.ensureAuthenticated, function(req, res, next) {
+    res.render('duty_change', { title: '당직 교환' });
 });
 
-router.post('/special',util.ensureAuthenticated,  function(req, res){
-    duty_handler.loadSpecialHardware(con, req, res);
+router.get('/point', util.ensureAuthenticated, function(req, res, next) {
+    res.render('point_inquiry', { title: '상벌당직 조회' });
 });
 
-router.post('/borrow',util.ensureAuthenticated, function(req, res){
-    duty_handler.borrowHardware(con, req, res);
+router.get('/checklist', util.ensureAuthenticated, function(req, res, next) {
+    res.render('duty_checklist', { title: 'CheckList' });
 });
 
-router.post('/lender', util.ensureAuthenticated, function(req, res){
-    duty_handler.loadLender(con, req, res);
+router.get('/add', util.ensureAuthenticated, function(req, res, next) {
+    res.render('point_add', { title: '상벌당직추가' });
 });
 
-/*
- *  Part. My hardware
- */
-router.get('/myhardware',util.ensureAuthenticated, function(req, res, next) {
-    res.render('hardware_myhardware', { title: '나의 하드웨어' });
+router.get('/modify', util.ensureAuthenticated, function(req, res, next) {
+    res.render('point_modify', { title: '상벌당직수정' });
 });
 
-router.post('/myhardware/normal',util.ensureAuthenticated, function(req, res){
-    duty_handler.loadMynormalHardware(con, req, res);
+router.get('/setting', util.ensureAuthenticated, function(req, res, next) {
+    res.render('duty_setting', { title: '당직설정' });
 });
 
-router.post('/myhardware/special',util.ensureAuthenticated, function(req, res){
-    duty_handler.loadMyspecialHardware(con, req, res);
+
+
+
+router.post('/loadMyDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.loadMyDuty(con,req,res);
 });
 
-router.post('/myhardware/turnIn',util.ensureAuthenticated, function(req, res){
-    duty_handler.turnInHardware(con, req, res);
+
+router.post('/getUser', util.ensureAuthenticated, function(req, res){
+    duty_handler.getUser(con,req,res);
 });
 
-router.post('/myhardware/postpone',util.ensureAuthenticated, function(req, res){
-    duty_handler.postponeHardware(con, req, res);
-});
+
+
 
 
 module.exports = router;
