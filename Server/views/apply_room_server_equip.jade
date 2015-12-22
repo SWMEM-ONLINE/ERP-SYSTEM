@@ -6,37 +6,42 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
-   link(rel='stylesheet', type='text/css', href='../stylesheets/apply_another.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/apply_room_server_equip.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
    .container.contents
-      h3 프로젝트실 신청
+      h3 #{title}
       hr
       .content
          table.table
             thead
                tr
-                  th 년월
-                  th 항목
-                  th link
+                  th 날짜
+                  th 내용
+                  th 기한
+                  th Link
                   th 신청하기
             tbody
                if lists.length === 0
                   tr
-                     td(colspan=4)
+                     td(colspan=5)
                         h4 신청서가 없습니다
                else
-                  for list,i in lists
+                  for list in lists
                      tr
-                        td 2015 10월
-                        td test
+                        td= list.a_date
+                        td= list.a_title
+                        td= list.a_due_date
                         td
-                           a(href=list.url,target='_blank')= list.url
+                           a(href=list.a_weblink,target='_blank') 바로가기
                         td
-                           if i === 0
+                           - type = list.a_apply_type
+                           if type == 1
                               button.btn.push-room.push 신청하기
-                           else
-                              button.btn.push.disabled 읽기전용
+                           else if type == 2
+                              button.btn.push-server.push 신청하기
+                           else if type == 3
+                              button.btn.push-equipment.push 신청하기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-   script(src='../javascripts/apply_gcm.js')
+   script(src='../javascripts/apply_room_server_equip.js')

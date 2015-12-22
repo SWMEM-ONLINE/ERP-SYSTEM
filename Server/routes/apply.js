@@ -39,26 +39,15 @@ router.post('/newbook/checkDuplication', function(req, res){
 /* apply push */
 /* @room */
 router.get('/room', util.ensureAuthenticated, function(req, res, next) {
-
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_ROOM+' Order by a_write_date';
-
     con.query(query, function(err,rows){
         if (err) {
             console.error(err);
             throw err;
         }
         var send = JSON.stringify(rows);
-        res.render('apply_room', {title: '프로젝트실 신청', lists: JSON.parse(send)});
+        res.render('apply_room_server_equip', {title: '프로젝트실 신청',lists: JSON.parse(send)});
     });
-
-    /*
-    var query = 'SELECT * FROM t_url'; //query change absolutely
-    con.query(query, function(err, response){
-        var room_send = JSON.stringify(response);
-        res.render('apply_room', {title: '프로젝트실 신청', lists: JSON.parse(room_send)});
-
-    });
-     */
 });
 router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
@@ -71,25 +60,15 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
 
 /* @server */
 router.get('/server', util.ensureAuthenticated, function(req, res, next) {
-
-    var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_SERVER+' Order by a_write_date';
-
+    var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_SERVER+' and a_due_date > "'+ util.getCurDate() +'" Order by a_write_date';
     con.query(query, function(err,rows){
         if (err) {
             console.error(err);
             throw err;
         }
         var send = JSON.stringify(rows);
-        res.render('apply_server', {title: '서버 신청', lists: JSON.parse(send)});
+        res.render('apply_room_server_equip', {title: '서버 신청', lists: JSON.parse(send)});
     });
-
-    /*
-    var query = 'SELECT * FROM t_url'; //query change absolutely
-    con.query(query, function(err, response){
-        var server_send = JSON.stringify(response);
-        res.render('apply_server', {title: '서버 신청', lists: JSON.parse(server_send)});
-    });
-    */
 });
 
 router.post('/server', util.ensureAuthenticated, function(req, res, next) {
@@ -103,27 +82,16 @@ router.post('/server', util.ensureAuthenticated, function(req, res, next) {
 
 /* @equipment */
 router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
-
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_EQUIPMENT+' Order by a_write_date';
-
     con.query(query, function(err,rows){
         if (err) {
             console.error(err);
             throw err;
         }
         var send = JSON.stringify(rows);
-        res.render('apply_equipment', {title: '비품 신청', lists: JSON.parse(send)});
+        res.render('apply_room_server_equip', {title: '비품 신청', lists: JSON.parse(send)});
     });
-
-    /*
-    var query = 'SELECT * FROM t_url'; //query change absolutely
-    con.query(query, function(err, response){
-        var equipment_send = JSON.stringify(response);
-        res.render('apply_equipment', {title: '비품 신청', lists: JSON.parse(equipment_send)});
-    });
-    */
 });
-
 router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var userName = util.getUserName(req);
@@ -149,26 +117,37 @@ router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
 });
 /* hardware@ */
 
-router.get('/setApplyList', util.ensureAuthenticated, function(req, res, next) {
+router.get('/room/manage', util.ensureAuthenticated, function(req, res, next) {
+    res.render('apply_manage',{title:'프로젝트실 신청관리'});
+});
 
+router.get('/server/manage', util.ensureAuthenticated, function(req, res, next) {
+    res.render('apply_manage',{title:'서버 신청 관리'});
+});
+
+router.get('/equipment/manage', util.ensureAuthenticated, function(req, res, next) {
+    res.render('apply_manage',{title:'비품 신청 관리'});
+});
+
+router.post('/setApplyList/:type', util.ensureAuthenticated, function(req, res, next) {
     var arr = req.body;
     var arrLength = arr.length;
-    var values = new Array(arrLength);
-
+    var values = new Array();
+    var currentTime = new Date();
     for(var i=0; i<arrLength; i++){
-
+        var obj = arr[i];
         var a_id = 0;
-        var a_apply_type = arr[i].Type;
-        var a_title = arr[i].Content;
-        var a_weblink = arr[i].Link;
-        var a_write_date = arr[i].Date;
-        var a_writer = util.getUserId();
-
-        values[i] = [a_id, a_apply_type, a_title, a_weblink, a_write_date, a_writer];
-
+        var a_apply_type = req.params.type;
+        var a_title = obj.Content;
+        var a_weblink = obj.Link;
+        var a_write_date = currentTime.getFullYear() + "/" + (currentTime.getMonth() +1) + "/" + currentTime.getDate() + " " + currentTime.getHours() +":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
+        var a_date = obj.Date;
+        var a_due_date = obj.Due;
+        var a_writer = util.getUserId(req);
+        values[i] = [a_id, a_apply_type, a_title, a_weblink, a_date,a_due_date,a_write_date, a_writer];
     }
 
-    var query = connection.query('insert into t_apply(a_id, a_apply_type, a_title,a_weblink,a_write_date,a_writer) values ?', [values], function(err,result){
+    con.query('insert into t_apply(a_id, a_apply_type, a_title, a_weblink, a_date,a_due_date,a_write_date, a_writer) values ?', [values], function(err,result){
         if (err) {
             console.error(err);
             throw err;
@@ -176,7 +155,59 @@ router.get('/setApplyList', util.ensureAuthenticated, function(req, res, next) {
         }
         res.json({status:'0'});
     });
+});
 
+router.get('/getApplyList/:type', util.ensureAuthenticated, function(req, res, next) {
+    var query = 'select * from t_apply where a_writer = "'+util.getUserId(req)+'" and a_apply_type = "'+ req.params.type+'"';
+    con.query(query, function(err,result){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+        var send = JSON.stringify(result);
+        res.json({list:JSON.parse(send)});
+    });
+});
+
+router.post('/edit/:type', util.ensureAuthenticated, function(req, res, next) {
+    var arr = req.body;
+    var currentTime = new Date();
+    var id = arr.Id;
+    var a_apply_type = req.params.type;
+    var a_title = arr.Content;
+    var a_weblink = arr.Link;
+    var a_write_date = currentTime.getFullYear() + "/" + (currentTime.getMonth() +1) + "/" + currentTime.getDate() + " " + currentTime.getHours() +":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
+    var a_date = arr.Date;
+    var a_due_date = arr.Due;
+    var a_writer = util.getUserId(req);
+
+    var query = 'update t_apply set a_title="'+a_title+'",a_weblink="'+a_weblink+'",a_write_date="'+a_write_date+'",a_date="'+a_date+'",a_due_date="'+a_due_date+'" where a_writer="'+a_writer+'" and a_apply_type="'+a_apply_type+'" and a_id="'+id+'"';
+    con.query(query, function(err,result){
+        if (err) {
+            console.error(err);
+            throw err;
+            res.json({status:'101'});
+        }
+        else{
+            res.json({status:'0'});
+        }
+    });
+});
+
+router.post('/delete/:type', util.ensureAuthenticated, function(req, res, next) {
+    console.log(req.params.type);
+    console.log(req.body.delete_id);
+    var query = 'delete from t_apply where a_id='+req.body.delete_id+' and a_apply_type = '+req.params.type;
+    con.query(query, function(err,result){
+        if (err) {
+            console.error(err);
+            throw err;
+            res.json({status:'101'});
+        }
+        else{
+            res.json({status:'0'});
+        }
+    });
 });
 
 module.exports = router;
