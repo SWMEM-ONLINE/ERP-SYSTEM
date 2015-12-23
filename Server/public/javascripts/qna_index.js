@@ -17,7 +17,7 @@ function myqnaList(){
             for(var i=0;i<data.length;i++){
                 var list = data[i];
                 tbodyString += '<tr id="'+list.q_id+'">';
-                tbodyString += '<td>'+(i+1)+'</td>'+'<td>'+list.q_title+'</td>'+'<td>'+list.q_write_date+'</td>';
+                tbodyString += '<td>'+(i+1)+'</td>'+'<td>'+list.q_title+'</td>'+'<td class="hidden">'+list.q_content+'</td>'+'<td class="hidden">'+list.q_state+'</td>'+'<td>'+list.q_write_date+'</td>';
                 if(list.q_state == 0){
                     tbodyString += '<td>답변대기</td>';
                 }
