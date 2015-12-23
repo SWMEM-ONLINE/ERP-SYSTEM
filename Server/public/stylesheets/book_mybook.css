@@ -42,3 +42,56 @@ h4.bookTitle{
 button#turnIn{
     vertical-align: middle;
 }
+
+@media(max-width:992px) {
+    .container{
+        padding: 0;
+    }
+    div.content{
+        width:100%;
+        margin:0;
+    }
+    h3{
+        font-size: 30px;
+    }
+    div.content table{
+        width: 100%;
+    }
+}
+@media(min-width:993px) {
+    div.content{
+        width:993px;
+        margin:auto;
+    }
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+    background-color: #122359;
+}
+
+.nav-pills>li>a{
+    background-color: #dfdfdf;
+    color: black;
+}
+
+.btn-group-vertical{
+    vertical-align: middle;
+}
+
+hr{
+    border:1px solid #e7e9ec;
+}
+
+table th{
+    text-align: center;
+    vertical-align: middle;
+}
+
+#nowhistoryTable td{
+    text-align: center;
+    vertical-align: middle;
+}
+
+#pasthistoryTable td{
+    text-align: center;
+    vertical-align: middle;
+}

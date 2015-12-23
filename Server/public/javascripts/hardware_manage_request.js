@@ -34,12 +34,12 @@ function loadRequest(flag){
         $.post('/hardware/manage/loadRequest', {kind : flag}, function(datalist){
             setTable(datalist, flag);
             $('#tableData tr').click(function(){
-                var index = $(this).index();
-                if(datalist[index].hw_result != 0){
-                    toastr['error']('처리된 건은 수정할 수 없습니다');
-                }else{
+                //var index = $(this).index();
+                //if(datalist[index].hw_result != 0){
+                //    toastr['error']('처리된 건은 수정할 수 없습니다');
+                //}else{
                     $(this).toggleClass('warning');
-                }
+                //}
             });
             approveButton(datalist, flag);
             rejectButton(datalist, flag);
@@ -49,13 +49,9 @@ function loadRequest(flag){
             setTable(datalist, flag);
             detailButton(datalist);
             $('#tableData tr').click(function(){
-                var index = $(this).index();
-                if(datalist[index].ha_result === 0){
-                    $(this).toggleClass('warning');
-                    $('#temp').text(calSum(datalist) + '원');
-                }else{
-                    toastr['error']('처리된 건은 수정할 수 없습니다');
-                }
+                $(this).toggleClass('warning');
+                $('#temp').text(calSum(datalist) + '원');
+
             });
             approveButton(datalist, flag);
             rejectButton(datalist, flag);
@@ -117,11 +113,23 @@ function approveButton(datalist, flag){           // 승인 버튼
         var hardwareIdlist = '';
         var userIdlist = '';
         var rentalIdlist = '';
+        var cnt_notWaiting = 0;
 
         if($('#tableData tr.warning').length === 0){
             toastr['error']('항목이 선택되지 않았습니다');
             return;
         }
+        $('#tableData tr.warning').each(function(index){
+            if(datalist[index].hw_result != 0){
+                cnt_notWaiting++;
+            }
+        });
+
+        if(cnt_notWaiting > 0){
+            toastr['error']('처리된 건은 수정할 수 없습니다');
+            return;
+        }
+
         if(flag != 3){
             $('#tableData tr').each(function(index){
                 if($(this).hasClass('warning')){

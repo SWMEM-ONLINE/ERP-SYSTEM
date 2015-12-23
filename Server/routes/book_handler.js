@@ -134,6 +134,26 @@ function reserveBook(con, req, res){
     });
 }
 
+function loadnowHistory(con, req, res){
+    var query = 'select * from t_book_rental a inner join t_book b on a.br_book_id=b.b_id inner join t_user c on a.br_user=c.u_id';
+    con.query(query, function(err, response){
+        if(err)
+            res.send('failed');
+        res.send(response);
+    });
+}
+
+function loadpastHistory(con, req, res){
+    var query = 'select * from t_book a inner join t_book_return b on a.b_id=b.brt_book_id inner join t_user c on b.brt_user=c.u_id';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send(response);
+    });
+}
+
 function getDate(base, plusDate){
     var tempDate = new Date(base);
     tempDate.setDate(tempDate.getDate() + plusDate);
@@ -141,6 +161,8 @@ function getDate(base, plusDate){
     return date;
 }
 
+exports.loadpastHistory = loadpastHistory;
+exports.loadnowHistory = loadnowHistory;
 exports.loadNewTechbook = loadNewTechbook;
 exports.loadNewHumanitiesbook = loadNewHumanitiesbook;
 exports.borrowBook = borrowBook;
