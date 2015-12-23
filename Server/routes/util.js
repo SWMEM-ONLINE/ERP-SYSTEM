@@ -16,7 +16,24 @@ function getCurDateWithTime(){
 
     var now = new Date();
     var datetime = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate();
-    datetime += ' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    var hour = now.getHours();
+    var minute = now.getMinutes();
+    var second = now.getSeconds();
+
+    if(hour < 10)
+        datetime += ' 0'+hour;
+    else
+        datetime += ' '+hour;
+
+    if(minute < 10)
+        datetime += ':0'+minute;
+    else
+        datetime += ':'+minute;
+
+    if(second < 10)
+        datetime += ':0'+second;
+    else
+        datetime += ':'+second;
 
     return datetime;
 }

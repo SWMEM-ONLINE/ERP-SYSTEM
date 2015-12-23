@@ -2,7 +2,7 @@
  * Created by KIMDONGWON on 2015-12-23.
  */
 
-myqnaList(2);
+myqnaList(3);
 
 function myqnaList(pageNum){
     var data = {
