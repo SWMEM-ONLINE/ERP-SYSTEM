@@ -42,7 +42,8 @@ router.post('/add', util.ensureAuthenticated, function(req, res, next) {
 router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
 
     var writer = util.getUserId(req);
-    var curIdx = req.body.pageIdx;
+    var page = parseInt(req.body.pageIdx);
+    var curIdx = (page-1)*20;
     var length = 20;
 
     var query = 'select * from t_qna where q_writer = "'+writer+'" and q_state not in ( 3 ) order by q_write_date limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
@@ -58,16 +59,17 @@ router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
         var countRow = JSON.parse(JSON.stringify(rows[rows.length-1]));
         var obj = countRow[0];
         var rowLength = parseInt(obj['Count(q_ID)']);
-        var maxCnt = parseInt(rowLength/20);
+        var totalPaget = parseInt(rowLength/20);
         if(0<rowLength%20){
-            maxCnt++;
+            totalPaget++;
         }
 
         rows.pop();
 
         var list = JSON.parse(JSON.stringify(rows))[0];
 
-        var json = {"list":list, "totalIdx":maxCnt, "curIdx":curIdx};
+        var json = {"list":list, "totalPage":totalPaget, "curPage":page};
+        console.log(json);
         res.json(json);
     });
 
@@ -98,7 +100,8 @@ router.post('/myqna', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/qnalist', util.ensureAuthenticated, function(req, res, next) {
 
-    var curIdx = req.body.pageIdx;
+    var page = parseInt(req.body.pageIdx);
+    var curIdx = (page-1)*20;
     var length = 20;
 
     var query = 'select * from t_qna where q_state not in ( 3 ) order by q_write_date limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
@@ -114,16 +117,17 @@ router.post('/qnalist', util.ensureAuthenticated, function(req, res, next) {
         var countRow = JSON.parse(JSON.stringify(rows[rows.length-1]));
         var obj = countRow[0];
         var rowLength = parseInt(obj['Count(q_ID)']);
-        var maxCnt = parseInt(rowLength/20);
+        var totalPaget = parseInt(rowLength/20);
         if(0<rowLength%20){
-            maxCnt++;
+            totalPaget++;
         }
 
         rows.pop();
 
         var list = JSON.parse(JSON.stringify(rows))[0];
 
-        var json = {"list":list, "totalIdx":maxCnt, "curIdx":curIdx};
+        var json = {"list":list, "totalPage":totalPaget, "curPage":page};
+        console.log(json);
         res.json(json);
     });
 
@@ -139,7 +143,6 @@ router.post('/qnareply', util.ensureAuthenticated, function(req, res, next) {
     var date = util.getCurDateWithTime();
 
     values = [id, content, writer, date];
-
 
     var connection = db_handler.connectDB();
 
