@@ -7,46 +7,47 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
-    link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/point_add.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
     .container.contents
-        h3 기술도서 대여
+        h3 상벌당직 추가
         hr
         .content
-            #booksearch
-                button#borrowUsingQRcode.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
-                .input-group
-                    button#bookSearchCategory(type='button') 도서명
-                        button.dropdown-toggle(type='button', data-toggle='dropdown')
-                            span.caret
-                        ul#categoryDropdown.dropdown-menu
-                            li
-                                a(href='#') 도서명
-                            li
-                                a(href='#') 저자
-                            li
-                                a(href='#') 출판사
-                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
-                    button#bookSearchBtn(type='button') 검색
-            #noti
-                hr
-                h4 이번달 들어온 기술도서목록
-                hr
-            table#booklist.table.table-hover.table-bordered.table-condensed
-            .pageArea
-                ul.pagination
-    .modal.fade
-        .modal-dialog
-            .modal-content
-                .modal-header
-                    h4.modal-title
-                .modal-body
-                .modal-footer
-                    button#request.btn(type='button') 대여
-                    button#reserve.btn(type='button') 예약
-                    button#missing.btn(type='button') 분실신고
-                    button#return.btn(type='button', data-dismiss='modal') 닫기
+            p#date
+
+            table.table
+                tr
+                    th 구분
+                    th
+                        .dropdown
+                            button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown') 구분
+                            ul.dropdown-menu
+                                li
+                                    a(href='#') 상당직
+                                li
+                                    a(href='#') 벌당직
+                                li
+                                    a(href='#') 운영실 벌당직
+                    th 일수
+                    th
+                        input(type='number', min='0', value ='0')
+                    th 사유
+                    th
+                        input(type='text',maxlength="50", placeholder="100자 이")
+
+
+            h4 회원 목록
+
+            table#memberList.table
+
+
+
+            #tmp
+
+            button#send(type='button') 추가
+            p#result
+
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-    script(src='../javascripts/book_tech_index.js')
+    script(src='../javascripts/point_add.js')

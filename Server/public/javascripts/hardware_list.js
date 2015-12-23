@@ -15,6 +15,8 @@ $('ul.nav-pills li').click(function(){      // Divide Normal or Special Hardware
         loadSpecialHardware();
     }
 });
+
+
 loadNormalHardware();
 
 /*

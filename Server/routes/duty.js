@@ -55,6 +55,25 @@ router.post('/getUser', util.ensureAuthenticated, function(req, res){
 });
 
 
+router.post('/loadMyPointHistory', util.ensureAuthenticated, function(req, res){
+    duty_handler.loadMyPointHistory(con,req,res);
+});
+
+router.post('/addPoint', util.ensureAuthenticated, function(req, res){
+    duty_handler.addPoint(con,req,res);
+});
+
+router.post('/modifyPoint', util.ensureAuthenticated, function(req, res){
+    duty_handler.modifyPoint(con,req,res);
+});
+
+router.post('/getAddPoint', util.ensureAuthenticated, function(req, res){
+    duty_handler.getAddPoint(con,req,res);
+});
+
+router.post('/getMemberList', util.ensureAuthenticated, function(req, res){
+    duty_handler.getMemberList(con,req,res);
+});
 
 
 
