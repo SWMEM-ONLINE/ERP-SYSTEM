@@ -6,6 +6,7 @@ var express = require('express');
 var router = express.Router();
 var util = require('./util');
 var db_handler = require('./DB_handler');
+var myApplyListCnt;
 
 router.get('/', util.ensureAuthenticated, function(req, res, next) {
     res.render('qna', { title: '문의등록'});
@@ -18,7 +19,7 @@ router.post('/add', util.ensureAuthenticated, function(req, res, next) {
     var id = 0;
     var title = arr.title;
     var content = arr.content;
-    var state = 0;  //0:등록, 1:응답대기, 2:해결
+    var state = 0;  //0:등록, 1:응답대기, 2:해결, 3:삭제
     var writer = util.getUserId(req);
     var date = util.getCurDateWithTime();
 
@@ -38,29 +39,13 @@ router.post('/add', util.ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.get('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
+router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
 
     var writer = util.getUserId(req);
-    var query = 'select * from t_qna where q_writer = "'+writer+'" Order by q_ID DESC';
+    var startIdx = req.body.pageIdx;
+    var count = 20;
 
-    var connection = db_handler.connectDB();
-
-    connection.query(query, function(err,rows){
-        if (err) {
-            console.error(err);
-            throw err;
-        }
-        var send = JSON.stringify(rows);
-        res.json(JSON.parse(send));
-    });
-
-});
-
-router.post('/myqna', util.ensureAuthenticated, function(req, res, next) {
-
-    var qid = req.body.q_id;
-    var writer = util.getUserId(req);
-    var query = 'select * from t_qna a inner join t_qna_reply b on a.q_id = b.qr_id where a.q_writer = "'+writer+'" and a.q_id = '+qid;
+    var query = 'select * from t_qna where q_writer = "'+writer+'" and q_state not in ( 3 ) order by q_ID DESC limit '+startIdx+','+count;//+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
     console.log(query);
     var connection = db_handler.connectDB();
 
@@ -69,7 +54,32 @@ router.post('/myqna', util.ensureAuthenticated, function(req, res, next) {
             console.error(err);
             throw err;
         }
+        console.log('rows:');
+        console.log(rows);
         var send = JSON.stringify(rows);
+        res.json(JSON.parse(send));
+    });
+
+});
+
+
+router.post('/myqna', util.ensureAuthenticated, function(req, res, next) {
+
+    var qid = req.body.q_id;
+
+    var query = 'select * from t_qna_reply where qr_id = '+qid+' order by qr_write_date';
+    console.log(query);
+
+    var connection = db_handler.connectDB();
+
+    connection.query(query, function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+
+        var send = JSON.stringify(rows);
+        console.log(send);
         res.json(JSON.parse(send));
     });
 
@@ -78,7 +88,7 @@ router.post('/myqna', util.ensureAuthenticated, function(req, res, next) {
 router.get('/qnalist', util.ensureAuthenticated, function(req, res, next) {
 
     var writer = util.getUserId(req);
-    var query = 'select * from t_qna Order by q_write_date';
+    var query = 'select * from t_qna and q_state not in ( 3 ) Order by q_write_date';
 
     var connection = db_handler.connectDB();
 
@@ -98,8 +108,8 @@ router.get('/qnalist', util.ensureAuthenticated, function(req, res, next) {
 router.post('/qnareply', util.ensureAuthenticated, function(req, res, next) {
 
     var values = new Array;
-    var id = 0;
-    var content = req.body;
+    var id = req.body.id;
+    var content = req.body.content;
     var writer = util.getUserId(req);
     var date = util.getCurDateWithTime();
 
@@ -120,5 +130,27 @@ router.post('/qnareply', util.ensureAuthenticated, function(req, res, next) {
     });
 
 });
+
+
+router.post('/qnaModify', util.ensureAuthenticated, function(req, res, next) {
+
+    var id = req.body.id;
+    var state = req.body.state;
+
+    var connection = db_handler.connectDB();
+
+    connection.query('update t_qna set q_state = '+state+' where q_id = '+id, function(err,result){
+        if (err) {
+            console.error(err);
+            throw err;
+            res.json({status:'101'});
+        }
+        db_handler.disconnectDB(connection);
+
+        res.json({status:'0'});
+    });
+
+});
+
 
 module.exports = router;
