@@ -80,3 +80,12 @@ div.content button#minus{
     border-radius: 4px;
     color: white;
 }
+
+.scrollup {
+    position: fixed; /* 위치 고정 */
+    float: right; /* 오른쪽으로 */
+    height: 32px; /* 높이 32픽셀 */
+    right: 10px; /* 오른쪽에서 10픽셀 */
+    bottom: 10px; /* 아래에서 10픽셀 */
+    opacity: 0.7; /* 투명도이며 최고값은 1 */
+}

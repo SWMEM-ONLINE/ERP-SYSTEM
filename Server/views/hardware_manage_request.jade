@@ -26,18 +26,14 @@ block content
                 li
                     a(href="#") 구매
             hr
-            table#borrowrequestTable.table.table-striped.table-hover
-            table#postponerequestTable.table.table-striped.table-hover.hidden
-            table#turninrequestTable.table.table-striped.table-hover.hidden
-            table#applyrequestTable.table.table-striped.table-hover.hidden
+            table#requestTable.table.table-striped.table-hover
     .modal.fade
         .modal-dialog
             .modal-content
                 .modal-header
-                    h4.modal-title
+                    h4.modal-title 구매신청한 하드웨어
                 .modal-body
                 .modal-footer
-                    button#alterButton.btn.btn-danger(type='button')
                     button.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

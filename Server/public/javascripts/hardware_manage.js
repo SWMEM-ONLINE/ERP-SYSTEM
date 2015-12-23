@@ -30,7 +30,7 @@ $('ul.nav-pills li').click(function(){
         $('div#addhardwareForm').removeClass('hidden');
         $('table#alterhardwareTable').addClass('hidden');
         addHardware();
-    }else if(index === 1){
+    }else{
         $('div#addhardwareForm').addClass('hidden');
         $('table#alterhardwareTable').removeClass('hidden');
         alterHardware();
@@ -113,11 +113,12 @@ function addHardware(){
             success: function(data){
                 if(data === 'success') {
                     toastr['success']('성공');
-                    for(var i=1;i<=rowCount;i++){
+                    for(var i=1;i<rowCount;i++){
                         document.getElementById('addhardwareTable').deleteRow(1);
                     }
-                    rowCount = 0;
-                    addList();
+                    $('#add_hardwareName'+(rowCount-1)).val('');
+                    $('#add_hardwareAmount'+(rowCount-1)).val('');
+                    $('#add_hardwareSerial'+(rowCount-1)).val('');
                 }
             }
         });
@@ -140,7 +141,7 @@ function alterHardware(){
 }
 
 function clickHardware(datalist){
-    $('tr').unbind().click(function(){
+    $('table#alterhardwareTable tr').unbind().click(function(){
         var index = $(this).index();
         var modalString = '';
         modalString += '<table class="table table-striped">';

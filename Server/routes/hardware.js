@@ -84,11 +84,38 @@ router.post('/manage/delete', util.ensureAuthenticated, function(req, res){
 });
 
 router.get('/manage/request', util.ensureAuthenticated, function(req, res){
-    res.render('hardware_manage_request', {title: '하드웨어 요청 관리'});
+    res.render('hardware_manage_request', {title: '하드웨어 신청 관리'});
+});
+
+router.post('/manage/loadRequest', util.ensureAuthenticated, function(req, res){
+    hardware_handler.loadRequest(con, req, res);
+});
+
+router.post('/manage/loadApply', util.ensureAuthenticated, function(req, res){
+    hardware_handler.loadApply(con, req, res);
+});
+
+router.post('/manage/approveRequest', util.ensureAuthenticated, function(req, res){
+    hardware_handler.approveRequest(con, req, res);
+});
+
+router.post('/manage/rejectRequest', util.ensureAuthenticated, function(req, res){
+    hardware_handler.approveRequest(con, req, res);
 });
 
 router.get('/manage/history', util.ensureAuthenticated, function(req, res){
     res.render('hardware_manage_history', {title : '하드웨어 대여기록'});
 });
+
+router.post('/manage/loadNow', util.ensureAuthenticated, function(req, res){
+    hardware_handler.loadNow(con, req, res);
+});
+
+router.post('/manage/loadPast', util.ensureAuthenticated, function(req, res){
+    hardware_handler.loadPast(con, req, res);
+});
+
+
+
 
 module.exports = router;
