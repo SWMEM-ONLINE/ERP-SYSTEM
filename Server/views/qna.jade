@@ -1,0 +1,41 @@
+//
+   Created by KIMDONGWON on 2015-12-23.
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='./stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='./stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='./stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='./stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='./stylesheets/qna.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .wrapper
+      article.container
+         h3 문의
+         hr
+         .content
+            input#title(type='text' placeholder='제목(최대 200자)' maxlength='200')
+            textarea#qna(type='text' placeholder='문의내용 입력하세요(최대 1000자)' maxlength='1000')
+            button#submit(type='button') 문의 등록
+            hr
+            table.table#history
+               thead
+                  tr
+                     th 번호
+                     th 제목
+                     th 날짜
+                     th 답변상태
+               tbody
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title
+            .modal-body
+            .modal-footer
+               button#solve.btn(type='button') 삭제
+               button.btn(type='button', data-dismiss='modal') 닫기
+append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/qna_index.js')
+
