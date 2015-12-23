@@ -42,11 +42,11 @@ router.post('/add', util.ensureAuthenticated, function(req, res, next) {
 router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
 
     var writer = util.getUserId(req);
-    var startIdx = req.body.pageIdx;
-    var count = 20;
+    var curIdx = req.body.pageIdx;
+    var length = 20;
 
-    var query = 'select * from t_qna where q_writer = "'+writer+'" and q_state not in ( 3 ) order by q_ID DESC limit '+startIdx+','+count;//+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
-    console.log(query);
+    var query = 'select * from t_qna where q_writer = "'+writer+'" and q_state not in ( 3 ) order by q_write_date limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
+
     var connection = db_handler.connectDB();
 
     connection.query(query, function(err,rows){
@@ -54,10 +54,21 @@ router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
             console.error(err);
             throw err;
         }
-        console.log('rows:');
-        console.log(rows);
-        var send = JSON.stringify(rows);
-        res.json(JSON.parse(send));
+
+        var countRow = JSON.parse(JSON.stringify(rows[rows.length-1]));
+        var obj = countRow[0];
+        var rowLength = parseInt(obj['Count(q_ID)']);
+        var maxCnt = parseInt(rowLength/20);
+        if(0<rowLength%20){
+            maxCnt++;
+        }
+
+        rows.pop();
+
+        var list = JSON.parse(JSON.stringify(rows))[0];
+
+        var json = {"list":list, "totalIdx":maxCnt, "curIdx":curIdx};
+        res.json(json);
     });
 
 });
@@ -85,10 +96,12 @@ router.post('/myqna', util.ensureAuthenticated, function(req, res, next) {
 
 });
 
-router.get('/qnalist', util.ensureAuthenticated, function(req, res, next) {
+router.post('/qnalist', util.ensureAuthenticated, function(req, res, next) {
 
-    var writer = util.getUserId(req);
-    var query = 'select * from t_qna and q_state not in ( 3 ) Order by q_write_date';
+    var curIdx = req.body.pageIdx;
+    var length = 20;
+
+    var query = 'select * from t_qna where q_state not in ( 3 ) order by q_write_date limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
 
     var connection = db_handler.connectDB();
 
@@ -96,10 +109,22 @@ router.get('/qnalist', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             throw err;
-            res.json({status:'101'});
         }
-        var send = JSON.stringify(rows);
-        res.json({result:JSON.parse(send)});
+
+        var countRow = JSON.parse(JSON.stringify(rows[rows.length-1]));
+        var obj = countRow[0];
+        var rowLength = parseInt(obj['Count(q_ID)']);
+        var maxCnt = parseInt(rowLength/20);
+        if(0<rowLength%20){
+            maxCnt++;
+        }
+
+        rows.pop();
+
+        var list = JSON.parse(JSON.stringify(rows))[0];
+
+        var json = {"list":list, "totalIdx":maxCnt, "curIdx":curIdx};
+        res.json(json);
     });
 
 });
