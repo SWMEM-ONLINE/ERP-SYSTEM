@@ -90,4 +90,12 @@ router.post('/manage/loadpastHistory', util.ensureAuthenticated, function(req, r
     book_handler.loadpastHistory(con, req, res);
 });
 
+router.get('/manage/missing', util.ensureAuthenticated, function(req, res, next){
+    res.render('book_manage_missing', { title: '분실도서목록' });
+});
+
+router.post('/manage/loadmissingBook', util.ensureAuthenticated, function(req, res){
+    book_handler.loadmissingBook(con, req, res);
+});
+
 module.exports = router;

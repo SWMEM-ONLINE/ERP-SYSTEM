@@ -154,6 +154,17 @@ function loadpastHistory(con, req, res){
     });
 }
 
+function loadmissingBook(con, req, res){
+    var query = 'select * from t_book_loss a inner join t_book b on a.brl_book_id=b.b_id inner join t_user c on a.brl_user=c.u_id';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send(response);
+    });
+}
+
 function getDate(base, plusDate){
     var tempDate = new Date(base);
     tempDate.setDate(tempDate.getDate() + plusDate);
@@ -161,6 +172,7 @@ function getDate(base, plusDate){
     return date;
 }
 
+exports.loadmissingBook = loadmissingBook;
 exports.loadpastHistory = loadpastHistory;
 exports.loadnowHistory = loadnowHistory;
 exports.loadNewTechbook = loadNewTechbook;
