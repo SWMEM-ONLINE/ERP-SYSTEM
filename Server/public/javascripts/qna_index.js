@@ -2,33 +2,44 @@
  * Created by KIMDONGWON on 2015-12-23.
  */
 
-myqnaList();
+myqnaList(1);
 
-function myqnaList(){
-    $.get('/qna/myqnalist',function(data){
-        var tbodyString = '';
+function myqnaList(pageNum){
+    var data = {
+        pageIdx:pageNum
+    };
 
-        if(data.length == 0){
-            tbodyString += '<tr>';
-            tbodyString += '<td colspan=4>문의 기록이 없습니다</td>';
-            tbodyString += '</tr>';
-        }
-        else{
-            for(var i=0;i<data.length;i++){
-                var list = data[i];
-                tbodyString += '<tr id="'+list.q_id+'">';
-                tbodyString += '<td>'+(i+1)+'</td>'+'<td>'+list.q_title+'</td>'+'<td class="hidden">'+list.q_content+'</td>'+'<td class="hidden">'+list.q_state+'</td>'+'<td>'+list.q_write_date+'</td>';
-                if(list.q_state == 0){
-                    tbodyString += '<td>답변대기</td>';
-                }
-                else if(list.q_state == 1){
-                    tbodyString += '<td>답변완료</td>';
-                }
+    $.ajax({
+        type:'post',
+        url:'/qna/myqnalist',
+        data:JSON.stringify(data),
+        contentType:'application/json',
+        success:function(data){
+
+            var tbodyString = '';
+
+            if(data.length == 0){
+                tbodyString += '<tr>';
+                tbodyString += '<td colspan=4>문의 기록이 없습니다</td>';
                 tbodyString += '</tr>';
             }
+            else{
+                for(var i=0;i<data.length;i++){
+                    var list = data[i];
+                    tbodyString += '<tr id="'+list.q_id+'">';
+                    tbodyString += '<td>'+(i+1)+'</td>'+'<td>'+list.q_title+'</td>'+'<td class="hidden">'+list.q_content+'</td>'+'<td class="hidden">'+list.q_state+'</td>'+'<td>'+list.q_write_date+'</td>';
+                    if(list.q_state == 0){
+                        tbodyString += '<td>답변대기</td>';
+                    }
+                    else if(list.q_state == 1){
+                        tbodyString += '<td>답변완료</td>';
+                    }
+                    tbodyString += '</tr>';
+                }
+            }
+            $('#history>tbody').empty();
+            $('#history>tbody').append(tbodyString);
         }
-        $('#history>tbody').empty();
-        $('#history>tbody').append(tbodyString);
     });
 }
 
@@ -48,7 +59,7 @@ $('#submit').click(function(){
         success: function(data){
             if(data.status === '0'){
                 toastr['success']('성공');
-                myqnaList();
+                myqnaList(2);
                 $('#title').val('');
                 $('#qna').val('');
             }
