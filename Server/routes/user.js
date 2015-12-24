@@ -37,9 +37,46 @@ router.post('/info', util.ensureAuthenticated, function(req, res, next) {
             console.error(err);
             throw err;
         }
-        db_handler.disconnectDB(connection);
+        res.json({status:'0'});
+    });
 
-        res.redirect('/');
+});
+
+router.get('/userlist', util.ensureAuthenticated, function(req, res, next) {
+
+
+    var connection = db_handler.connectDB();
+
+    var query = 'select * from t_user order by u_name';
+
+    connection.query(query,function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+
+        var send = JSON.stringify(rows);
+        res.render('userlist', { title: '회원리스트', result:JSON.parse(send)});
+    });
+
+});
+
+router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, next) {
+
+    var state = req.body.grade;
+    var id = req.body.id;
+
+    var connection = db_handler.connectDB();
+
+    var query = 'update t_user set u_state = '+state+' where u_id = '+id;
+
+    connection.query(query,function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+
+        res.json({status:'0'});
     });
 
 });
