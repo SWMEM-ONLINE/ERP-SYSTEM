@@ -17,4 +17,31 @@ router.get('/info', util.ensureAuthenticated, function(req, res, next) {
     });
 });
 
+router.post('/info', util.ensureAuthenticated, function(req, res, next) {
+
+    var uId = util.getUserId(req);
+    var encPW = crypto.createHash('sha256').update(req.body.password).digest('base64');
+    var uPhone = req.body.phone;
+    var eMail = req.body.mail;
+
+    var connection = db_handler.connectDB();
+
+    var query = 'update t_user set';
+    if(0<encPW.length){
+        query += ' u_password = '+encPW;
+    }
+    query += ' u_phone = '+uPhone+' u_email = '+eMail+' where u_id = '+uID;
+
+    connection.query(query,function(err,result){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+        db_handler.disconnectDB(connection);
+
+        res.redirect('/');
+    });
+
+});
+
 module.exports = router;
