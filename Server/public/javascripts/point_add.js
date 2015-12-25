@@ -52,7 +52,7 @@ function generateMemberTable(res){
     }
     periods.sort();
     periods.reverse();
-    $("#tmp").html(periods);
+   // $("#tmp").html(periods);
 
 
     var htmlString ="";

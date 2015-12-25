@@ -13,7 +13,9 @@ function getMemberList(con,req,res){
     console.log(query);
     con.query(query, function(err, response){
 
-        console.log(response);
+        //console.log(response);
+
+        console.log("send all memberList to browser");
         res.send(response);
 
     });
@@ -24,11 +26,14 @@ function getMemberList(con,req,res){
 
 
 function getAddPoint(con,req,res){
+
+
     var send_id = req.session.passport.user.id;
 
 
 
     // Client에서 오는 데이터터
+
     var currentDate = new Date();
     var month = currentDate.getMonth()+1;
     var year = currentDate.getFullYear();
@@ -44,91 +49,85 @@ function getAddPoint(con,req,res){
     console.log(query);
     con.query(query, function(err, response){
 
-        var datas =[];
-       // console.log(response);
+        if(err){
 
-        for (var i=0;i<response.length;i++){
-            var row = response[i];
-            datas[i] ={};
-            datas[i].receive_name = row['(select u_name from t_user where u_id = receive_user)'];
-            datas[i].receive_id = row.receive_user;
-            datas[i].year = row.date.getFullYear();
-            datas[i].month = row.date.getMonth() + 1;
-            datas[i].date = row.date.getDate();
-            datas[i].addTime = row.add_time;
-            datas[i].mode = row.mode;
-            datas[i].point = row.point;
-            datas[i].reason = row.reason;
+            console.log(err);
+
         }
+        else{
 
+            var datas =[];
 
-       // console.log(datas);
-        console.log(datas[0].addTime.toString());
-        var convertData = [];
-        var count = 0;
-        var time = datas[0].addTime.toString();
-        for(var i=0;i<datas.length;i++){
-            var data = datas[i];
-
-            if ( typeof convertData[count] == "undefined" )  {
-                convertData[count] = {
-                    receive_name : [],
-                    receive_id : []
-                };
+            for (var i=0;i<response.length;i++){
+                var row = response[i];
+                datas[i] ={};
+                datas[i].receive_name = row['(select u_name from t_user where u_id = receive_user)'];
+                datas[i].receive_id = row.receive_user;
+                datas[i].year = row.date.getFullYear();
+                datas[i].month = row.date.getMonth() + 1;
+                datas[i].date = row.date.getDate();
+                datas[i].addTime = row.add_time;
+                datas[i].mode = row.mode;
+                datas[i].point = row.point;
+                datas[i].reason = row.reason;
             }
 
 
-            if(time === data.addTime.toString()){
-                (convertData[count].receive_name).push(data.receive_name);
-                (convertData[count].receive_id).push(data.receive_id);
-                convertData[count].year = data.year;
-                convertData[count].month = data.month;
-                convertData[count].date = data.date;
-                convertData[count].addTime = data.addTime;
-                convertData[count].mode = data.mode;
-                convertData[count].point = data.point;
-                convertData[count].reason = data.reason;
-            }else{
-                time = data.addTime.toString();
-                count++;
-                if ( typeof convertData[count] == "undefined" )  {
-                    convertData[count] = {
-                        receive_name : [],
-                        receive_id : []
-                    };
+            console.log(datas);
+
+            if(datas.length==0){
+
+                console.log("there is no data");
+
+            }
+
+            else{
+                console.log(datas[0].addTime.toString());
+                var convertData = [];
+                var count = 0;
+                var time = datas[0].addTime.toString();
+                for(var i=0;i<datas.length;i++){
+                    var data = datas[i];
+
+                    if ( typeof convertData[count] == "undefined" )  {
+                        convertData[count] = {
+                            receive_name : [],
+                            receive_id : []
+                        };
+                    }
+
+
+                    if(time === data.addTime.toString()){
+                        (convertData[count].receive_name).push(data.receive_name);
+                        (convertData[count].receive_id).push(data.receive_id);
+                        convertData[count].year = data.year;
+                        convertData[count].month = data.month;
+                        convertData[count].date = data.date;
+                        convertData[count].addTime = data.addTime;
+                        convertData[count].mode = data.mode;
+                        convertData[count].point = data.point;
+                        convertData[count].reason = data.reason;
+                    }else{
+                        time = data.addTime.toString();
+                        count++;
+                        if ( typeof convertData[count] == "undefined" )  {
+                            convertData[count] = {
+                                receive_name : [],
+                                receive_id : []
+                            };
+                        }
+
+                        (convertData[count].receive_name).push(data.receive_name);
+                        (convertData[count].receive_id).push(data.receive_id);
+                    }
+
                 }
 
-                (convertData[count].receive_name).push(data.receive_name);
-                (convertData[count].receive_id).push(data.receive_id);
+                res.send(convertData);
+                console.log(convertData);
             }
-
         }
-
-        res.send(convertData);
-        console.log(convertData);
     });
-
-
-}
-
-
-function modifyPoint(con,req,res){
-
-    var send_id = req.session.passport.user.id;
-
-
-
-    // Client에서 오는 데이터터
-    var currentDate = new Date();
-    var recieveUserList = ["111111","222222"];
-    var month = currentDate.getMonth()+1;
-    var year = currentDate.getFullYear();
-    var date = currentDate.getDate();
-    var point = 2;
-    var mode = 1;
-    var reason = "한번 줘봤어 세캬"
-
-
 
 
 }
@@ -200,16 +199,12 @@ function addPoint(con,req,res){
 
     res.send(data);
 
-
 }
-
 
 
 function loadMyPointHistory(con,req,res){
 
     var id = req.session.passport.user.id;
-
-
     // 클라이언트에서 오는 데이터
     var currentDate = new Date();
     var month = currentDate.getMonth()+1;
@@ -225,22 +220,29 @@ function loadMyPointHistory(con,req,res){
     console.log(query);
     con.query(query, function(err, response){
 
-        var datas =[];
-        console.log(response);
 
-        for (var i=0;i<response.length;i++){
-            var row = response[i];
-            datas[i] ={};
-            datas[i].month = row.date.getMonth() + 1;
-            datas[i].date = row.date.getDate();
-            datas[i].send_user = row['(select u_name from t_user where u_id = send_user)'];
-            datas[i].mode = row.mode;
-            datas[i].point = row.point;
-            datas[i].reason = row.reason;
+        if(err){
+            console.log(err);
+        }else{
+
+            var datas =[];
+            console.log(response);
+
+            for (var i=0;i<response.length;i++){
+                var row = response[i];
+                datas[i] ={};
+                datas[i].month = row.date.getMonth() + 1;
+                datas[i].date = row.date.getDate();
+                datas[i].send_user = row['(select u_name from t_user where u_id = send_user)'];
+                datas[i].mode = row.mode;
+                datas[i].point = row.point;
+                datas[i].reason = row.reason;
+            }
+
+            res.send(datas);
+            console.log(datas);
         }
 
-        res.send(datas);
-        console.log(datas);
     });
 
 }
@@ -252,7 +254,7 @@ function loadMyDuty(con,req,res){
 
 
     //클라이언트에서 오는 데이터터
-   var currentDate = new Date();
+    var currentDate = new Date();
     var month = currentDate.getMonth()+1;
     var year = currentDate.getFullYear();
 
@@ -302,112 +304,33 @@ function getUser(con, req, res){
 
     var query = 'SELECT u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point FROM swmem.t_user where u_id = "'+ id + '";';
     con.query(query, function(err, response){
-        console.log(response);
-        var data = {};
-        data.id = id;
-        data.name = name;
-        data.good_duty_point = response[0].u_good_duty_point;
-        data.bad_duty_point = response[0].u_bad_duty_point;
-        data.manager_bad_duty_point = response[0].u_manager_bad_duty_point;
-        res.send(data);
-        console.log(data);
+
+        if(err){
+            throw err;
+            console.log(err);
+        }
+        else{
+
+            var data = {};
+            data.id = id;
+            data.name = name;
+            data.good_duty_point = response[0].u_good_duty_point;
+            data.bad_duty_point = response[0].u_bad_duty_point;
+            data.manager_bad_duty_point = response[0].u_manager_bad_duty_point;
+            res.send(data);
+            console.log(data);
+        }
     });
 
 
 }
 
-
-function loadNormalHardware(con, req, res){
-    var query = 'select * from t_hardware where h_type=0';
-    con.query(query, function(err, response){
-        res.send(response);
-    });
-}
-
-function loadSpecialHardware(con, req, res){
-    var query = 'select * from t_hardware where h_type=1';
-    con.query(query, function(err, response){
-        res.send(response);
-    })
-}
-
-function borrowHardware(con, req, res){
-    var query1 = 'insert into t_hardware_rental SET ?';
-    var dataset = {
-        hr_user : req.session.passport.user.id,
-        hr_hardware_id : req.body.hardware_id,
-        hr_rental_date : getDate(new Date(), 0),
-        hr_due_date : getDate(new Date(), 14)
-    };
-    con.query(query1, dataset);
-    var query2 = 'update t_hardware set h_remaining=h_remaining-1 where h_id="'+req.body.hardware_id+'"';
-    con.query(query2);
-}
-
-function loadLender(con, req, res){
-    var query = 'select * from t_user a join t_hardware_rental b on a.u_id=b.hr_user where b.hr_hardware_id="'+req.body.hardware_id+'"';
-    con.query(query, function(err, response){
-        res.send(response);
-    });
-}
-
-function turnInHardware(con, req, res){
-    var query1 = 'update t_hardware set h_remaining=h_remaining+1 where h_id="' + req.body.hardware_id + '"';
-    con.query(query1);
-    var query2 = 'insert into t_hardware_return SET ?';
-    var dataset = {
-        ht_user : req.session.passport.user.id,
-        ht_hardware_id: req.body.hardware_id,
-        ht_rental_date: req.body.rental_date,
-        ht_return_date: getDate(new Date(), 0)
-    };
-    con.query(query2, dataset);
-    var query3 = 'delete from t_hardware_rental where hr_id="' + req.body.rental_id + '"';
-    con.query(query3);
-}
-
-function postponeHardware(con, req, res){
-    var changed_date = getDate(req.body.due_date, 14);
-    var query = 'update t_hardware_rental set hr_extension_cnt=hr_extension_cnt+1, hr_due_date="' + changed_date + '" where hr_id="' + req.body.rental_id + '"';
-    con.query(query);
-}
-
-function loadMynormalHardware(con, req, res){
-    var query = 'select * from t_hardware a join t_hardware_rental b on a.h_id=b.hr_hardware_id where a.h_type=0 and hr_user="'+ req.session.passport.user.id +'"';
-    con.query(query, function(err, response){
-        res.send(response);
-    });
-}
-
-function loadMyspecialHardware(con, req, res){
-    var query = 'select * from t_hardware a join t_hardware_rental b on a.h_id=b.hr_hardware_id where a.h_type=1 and hr_user="'+ req.session.passport.user.id +'"';
-    con.query(query, function(err, response){
-        res.send(response);
-    })
-}
-
-function getDate(base, plusDate){
-    var tempDate = new Date(base);
-    tempDate.setDate(tempDate.getDate() + plusDate);
-    var date = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + (tempDate.getDate());
-    return date;
-}
 
 
 exports.loadMyDuty = loadMyDuty;
 exports.getUser = getUser;
 exports.loadMyPointHistory =loadMyPointHistory;
 exports.addPoint = addPoint;
-exports.modifyPoint = modifyPoint;
 exports.getAddPoint = getAddPoint;
 exports.getMemberList = getMemberList;
 
-
-exports.postponeHardware = postponeHardware;
-exports.loadLender = loadLender;
-exports.turnInHardware = turnInHardware;
-exports.loadMynormalHardware = loadMynormalHardware;
-exports.loadMyspecialHardware = loadMyspecialHardware;
-exports.borrowHardware = borrowHardware;
-exports.loadSpecialHardware = loadSpecialHardware;
-exports.loadNormalHardware = loadNormalHardware;
