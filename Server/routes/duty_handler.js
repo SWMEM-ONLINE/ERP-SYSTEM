@@ -4,6 +4,73 @@
 
 
 
+function  modifyPointHistoty(con,req,res){
+
+    var receiveId = req.body['receive_id[]'];
+    var addTime = req.body.addTime;
+    var mode = req.body.mode;
+    var point = req.body.point;
+    var reason = req.body.reason;
+    var modify_reason = req.body.modify_reason;
+    var modify_point = req.body.modify_point;
+    var modify_mode = req.body.modify_mode;
+
+
+    for(var i=0;i<receiveId.length;i++){
+        var id = receiveId[i];
+
+        var modify_query =  minusPointQuery(id,mode,point);
+        console.log(modify_query);
+        con.query(modify_query, function(err, response){
+
+            if(err){
+                console.log(err);
+            }else{
+                console.log(response);
+            }
+        });
+
+        var add_query = addPointQuery(id,modify_mode,modify_point);
+        console.log(add_query);
+        con.query(add_query, function(err, response){
+
+            if(err){
+                console.log(err);
+            }else{
+                console.log(response);
+            }
+        });
+
+    }
+
+
+    var convertDate = new Date(addTime);
+
+    var time = convertDate.getFullYear() + "-" + (convertDate.getMonth()+1)+ "-" + convertDate.getDate() + " "  + convertDate.getHours() + ":" + convertDate.getMinutes() +  ":" + convertDate.getSeconds() ;
+
+    var modify_history_query = " UPDATE `swmem`.`t_duty_point_history` SET `mode`='"+ modify_mode+  " ', `point`='" + modify_point+"', `reason`='"+ modify_reason+ "' WHERE `add_time`='"+time+"';";
+
+    console.log(modify_history_query);
+
+    con.query(modify_history_query, function(err, response){
+
+        if(err){
+            res.send("error");
+        }else{
+            console.log(response);
+            res.send("success");
+        }
+
+    });
+
+
+
+
+
+}
+
+
+
 
 function removePointHistory(con,req,res){
 
@@ -20,7 +87,7 @@ function removePointHistory(con,req,res){
     for(var i=0;i<receiveId.length;i++){
         var id = receiveId[i];
 
-        var query =  minusPoint(id,mode,point);
+        var query =  minusPointQuery(id,mode,point);
         console.log(query);
         con.query(query, function(err, response){
 
@@ -378,8 +445,10 @@ function getUser(con, req, res){
 
 
 
-function minusPoint(id, mode, point){
+function minusPointQuery(id, mode, point){
 
+
+    var addPoint = "";
     // 상당직
     if(mode == 0){
         addPoint =  'update t_user set u_good_duty_point = u_good_duty_point - ' + point +  ' where u_id = "' + id +'";';
@@ -396,10 +465,27 @@ function minusPoint(id, mode, point){
     return addPoint;
 }
 
+function addPointQuery(id, mode, point){
+    var addPoint = "";
+
+    // 상당직
+    if(mode == 0){
+        addPoint =  'update t_user set u_good_duty_point = u_good_duty_point + ' + point +  ' where u_id = "' + id +'";';
+    }
+    //벌당직
+    else if(mode == 1){
+        addPoint =  'update t_user set u_bad_duty_point = u_bad_duty_point + ' + point +  ' where u_id = "' + id +'";';
+    }
+    //운영실 벌당직
+    else if(mode == 2){
+        addPoint =  'update t_user set u_manager_bad_duty_point = u_manager_bad_duty_point + ' + point +  ' where u_id = "' + id +'";';
+    }
+    return addPoint;
+}
 
 
 
-
+exports.modifyPointHistoty =modifyPointHistoty;
 exports.removePointHistory = removePointHistory;
 exports.loadMyDuty = loadMyDuty;
 exports.getUser = getUser;

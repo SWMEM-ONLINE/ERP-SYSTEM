@@ -81,6 +81,10 @@ router.post('/removePointHistory', util.ensureAuthenticated, function(req, res){
     duty_handler.removePointHistory(con,req,res);
 });
 
+router.post('/modifyPointHistoty', util.ensureAuthenticated, function(req, res){
+    duty_handler.modifyPointHistoty(con,req,res);
+});
+
 
 
 module.exports = router;

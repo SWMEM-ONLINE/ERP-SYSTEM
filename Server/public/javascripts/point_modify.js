@@ -14,10 +14,23 @@ $.post('/duty/getAddPoint', function(res){
     clickEvent(res);
 });
 
+var select_mode = 0;
+
+
+
+$('#mode-dropdown li a').click(function(){
+    //$('#seriesDropdown').on("hide.bs.dropdown");
+    $('#mode-button').html($(this).html());
+    select_mode = $(this).parent().index();
+});
+
+
+
+
 
 function generateHtml(response){
 
-    var htmlString;
+    var htmlString =" ";
 
 
     if(response.length === 0){
@@ -90,64 +103,53 @@ function clickEvent(response){
 
         $(".modal-header").html("상 벌당직 수정");
 
+        $("#modal-date").html("" + data.year +"년 " + data.month +"월 " + data.date+ "일 ");
 
-        htmlString+="<div>";
-        htmlString +=  "" + data.year +"년 " + data.month +"월 " + data.date+ "일 "
-        htmlString+="</div>";
-        htmlString+="<div>";
-        htmlString+=" 등록자 " + name;
-        htmlString+="</div>";
-        htmlString+="<div>";
-        htmlString+=" 대상자 " ;
-        for(var i =0 ; i< data.receive_name.length;i++){
-            var user = data.receive_name[i];
-            htmlString+= user + "  ";
-        }
-        //htmlString+=" 대상자 " +data.receive_name;
-        htmlString+="</div>";
-        htmlString+="<div>";
+        $("#modal-enroller").html(name);
+
+        $("#modal-objects").val(data.receive_name);
+
 
         if(data.mode==0){
-            htmlString +=  "상당직";
+            select_mode=0;
+            $("#mode-button").val("상당직");
         }else if(data.mode==1){
-            htmlString +=  "벌당직";
+            select_mode=1;
+            $("#mode-button").val("벌당직");
         }else if(data.mode ==2){
-            htmlString +=  "운영실 벌당직";
+            select_mode=2;
+            $("#mode-button").val("운영실 벌당직");
         }
-        htmlString+="</div>";
 
 
-        htmlString+="<div>";
-        htmlString+="  " +data.point + " 일";
+        $("#modal-pointnumber").val(data.point);
 
-        htmlString+="</div>";
-
-
-        htmlString+="";
-        htmlString+="";
-        htmlString+="";
-        htmlString+="";
-
-
-        $('div.modal-body').html(htmlString);
+        $(" #modal-reason").val(data.reason);
 
 
         $('button#modify').unbind().click(function(){
             $('div.modal').modal('hide');
-            window.location.reload();
+
+            data.modify_mode = select_mode;
+            data.modify_point = $("#modal-pointnumber").val();
+            data.modify_reason = $("#modal-reason").val();
+            $.post('/duty/modifyPointHistoty', data, function(res){
+
+                // success 가 온다. 성공하면
+                console.log(res);
+                window.location.reload();
+            });
+
         });
 
         // 선택한 항목 벌당직 취소
         $('button#cancel').unbind().click(function(){
             $('div.modal').modal('hide');
 
-
-
             $.post('/duty/removePointHistory', data, function(res){
 
                 // success 가 온다. 성공하면
                 console.log(res);
-
                 window.location.reload();
             });
 
