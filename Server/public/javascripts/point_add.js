@@ -16,7 +16,27 @@ $.post('/duty/getMemberList', function(res){
 });
 
 $("#send").click(function(){
-    $.post('/duty/addPoint', function(res){
+
+
+    var currentDate = new Date();
+
+    var sendData = {
+        year : currentDate.getFullYear(),
+        month : currentDate.getMonth()+1,
+        date : currentDate.getDate(),
+        recieveUserList : ["1111","2222"],
+        point : 2,
+        mode : 1,
+        reason : "dd"
+    };
+    //data.currentDate = new Date();
+    //data.recieveUserList = ["1111","2222"];
+    //data.point = 2;
+    //data.mode = 1;
+    //data.reason = "한번 줘봤어 세캬"
+
+
+    $.post('/duty/addPoint' , sendData , function(res){
         var result = res;
         $("#result").html(result);
     });

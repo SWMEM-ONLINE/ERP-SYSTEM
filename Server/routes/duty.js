@@ -60,6 +60,7 @@ router.post('/loadMyPointHistory', util.ensureAuthenticated, function(req, res){
 });
 
 router.post('/addPoint', util.ensureAuthenticated, function(req, res){
+    console.log("dd");
     duty_handler.addPoint(con,req,res);
 });
 

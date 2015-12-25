@@ -138,21 +138,36 @@ function addPoint(con,req,res){
     var send_id = req.session.passport.user.id;
     var success_flag = 1;
 
-
-    // Client에서 오는 데이터터
-    var currentDate = new Date();
-    var recieveUserList = ["111111","222222"];
-    var month = currentDate.getMonth()+1;
-    var year = currentDate.getFullYear();
-    var date = currentDate.getDate();
-    var point = 2;
-    var mode = 1;
-    var reason = "한번 줘봤어 세캬"
+    console.log("asdf");
+    console.log(req.body);
+    console.log(JSON.stringify(req.body));
 
 
+
+
+
+    console.log(req.body.year);
+    console.log(req.body.month);
+    console.log(req.body.date);
+
+    var point = parseInt(req.body.point);
+    var mode = parseInt(req.body.mode);
+    var reason = req.body.reason;
+
+    console.log(point);
+    console.log(mode);
+    console.log(reason);
+
+
+    var recieveUserList = req.body['recieveUserList[]'];
+    console.log(recieveUserList);
+
+    console.log(recieveUserList.length);
     for( var i =0; i<recieveUserList.length;i++){
-        var recieveUser = recieveUserList[i];
 
+        console.log("1");
+        var recieveUser = recieveUserList[i];
+        console.log("1");
         var updatePointHistory = "INSERT INTO t_duty_point_history (`date`, `receive_user`, `send_user`, `mode`, `point`, `reason`) " +
             "VALUES ('"+ year  +"-" + month+ "-" + date + "', '" + recieveUser + "', '" + send_id +"', '" + mode +"', '" + point + "', '" +reason + "');"
 
