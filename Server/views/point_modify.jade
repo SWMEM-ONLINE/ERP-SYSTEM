@@ -6,6 +6,7 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/point_modify.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
@@ -14,6 +15,9 @@ block content
         h3 상벌당직 수정
         hr
         .content
+
+            input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
+
             table#table.table.tab-content
                 thead
                     tr
@@ -36,5 +40,6 @@ block content
                         button.btn(type='button', data-dismiss='modal') 뒤로가기
 
 append script
+    script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../javascripts/point_modify.js')

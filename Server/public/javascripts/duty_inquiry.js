@@ -2,16 +2,15 @@
  * Created by HyunJae on 2015. 12. 23..
  */
 
-
-
-
-//$('#tmp').click(function(){
-//
-//    $.post('/duty/loadMyDuty', function(res){
-//        generateHtml(res);
-//    });
-//
-//});
+$('.datepicker').datepicker({
+    format: "yyyy년 m월",
+    minViewMode: 1,
+    keyboardNavigation : false,
+    todayHighlight: true,
+    startView: 1,
+    endDate: '+1d',
+    autoclose: true
+});
 
 
 $.post('/duty/getUser', function(res){
@@ -25,9 +24,34 @@ $.post('/duty/getUser', function(res){
 });
 
 
-$.post('/duty/loadMyDuty', function(res){
+var sendData ={};
+sendData.year = new Date().getFullYear();
+sendData.month = new Date().getMonth() +1;
+
+
+$.post('/duty/loadMyDuty', sendData , function(res){
     generateHtml(res);
 });
+
+
+$('.datepicker').on('changeDate',function(event){
+    var year = event.date.getFullYear();
+    var month = event.date.getMonth() + 1;
+    if(month < 10){
+        month = '0' + month;
+    }
+    console.log(month);
+    var sendData ={
+        year : year,
+        month : month
+    };
+
+    $.post('/duty/loadMyDuty', sendData , function(res){
+        generateHtml(res);
+    });
+
+});
+
 
 
 function generateHtml(datas){
@@ -37,6 +61,7 @@ function generateHtml(datas){
 
     if(datas.length === 0){
         htmlString += '<p> ';
+        htmlString += '이 달에는 당직이 존재하지 않습니다. ';
         htmlString += '</p>';
     }
     else{

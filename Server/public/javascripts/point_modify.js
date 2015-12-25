@@ -32,6 +32,7 @@ function generateHtml(response){
             htmlString += '<tr>';
 
                 htmlString += "<td>"
+
                 htmlString +=  "" + data.year +"년 " + data.month +"월 " + data.date+ "일 "
                 htmlString += "</td>"
 
@@ -44,7 +45,15 @@ function generateHtml(response){
                 htmlString += "</td>"
 
                 htmlString += "<td>"
-                htmlString +=  "" + data.mode;
+
+                if(data.mode==0){
+                    htmlString +=  "상당직";
+                }else if(data.mode==1){
+                    htmlString +=  "벌당직";
+                }else if(data.mode ==2){
+                    htmlString +=  "운영실 벌당직";
+                }
+
                 htmlString += "</td>"
 
                 htmlString += "<td>"
@@ -66,11 +75,13 @@ function generateHtml(response){
 
 }
 
-function clickEvent(datalist){
+function clickEvent(response){
     $('tr').click(function() {
+
         var index = $(this).index();        // catch 'index' which user clicked
         var htmlString = '';
-        var data = datalist[index];
+        var data = response[index];
+
         $('#modify').addClass('btn-primary');
         $('#modify').text('수정');
         $('#cancel').addClass('btn-primary');
@@ -81,8 +92,37 @@ function clickEvent(datalist){
 
 
         htmlString+="<div>";
-        htmlString+=" 날짜 " + data.date;
+        htmlString +=  "" + data.year +"년 " + data.month +"월 " + data.date+ "일 "
         htmlString+="</div>";
+        htmlString+="<div>";
+        htmlString+=" 등록자 " + name;
+        htmlString+="</div>";
+        htmlString+="<div>";
+        htmlString+=" 대상자 " ;
+        for(var i =0 ; i< data.receive_name.length;i++){
+            var user = data.receive_name[i];
+            htmlString+= user + "  ";
+        }
+        //htmlString+=" 대상자 " +data.receive_name;
+        htmlString+="</div>";
+        htmlString+="<div>";
+
+        if(data.mode==0){
+            htmlString +=  "상당직";
+        }else if(data.mode==1){
+            htmlString +=  "벌당직";
+        }else if(data.mode ==2){
+            htmlString +=  "운영실 벌당직";
+        }
+        htmlString+="</div>";
+
+
+        htmlString+="<div>";
+        htmlString+="  " +data.point + " 일";
+
+        htmlString+="</div>";
+
+
         htmlString+="";
         htmlString+="";
         htmlString+="";
@@ -92,17 +132,25 @@ function clickEvent(datalist){
         $('div.modal-body').html(htmlString);
 
 
-
-
-
         $('button#modify').unbind().click(function(){
             $('div.modal').modal('hide');
             window.location.reload();
         });
 
+        // 선택한 항목 벌당직 취소
         $('button#cancel').unbind().click(function(){
             $('div.modal').modal('hide');
-            window.location.reload();
+
+
+
+            $.post('/duty/removePointHistory', data, function(res){
+
+                // success 가 온다. 성공하면
+                console.log(res);
+
+                window.location.reload();
+            });
+
         });
 
         $('div.modal').modal();

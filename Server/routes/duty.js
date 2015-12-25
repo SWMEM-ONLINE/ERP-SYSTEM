@@ -77,5 +77,10 @@ router.post('/getMemberList', util.ensureAuthenticated, function(req, res){
 });
 
 
+router.post('/removePointHistory', util.ensureAuthenticated, function(req, res){
+    duty_handler.removePointHistory(con,req,res);
+});
+
+
 
 module.exports = router;

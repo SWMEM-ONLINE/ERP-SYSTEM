@@ -11,5 +11,40 @@ INSERT INTO `swmem`.`t_user` (`u_id`, `u_password`, `u_name`, `u_sex`, `u_birth`
 INSERT INTO `swmem`.`t_user` (`u_id`, `u_password`, `u_name`, `u_sex`, `u_birth`, `u_phone`, `u_email`, `u_state`, `u_period`, `u_branch`, `u_device`, `u_mileage`, `u_good_duty_point`, `u_bad_duty_point`, `u_manager_bad_duty_point`, `u_photo_url`, `u_register_date`) VALUES ('2222', 'FxjCSxCuuAmeP8RJYKtpSat2omc1JFnyA+oQNr7DgsI=', '2번 유저', '1', '911108', '010-4011-7501', 'asdfjlksa@fdsajfls.com', '4', '24-2', 'sw', '0', '0', '0', '0', '0', 'atom1450986904290.png', '0');
 INSERT INTO `swmem`.`t_user` (`u_id`, `u_password`, `u_name`, `u_sex`, `u_birth`, `u_phone`, `u_email`, `u_state`, `u_period`, `u_branch`, `u_device`, `u_mileage`, `u_good_duty_point`, `u_bad_duty_point`, `u_manager_bad_duty_point`, `u_photo_url`, `u_register_date`) VALUES ('1111', 'FxjCSxCuuAmeP8RJYKtpSat2omc1JFnyA+oQNr7DgsI=', '1번 유저', '1', '911108', '010-4011-7501', 'asdfjlksa@fdsajfls.com', '4', '24-2', 'sw', '0', '0', '0', '0', '0', 'atom1450986904290.png', '0');
 
----------------------------  유저생성 디비   -------------------------------------
+---------------------------  당직 디비   -------------------------------------
 
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-01', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-02', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-03', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-04', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-05', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-06', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-07', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-08', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-09', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-10', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-11', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-12', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-13', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-14', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-15', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-16', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-17', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-18', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-19', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-20', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-21', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-22', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-23', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-24', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-25', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-26', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-27', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-28', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-29', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-30', '1111', '2222', '3333', '0', '0', '0');
+INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1_mode`, `user2_mode`, `user3_mode`) VALUES ('2015-12-31', '1111', '2222', '3333', '0', '0', '0');
+
+
+
+---------------------------  당직 디비   -------------------------------------

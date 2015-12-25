@@ -4,6 +4,57 @@
 
 
 
+
+function removePointHistory(con,req,res){
+
+    var receiveId = req.body['receive_id[]'];
+    var receiveName  = req.body["receive_name[]"];
+    var year = req.body.year;
+    var month = req.body.month;
+    var date = req.body.date;
+    var addTime = req.body.addTime;
+    var mode = req.body.mode;
+    var point = req.body.point;
+    var reason = req.body.reason;
+
+    for(var i=0;i<receiveId.length;i++){
+        var id = receiveId[i];
+
+        var query =  minusPoint(id,mode,point);
+        console.log(query);
+        con.query(query, function(err, response){
+
+            if(err){
+                console.log(err);
+            }else{
+                console.log(response);
+            }
+        });
+    }
+
+
+    var convertDate = new Date(addTime);
+
+    var time = convertDate.getFullYear() + "-" + (convertDate.getMonth()+1)+ "-" + convertDate.getDate() + " "  + convertDate.getHours() + ":" + convertDate.getMinutes() +  ":" + convertDate.getSeconds() ;
+
+    var delete_history_query = " DELETE FROM t_duty_point_history where add_time = '" +time + "';";
+
+    console.log(delete_history_query);
+
+    con.query(delete_history_query, function(err, response){
+
+        if(err){
+            res.send("error");
+        }else{
+            console.log(response);
+            res.send("success");
+        }
+
+    });
+
+}
+
+
 function getMemberList(con,req,res){
 
     var query = "select u_id, u_name, u_sex, u_birth, u_phone, u_email, u_state, u_period," +
@@ -31,7 +82,6 @@ function getAddPoint(con,req,res){
     var send_id = req.session.passport.user.id;
 
 
-
     // Client에서 오는 데이터터
 
     var currentDate = new Date();
@@ -46,7 +96,7 @@ function getAddPoint(con,req,res){
     " and year(t_duty_point_history.date) = "+ year +";";
 
 
-    console.log(query);
+   // console.log(query);
     con.query(query, function(err, response){
 
         if(err){
@@ -73,8 +123,6 @@ function getAddPoint(con,req,res){
             }
 
 
-            console.log(datas);
-
             if(datas.length==0){
 
                 console.log("there is no data");
@@ -82,7 +130,6 @@ function getAddPoint(con,req,res){
             }
 
             else{
-                console.log(datas[0].addTime.toString());
                 var convertData = [];
                 var count = 0;
                 var time = datas[0].addTime.toString();
@@ -135,53 +182,37 @@ function getAddPoint(con,req,res){
 
 function addPoint(con,req,res){
 
+
+    // sended data
+    console.log(req.body);
     var send_id = req.session.passport.user.id;
     var success_flag = 1;
-
-    console.log("asdf");
-    console.log(req.body);
-    console.log(JSON.stringify(req.body));
-
-
-
-
-
-    console.log(req.body.year);
-    console.log(req.body.month);
-    console.log(req.body.date);
-
-    var point = parseInt(req.body.point);
-    var mode = parseInt(req.body.mode);
+    var point = req.body.point;
+    var mode = req.body.mode;
     var reason = req.body.reason;
-
-    console.log(point);
-    console.log(mode);
-    console.log(reason);
-
-
+    var year = req.body.year;
+    var month =req.body.month;
+    var date = req.body.date;
     var recieveUserList = req.body['recieveUserList[]'];
-    console.log(recieveUserList);
 
-    console.log(recieveUserList.length);
+
     for( var i =0; i<recieveUserList.length;i++){
 
-        console.log("1");
         var recieveUser = recieveUserList[i];
-        console.log("1");
         var updatePointHistory = "INSERT INTO t_duty_point_history (`date`, `receive_user`, `send_user`, `mode`, `point`, `reason`) " +
             "VALUES ('"+ year  +"-" + month+ "-" + date + "', '" + recieveUser + "', '" + send_id +"', '" + mode +"', '" + point + "', '" +reason + "');"
+
 
         console.log(updatePointHistory);
         con.query(updatePointHistory, function(err, response){
             console.log(response);
-
             if(response.affectedRows < 1){
                 success_flag = 0;
             }
-
         });
 
         var addPoint = "";
+
         // 상당직
         if(mode == 0){
             addPoint =  'update t_user set u_good_duty_point = u_good_duty_point + ' + point +  ' where u_id = "' + recieveUser +'";';
@@ -221,10 +252,11 @@ function loadMyPointHistory(con,req,res){
 
     var id = req.session.passport.user.id;
     // 클라이언트에서 오는 데이터
-    var currentDate = new Date();
-    var month = currentDate.getMonth()+1;
-    var year = currentDate.getFullYear();
 
+    var year = req.body.year;
+    var month =req.body.month;
+
+    console.log(req.body);
 
     var query = "select date ,(select u_name from t_user where u_id = send_user), mode ,point, reason from t_duty_point_history Inner join t_user " +
         'on t_duty_point_history.receive_user = "' + id +'" '+
@@ -263,51 +295,54 @@ function loadMyPointHistory(con,req,res){
 }
 
 
+// 자신의 벌당직 상황을 조회한다.
 function loadMyDuty(con,req,res){
 
     var id = req.session.passport.user.id;
 
-
     //클라이언트에서 오는 데이터터
-    var currentDate = new Date();
-    var month = currentDate.getMonth()+1;
-    var year = currentDate.getFullYear();
+
+    var month = req.body.month;
+    var year = req.body.year;
 
 
+    var query = "select * from swmem.t_duty where ( user_id1 = " + id + " or user_id2 = " + id + " or user_id3 = " + id + " or user_id4 = " + id
+        + ") and month(date)= " + month + " and year(date) = " + year;
 
-    var query = "select * from swmem.t_duty where user_id1 = " + id + " or user_id2 = " + id + " or user_id3 = " + id + " or user_id4 = " + id
-        + " and month(date)= " + month + " and year(date) = " + year;
+    console.log(query);
 
     con.query(query, function(err, response){
 
+        if(err){
+            console.log(err);
+        }else{
+            var datas =[];
 
-        var datas =[];
+            for (var i=0;i<response.length;i++){
+                var row = response[i];
+                datas[i] ={};
+                datas[i].month = row.date.getMonth() + 1;
+                datas[i].date = row.date.getDate();
 
-        for (var i=0;i<response.length;i++){
-            var row = response[i];
-            datas[i] ={};
-            datas[i].month = row.date.getMonth() + 1;
-            datas[i].date = row.date.getDate();
+                if(row.user_id1 == id){
+                    datas[i].type = row.user1_mode;
+                }
+                else if(row.user_id2 == id){
+                    datas[i].type = row.user2_mode;
+                }else if(row.user_id3 == id){
+                    datas[i].type = row.user3_mode;
+                }else if(row.user_id4 == id){
+                    datas[i].type = row.user4_mode;
+                }else{
+                    datas[i].type = 0;
+                    console.log("type error!");
+                }
 
-            if(row.user_id1 == id){
-                datas[i].type = row.user1_mode;
             }
 
-            else if(row.user_id2 == id){
-                datas[i].type = row.user2_mode;
-            }else if(row.user_id3 == id){
-                datas[i].type = row.user3_mode;
-            }else if(row.user_id4 == id){
-                datas[i].type = row.user4_mode;
-            }else{
-                datas[i].type = 0;
-                console.log("type error!");
-            }
-
+            res.send(datas);
+            console.log(datas);
         }
-
-        res.send(datas);
-        console.log(datas);
     });
 
 
@@ -342,6 +377,30 @@ function getUser(con, req, res){
 
 
 
+
+function minusPoint(id, mode, point){
+
+    // 상당직
+    if(mode == 0){
+        addPoint =  'update t_user set u_good_duty_point = u_good_duty_point - ' + point +  ' where u_id = "' + id +'";';
+    }
+    //벌당직
+    else if(mode == 1){
+        addPoint =  'update t_user set u_bad_duty_point = u_bad_duty_point - ' + point +  ' where u_id = "' + id +'";';
+    }
+    //운영실 벌당직
+    else if(mode == 2){
+        addPoint =  'update t_user set u_manager_bad_duty_point = u_manager_bad_duty_point - ' + point +  ' where u_id = "' + id +'";';
+    }
+
+    return addPoint;
+}
+
+
+
+
+
+exports.removePointHistory = removePointHistory;
 exports.loadMyDuty = loadMyDuty;
 exports.getUser = getUser;
 exports.loadMyPointHistory =loadMyPointHistory;

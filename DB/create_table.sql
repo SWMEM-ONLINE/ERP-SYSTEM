@@ -24,9 +24,10 @@ CREATE TABLE t_user ( u_id VARCHAR(20) NOT NULL primary key,
   u_bad_duty_point int,
   u_manager_bad_duty_point int,
   u_photo_url VARCHAR(200),
+
   u_register_date VARCHAR(20));
 
-
+--  u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   ---------------------------       유져 끝     -------------------------------------
 
 

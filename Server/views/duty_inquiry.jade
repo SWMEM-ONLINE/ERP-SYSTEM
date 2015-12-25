@@ -14,6 +14,9 @@ block content
         h3 당직 조회
         hr
         .content
+
+            input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
+
             p#name.blur
             #duty
             p#foot.blur
@@ -23,5 +26,4 @@ block content
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src="../javascripts/duty_inquiry.js")
-    script(src='../javascripts/apply-datepicker.js')
 
