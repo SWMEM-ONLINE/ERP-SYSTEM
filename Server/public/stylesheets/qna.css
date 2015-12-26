@@ -46,8 +46,9 @@ textarea {
 
 table {
     table-layout: fixed;
+    margin:auto;
 }
-table td {
+table#history td {
     width:100%;
     overflow: hidden;
     text-overflow:ellipsis;
@@ -70,7 +71,7 @@ table td {
     div.container{
         padding:0;
     }
-    div.content table{
+    table{
         font-size: 14px;
     }
     button{
@@ -79,4 +80,31 @@ table td {
     input{
         height: 36px;
     }
+}
+
+#pagination a{
+    color:#122359;
+}
+
+#pagination td{
+    padding:10px;
+}
+
+.modal-body{
+    height: 500px;
+    overflow-y: auto;
+}
+
+#commentTable{
+    margin-top:10px;
+}
+#commentTable tr{
+    border-bottom: 1px solid #ddd;
+}
+#commentTable .comment{
+    text-align: left;
+}
+#commentTable .name{
+    width: 100px;
+    border-right: 1px dashed #ddd;
 }

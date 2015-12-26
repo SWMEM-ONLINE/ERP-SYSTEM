@@ -46,7 +46,7 @@ router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
     var curIdx = (page-1)*20;
     var length = 20;
 
-    var query = 'select * from t_qna where q_writer = "'+writer+'" and q_state not in ( 3 ) order by q_write_date limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
+    var query = 'select * from t_qna where q_writer = "'+writer+'" and q_state not in ( 3 ) order by q_write_date DESC limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
 
     var connection = db_handler.connectDB();
 
@@ -78,9 +78,9 @@ router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/myqna', util.ensureAuthenticated, function(req, res, next) {
 
-    var qid = req.body.q_id;
+    var q_id = req.body.q_id;
 
-    var query = 'select * from t_qna_reply where qr_id = '+qid+' order by qr_write_date';
+    var query = 'select * from t_qna_reply where qr_id = '+q_id+' order by qr_write_date DESC';
     console.log(query);
 
     var connection = db_handler.connectDB();
@@ -136,8 +136,8 @@ router.post('/qnalist', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/qnareply', util.ensureAuthenticated, function(req, res, next) {
 
-    var values = new Array;
-    var id = req.body.id;
+    var values = new Array();
+    var id = req.body.q_id;
     var content = req.body.content;
     var writer = util.getUserId(req);
     var date = util.getCurDateWithTime();
@@ -145,8 +145,8 @@ router.post('/qnareply', util.ensureAuthenticated, function(req, res, next) {
     values = [id, content, writer, date];
 
     var connection = db_handler.connectDB();
-
-    connection.query('insert into t_qna_reply(qr_id, qr_content, qr_writer, qr_write_date) values ?', [values], function(err,result){
+    var query = 'insert into t_qna_reply(qr_id, qr_content, qr_writer, qr_write_date) values ('+id+',"'+content+'","'+writer+'","'+date+'")';
+    connection.query(query, function(err,result){
         if (err) {
             console.error(err);
             throw err;
