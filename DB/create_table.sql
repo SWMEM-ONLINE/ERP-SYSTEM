@@ -236,6 +236,7 @@ DROP TABLE IF EXISTS `t_fee`;
 -- 0:wait 1:accept 2:decline
   DROP TABLE IF EXISTS `t_duty_change_history`;
   CREATE TABLE `t_duty_change_history` (
+    `request_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `request_date1` date NOT NULL,
     `request_userid1` varchar(45) NOT NULL,
     `request_date2` date NOT NULL,

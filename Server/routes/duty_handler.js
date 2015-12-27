@@ -3,8 +3,83 @@
  */
 
 
+function loadDuty(con,req,res){
 
-function  modifyPointHistoty(con,req,res){
+    var year = req.body.year;
+    var month = req.body.month;
+    var date = req.body.date;
+
+    var loadDutyQuery = "select * from swmem.t_duty where month(date)= " + month + " and year(date) = " + year + " and dayofmonth(date) = " + date;
+
+
+
+    console.log(loadDutyQuery);
+    con.query(loadDutyQuery, function(err, response){
+
+        if(err){
+            console.log(err);
+        }else{
+
+            if(response.length==0){
+                console.log("error");
+
+            }else{
+                var data = response[0];
+                var sendData ;
+                sendData = data;
+                var user_size = 0;
+
+                if(data.user_id1 != null){
+                    user_size++;
+                }
+                if(data.user_id2 != null){
+                    user_size++;
+                }
+                if(data.user_id3 != null){
+                    user_size++;
+                }
+                if(data.user_id4 != null){
+                    user_size++;
+                }
+
+                sendData.user_size = user_size;
+
+                res.send(sendData);
+                console.log(sendData);
+            }
+        }
+    });
+
+}
+
+
+
+
+function getName(con, req, res ){
+
+    var id = req.body.id;
+
+    var getNameQuery = " select u_name from t_user where u_id = '" + id + "';";
+
+    console.log(getNameQuery);
+
+    con.query(getNameQuery, function(err, response){
+
+        if(err){
+            console.log(err);
+        }else{
+            console.log(response[0]);
+            res.send(response[0].u_name);
+            //return response[0].u_name;
+        }
+
+    });
+
+}
+
+
+
+function modifyPointHistoty(con,req,res){
 
     var receiveId = req.body['receive_id[]'];
     var addTime = req.body.addTime;
@@ -484,7 +559,8 @@ function addPointQuery(id, mode, point){
 }
 
 
-
+exports.loadDuty =loadDuty;
+exports.getName = getName;
 exports.modifyPointHistoty =modifyPointHistoty;
 exports.removePointHistory = removePointHistory;
 exports.loadMyDuty = loadMyDuty;

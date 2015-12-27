@@ -85,6 +85,16 @@ router.post('/modifyPointHistoty', util.ensureAuthenticated, function(req, res){
     duty_handler.modifyPointHistoty(con,req,res);
 });
 
+router.post('/loadDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.loadDuty(con,req,res);
+});
+
+router.post('/getName', util.ensureAuthenticated, function(req, res){
+    duty_handler.getName(con,req,res);
+});
+
+
+
 
 
 module.exports = router;
