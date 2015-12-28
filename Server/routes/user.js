@@ -6,6 +6,7 @@ var DB_handler = require('./DB_handler');
 var con = DB_handler.connectDB();
 var router = express.Router();
 var util = require('./util');
+var crypto = require('crypto');
 
 router.get('/info', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select u_id,u_name,u_sex,u_period,u_device,u_birth,u_photo_url from t_user where u_id="' + req.session.passport.user.id + '"';
@@ -79,6 +80,26 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
     var connection = db_handler.connectDB();
 
     var query = 'update t_user set u_state = '+state+' where u_id = '+id;
+
+    connection.query(query,function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+
+        res.json({status:'0'});
+    });
+
+});
+
+router.post('/resetUserPassword', util.ensureAuthenticated, function(req, res, next) {
+
+    var id = req.body.id;
+    var encPW = crypto.createHash('sha256').update('0000').digest('base64');
+
+    var connection = db_handler.connectDB();
+
+    var query = 'update t_user set u_password = "'+encPW+'" where u_id = "'+id+'"';
 
     connection.query(query,function(err,rows){
         if (err) {
