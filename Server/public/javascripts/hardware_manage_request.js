@@ -34,12 +34,7 @@ function loadRequest(flag){
         $.post('/hardware/manage/loadRequest', {kind : flag}, function(datalist){
             setTable(datalist, flag);
             $('#tableData tr').click(function(){
-                //var index = $(this).index();
-                //if(datalist[index].hw_result != 0){
-                //    toastr['error']('처리된 건은 수정할 수 없습니다');
-                //}else{
-                    $(this).toggleClass('warning');
-                //}
+                $(this).toggleClass('warning');
             });
             approveButton(datalist, flag);
             rejectButton(datalist, flag);

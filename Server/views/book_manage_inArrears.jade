@@ -1,0 +1,30 @@
+//
+    by jung-inchul on 2015. 12. 24..
+
+extends main_layout
+
+append head
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/book_mybook.css')
+
+block content
+    .container.contents
+        h3 연체자 목록
+        hr
+        .content
+            hr
+            table#inarrearsTable.table.table-condensed.table-hover
+                thead
+                    tr
+                        th 이름
+                        th 도서
+                        th 반납예정일
+                        th 연체일
+                tbody
+append script
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../../javascripts/book_manage_inArrears.js')

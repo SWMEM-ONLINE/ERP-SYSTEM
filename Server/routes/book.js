@@ -98,4 +98,20 @@ router.post('/manage/loadmissingBook', util.ensureAuthenticated, function(req, r
     book_handler.loadmissingBook(con, req, res);
 });
 
+router.post('/manage/reenroll', util.ensureAuthenticated, function(req, res){
+    book_handler.reenroll(con, req, res);
+});
+
+router.post('/manage/inArrears', util.ensureAuthenticated, function(req, res){
+    book_handler.loadinArrears(con, req, res);
+});
+
+router.get('/manage/inArrears', util.ensureAuthenticated, function(req, res){
+    res.render('book_manage_inArrears', { title : '연체자목록'});
+});
+
+router.post('/manage/loadinArrears', util.ensureAuthenticated, function(req, res){
+    book_handler.loadinArrears(con, req, res);
+});
+
 module.exports = router;

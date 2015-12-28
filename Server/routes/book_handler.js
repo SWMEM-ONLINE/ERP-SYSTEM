@@ -165,6 +165,19 @@ function loadmissingBook(con, req, res){
     });
 }
 
+function reenroll(con, req, res){
+    var query = 'update t_book set b_state=0 where b_id IN (' + req.body.enrollList + ');';
+    query += 'delete from t_book_loss where brl_book_id IN (' + req.body.enrollList + ');';
+    con.query(query);
+}
+
+function loadinArrears(con, req, res){
+    var query = 'select *,DATEDIFF(CURDATE(), b_due_date) diff from t_user a inner join t_book b on a.u_name=b.b_rental_username where (DATEDIFF(CURDATE(), b_due_date)) > 0';
+    con.query(query, function(err, response){
+        res.send(response);
+    });
+}
+
 function getDate(base, plusDate){
     var tempDate = new Date(base);
     tempDate.setDate(tempDate.getDate() + plusDate);
@@ -172,6 +185,8 @@ function getDate(base, plusDate){
     return date;
 }
 
+exports.loadinArrears = loadinArrears;
+exports.reenroll = reenroll;
 exports.loadmissingBook = loadmissingBook;
 exports.loadpastHistory = loadpastHistory;
 exports.loadnowHistory = loadnowHistory;
