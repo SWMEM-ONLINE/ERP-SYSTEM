@@ -61,6 +61,16 @@ router.get('/userlist', util.ensureAuthenticated, function(req, res, next) {
 
 });
 
+router.post('/getUserInfo', util.ensureAuthenticated, function(req, res, next) {
+    var uid = req.body.uid;
+    var query = 'select u_id,u_name,u_sex,u_period,u_device,u_birth,u_photo_url from t_user where u_id="' + uid + '"';
+    con.query(query, function(err, response){
+        console.log(response);
+        var send = JSON.stringify(response);
+        res.json({status:'0', result:JSON.parse(send)});
+    });
+});
+
 router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, next) {
 
     var state = req.body.grade;
