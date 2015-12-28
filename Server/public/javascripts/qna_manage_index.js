@@ -1,16 +1,16 @@
 /**
- * Created by KIMDONGWON on 2015-12-23.
+ * Created by KIMDONGWON on 2015-12-28.
  */
 
-myqnaList(1);
+qnaList(1);
 
-function myqnaList(pageNum){
+function qnaList(pageNum){
     var data = {
         pageIdx:pageNum
     };
     $.ajax({
         type:'post',
-        url:'/qna/myqnalist',
+        url:'/qna/qnalist',
         data:JSON.stringify(data),
         contentType:'application/json',
         success:function(data){
@@ -28,7 +28,7 @@ function myqnaList(pageNum){
                 for(var i=0;i<dataList.length;i++){
                     var list = dataList[i];
                     tbodyString += '<tr id="'+list.q_id+'">';
-                    tbodyString += '<td>'+list.q_title+'</td>'+'<td class="hidden">'+list.q_content+'</td>'+'<td class="hidden">'+list.q_state+'</td>'+'<td class="hidden">'+list.q_id+'</td>'+'<td>'+list.q_write_date+'</td>';
+                    tbodyString += '<td>'+list.q_writer+'</td>'+'<td>'+list.q_title+'</td>'+'<td class="hidden">'+list.q_content+'</td>'+'<td class="hidden">'+list.q_state+'</td>'+'<td class="hidden">'+list.q_id+'</td>'+'<td>'+list.q_write_date+'</td>';
                     if(list.q_state == 0){
                         tbodyString += '<td>답변대기</td>';
                     }
@@ -45,7 +45,7 @@ function myqnaList(pageNum){
                         paginationString += '<th>' + (i+1) + '</th>';
                     }
                     else {
-                        paginationString += '<td><a id="'+ (i+1) +'" onclick="myqnaList(this.id)">' + (i+1) + '</a></td>';
+                        paginationString += '<td><a id="'+ (i+1) +'" onclick="qnaList(this.id)">' + (i+1) + '</a></td>';
                     }
                 }
 
@@ -58,6 +58,36 @@ function myqnaList(pageNum){
         }
     });
 }
+
+$('#history tbody').on('click','tr:not(.empty)',function () {
+    var tbodyString = '';
+    var arr = new Array();
+    $(this).children('td').map(function () {
+        arr.push($(this).text());
+    });
+    $('.modal-title').text(arr[1]);
+    console.log(arr);
+    tbodyString += '<p>'+arr[0]+'</p>';
+    tbodyString += '<p>'+arr[5]+'</p>';
+    tbodyString += '<p>'+arr[2]+'</p>';
+    tbodyString += '<p>'+arr[6]+'</p>';
+    tbodyString += '<input id="comment" type="text" onkeypress="submitEnter(event,'+arr[4]+')"/>';
+    tbodyString += '<table id="commentTable" class="table">';
+    tbodyString += '<tbody>';
+    tbodyString += '</tbody>';
+    tbodyString += '</table>';
+    $('div.modal .modal-body').html(tbodyString);
+    if(arr[3] == 1){
+        $('#solve').addClass('hidden');
+    }
+    else{
+        $('#solve').removeClass('hidden');
+    }
+    document.getElementById('solve').setAttribute('value',arr[4]);
+    document.getElementById('solve').setAttribute('page',arr[7]);
+    commentList(arr[4]);
+    $('div.modal').modal();
+});
 
 function commentList(q_id){
     var req = {
@@ -82,51 +112,6 @@ function commentList(q_id){
     });
 }
 
-$('#submit').click(function(){
-    var title = $('#title').val();
-    var qna = $('#qna').val();
-    var data = {
-        title:title,
-        content:qna
-    };
-
-    $.ajax({
-        type:'post',
-        url:'/qna/add',
-        data:JSON.stringify(data),
-        contentType:'application/json',
-        success: function(data){
-            if(data.status === '0'){
-                toastr['success']('성공');
-                myqnaList(1);
-                $('#title').val('');
-                $('#qna').val('');
-            }
-        }
-    });
-});
-
-$('#history tbody').on('click','tr:not(.empty)',function () {
-    var tbodyString = '';
-    var arr = new Array();
-    $(this).children('td').map(function () {
-        arr.push($(this).text());
-    });
-    $('.modal-title').text(arr[0]);
-    console.log(arr);
-    tbodyString += '<p>'+arr[4]+'</p>';
-    tbodyString += '<p>'+arr[1]+'</p>';
-    tbodyString += '<p>'+arr[5]+'</p>';
-    tbodyString += '<input id="comment" type="text" onkeypress="submitEnter(event,'+arr[3]+')"/>';
-    tbodyString += '<table id="commentTable" class="table">';
-    tbodyString += '<tbody>';
-    tbodyString += '</tbody>';
-    tbodyString += '</table>';
-    $('div.modal .modal-body').html(tbodyString);
-    commentList(arr[3]);
-    $('div.modal').modal();
-});
-
 function submitEnter(e,q_id){
     if(e.keyCode == 13){
         var comment = $('#comment').val();
@@ -148,3 +133,23 @@ function submitEnter(e,q_id){
         });
     }
 }
+
+$('#solve').click(function(){
+    var data = {
+        q_id:document.getElementById('solve').getAttribute('value'),
+        state:1
+    };
+
+    $.ajax({
+        type:'post',
+        url:'/qna/qnaModify',
+        data:JSON.stringify(data),
+        contentType:'application/json',
+        success: function(data){
+            if(data.status === '0'){
+                qnaList(document.getElementById('solve').getAttribute('page'));
+                $('div.modal').modal('hide');
+            }
+        }
+    });
+});

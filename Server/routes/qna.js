@@ -108,7 +108,7 @@ router.post('/qnalist', util.ensureAuthenticated, function(req, res, next) {
     var curIdx = (page-1)*20;
     var length = 20;
 
-    var query = 'select * from t_qna where q_state not in ( 3 ) order by q_write_date limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
+    var query = 'select * from t_qna where q_state not in ( 3 ) order by q_write_date DESC limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
 
     var connection = db_handler.connectDB();
 
@@ -166,12 +166,12 @@ router.post('/qnareply', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/qnaModify', util.ensureAuthenticated, function(req, res, next) {
 
-    var id = req.body.id;
+    var id = req.body.q_id;
     var state = req.body.state;
-
     var connection = db_handler.connectDB();
-
-    connection.query('update t_qna set q_state = '+state+' where q_id = '+id, function(err,result){
+    var query = 'update t_qna set q_state = '+state+' where q_id = '+id;
+    console.log(query);
+    connection.query(query, function(err,result){
         if (err) {
             console.error(err);
             throw err;
