@@ -80,11 +80,36 @@ router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
 });
 
 
-router.post('/myqna', util.ensureAuthenticated, function(req, res, next) {
+router.post('/setQnaReply', util.ensureAuthenticated, function(req, res, next) {
+
+    var values = new Array();
+    var id = req.body.q_id;
+    var content = req.body.content;
+    var writer = util.getUserId(req);
+    var date = util.getCurDateWithTime();
+
+    values = [id, content, writer, date];
+
+    var connection = db_handler.connectDB();
+    var query = 'insert into t_qna_reply(qr_id, qr_content, qr_writer, qr_write_date) values ('+id+',"'+content+'","'+writer+'","'+date+'")';
+    connection.query(query, function(err,result){
+        if (err) {
+            console.error(err);
+            throw err;
+            res.json({status:'101'});
+        }
+        db_handler.disconnectDB(connection);
+
+        res.json({status:'0'});
+    });
+
+});
+
+
+router.post('/getQnaReply', util.ensureAuthenticated, function(req, res, next) {
 
     var q_id = req.body.q_id;
-
-    var query = 'select * from t_qna_reply where qr_id = '+q_id+' order by qr_write_date DESC';
+    var query = 'select t_qna_reply.*, u_name from t_qna_reply left join t_user on t_qna_reply.qr_writer = t_user.u_id where t_qna_reply.qr_id = '+q_id+' order by t_qna_reply.qr_write_date DESC';
     console.log(query);
 
     var connection = db_handler.connectDB();
@@ -137,31 +162,6 @@ router.post('/qnalist', util.ensureAuthenticated, function(req, res, next) {
 
 });
 
-
-router.post('/qnareply', util.ensureAuthenticated, function(req, res, next) {
-
-    var values = new Array();
-    var id = req.body.q_id;
-    var content = req.body.content;
-    var writer = util.getUserId(req);
-    var date = util.getCurDateWithTime();
-
-    values = [id, content, writer, date];
-
-    var connection = db_handler.connectDB();
-    var query = 'insert into t_qna_reply(qr_id, qr_content, qr_writer, qr_write_date) values ('+id+',"'+content+'","'+writer+'","'+date+'")';
-    connection.query(query, function(err,result){
-        if (err) {
-            console.error(err);
-            throw err;
-            res.json({status:'101'});
-        }
-        db_handler.disconnectDB(connection);
-
-        res.json({status:'0'});
-    });
-
-});
 
 
 router.post('/qnaModify', util.ensureAuthenticated, function(req, res, next) {

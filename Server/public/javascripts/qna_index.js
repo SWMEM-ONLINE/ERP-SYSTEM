@@ -66,14 +66,14 @@ function commentList(q_id){
     var tbodyString = '';
     $.ajax({
         type:'post',
-        url:'/qna/myqna',
+        url:'/qna/getQnaReply',
         data:JSON.stringify(req),
         contentType:'application/json',
         success: function(data){
             for(var i=0;i<data.length;i++){
                 row = data[i];
                 tbodyString += '<tr>';
-                tbodyString += '<td class="name">'+row.qr_writer+'</td>'+'<td class="comment">'+row.qr_content+'</td>';
+                tbodyString += '<td class="name">'+row.u_name+'</td>'+'<td class="comment">'+row.qr_content+'</td>';
                 tbodyString += '</tr>';
             }
             $('#commentTable tbody').empty();
@@ -136,7 +136,7 @@ function submitEnter(e,q_id){
         };
         $.ajax({
             type:'post',
-            url:'/qna/qnareply',
+            url:'/qna/setQnaReply',
             data:JSON.stringify(data),
             contentType:'application/json',
             success: function(data){
