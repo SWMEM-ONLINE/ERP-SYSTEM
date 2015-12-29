@@ -82,7 +82,7 @@ function clickEvent(datalist){
         var index = $(this).index();
         var string = '';
         string += '<img class="bookLargeImg" src="' + datalist[index].b_photo_url + '"/>';
-        string += '<h4 class="bookTitle">' + datalist[index].b_name + '&nbsp<span class="label label-info">' + datalist[index].b_location + '</span>&nbsp<span class="label label-default">총 ' + datalist[index].b_total + '권</span></h4>';
+        string += '<h4 class="bookTitle">' + datalist[index].b_name + '&nbsp<span class="label label-info">' + datalist[index].b_location + '</span></h4>';
         string += '<p>' + '저자 : ' + datalist[index].b_author + '</p><p>출판사 : ' + datalist[index].b_publisher + '</p>';
         if(datalist[index].b_state === 1)   string += '<p>반납예정일 : ' + datalist[index].b_due_date + '&nbsp&nbsp|&nbsp&nbsp대여자 : '+datalist[index].b_rental_username + '</p>';
         if(datalist[index].b_reserved_cnt != 0) string += '<p>예약자 : ' + datalist[index].b_reserved_cnt + '명</p>';

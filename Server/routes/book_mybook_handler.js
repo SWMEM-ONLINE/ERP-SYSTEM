@@ -68,13 +68,11 @@ function missingBook(con, req, res){
         brl_loss_date : req.body.loss_date
     };
     var query2 = 'update t_book set b_state=3 where b_id="' + req.body.book_id +'"';
-    var query5 = 'update t_book set b_total=b_total-1 where b_isbn="' + req.body.isbn + '"';
     var query3 = 'delete from t_book_rental where br_id="' + req.body.rental_id + '"';
     var query4 = 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '"';
 
     con.query(query1, queryData);
     con.query(query2);
-    con.query(query5);
     con.query(query3);
     con.query(query4);
 }

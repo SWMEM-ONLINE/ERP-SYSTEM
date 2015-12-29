@@ -1,0 +1,37 @@
+//
+    by jung-inchul on 2015. 12. 26..
+
+extends main_layout
+
+append head
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/book_mybook.css')
+
+block content
+    .container.contents
+        h3 신청도서 관리
+        hr
+        .content
+            ul.nav.nav-pills.nav-justified
+                li.active
+                    a(href="#") 기술서적
+                li
+                    a(href="#") 인문서적
+            hr
+            table#applyTable.table.table-striped.table-hover
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title 도서위치 선택
+                .modal-body
+                .modal-footer
+                    button#registerButton.btn(type='button') 등록
+                    button#return.btn(type='button', data-dismiss='modal') 닫기
+append script
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../../javascripts/book_manage_apply.js')

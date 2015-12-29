@@ -18,8 +18,11 @@ function request(con, req, res){
         if(response1.length === 0){
             var query = 'INSERT into t_book_apply SET ?';
             var type;
-            if(req.body.categoryId === 122 || req.body.categoryId === 125 || req.body.categoryId === 123)   type = 0;
-            else    type = 1;
+            if(req.body.categoryId === '122' || req.body.categoryId === '125' || req.body.categoryId === '123'){
+                type = 0;
+            }else{
+                type = 1;
+            }
             var date = new Date();
             var data = {
                 ba_user : req.session.passport.user.id,

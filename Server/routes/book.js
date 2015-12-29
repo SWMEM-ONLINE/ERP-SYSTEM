@@ -47,7 +47,7 @@ router.post('/missingBook', util.ensureAuthenticated, function(req, res){
 });
 
 router.post('/mybook/borrowed', util.ensureAuthenticated, function(req, res){
-    book_handler.loadBorrowedBook(con, req, res);
+    book_my_handler.loadBorrowedBook(con, req, res);
 });
 
 router.post('/mybook/reserved', util.ensureAuthenticated, function(req, res){
@@ -112,6 +112,18 @@ router.get('/manage/inArrears', util.ensureAuthenticated, function(req, res){
 
 router.post('/manage/loadinArrears', util.ensureAuthenticated, function(req, res){
     book_handler.loadinArrears(con, req, res);
+});
+
+router.get('/manage/apply', util.ensureAuthenticated, function(req, res){
+    res.render('book_manage_apply', { title : '신청도서관리'});
+});
+
+router.post('/manage/loadapplylist', util.ensureAuthenticated, function(req, res){
+    book_handler.loadApplylist(con, req, res);
+});
+
+router.post('/manage/enrollBook', util.ensureAuthenticated, function(req, res){
+    book_handler.enrollBook(con, req, res);
 });
 
 module.exports = router;

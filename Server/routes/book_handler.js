@@ -80,7 +80,6 @@ function searchBook(con, req, res){
 /*
     Enroll missing booklist.
     - update query to t_book : change status 3
-    - update query to t_book : change b_total
     - insert query to t_book_loss
     - delete query to t_book_rental
     - delete query to t_book_reserve
@@ -89,7 +88,6 @@ function searchBook(con, req, res){
 function missingBook(con, req, res){
     var today = getDate(new Date(), 0);
     var query = 'UPDATE t_book set b_state=3 where b_id="' + req.body.book_id +'"';
-    var query1 = 'update t_book set b_total=b_total-1 where b_isbn="' + req.body.isbn + '"';
     var query2 = 'insert into t_book_loss SET ?';
     var query3 = 'delete from t_book_rental where br_book_id="' + req.body.book_id + '"';
     var query4 = 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '"';
@@ -99,7 +97,6 @@ function missingBook(con, req, res){
         brl_loss_date : today
     };
     con.query(query);
-    con.query(query1);
     con.query(query2, queryData);
     con.query(query3);
     con.query(query4);
@@ -178,6 +175,32 @@ function loadinArrears(con, req, res){
     });
 }
 
+function loadApplylist(con, req, res){
+    var query = 'select * from t_book_apply a inner join t_user b on a.ba_user=b.u_id where ba_type=' + req.body.flag;
+    con.query(query, function(err, response){
+        res.send(response);
+    });
+}
+
+function enrollBook(con, req, res){
+    var query='select * from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
+    var query1 = '';
+    con.query(query, function(err, response){
+        for(var i = 0; i < response.length; i++){
+            query1 += 'insert into t_book set b_type=' + response[i].ba_type + ', b_name="' + response[i].ba_name + '", b_isbn="' + response[i].ba_isbn + '", b_author="' + response[i].ba_author + '", b_publisher="' + response[i].ba_publisher + '", b_location="' + req.body.location + '", b_photo_url="' + response[i].ba_photo_url + '", b_price=' + response[i].ba_price + ';';
+        }
+        con.query(query1);
+    });
+    var query2 = 'delete from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
+    con.query(query2, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    });
+}
+
 function getDate(base, plusDate){
     var tempDate = new Date(base);
     tempDate.setDate(tempDate.getDate() + plusDate);
@@ -185,6 +208,8 @@ function getDate(base, plusDate){
     return date;
 }
 
+exports. enrollBook = enrollBook;
+exports.loadApplylist = loadApplylist;
 exports.loadinArrears = loadinArrears;
 exports.reenroll = reenroll;
 exports.loadmissingBook = loadmissingBook;
