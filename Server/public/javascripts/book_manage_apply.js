@@ -130,14 +130,15 @@ function loadapplylist(flag){
     var htmlString = '';
     $.post('/book/manage/loadapplylist', {flag : flag}, function(datalist){
         cnt = 0;
-        htmlString += '<tfoot><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn btn-warning">전체선택</button><button type="button" id="enrollButton" class="btn btn-primary">도서등록</button><button type="button" id="down2excel" class="btn btn-info">엑셀로 다운</button><span id="checkSum" class="pull-right">0 원</span></th></tr></tfoot>';
-        htmlString += '<span class="pull-right"> </span></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn btn-default">전체선택</button><button type="button" id="buyCompleteButton" class="btn btn-warning">구매</button><button type="button" id="enrollButton" class="btn btn-primary">도서등록</button><button type="button" id="down2excel" class="btn btn-info">엑셀로 다운</button><span id="checkSum" class="pull-right">0 원</span></th></tr></tfoot>';
         htmlString += '<tbody id="applyTableData">';
         $.each(datalist, function(idx, data){
             cnt++;
             htmlString += '<tr><td><img class="bookImg" src="' + data.ba_photo_url + '"/</td>';
             htmlString += '<td><span class="label label-success">' + data.u_period + ' ' + data.u_name + '</span>';
-            htmlString += '<p><h4 class="bookTitle">' + data.ba_name + '</h4>';
+            htmlString += '<p><h4 class="bookTitle">' + data.ba_name;
+            if(data.ba_state === '1') htmlString += ' <span class="label label-danger"> 주문완료 </span></h4>';
+            else    htmlString += '</h4>';
             htmlString += '<p>' + data.ba_author + ' | ' + data.ba_publisher + '</span></p></tr>';
         });
         htmlString += '</tbody>';
@@ -148,18 +149,45 @@ function loadapplylist(flag){
             $('#checkSum').text(calSum(datalist) + '원');
         });
         selectAllButton();
+        buyCompleteButton(datalist);
         enrollButton(datalist);
+    });
+}
+
+function buyCompleteButton(datalist){
+    $('button#buyCompleteButton').unbind().click(function(){
+        var buyIdlist = '';
+        var type = 0;
+        var n = 0;
+        $('table tbody#applyTableData tr.warning').each(function(){
+            n++;
+            var idx = $(this).index();
+            buyIdlist += datalist[idx].ba_id + ',';
+            type = datalist[idx].ba_type;
+        });
+        if(n === 0){
+            toastr['error']('도서를 선택해주세요');
+            return;
+        }else{
+            buyIdlist = buyIdlist.substring(0, buyIdlist.length -1);
+            $.post('/book/manage/buyComplete', {type : type, buyIdlist : buyIdlist}, function(response){
+                if(response === 'success')  toastr['success']('주문완료');
+                else    toastr['error']('주문실패');
+            });
+            $('div.modal').modal('hide');
+            window.location.reload();
+        }
     });
 }
 
 function selectAllButton(){
     $('button#selectAllButton').unbind().click(function(){
         if($('table tbody#applyTableData tr.warning').length != cnt){
-            $('table tbody#applyTableData tr').each(function(index){
+            $('table tbody#applyTableData tr').each(function(){
                 $(this).addClass('warning');
             })
         }else{
-            $('table tbody#applyTableData tr').each(function(index){
+            $('table tbody#applyTableData tr').each(function(){
                 $(this).removeClass('warning');
             })
         }
@@ -172,18 +200,29 @@ function enrollButton(datalist){
             toastr['error']('도서를 선택해주세요');
             return;
         }
-        makelocationData();
-        registerButton(datalist);
+        var state = 0;
+        $('#applyTableData tr.warning').each(function(){
+            var idx = $(this).index();
+            if(datalist[idx].ba_state === '0'){
+                state = 1;
+            }
+        });
+
+        if(state === 1){
+            toastr['error']('구매하지 않은 책은 등록이 불가능합니다');
+            return;
+        }else{
+            makelocationData();
+            registerButton(datalist);
+        }
     });
 }
-
 
 function makelocationData(){
     var modalString = '<table class="table table-bordered" id="category">';
     var initial = 'A';
     var temp = 0;
     var divide = 0;
-    var idx = 0;
     $.each(book_category, function(key, value){
         if(key[0] != initial){
             divide++;
@@ -215,8 +254,9 @@ function registerButton(datalist){
             return;
         }
         var registerIdlist = '';
-        $('#applyTableData tr.warning').each(function(index){
-            registerIdlist += datalist[index].ba_id + ',';
+        $('#applyTableData tr.warning').each(function(){
+            var idx = $(this).index();
+            registerIdlist += datalist[idx].ba_id + ',';
         });
         registerIdlist = registerIdlist.substring(0, registerIdlist.length -1);
         $.post('/book/manage/enrollBook', {location : $('input:radio[name="location"]:checked').val(), registerIdlist : registerIdlist},function(response){
@@ -230,9 +270,9 @@ function registerButton(datalist){
 
 function calSum(datalist){
     var sum = 0;
-    $('#applyTableData tr').each(function(index){
+    $('#applyTableData tr').each(function(){
         if($(this).hasClass('warning')){
-            sum += datalist[index].ba_price;
+            sum += datalist[$(this).index()].ba_price;
         }
     });
     return sum;

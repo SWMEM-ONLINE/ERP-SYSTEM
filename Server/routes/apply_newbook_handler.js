@@ -60,7 +60,7 @@ function deleteMyapply(con, req, res){
 }
 
 function checkDuplication(con, req, res){
-    var query = 'select b_isbn, b_total from t_book where b_state!=3 UNION select ba_id, ba_isbn from t_book_apply';
+    var query = 'select b_isbn, count(b_isbn) cnt from t_book where b_state != 3 group by b_isbn UNION select count(ba_isbn), ba_isbn from t_book_apply group by ba_isbn';
     con.query(query, function(err, response){
         res.send(response);
     })

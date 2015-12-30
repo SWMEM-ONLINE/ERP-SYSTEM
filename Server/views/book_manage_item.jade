@@ -1,0 +1,53 @@
+//
+    by jung-inchul on 2015. 12. 28..
+
+extends main_layout
+
+append head
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/book_mybook.css')
+
+block content
+    .container.contents
+        h3 도서관리
+        hr
+        .content
+            ul.nav.nav-pills.nav-justified
+                li.active
+                    a(href="#") 기술서적
+                li
+                    a(href="#") 인문서적
+            hr
+            #booksearch
+                .input-group
+                    button#bookSearchCategory(type='button') 도서명
+                        button.dropdown-toggle(type='button', data-toggle='dropdown')
+                            span.caret
+                        ul#categoryDropdown.dropdown-menu
+                            li
+                                a(href='#') 도서명
+                            li
+                                a(href='#') 저자
+                            li
+                                a(href='#') 출판사
+                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
+                    button#bookSearchBtn(type='button') 검색
+            hr
+            table#booklist.table.table-hover.table-bordered.table-condensed
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title 도서위치 변경
+                .modal-body
+                .modal-footer
+                    button#resetButton.btn(type='button') 변경
+                    button#return.btn(type='button', data-dismiss='modal') 닫기
+
+append script
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../../javascripts/book_manage_item.js')

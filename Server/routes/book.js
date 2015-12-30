@@ -126,4 +126,20 @@ router.post('/manage/enrollBook', util.ensureAuthenticated, function(req, res){
     book_handler.enrollBook(con, req, res);
 });
 
+router.post('/manage/buyComplete', util.ensureAuthenticated, function(req, res){
+    book_handler.buyComplete(con, req, res);
+});
+
+router.get('/manage/item', util.ensureAuthenticated, function(req, res){
+    res.render('book_manage_item', { title : '도서 관리'});
+});
+
+router.post('/manage/loadbooklist', util.ensureAuthenticated, function(req, res){
+    book_handler.loadbooklist(con, req, res);
+});
+
+router.post('/manage/resetbookLocation', util.ensureAuthenticated, function(req, res){
+    book_handler.resetbookLocation(con, req, res);
+});
+
 module.exports = router;

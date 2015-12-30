@@ -201,6 +201,27 @@ function enrollBook(con, req, res){
     });
 }
 
+function buyComplete(con, req, res){
+    var query = 'update t_book_apply set ba_state=1 where ba_id IN (' + req.body.buyIdlist + ')';
+    con.query(query);
+    var query1 = 'update t_book set b_new=0 where b_new=1 and b_type=' + req.body.type;
+    con.query(query1);
+    res.send('success');
+}
+
+function loadbooklist(con, req, res){
+    var query = 'select * from t_book where b_type=' + req.body.flag;
+    con.query(query, function(err, response){
+        res.send(response);
+    });
+}
+
+function resetbookLocation(con, req, res){
+    var query = 'update t_book set b_location="' + req.body.location + '" where b_id IN (' + req.body.resetIdlist + ')';
+    con.query(query);
+    res.send('success');
+}
+
 function getDate(base, plusDate){
     var tempDate = new Date(base);
     tempDate.setDate(tempDate.getDate() + plusDate);
@@ -208,6 +229,9 @@ function getDate(base, plusDate){
     return date;
 }
 
+exports.resetbookLocation = resetbookLocation;
+exports.loadbooklist = loadbooklist;
+exports.buyComplete = buyComplete;
 exports. enrollBook = enrollBook;
 exports.loadApplylist = loadApplylist;
 exports.loadinArrears = loadinArrears;
