@@ -110,3 +110,11 @@ a#selectAdmin{
     vertical-align: middle;
     margin-right: 10px;
 }
+
+.profile-img{
+    float: right;
+}
+
+.profile-img img{
+    width: 150px;
+}

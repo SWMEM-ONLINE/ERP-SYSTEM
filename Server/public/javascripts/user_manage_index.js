@@ -49,6 +49,7 @@ function getMemberList(){
             if(user.u_state <= COMMAND_DEGREE) classString += ' text-command';
             if(user.u_state == 104 || user.u_state == 102) classString += ' text-disable';
             if(user.u_state == 103) classString += ' text-wait';
+            document.getElementById('profile').setAttribute('src','http://localhost:3000/image?name='+user.u_photo_url);
             tbodyString += '<td id="'+user.u_id+'" class="'+classString+'">'+user.u_name+'</td>';
             periodCnt++;
         }
