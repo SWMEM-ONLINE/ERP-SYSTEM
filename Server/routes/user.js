@@ -25,15 +25,13 @@ router.post('/info', util.ensureAuthenticated, function(req, res, next) {
     var uPhone = req.body.phone;
     var eMail = req.body.mail;
 
-    var connection = db_handler.connectDB();
-
     var query = 'update t_user set';
     if(0<encPW.length){
         query += ' u_password = '+encPW;
     }
     query += ' u_phone = '+uPhone+' u_email = '+eMail+' where u_id = '+uID;
 
-    connection.query(query,function(err,result){
+    con.query(query,function(err,result){
         if (err) {
             console.error(err);
             throw err;
@@ -43,23 +41,34 @@ router.post('/info', util.ensureAuthenticated, function(req, res, next) {
 
 });
 
-router.get('/userlist', util.ensureAuthenticated, function(req, res, next) {
+router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
 
+    var query = 'select * from t_user order by u_period';
 
-    var connection = db_handler.connectDB();
-
-    var query = 'select * from t_user order by u_name';
-
-    connection.query(query,function(err,rows){
+    con.query(query,function(err,rows){
         if (err) {
             console.error(err);
             throw err;
         }
-
+        console.log(rows);
         var send = JSON.stringify(rows);
-        res.render('userlist', { title: '회원리스트', result:JSON.parse(send)});
+        res.json(JSON.parse(send));
     });
+});
 
+router.post('/memberinfo', util.ensureAuthenticated, function(req, res, next) {
+    var id = req.body.u_id;
+    var query = 'select * from t_user where u_id = "'+id+'"';
+
+    con.query(query,function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+        console.log(rows);
+        var send = JSON.stringify(rows);
+        res.json(JSON.parse(send));
+    });
 });
 
 router.post('/getUserInfo', util.ensureAuthenticated, function(req, res, next) {
@@ -75,13 +84,12 @@ router.post('/getUserInfo', util.ensureAuthenticated, function(req, res, next) {
 router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, next) {
 
     var state = req.body.grade;
-    var id = req.body.id;
+    var u_id = req.body.u_id;
 
-    var connection = db_handler.connectDB();
 
-    var query = 'update t_user set u_state = '+state+' where u_id = '+id;
+    var query = 'update t_user set u_state = '+state+' where u_id = "'+u_id + '"';
 
-    connection.query(query,function(err,rows){
+    con.query(query,function(err,rows){
         if (err) {
             console.error(err);
             throw err;
@@ -89,7 +97,23 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
 
         res.json({status:'0'});
     });
+});
 
+router.post('/reset', util.ensureAuthenticated, function(req, res, next) {
+    var id = req.body.u_id;
+    var encPW = crypto.createHash('sha256').update('0000').digest('base64');
+    var query = 'update t_user set u_password = "'+encPW+'" where u_id = "'+id + '"';
+    con.query(query,function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+        res.json({status:'0'});
+    });
+});
+
+router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
+    res.render('user_manage', {title: '회원 관리'});
 });
 
 router.post('/resetUserPassword', util.ensureAuthenticated, function(req, res, next) {

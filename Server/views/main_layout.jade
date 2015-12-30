@@ -91,16 +91,22 @@ body
                      a.dropdown-toggle(href='#', data-toggle='dropdown') USER
                      ul.dropdown-menu
                         li
-                           a(href='/user/info') My page
+                           a(href='/user/info') 나의 페이지
                         li
-                           a(href='/logout') Logout
+                           a(href='/user/list') 회원 정보
+                        li
+                           a(href='/user/manage') 회원 관리
+                        li
+                           a(href='/user/finished') 수료 회원 관리
+                        li
+                           a(href='/logout') 로그아웃
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') SYSTEM
                      ul.dropdown-menu
                         li
-                           a(href='/sys/info') Information
+                           a(href='/sys/info') 정보
                         li
-                           a(href='/sys/manual') Manual
+                           a(href='/sys/manual') 메뉴얼
 block content
 block foot
    footer
