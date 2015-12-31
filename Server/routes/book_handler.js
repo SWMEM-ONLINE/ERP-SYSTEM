@@ -80,7 +80,6 @@ function searchBook(con, req, res){
 /*
     Enroll missing booklist.
     - update query to t_book : change status 3
-    - update query to t_book : change b_total
     - insert query to t_book_loss
     - delete query to t_book_rental
     - delete query to t_book_reserve
@@ -89,7 +88,6 @@ function searchBook(con, req, res){
 function missingBook(con, req, res){
     var today = getDate(new Date(), 0);
     var query = 'UPDATE t_book set b_state=3 where b_id="' + req.body.book_id +'"';
-    var query1 = 'update t_book set b_total=b_total-1 where b_isbn="' + req.body.isbn + '"';
     var query2 = 'insert into t_book_loss SET ?';
     var query3 = 'delete from t_book_rental where br_book_id="' + req.body.book_id + '"';
     var query4 = 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '"';
@@ -99,7 +97,6 @@ function missingBook(con, req, res){
         brl_loss_date : today
     };
     con.query(query);
-    con.query(query1);
     con.query(query2, queryData);
     con.query(query3);
     con.query(query4);
@@ -134,6 +131,97 @@ function reserveBook(con, req, res){
     });
 }
 
+function loadnowHistory(con, req, res){
+    var query = 'select * from t_book_rental a inner join t_book b on a.br_book_id=b.b_id inner join t_user c on a.br_user=c.u_id';
+    con.query(query, function(err, response){
+        if(err)
+            res.send('failed');
+        res.send(response);
+    });
+}
+
+function loadpastHistory(con, req, res){
+    var query = 'select * from t_book a inner join t_book_return b on a.b_id=b.brt_book_id inner join t_user c on b.brt_user=c.u_id';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send(response);
+    });
+}
+
+function loadmissingBook(con, req, res){
+    var query = 'select * from t_book_loss a inner join t_book b on a.brl_book_id=b.b_id inner join t_user c on a.brl_user=c.u_id';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send(response);
+    });
+}
+
+function reenroll(con, req, res){
+    var query = 'update t_book set b_state=0 where b_id IN (' + req.body.enrollList + ');';
+    query += 'delete from t_book_loss where brl_book_id IN (' + req.body.enrollList + ');';
+    con.query(query);
+}
+
+function loadinArrears(con, req, res){
+    var query = 'select *,DATEDIFF(CURDATE(), b_due_date) diff from t_user a inner join t_book b on a.u_name=b.b_rental_username where (DATEDIFF(CURDATE(), b_due_date)) > 0';
+    con.query(query, function(err, response){
+        res.send(response);
+    });
+}
+
+function loadApplylist(con, req, res){
+    var query = 'select * from t_book_apply a inner join t_user b on a.ba_user=b.u_id where ba_type=' + req.body.flag;
+    con.query(query, function(err, response){
+        res.send(response);
+    });
+}
+
+function enrollBook(con, req, res){
+    var query='select * from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
+    var query1 = '';
+    con.query(query, function(err, response){
+        for(var i = 0; i < response.length; i++){
+            query1 += 'insert into t_book set b_type=' + response[i].ba_type + ', b_name="' + response[i].ba_name + '", b_isbn="' + response[i].ba_isbn + '", b_author="' + response[i].ba_author + '", b_publisher="' + response[i].ba_publisher + '", b_location="' + req.body.location + '", b_photo_url="' + response[i].ba_photo_url + '", b_price=' + response[i].ba_price + ';';
+        }
+        con.query(query1);
+    });
+    var query2 = 'delete from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
+    con.query(query2, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    });
+}
+
+function buyComplete(con, req, res){
+    var query = 'update t_book_apply set ba_state=1 where ba_id IN (' + req.body.buyIdlist + ')';
+    con.query(query);
+    var query1 = 'update t_book set b_new=0 where b_new=1 and b_type=' + req.body.type;
+    con.query(query1);
+    res.send('success');
+}
+
+function loadbooklist(con, req, res){
+    var query = 'select * from t_book where b_type=' + req.body.flag;
+    con.query(query, function(err, response){
+        res.send(response);
+    });
+}
+
+function resetbookLocation(con, req, res){
+    var query = 'update t_book set b_location="' + req.body.location + '" where b_id IN (' + req.body.resetIdlist + ')';
+    con.query(query);
+    res.send('success');
+}
+
 function getDate(base, plusDate){
     var tempDate = new Date(base);
     tempDate.setDate(tempDate.getDate() + plusDate);
@@ -141,6 +229,16 @@ function getDate(base, plusDate){
     return date;
 }
 
+exports.resetbookLocation = resetbookLocation;
+exports.loadbooklist = loadbooklist;
+exports.buyComplete = buyComplete;
+exports. enrollBook = enrollBook;
+exports.loadApplylist = loadApplylist;
+exports.loadinArrears = loadinArrears;
+exports.reenroll = reenroll;
+exports.loadmissingBook = loadmissingBook;
+exports.loadpastHistory = loadpastHistory;
+exports.loadnowHistory = loadnowHistory;
 exports.loadNewTechbook = loadNewTechbook;
 exports.loadNewHumanitiesbook = loadNewHumanitiesbook;
 exports.borrowBook = borrowBook;

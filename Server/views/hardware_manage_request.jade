@@ -1,0 +1,40 @@
+//
+    by jung-inchul on 2015. 12. 16..
+
+extends main_layout
+
+append head
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/hardware_myhardware.css')
+
+block content
+    .container.contents
+        h3 하드웨어 신청 관리
+        hr
+        .content
+            ul.nav.nav-pills.nav-justified
+                li.active
+                    a(href="#") 대여
+                li
+                    a(href="#") 연장
+                li
+                    a(href="#") 반납
+                li
+                    a(href="#") 구매
+            hr
+            table#requestTable.table.table-striped.table-hover
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title 구매신청한 하드웨어
+                .modal-body
+                .modal-footer
+                    button.btn(type='button', data-dismiss='modal') 닫기
+append script
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../../javascripts/hardware_manage_request.js')

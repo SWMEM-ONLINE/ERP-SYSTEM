@@ -9,10 +9,13 @@
     h3{
         font-size: 30px;
     }
+    div.content table{
+        width: 100%;
+    }
 }
-@media(min-width:992px) {
+@media(min-width:993px) {
     div.content{
-        width:900px;
+        width:993px;
         margin:auto;
     }
 }
@@ -29,10 +32,60 @@
     vertical-align: middle;
 }
 
-button#turnIn{
-    vertical-align: middle;
-}
-
 hr{
     border:1px solid #e7e9ec;
+}
+
+table th{
+    text-align: center;
+}
+
+table td{
+    text-align: center;
+}
+
+div.contents{
+    position: relative;
+    text-align: center;
+}
+
+div.content table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button#enroll{
+    text-align: center;
+    border:none;
+    height: 34px;
+    border-radius: 4px;
+    background-color: #122359;
+    color: white;
+}
+
+button#plus{
+    text-align: center;
+    border:none;
+    height: 34px;
+    border-radius: 4px;
+    background-color: #122359;
+    color: white;
+}
+
+div.content button#minus{
+    background-color: #ff000d;
+    text-align: center;
+    border:none;
+    height: 34px;
+    border-radius: 4px;
+    color: white;
+}
+
+.scrollup {
+    position: fixed; /* 위치 고정 */
+    float: right; /* 오른쪽으로 */
+    height: 32px; /* 높이 32픽셀 */
+    right: 10px; /* 오른쪽에서 10픽셀 */
+    bottom: 10px; /* 아래에서 10픽셀 */
+    opacity: 0.7; /* 투명도이며 최고값은 1 */
 }

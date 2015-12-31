@@ -1,44 +1,17 @@
 /**
  * Created by jung-inchul on 2015. 12. 7..
  */
-$('ul.nav-pills li').click(function(){      // Divide Normal or Special Hardware
-    var index = $(this).index();
-    $('ul.nav-pills li').removeClass('active');
-    $(this).addClass('active');
-    if(index === 0) {                       // Choose Normal Hardware
-        $('table#normalHardware').removeClass('hidden');
-        $('table#specialHardware').addClass('hidden');
-        loadNormalHardware();
-    }else {                                 // Choose Special Hardware
-        $('table#normalHardware').addClass('hidden');
-        $('table#specialHardware').removeClass('hidden');
-        loadSpecialHardware();
-    }
-});
-loadNormalHardware();
+loadHardwarelist();
 
 /*
     Search Normal Hardware list from database named 'datalist'
     Make html string named 'htmlString' to show with table and waiting click event.
  */
-function loadNormalHardware(){
-    $.post('/hardware/normal', function(datalist){
+function loadHardwarelist(){
+    $.post('/hardware/loadHardwarelist', function(datalist){
         var htmlString = settingHTML(datalist);
-        $('#normalHardware').html(htmlString);
-        $('.modal-header').text('일반 하드웨어 대여');
-        clickEvent(datalist);
-    });
-}
-
-/*
-    Search Special Hardware list from database named 'datalist'
-    Make html string named 'htmlString' to show with table and waiting click event.
- */
-function loadSpecialHardware(){
-    $.post('/hardware/special', function(datalist){
-        var htmlString = settingHTML(datalist);
-        $('#specialHardware').html(htmlString);
-        $('.modal-header').text('운영실 하드웨어 대여');
+        $('#hardwarelist').html(htmlString);
+        $('.modal-header').text('하드웨어 대여');
         clickEvent(datalist);
     });
 }
@@ -82,6 +55,7 @@ function clickEvent(datalist){
         }
         string += '<h4 class="bookTitle">' + datalist[index].h_name + '</h4>';
         string += '<p>' + '총 수량 : ' + datalist[index].h_total + '</p><p>남은수량 : ' + datalist[index].h_remaining + '</p>';
+        //if(datalist[index].h_serial != null)    string += '<p>시리얼넘버 : ' + datalist[index].h_serial + '</p>';
         $.post('/hardware/lender', {hardware_id: datalist[index].h_id}, function(response){      // Call selected hardware's lenders list
             if(response.length > 0){            // If lenders exist, make list table
                 string += '<table class="table table-striped">';

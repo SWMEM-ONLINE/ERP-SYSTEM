@@ -76,8 +76,8 @@ function settingHTML(datalist, flag){
                     htmlString += '<h4 class="bookTitle">' + data.title;
                     for(var i = 0; i < response.length; i++){
                         if(response[i].b_isbn === data.isbn){
-                            htmlString += '&nbsp<span class="label label-danger">' + response[i].b_total + '권 존재</span>';
-                        }else if(response[i].b_total === data.isbn){
+                            htmlString += '&nbsp<span class="label label-danger">' + response[i].cnt + '권 존재</span>';
+                        }else if(response[i].cnt === data.isbn){
                             htmlString += '&nbsp<span class="label label-primary">신청중</span>';
                             break;
                         }

@@ -6,17 +6,24 @@ $('ul.nav-pills li').click(function(){          // Divide Normal or Special Hard
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');
     if(index === 0) {                           // Choose Normal Hardware
-        $('table#myNormalHardware').removeClass('hidden');
-        $('table#mySpecialHardware').addClass('hidden');
-        loadMynormalHardware();
-    }else {                                     // Choose Special Hardware
-        $('table#myNormalHardware').addClass('hidden');
-        $('table#mySpecialHardware').removeClass('hidden');
-        loadMyspecialHardware();
+        $('table#myHardware').removeClass('hidden');
+        $('table#myrequestedHardware').addClass('hidden');
+        $('table#myappliedHardware').addClass('hidden');
+        loadmyHardware();
+    }else if(index === 1){                                     // Choose Special Hardware
+        $('table#myHardware').addClass('hidden');
+        $('table#myrequestedHardware').removeClass('hidden');
+        $('table#myappliedHardware').addClass('hidden');
+        loadmyRequestedHardware();
+    }else{
+        $('table#myHardware').addClass('hidden');
+        $('table#myrequestedHardware').addClass('hidden');
+        $('table#myappliedHardware').removeClass('hidden');
+        loadmyappliedHardware();
     }
 });
 
-loadMynormalHardware();
+loadmyHardware();
 
 var temp = 0;           // Using for divide normal and special hardware index
 var today = new Date();     // Using to express progress bar
@@ -27,16 +34,27 @@ today.setHours(9);
     Make html string named 'htmlString' to show with table and waiting click event.
     2 buttons are in this function named 'turnIn', 'postpone'
  */
-function loadMynormalHardware(){
-    $.post('/hardware/myhardware/normal', function(datalist){
+function loadmyHardware(){
+    $.post('/hardware/myhardware/borrowed', function(datalist){
         if(datalist.length === 0){              // If user doesn't borrow anyone.
-            $('div#myNormalHardware').html('<tbody><th><tr><td><h4 class="text-center">예약한 일반 하드웨어가 없습니다.</h4></td></tr></th></tbody>');
+            $('div#myHardware').html('<tbody><th><tr><td><h4 class="text-center">예약한 일반 하드웨어가 없습니다.</h4></td></tr></th></tbody>');
             return;
         }
-        var htmlString = settingHTML(datalist, 0);
-        $('#myNormalHardware').html(htmlString);
-        turnInButton(datalist, 0);
-        postponeButton(datalist, 0);
+        var htmlString = '<tbody>';
+        $.each(datalist, function(idx, data){
+            htmlString += '<tr><td>';
+            htmlString += '<h5 class="hardwareTitle">' + data.h_name + '</h5>';
+            htmlString += '<p><span class="label label-info">반납일 : ' + data.hr_due_date + '</span>&nbsp&nbsp<span class="label label-warning">연장횟수 : ' + data.hr_extension_cnt + '</span>';
+            htmlString += makeProgressbar(today, data.hr_rental_date, data.hr_due_date);
+            htmlString += '</td><td width="5%"><div class="btn-group-vertical">';
+            htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 반납신청 </button>';
+            htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 연장신청 </button>';
+            htmlString += '</td></tr>';
+        });
+        htmlString += '</tbody>';
+        $('#myHardware').html(htmlString);
+        turnInButton(datalist);
+        postponeButton(datalist);
     });
 }
 
@@ -45,40 +63,60 @@ function loadMynormalHardware(){
     Make html string named 'htmlString' to show with table and waiting click event.
     2 buttons are in this function named 'turnIn', 'postpone'
  */
-function loadMyspecialHardware(){
-    $.post('/hardware/myhardware/special', function(datalist){
+function loadmyRequestedHardware(){
+    $.post('/hardware/myhardware/requested', function(datalist){
         if(datalist.length === 0){
-            $('div#mySpecialHardware').html('<tbody><th><tr><td><h4 class="text-center">예약한 일반 하드웨어가 없습니다.</h4></td></tr></th></tbody>');
+            $('div#myrequestedHardware').html('<tbody><th><tr><td><h4 class="text-center"> 요청이 없습니다. </h4></td></tr></th></tbody>');
             return;
         }
-        var htmlString = settingHTML(datalist, 1);
-        $('#mySpecialHardware').html(htmlString);
-        turnInButton(datalist, 1);
-        postponeButton(datalist, 1);
+        var htmlString = '<tbody>';
+        $.each(datalist, function(idx, data){
+            htmlString += '<tr><td>';
+            htmlString += '<h5 class="hardwareTitle">' + data.h_name + '</h5>';
+            htmlString += '<p><span class="label label-info">';
+            switch(data.hw_kind){
+                case 0: htmlString += '대여 신청';  break;
+                case 1: htmlString += '반납 신청';  break;
+                default:    htmlString += '연장 신청';  break;
+            }
+            htmlString += '</span>&nbsp&nbsp';
+            switch(data.hw_result){
+                case 0: htmlString += '<span class="label label-warning">신청결과 : 대기중 </span>';  break;
+                case 1: htmlString += '<span class="label label-success">신청결과 : 승인 </span>';   break;
+                default:    htmlString += '<span class="label label-danger">신청결과 : 미승인 </span>';   break;
+            }
+            htmlString += '</p></td><td width="5%"><div class="btn-group-vertical">';
+            htmlString += '<button id="deleteRequest" type="button" class="btn btn-danger btn-sm"> 삭제 </button>';
+            htmlString += '</td></tr>';
+        });
+        htmlString += '</tbody>';
+        $('#myrequestedHardware').html(htmlString);
+        deleteRequestButton(datalist);
     });
 }
 
-function settingHTML(datalist, flag){
-    var htmlString = '<tbody>';
-    $.each(datalist, function(idx, data){
-        htmlString += '<tr><td>';
-        htmlString += '<h5 class="hardwareTitle">' + data.h_name + '</h5><p><span class="label label-info">반납일 : ' + data.hr_due_date + '</span>&nbsp&nbsp<span class="label label-warning">연장횟수 : ' + data.hr_extension_cnt + '</span>';
-        htmlString += makeProgressbar(today, data.hr_rental_date, data.hr_due_date);
-        htmlString += '</td><td width="5%"><div class="btn-group-vertical">';
-        htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 기기반납 </button>';
-        htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
-        htmlString += '</td></tr>';
-        if(flag === 0) temp++;
+function loadmyappliedHardware(){               // 미완성된 함수.
+    $.post('/hardware/myhardware/applied', function(datalist){
+        if(datalist.length === 0){
+            $('div#myappliedHardware').html('<tbody><th><tr><td><h4 class="text-center"> 신청한 하드웨어가 없습니다.</h4></td></tr></th></tbody>');
+            return;
+        }
+        var htmlString = '<tbody>';
+        $.each(datalist, function(idx, data){
+            htmlString += '<tr><td><h5>' + data.ha_item_name + '</h5></td><td width="5%">';
+            htmlString += '<button id="showDetail" type="button" class="btn btn-primary btn-sm"> 자세히 </button></td></tr>';
+        });
+        htmlString += '</tbody>';
+        $('#myappliedHardware').html(htmlString);
+        showdetailButton(datalist);
     });
-    htmlString += '</tbody>';
-    return htmlString;
 }
 
-function turnInButton(datalist, flag){
+function turnInButton(datalist){
     $('button#turnIn').each(function(index){            // Turnin button & function
-        if(flag === 1)  index = index - temp;
         $(this).unbind().click(function(event){
-            $.post("/hardware/myhardware/turnIn", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id, rental_date: datalist[index].hr_rental_date, due_date: datalist[index].hr_due_date}, function (data) {
+            console.log(index);
+            $.post("/hardware/myhardware/turnIn", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id}, function (data) {
                 console.log(data);              // 대여에 성공했다는 토스트라도 띄워줄까.
             });
             window.location.reload();
@@ -86,15 +124,53 @@ function turnInButton(datalist, flag){
     });
 }
 
-function postponeButton(datalist, flag){
+function postponeButton(datalist){
     $('button#postpone').each(function(index){          // Postpone button & function
-        if(flag === 1)  index = index - temp;
         $(this).unbind().click(function(){
-            $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, due_date: datalist[index].hr_due_date}, function (data) {
+            $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id}, function (data) {
                 console.log(data);
             });
             window.location.reload();
         });
+    });
+}
+
+function deleteRequestButton(datalist){
+    $('button#deleteRequest').each(function(index){
+        $(this).unbind().click(function(){
+            $.post('/hardware/myhardware/deleteRequest', {waiting_id: datalist[index].hw_id}, function(data){
+                console.log(data);
+            });
+            window.location.reload();
+        });
+    });
+}
+
+function showdetailButton(datalist){
+    $('button#showDetail').each(function(index){
+        $(this).unbind().click(function(){
+            var string = '<table class="table table-striped table-bordered">';
+            string += '<tr class="warning"><th colspan="2">' + datalist[index].ha_item_name + '</th></tr>';
+            string += '<tr><td colspan="2">' + datalist[index].ha_project_title + '</td></tr>';
+            string += '<tr><td colspan="2">' + datalist[index].ha_team_name + '<span class="label label-warning">PL : ' + datalist[index].ha_pl_name + '</span></td></tr>';
+            string += '<tr><td>구분 : ' + datalist[index].ha_category + '</td><td>Hardware 역할 : ' + datalist[index].ha_role + '</td></tr>';
+            string += '<tr><td>규격 : ' + datalist[index].ha_size + '</td><td>연락처 : ' + datalist[index].ha_call + '</td></tr>';
+            string += '<tr><td>제조업체 : ' + datalist[index].ha_manufactor + '</td><td>판매업체 : ' + datalist[index].ha_salesmall + '</td></tr>';
+            string += '<tr><td colspan="2"><a href="' +datalist[index].ha_url + '" target="_blank" style="color:blue">URL 이동</a></td></tr>';
+            $('div.modal-body').html(string);
+            $('div.modal').modal();
+            cancelmyApplyButton(datalist[index]);
+        });
+    });
+}
+
+function cancelmyApplyButton(data){
+    $('button#cancelmyappliedHardware').unbind().click(function(){
+        $.post('/hardware/myhardware/cancelmyApply', {apply_id: data.ha_id}, function(res){
+
+        });
+        $('div.modal').modal('hide');
+        window.location.reload();
     });
 }
 
@@ -109,7 +185,7 @@ function makeProgressbar(t1, t2, t3){
     var borrow_date = new Date(t2);     // borrow_date
     var due_date = new Date(t3);        // due_date
     if(due_date.getTime() <= now.getTime()){        // #1.
-        var gap = parseInt(now.getTime() - due_date.getTime()) / (3600000 * 24);    // calculate difference from today to due_date
+        var gap = parseInt((now.getTime() - due_date.getTime()) / (3600000 * 24));    // calculate difference from today to due_date
         if(gap == 0) text = '대여 기한이 오늘까지입니다.';
         else text = gap + '일 지났습니다.';
         string += '<div class="progress progress-striped active">';
