@@ -16,7 +16,7 @@ function connectDB(){
         port : '3306',
         password : 'qwer1234',
         database : 'swmem',
-        multipleStatements: true
+        multipleStatements : true
     });
 
     connection.connect(function(err){

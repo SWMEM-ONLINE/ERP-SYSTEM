@@ -102,8 +102,13 @@ body
                            a(href='/apply/equipment/manage') 비품신청관리
                   li
                      a(href='/vote') 설문
-                  li
-                     a(href='/question') 문의
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') 문의
+                     ul.dropdown-menu
+                        li
+                           a(href='/qna') 신청
+                        li
+                           a(href='/qna/manage') 관리
                ul.nav.navbar-nav.navbar-right
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') USER

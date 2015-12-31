@@ -23,6 +23,7 @@ var db_handler = require('./routes/DB_handler');
 var fee = require('./routes/fee');
 var hardware = require('./routes/hardware');
 var user = require('./routes/user');
+var qna = require('./routes/qna');
 /* routing pages@ */
 
 var util = require('./routes/util');
@@ -143,6 +144,7 @@ app.use('/book', book);
 app.use('/fee',fee);
 app.use('/hardware', hardware);
 app.use('/user',user);
+app.use('/qna',qna);
 
 app.get('/',
     function(req, res) {

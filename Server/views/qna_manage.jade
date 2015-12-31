@@ -1,0 +1,39 @@
+//
+   Created by KIMDONGWON on 2015-12-27.
+
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/qna.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .wrapper
+      article.container
+         h3 문의 관리
+         hr
+         .content
+            table.table#history
+               thead
+                  tr
+                     th 작성자
+                     th 제목
+                     th 날짜
+                     th 답변상태
+               tbody
+            table#pagination
+               tbody
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title
+            .modal-body
+            .modal-footer
+               button#solve.btn(type='button') 답변완료
+               button.btn(type='button', data-dismiss='modal') 닫기
+append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/qna_manage_index.js')
