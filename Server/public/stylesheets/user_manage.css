@@ -113,6 +113,8 @@ a#selectAdmin{
 
 .profile-img{
     float: right;
+    border-left: 1px solid #dfdfdf;
+    padding-left: 10px;
 }
 
 .profile-img img{
