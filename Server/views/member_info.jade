@@ -1,0 +1,41 @@
+//
+   Created by KIMDONGWON on 2016-01-02.
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/user_manage.css')
+block content
+   .wrapper
+      article.container
+         h3 회원 목록
+         hr
+         .content
+            table#memberList.table
+               tbody
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title 회원 정보
+            .modal-body
+               .form-group
+                  h5#type
+                  .profile-img
+                     img#profile
+               p 아이디
+               h5#id
+               p 이름
+               h5#name
+               p 기수
+               h5#period
+               p 핸드폰번호
+               h5#phone
+               p E-mail
+               h5#mail
+            .modal-footer
+               button.btn(type='button', data-dismiss='modal') 닫기
+append script
+   script(src='../javascripts/member_info_index.js')

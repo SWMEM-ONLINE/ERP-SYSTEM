@@ -154,4 +154,8 @@ router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
     res.render('user_manage', {title: '회원 관리'});
 });
 
+router.get('/members', util.ensureAuthenticated, function(req, res, next) {
+    res.render('member_info', {title: '회원 목록'});
+});
+
 module.exports = router;
