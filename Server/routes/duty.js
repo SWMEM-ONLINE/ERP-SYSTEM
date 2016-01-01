@@ -92,9 +92,27 @@ router.post('/loadDuty', util.ensureAuthenticated, function(req, res){
 router.post('/getName', util.ensureAuthenticated, function(req, res){
     duty_handler.getName(con,req,res);
 });
+router.post('/requestChangeDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.requestChangeDuty(con,req,res);
+});
+router.post('/showChangeDutyHistrory', util.ensureAuthenticated, function(req, res){
+    duty_handler.showChangeDutyHistrory(con,req,res);
+});
 
+router.post('/getID', util.ensureAuthenticated, function(req, res){
+    duty_handler.getID(con,req,res);
+});
 
+router.post('/acceptChangeDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.acceptChangeDuty(con,req,res);
+});
 
+router.post('/declineChangeDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.declineChangeDuty(con,req,res);
+});
 
+router.post('/forceChangeDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.forceChangeDuty(con,req,res);
+});
 
 module.exports = router;

@@ -3,6 +3,529 @@
  */
 
 
+
+
+
+function forceChangeDuty(con,req,res){
+
+    console.log(req.body);
+
+    var request_date1 = req.body.request_date1;
+    var request_date2 = req.body.request_date2;
+    var request_id1 = req.body.request_id1;
+    var request_id2 = req.body.request_id2;
+
+    request_date1 = new Date(request_date1);
+    request_date2 = new Date(request_date2);
+
+    var selected_user1 = "";
+    var selected_mode1 = "";
+    var request_mode1 = 0;
+
+    var selected_user2= "";
+    var selected_mode2 = "";
+    var request_mode2 = 0;
+
+    //   바로 넣어준다
+    var insert_query = "INSERT INTO `swmem`.`t_duty_change_history` (`request_date1`, `request_userid1`, `request_date2`, `request_userid2` , `accepted`) " +
+        "VALUES ('" +request_date1.getFullYear() +"-"+(request_date1.getMonth()+1) + "-"+request_date1.getDate()+"'" +
+        ", '" +request_id1 + "', " +
+        "'" +request_date2.getFullYear() +"-"+(request_date2.getMonth()+1) + "-"+request_date2.getDate()+"', " +
+        "'" +request_id2 + "', '1');";
+    console.log(insert_query);
+    con.query(insert_query, function(err, response){
+        if(err){
+            console.log(err);
+        }else{
+
+            if(response.length==0){
+                console.log("error");
+
+            }else{
+
+                console.log(response);
+
+                var get_query1 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth())
+                    + "-" + request_date1.getDate()+ "');";
+
+
+                console.log(get_query1);
+                con.query(get_query1, function(err, response){
+                    if(err){
+                        console.log(err);
+                    }else{
+
+                        if(response.length==0){
+                            console.log("error");
+
+                        }else{
+
+                            console.log(response);
+
+                            var tmp = getRequestInfo(response[0] , request_id1);
+                            selected_user1 = tmp.selected_user;
+                            selected_mode1 = tmp.selected_mode;
+                            request_mode1 = tmp.request_mode;
+
+                            var get_query2 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth())
+                                + "-" + request_date2.getDate()+ "');";
+
+
+                            console.log(get_query2);
+                            con.query(get_query2, function(err, response){
+                                if(err){
+                                    console.log(err);
+                                }else{
+
+                                    if(response.length==0){
+                                        console.log("error");
+
+                                    }else{
+
+                                        console.log(response);
+
+                                        var tmp = getRequestInfo(response[0] , request_id2);
+                                        selected_user2 = tmp.selected_user;
+                                        selected_mode2 = tmp.selected_mode;
+                                        request_mode2 = tmp.request_mode;
+
+                                        var change_query1 = "UPDATE `swmem`.`t_duty` " +
+                                            "SET `" + selected_user1+ "`='"+request_id2+"', " +
+                                            "`"+selected_mode1+"`='" +request_mode2 + "' " +
+                                            "WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth())
+                                            + "-" + request_date1.getDate()+ "');";
+
+                                        /*
+                                         request_user1 처리하는 부분
+                                         */
+
+                                        console.log(change_query1);
+                                        con.query(change_query1, function(err, response){
+                                            if(err){
+                                                console.log(err);
+                                            }else{
+
+                                                if(response.length==0){
+                                                    console.log("error");
+
+                                                }else{
+
+                                                    console.log(response);
+
+                                                    var change_query2 = "UPDATE `swmem`.`t_duty` " +
+                                                        "SET `" + selected_user2+ "`='"+request_id1+"', " +
+                                                        "`"+selected_mode2+"`='" +request_mode1 + "' " +
+                                                        "WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth())
+                                                        + "-" + request_date2.getDate()+ "');";
+
+                                                    /*
+                                                     request_user1 처리하는 부분
+                                                     */
+
+                                                    console.log(change_query2);
+                                                    con.query(change_query2, function(err, response){
+                                                        if(err){
+                                                            console.log(err);
+                                                        }else{
+
+                                                            if(response.length==0){
+                                                                console.log("error");
+
+                                                            }else{
+
+                                                                console.log(response);
+
+                                                                res.send(response);
+
+                                                            }
+                                                        }
+                                                    });
+
+
+                                                }
+                                            }
+                                        });
+
+                                    }
+                                }
+                            });
+
+
+                        }
+                    }
+                });
+
+            }
+        }
+    });
+
+
+
+}
+
+
+
+
+
+
+/**
+    요청된 체인지 듀티를 바꾸는 확인
+ */
+function declineChangeDuty(con,req,res){
+
+    console.log(req.body);
+
+
+    var index = req.body.index;
+    index = 1;
+
+
+    var update_query = "UPDATE `swmem`.`t_duty_change_history` SET `accepted`='2' WHERE `index`='" + index + "';";
+
+
+    console.log(update_query);
+    con.query(update_query, function(err, response){
+
+        if(err){
+            console.log(err);
+        }else{
+
+            if(response.length==0){
+                console.log("error");
+
+            }else{
+
+                console.log(response);
+
+                res.send(response);
+
+            }
+        }
+    });
+
+
+}
+
+/**
+ *  콜롬을 쌓아야 한다
+ */
+function getRequestInfo(data , request_id){
+
+    var selected_user1 = "";
+    var selected_mode1 = "";
+    var request_mode1 = 0;
+
+    var user1 = data.user_id1;
+    var user2 = data.user_id2;
+    var user3 = data.user_id3;
+    var user4 = data.user_id4;
+
+    var mode1 = data.user1_mode;
+    var mode2 = data.user2_mode;
+    var mode3 = data.user3_mode;
+    var mode4 = data.user4_mode;
+
+    if(user1 == request_id)
+    {
+        selected_user1 = "user_id1";
+        selected_mode1 = "user1_mode";
+        request_mode1 = mode1;
+    }
+    else if(user2 == request_id)
+    {
+        selected_user1 = "user_id2";
+        selected_mode1 = "user2_mode";
+        request_mode1 = mode2;
+    }
+    else if(user3 == request_id)
+    {
+        selected_user1 = "user_id3";
+        selected_mode1 = "user3_mode";
+        request_mode1 = mode3;
+    }
+    else if(user4 == request_id)
+    {
+        selected_user1 = "user_id4";
+        selected_mode1 = "user4_mode";
+        request_mode1 = mode4;
+    }else{
+        selected_user1 = "user_id4";
+        selected_mode1 = "user4_mode";
+        request_mode1 = mode4;
+        console.log("error!");
+    }
+
+    return {selected_user : selected_user1, selected_mode : selected_mode1, request_mode : request_mode1};
+
+
+}
+
+
+/**
+ *  요청한 당직 맞변경을 수락한다.
+ */
+function acceptChangeDuty(con,req,res){
+
+    console.log(req.body);
+
+    var index = req.body.index;
+    var request_date1 = req.body.request_date1;
+    var request_date2 = req.body.request_date2;
+    var request_id1 = req.body.request_id1;
+    var request_id2 = req.body.request_id2;
+
+    request_date1 = new Date(2016,1,1);
+    request_date2 = new Date(2016,1,2);
+    request_id1 = '1111';
+    request_id2 = '2222';
+    index = 1;
+
+    var selected_user1 = "";
+    var selected_mode1 = "";
+    var request_mode1 = 0;
+
+    var selected_user2= "";
+    var selected_mode2 = "";
+    var request_mode2 = 0;
+
+    var update_query = "UPDATE `swmem`.`t_duty_change_history` SET `accepted`='1' WHERE `index`='" + index + "';";
+
+    console.log(update_query);
+    con.query(update_query, function(err, response){
+        if(err){
+            console.log(err);
+        }else{
+
+            if(response.length==0){
+                console.log("error");
+
+            }else{
+
+                console.log(response);
+
+                var get_query1 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth())
+                    + "-" + request_date1.getDate()+ "');";
+
+
+                console.log(get_query1);
+                con.query(get_query1, function(err, response){
+                    if(err){
+                        console.log(err);
+                    }else{
+
+                        if(response.length==0){
+                            console.log("error");
+
+                        }else{
+
+                            console.log(response);
+
+                            var tmp = getRequestInfo(response[0] , request_id1);
+                            selected_user1 = tmp.selected_user;
+                            selected_mode1 = tmp.selected_mode;
+                            request_mode1 = tmp.request_mode;
+
+                            var get_query2 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth())
+                                + "-" + request_date2.getDate()+ "');";
+
+
+                            console.log(get_query2);
+                            con.query(get_query2, function(err, response){
+                                if(err){
+                                    console.log(err);
+                                }else{
+
+                                    if(response.length==0){
+                                        console.log("error");
+
+                                    }else{
+
+                                        console.log(response);
+
+                                        var tmp = getRequestInfo(response[0] , request_id2);
+                                        selected_user2 = tmp.selected_user;
+                                        selected_mode2 = tmp.selected_mode;
+                                        request_mode2 = tmp.request_mode;
+
+                                        var change_query1 = "UPDATE `swmem`.`t_duty` " +
+                                            "SET `" + selected_user1+ "`='"+request_id2+"', " +
+                                            "`"+selected_mode1+"`='" +request_mode2 + "' " +
+                                            "WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth())
+                                            + "-" + request_date1.getDate()+ "');";
+
+                                        /*
+                                         request_user1 처리하는 부분
+                                         */
+
+                                        console.log(change_query1);
+                                        con.query(change_query1, function(err, response){
+                                            if(err){
+                                                console.log(err);
+                                            }else{
+
+                                                if(response.length==0){
+                                                    console.log("error");
+
+                                                }else{
+
+                                                    console.log(response);
+
+                                                    var change_query2 = "UPDATE `swmem`.`t_duty` " +
+                                                        "SET `" + selected_user2+ "`='"+request_id1+"', " +
+                                                        "`"+selected_mode2+"`='" +request_mode1 + "' " +
+                                                        "WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth())
+                                                        + "-" + request_date2.getDate()+ "');";
+
+                                                    /*
+                                                     request_user1 처리하는 부분
+                                                     */
+
+                                                    console.log(change_query2);
+                                                    con.query(change_query2, function(err, response){
+                                                        if(err){
+                                                            console.log(err);
+                                                        }else{
+
+                                                            if(response.length==0){
+                                                                console.log("error");
+
+                                                            }else{
+
+                                                                console.log(response);
+
+                                                                res.send(response);
+
+                                                            }
+                                                        }
+                                                    });
+
+
+                                                }
+                                            }
+                                        });
+
+                                    }
+                                }
+                            });
+
+
+                        }
+                    }
+                });
+
+            }
+        }
+    });
+
+
+
+}
+
+
+
+function getID(con,req,res){
+
+    var id  = req.session.passport.user.id;
+
+    res.send(id);
+}
+
+
+function showChangeDutyHistrory(con,req,res){
+
+    console.log(req.body);
+
+
+    var id  = req.session.passport.user.id;
+
+    var query = "SELECT * ,(select u_name from t_user where u_id = request_userid1),(select u_name from t_user where u_id = request_userid2) FROM swmem.t_duty_change_history where (request_userid1 =" +
+        "'"+id+"' or request_userid2 = " +
+        "'"+id+"');";
+
+    console.log(query);
+    con.query(query, function(err, response){
+
+        if(err){
+            console.log(err);
+        }else{
+
+            if(response.length==0){
+                console.log("error");
+
+            }else{
+
+
+                console.log(response);
+
+                res.send(response);
+
+                //if(response.affectedRows > 0){
+                //    res.send("success");
+                //    console.log("success");
+                //}else{
+                //    res.send("fail");
+                //    console.log("fail");
+                //}
+
+            }
+        }
+    });
+
+
+}
+
+
+function requestChangeDuty(con,req,res){
+
+
+    console.log(req.body);
+
+    var request_date1 = req.body.request_date1;
+    var request_date2 = req.body.request_date2;
+    var request_id1 = req.session.passport.user.id;
+    var request_id2 = req.body.request_id2;
+
+    request_date1 = new Date(request_date1);
+    request_date2 = new Date(request_date2);
+
+    var query = "INSERT INTO `swmem`.`t_duty_change_history` (`request_date1`, `request_userid1`, `request_date2`, `request_userid2`) " +
+        "VALUES ('" +request_date1.getFullYear() +"-"+(request_date1.getMonth()+1) + "-"+request_date1.getDate()+"'" +
+        ", '" +request_id1 + "', " +
+        "'" +request_date2.getFullYear() +"-"+(request_date2.getMonth()+1) + "-"+request_date2.getDate()+"', " +
+        "'" +request_id2 + "');";
+
+    console.log(query);
+    con.query(query, function(err, response){
+
+        if(err){
+            console.log(err);
+        }else{
+
+            if(response.length==0){
+                console.log("error");
+
+            }else{
+
+                if(response.affectedRows > 0){
+                    res.send("success");
+                    console.log("success");
+                }else{
+                    res.send("fail");
+                    console.log("fail");
+                }
+
+            }
+        }
+    });
+}
+
+
+
+
+
+
+
+
 function loadDuty(con,req,res){
 
     var year = req.body.year;
@@ -519,7 +1042,6 @@ function getUser(con, req, res){
 
 
 
-
 function minusPointQuery(id, mode, point){
 
 
@@ -559,6 +1081,7 @@ function addPointQuery(id, mode, point){
 }
 
 
+
 exports.loadDuty =loadDuty;
 exports.getName = getName;
 exports.modifyPointHistoty =modifyPointHistoty;
@@ -569,4 +1092,9 @@ exports.loadMyPointHistory =loadMyPointHistory;
 exports.addPoint = addPoint;
 exports.getAddPoint = getAddPoint;
 exports.getMemberList = getMemberList;
-
+exports.requestChangeDuty = requestChangeDuty;
+exports.showChangeDutyHistrory = showChangeDutyHistrory;
+exports.getID = getID;
+exports.declineChangeDuty = declineChangeDuty;
+exports.acceptChangeDuty = acceptChangeDuty;
+exports.forceChangeDuty = forceChangeDuty;

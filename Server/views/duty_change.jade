@@ -23,7 +23,8 @@ block content
                     .modal-header
                         h4.modal-title 맞변경 신청 결과 조회
                     .modal-body
-                        table#resultlist.table
+                        table.table
+                            tbody#resultlist
                     .modal-footer
                         button.btn.btn-default(type='button', data-dismiss='modal') 닫기
         .row
@@ -49,11 +50,10 @@ block content
                                 td#user_4.hidden
         // Main component for a primary marketing message or call to action
         #memberinfo.hidden
-            h3#requestmember1.text-center
-            p.text-center 과 (와)
             h3#requestmember2.text-center
-            h4#requestmessage.text-center
-            button#request.btn.btn-lg.btn-primary.center-block(type='button') 신청
+            p.text-center 과 (와) 교환
+            button#request.btn.btn-lg(type='button') 신청
+            #result
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
