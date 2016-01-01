@@ -11,7 +11,7 @@ append head
 block content
    .wrapper
       article.container
-         h3 회원 정보
+         h3 나의 페이지
          hr
          .card
             for row in result
@@ -48,37 +48,36 @@ block content
                               button.delete 삭제
          .card
             .edit-content
-               table
-                  tr
-                     td 기존 비밀번호
-                     td
-                        input#currentPW(type='password')
-                  tr
-                     td 새 비밀번호
-                     td
-                        input#newPW(type='password')
-                  tr
-                     td 비밀번호 확인
-                     td
-                        input#confirmPW(type='password')
-                  tr
-                     td 전화번호
-                     td
-                        input#newPhone(type='text')
-                  tr
-                     td E-mail
-                     td
-                        input#newMail(type='mail')
-                  tr
-                     td 사진
-                     td
-                        input#newImg.sign_up_imgfile(type='file', name='sign_up_img', accept='image/*')
-                        label(for='sign_up_img') 사진 선택
-                  tr
-                     td(colspan='2')
-                        button#save.edit-save Save
-                  tr
-                     td(colspan='2') 기존 비밀번호는 꼭 입력하세요
+               form#form(method='post', enctype='multipart/form-data', action='/user/info/edit')
+                  table
+                     tr
+                        th 기존 비밀번호
+                        td
+                           input#currentPW(type='password' name='currentpw')
+                     tr
+                        td 새 비밀번호
+                        td
+                           input#newPW(type='password' name='newpw')
+                     tr
+                        td 비밀번호 확인
+                        td
+                           input#confirmPW(type='password' name='confirmpw')
+                     tr
+                        td 전화번호
+                        td
+                           input#newPhone(type='tel' name='newphone')
+                     tr
+                        td E-mail
+                        td
+                           input#newMail(type='text' name='newmail')
+                     tr
+                        td 사진
+                        td
+                           input#newImg.new_imgfile(type='file', name='newimg', accept='image/*')
+                           label#changeimg(for='newImg') 사진 선택
+                     tr
+                        td(colspan='2')
+                           button#save.edit-save(type='submit') Save
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/user_info_index.js')

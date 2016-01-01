@@ -29,18 +29,22 @@ $('input[type=file]').change(function(e) {
     var fn = $(this);
     if(fn.val() != ''){
         var fileName = fn.val().split( '\\' ).pop();
-        $('label[id = sign_up_img_label]').text(fileName);
+        $('label[id = changeimg]').text(fileName);
     }
     else{
-        $('label[id = sign_up_img_label]').text('사진 선택');
+        $('label[id = changeimg]').text('사진 선택');
     }
 });
 
-$('#save').click(function(){
+$('#form').submit(function(){
     var emailReg =  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
     var phoneReg = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
     var editSuccess = true;
 
+    if(currentPW.val() == ''){
+        toastr['error']('기존 비밀번호를 입력하세요');
+        editSuccess = false;
+    }
     if(newMail.val() != '') {
         console.log(newMail.val());
         if (!emailReg.test(newMail.val())) {
@@ -62,22 +66,7 @@ $('#save').click(function(){
     }
     else if(newPW.val() != confirmPW.val() && newPW.val().length < 4) {
         toastr['error']('새 비밀번호를 확인하세요');
+        editSuccess = false;
     }
-    else{
-        var send = {
-            currentPW:currentPW.val(),
-            newPW:newPW.val(),
-            newPhone:newPhone.val(),
-            newMail:newMail.val()
-        };
-        $.ajax({
-            type:'post',
-            url:'/user/info/edit',
-            data:JSON.stringify(send),
-            contentType:'application/json',
-            success: function(data){
-
-            }
-        })
-    }
+    return editSuccess;
 });

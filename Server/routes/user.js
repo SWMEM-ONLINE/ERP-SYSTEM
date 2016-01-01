@@ -21,49 +21,60 @@ router.get('/info', util.ensureAuthenticated, function(req, res, next) {
 router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
 
     var uId = util.getUserId(req);
-    var currentPW = req.body.currentPW;
-    var newPW = req.body.newPW;
-    var newPhone = req.body.newPhone;
-    var newMail = req.body.newMail;
+    var currentPW = req.body.currentpw;
+    var newPW = req.body.newpw;
+    var newPhone = req.body.newphone;
+    var newMail = req.body.newmail;
+    var newImg = req.files.newimg;
+    var newImgUrl;
+    var encNewPW;
+    if(newImg != undefined){
+        newImgUrl = newImg.name;
+    }
 
     var encCurrentPW = crypto.createHash('sha256').update(currentPW).digest('base64');
-    var encNewPW = crypto.createHash('sha256').update(newPW).digest('base64');
+    if(newPW != undefined) {
+        encNewPW = crypto.createHash('sha256').update(newPW).digest('base64');
+    }
 
     var query = 'update t_user set';
     var flag = false;
     con.query('select u_password from t_user where u_id="'+uId+'"', function (err,result) {
-        if(result[0].u_password == encCurrentPW){
-            if(newPW != ''){
-                query += ' u_password = "'+encNewPW+'"';
+        if (result[0].u_password == encCurrentPW) {
+            if (newPW != undefined) {
+                query += ' u_password = "' + encNewPW + '"';
                 flag = true;
             }
-            if(newMail != ''){
-                if(flag){
+            if (newMail != undefined) {
+                if (flag) {
                     query += ',';
                 }
                 query += ' u_email="' + newMail + '"';
                 flag = true;
             }
-            if(newPhone != ''){
-                if(flag){
+            if (newPhone != undefined) {
+                if (flag) {
                     query += ',';
                 }
-                query += ' u_phone="'+newPhone+'"';
+                query += ' u_phone="' + newPhone + '"';
                 flag = true;
             }
 
-            /*
-                img need
-            */
+            if (newImgUrl != undefined) {
+                if (flag) {
+                    query += ',';
+                }
+                query += ' u_photo_url="' + newImgUrl + '"';
+                flag = true;
+            }
 
-            query += ' where u_id = "'+uId+'"';
-            console.log(query);
-            con.query(query,function(err,result){
-                res.json({status:'0'});
+            query += ' where u_id = "' + uId + '"';
+            con.query(query, function (err, result) {
+                res.redirect('/user/info');
             });
         }
         else{
-            res.json({status:'101'});
+            res.redirect('/user/info');
         }
     });
 });

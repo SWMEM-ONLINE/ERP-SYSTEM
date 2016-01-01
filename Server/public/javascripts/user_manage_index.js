@@ -49,7 +49,7 @@ function getMemberList(){
             if(user.u_state <= COMMAND_DEGREE) classString += ' text-command';
             if(user.u_state == 104 || user.u_state == 102) classString += ' text-disable';
             if(user.u_state == 103) classString += ' text-wait';
-            document.getElementById('profile').setAttribute('src','http://localhost:3000/image?name='+user.u_photo_url);
+            //console.log(user.u_photo_url);
             tbodyString += '<td id="'+user.u_id+'" class="'+classString+'">'+user.u_name+'</td>';
             periodCnt++;
         }
@@ -85,6 +85,7 @@ $('#memberList').on('click','td',function(){
             $('div.modal #mail').html(data[0].u_email);
             $('div.modal #type').html(degree[data[0].u_state]);
             $('div.modal #selectAdmin').html('계정 전환');
+            document.getElementById('profile').setAttribute('src','http://localhost:3000/image?name='+data[0].u_photo_url);
             document.getElementById('selectAdmin').setAttribute('number',0);
             $('div.modal').modal();
         }
