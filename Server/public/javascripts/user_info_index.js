@@ -19,42 +19,48 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
-var editSuccess = true;
 var currentPW = $('#currentPW');
 var newPW = $('#newPW');
 var confirmPW = $('#confirmPW');
 var newPhone = $('#newPhone');
 var newMail = $('#newMail');
 
-newPhone.on('blur',function(){
-    var phoneReg = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
-    if(!phoneReg.test($(this).val())){
-        toastr['error']('전화번호 형식을 확인하세요');
-        editSuccess = false;
+$('input[type=file]').change(function(e) {
+    var fn = $(this);
+    if(fn.val() != ''){
+        var fileName = fn.val().split( '\\' ).pop();
+        $('label[id = sign_up_img_label]').text(fileName);
     }
     else{
-        toastr['success']('good phone number');
-        editSuccess = true;
-    }
-});
-
-newMail.on('blur',function(){
-    var emailReg =  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-    if(!emailReg.test($(this).val())){
-        toastr['error']('메일주소를 확인하세요');
-        editSuccess = false;
-    }
-    else{
-        toastr['success']('good mail');
-        editSuccess = true;
+        $('label[id = sign_up_img_label]').text('사진 선택');
     }
 });
 
 $('#save').click(function(){
+    var emailReg =  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+    var phoneReg = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
+    var editSuccess = true;
+
+    if(newMail.val() != '') {
+        console.log(newMail.val());
+        if (!emailReg.test(newMail.val())) {
+            toastr['error']('메일주소를 확인하세요');
+            editSuccess = false;
+        }
+    }
+
+    if(newPhone.val() != ''){
+        console.log(newPhone.val());
+        if(!phoneReg.test(newPhone.val())){
+            toastr['error']('전화번호 형식을 확인하세요');
+            editSuccess = false;
+        }
+    }
+
     if(editSuccess == false){
         toastr['error']('입력을 확인하세요');
     }
-    else if(newPW.val() != confirmPW.val()) {
+    else if(newPW.val() != confirmPW.val() && newPW.val().length < 4) {
         toastr['error']('새 비밀번호를 확인하세요');
     }
     else{

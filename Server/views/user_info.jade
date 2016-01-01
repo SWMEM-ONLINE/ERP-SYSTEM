@@ -72,12 +72,13 @@ block content
                   tr
                      td 사진
                      td
-                        button.edit-image
+                        input#newImg.sign_up_imgfile(type='file', name='sign_up_img', accept='image/*')
+                        label(for='sign_up_img') 사진 선택
                   tr
                      td(colspan='2')
                         button#save.edit-save Save
                   tr
-                     td(colspan='2') 비밀번호를 수정하지 않으시려면 비밀번호 칸을 비우세요.
+                     td(colspan='2') 기존 비밀번호는 꼭 입력하세요
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/user_info_index.js')

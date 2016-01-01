@@ -104,6 +104,36 @@ div.edit-content table td:last-child{
     text-align: center;
 }
 
+div.edit-content input.sign_up_imgfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+div.edit-content input.sign_up_imgfile + label{
+    cursor: pointer;
+    display: inline-block;
+    width: 300px;
+    height: 44px;
+    border:none;
+    margin: 0 0 10px  auto;
+    background-color: #dfdfdf;
+    padding-top:5px;
+    transition: 0.5s all;
+}
+
+div.edit-content input.sign_up_imgfile + label:hover{
+    background-color: #1E2858;
+    color: white;
+
+}
+div.edit-content input.sign_up_imgfile + label:after{
+    background-color: #1E2858;
+}
+
 @media(min-width:993px){
     div.card div.profile-img{
         float: left;

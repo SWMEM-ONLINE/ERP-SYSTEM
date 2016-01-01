@@ -29,23 +29,43 @@ router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
     var encCurrentPW = crypto.createHash('sha256').update(currentPW).digest('base64');
     var encNewPW = crypto.createHash('sha256').update(newPW).digest('base64');
 
-    if(currentPW != '' && newPW != ''){
-        console.log('same');
-    }
     var query = 'update t_user set';
-    //if(0<encPW.length){
-    //    query += ' u_password = '+encPW;
-    //}
-    //query += ' u_phone = '+uPhone+' u_email = '+eMail+' where u_id = '+uID;
-    //
-    //con.query(query,function(err,result){
-    //    if (err) {
-    //        console.error(err);
-    //        throw err;
-    //    }
-    //    res.json({status:'0'});
-    //});
+    var flag = false;
+    con.query('select u_password from t_user where u_id="'+uId+'"', function (err,result) {
+        if(result[0].u_password == encCurrentPW){
+            if(newPW != ''){
+                query += ' u_password = "'+encNewPW+'"';
+                flag = true;
+            }
+            if(newMail != ''){
+                if(flag){
+                    query += ',';
+                }
+                query += ' u_email="' + newMail + '"';
+                flag = true;
+            }
+            if(newPhone != ''){
+                if(flag){
+                    query += ',';
+                }
+                query += ' u_phone="'+newPhone+'"';
+                flag = true;
+            }
 
+            /*
+                img need
+            */
+
+            query += ' where u_id = "'+uId+'"';
+            console.log(query);
+            con.query(query,function(err,result){
+                res.json({status:'0'});
+            });
+        }
+        else{
+            res.json({status:'101'});
+        }
+    });
 });
 
 router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
