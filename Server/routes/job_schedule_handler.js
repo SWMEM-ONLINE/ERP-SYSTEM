@@ -145,12 +145,16 @@ function fee_carry() {
 
     var now = new Date();
     var datetime = now.getFullYear();
-    var month = (now.getMonth());
+    var month = now.getMonth();
+    if(month == 0){
+        month = 12;
+        datetime = datetime - 1;
+    }
 
-    if(month < 10)
-        datetime += '/0'+month;
+    if (month < 10)
+        datetime += '/0' + month;
     else
-        datetime += '/'+month;
+        datetime += '/' + month;
 
     var lastMonth = '"'+datetime+'%"';
     var query = 'select * from t_fee_manage where fm_date like '+lastMonth;
