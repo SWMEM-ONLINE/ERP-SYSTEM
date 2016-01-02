@@ -168,4 +168,8 @@ router.get('/members', util.ensureAuthenticated, function(req, res, next) {
     res.render('member_info', {title: '회원 목록'});
 });
 
+router.get('/finished', util.ensureAuthenticated, function(req, res, next) {
+    res.render('finish_member', {title: '수료예정회원관리'});
+});
+
 module.exports = router;
