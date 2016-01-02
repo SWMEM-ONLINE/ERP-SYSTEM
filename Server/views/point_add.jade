@@ -20,9 +20,9 @@ block content
                 tr
                     th 구분
                     th
-                        .dropdown
-                            button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown') 구분
-                            ul.dropdown-menu
+                        .btn-group
+                            a#mode-button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 구분
+                            ul#mode-dropdown.dropdown-menu(style='width:100%')
                                 li
                                     a(href='#') 상당직
                                 li
@@ -31,15 +31,15 @@ block content
                                     a(href='#') 운영실 벌당직
                     th 일수
                     th
-                        input(type='number', min='0', value ='0')
+                        input(type='number', min='0', value ='0')#point
                     th 사유
                     th
-                        input(type='text',maxlength="50", placeholder="100자 이내")
+                        input(type='text',maxlength="50", placeholder="100자 이내")#reason
 
 
             h4 회원 목록
 
-            table#memberList.table
+            table#memberList.table.table-bordered
 
 
 

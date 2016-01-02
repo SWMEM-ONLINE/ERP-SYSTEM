@@ -7,46 +7,313 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
-    link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
+    link(rel='stylesheet', type='text/css', href='duty-checklist.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+    style(type='text/css').
+        table, tr, td, th {
+            border: 1px solid black;
+            text-align: center;
+        }
 block content
     .container.contents
-        h3 기술도서 대여
-        hr
         .content
-            #booksearch
-                button#borrowUsingQRcode.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
-                .input-group
-                    button#bookSearchCategory(type='button') 도서명
-                        button.dropdown-toggle(type='button', data-toggle='dropdown')
-                            span.caret
-                        ul#categoryDropdown.dropdown-menu
-                            li
-                                a(href='#') 도서명
-                            li
-                                a(href='#') 저자
-                            li
-                                a(href='#') 출판사
-                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
-                    button#bookSearchBtn(type='button') 검색
-            #noti
-                hr
-                h4 이번달 들어온 기술도서목록
-                hr
-            table#booklist.table.table-hover.table-bordered.table-condensed
-            .pageArea
-                ul.pagination
-    .modal.fade
-        .modal-dialog
-            .modal-content
-                .modal-header
-                    h4.modal-title
-                .modal-body
-                .modal-footer
-                    button#request.btn(type='button') 대여
-                    button#reserve.btn(type='button') 예약
-                    button#missing.btn(type='button') 분실신고
-                    button#return.btn(type='button', data-dismiss='modal') 닫기
+            h1 당직점검표 ver 2.0.1
+            table
+                thead
+                    tr
+                        th(colspan='2') 비상연락망
+                tr
+                    td.part
+                        a(href='tel:+821062519625') 생활장
+                    td 010-7200-1240
+                tr
+                    td
+                        a(href='tel:+821089573054') 회장
+                    td 010-8957-3054
+                tr
+                    td
+                        a(href='tel:+821043337839') 운영자
+                    td 010-4333-7839
+            h3 일반당직 체크리스트(20시-21시)
+            table
+                thead
+                    tr
+                        th.part(colspan='2') 구역
+                        th 내용
+                        th.checker 확인
+                tbody
+                    tr
+                        td.part(rowspan='9') 수면실
+                        td(rowspan='7') A
+                        td 문을 열어 환기를 시켰는가?
+                        td
+                    tr
+                        td 바닥청소가 되었는가?
+                        td
+                    tr
+                        td 이불세탁이 되었는가?
+                        td
+                    tr
+                        td 공기청정기 청소를 하였는가?
+                        td
+                    tr
+                        td 빨래통 주변 정리가 되었는가?
+                        td
+                    tr
+                        td 건조대 정리가 되었는가?
+                        td
+                    tr
+                        td 출입구 청소가 되었는가?
+                        td
+                    tr
+                        td B
+                        td 침구류 정리가 되었는가?
+                        td
+                    tr
+                        td C
+                        td 창문틀 걸레질을 하였는가?
+                        td
+                    tr
+                        td(rowspan='6') 라커룸
+                        td(rowspan='4') A
+                        td 바닥청소가 되었는가?
+                        td
+                    tr
+                        td 거울을 닦았는가?
+                        td
+                    tr
+                        td 세면대 위 걸레 교체하였는가?
+                        td
+                    tr
+                        td 다 쓴 비누 치약 리필되었는가?
+                        td
+                    tr
+                        td B
+                        td 세면대 청소가 되었는가?
+                        td
+                    tr
+                        td C
+                        td 창문틀 걸레질을 하였는가?
+                        td
+                    tr
+                        td(rowspan='4') 샤워실
+                        td(rowspan='3') A
+                        td 배수구 이물질 제거되었는가?
+                        td
+                    tr
+                        td 휴지통 비웠는가?
+                        td
+                    tr
+                        td 다 쓴 세면용품 리필되었는가?
+                        td
+                    tr
+                        td B,C
+                        td 거울 닦았는가?
+                        td
+                    tr
+                        td(rowspan='13') 탕비실
+                        td(rowspan='8') A
+                        td 바닥청소가 되었는가?
+                        td
+                    tr
+                        td 휴지통 정리가 되었는가?
+                        td
+                    tr
+                        td 그릇 및 건조대 정리가 되었는가?
+                        td
+                    tr
+                        td 정수기 물통을 비웠는가?
+                        td
+                    tr
+                        td 식탁을 닦았는가?
+                        td
+                    tr
+                        td 인덕션 주변 청소를 하였는가?
+                        td
+                    tr
+                        td 싱크대 음식물 및 기름기를 제거 하였는가?
+                        td
+                    tr
+                        td 행주 및 수세미를 삶았는가?
+                        td
+                    tr
+                        td(rowspan='3') B
+                        td 커피머신 청소를 하였는가?
+                        td
+                    tr
+                        td 밥통, 전자렌지 청소를 하였는가?
+                        td
+                    tr
+                        td 냉장고, TV를 걸레질 하였는가?
+                        td
+                    tr
+                        td(rowspan='2') C
+                        td 창틀, 환풍기 걸레질 하였는가?
+                        td
+                    tr
+                        td 수납장 외관 걸레질 하였는가?
+                        td
+                    tr
+                        td(colspan='2') 기타
+                        td 신발장, 세면대 거울 청소
+                        td
+            h3 완료 후 최종 보고
+            table
+                thead
+                    tr
+                        th.part 구역
+                        th 내용
+                        th.checker 확인
+                tbody
+                    tr
+                        td
+                            a(data-toggle='tooltip', data-html='true', title='\
+                    1. 6, 8층 남,녀 인원  수를 센다.<br/>\
+                    2. 031-238-4233 번으로 전화를 한다.<br/>\
+                    3. 안녕하세요. 삼성전자 SW 멤버십입니다.<br/>\
+                    금일 현재 6, 8층 잔류인원 <br/>\
+                    남 : ○명, 여 : ○명, 총 ○명입니다.<br/>\
+                    수고하세요.')
+                                emp 인원보고
+                        td 031-238-4233 인원보고
+                        td
+                    tr
+                        td 당직통보
+                        td 명일 당직자 통보문자전송
+                        td
+                    tr
+                        td 휴식공간
+                        td 운동기구 정리
+                        td
+                    tr
+                        td 섹션
+                        td 정수기 물통 비우기
+                        td
+                    tr
+                        td 완료보고
+                        td 당직 검사 완료 및 귀가
+                        td
+            h3 벌당직 (21시-22시)
+            table
+                tr
+                    th 요일
+                    th 구역
+                    th 내용
+                    th.checker 확인
+                tr
+                    td(rowspan='3') 월
+                    td(rowspan='3')
+                        | 하드웨어실
+                        br
+                        | 도서 공간
+                        br
+                        | 휴식공간
+                    td
+                        | 바닥 청소
+                        br
+                        | (빗자루질 & 걸레질)
+                    td
+                tr
+                    td 책장, 선반 정리 및 물걸레질
+                    td
+                tr
+                    td 책상 걸레질
+                    td
+                tr
+                    td(rowspan='4') 화, 수
+                    td(rowspan='4') 6층
+                    td
+                        | 바닥청소
+                        br
+                        | (빗자루질&대걸레질)
+                    td
+                tr
+                    td 계란의 날
+                    td
+                tr
+                    td 6층 복도 청소
+                    td
+                tr
+                    td 소화기 먼지 제거
+                    td
+                tr
+                    td(rowspan='6') 목
+                    td(rowspan='6') 8층 섹션
+                    td 창틀 물걸레질
+                    td
+                tr
+                    td 소화기 먼지 제거
+                    td
+                tr
+                    td 파티션 위 먼지 제거
+                    td
+                tr
+                    td 쓰레기통 닦기
+                    td
+                tr
+                    td 섹션 바닥 이물질 제거
+                    td
+                tr
+                    td
+                        | 쓰레기통 앞 섹션 청소
+                        br
+                        | (Tablet PC, Scanner 등)
+                    td
+                tr
+                    td 금
+                    td 샤워실
+                    td 벽, 바닥 미싱
+                    td
+                tr
+                    td(rowspan='3') 토
+                    td(rowspan='3') 세탁실
+                    td 바닥 청소
+                    td
+                tr
+                    td 걸레 빨기 (손세탁)
+                    td
+                tr
+                    td 세탁기 필터 먼지 제거
+                    td
+                tr
+                    td(rowspan='2') 일
+                    td(rowspan='2') 프로젝트실
+                    td
+                        | 바닥청소
+                        br
+                        | (빗자루질&대걸레질)
+                    td
+                tr
+                    td 의자 및 책상 정리
+                    td
+            h3 벌당직 추가사항
+            table
+                thead
+                    tr
+                        th.part 구역
+                        th 내용
+                        th.checker 확인
+                tbody
+                    tr
+                        td a
+                        td
+                        td
+                    tr
+                        td b
+                        td
+                        td
+                    tr
+                        td c
+                        td
+                        td
+            div
+                | 5개 이상 'X' 있을 시 멤버십 벌점 부여
+            div
+                | 24:00까지 이불 안 널었을 시 당직자 벌당직 부여
+
 append script
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../javascripts/book_tech_index.js')
+        script.
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });

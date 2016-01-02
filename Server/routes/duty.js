@@ -11,11 +11,10 @@ var router = express.Router();
 var duty_handler = require('./duty_handler');
 
 /*
- *  Part. Borrow hardware
+ *  Part. 겟
  */
 router.get('/inquiry', util.ensureAuthenticated, function(req, res, next) {
     res.render('duty_inquiry', { title: '당직 조회' });
-
 });
 
 router.get('/change', util.ensureAuthenticated, function(req, res, next) {
@@ -42,25 +41,29 @@ router.get('/setting', util.ensureAuthenticated, function(req, res, next) {
     res.render('duty_setting', { title: '당직설정' });
 });
 
+router.get('/changeSetting', util.ensureAuthenticated, function(req, res, next) {
+    res.render('duty_change_setting', { title: '당직 맞변경 관리' });
+});
 
 
 
+
+/*
+ *  Part. 포스트
+ */
 router.post('/loadMyDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.loadMyDuty(con,req,res);
 });
 
-
 router.post('/getUser', util.ensureAuthenticated, function(req, res){
     duty_handler.getUser(con,req,res);
 });
-
 
 router.post('/loadMyPointHistory', util.ensureAuthenticated, function(req, res){
     duty_handler.loadMyPointHistory(con,req,res);
 });
 
 router.post('/addPoint', util.ensureAuthenticated, function(req, res){
-    console.log("dd");
     duty_handler.addPoint(con,req,res);
 });
 
@@ -75,7 +78,6 @@ router.post('/getAddPoint', util.ensureAuthenticated, function(req, res){
 router.post('/getMemberList', util.ensureAuthenticated, function(req, res){
     duty_handler.getMemberList(con,req,res);
 });
-
 
 router.post('/removePointHistory', util.ensureAuthenticated, function(req, res){
     duty_handler.removePointHistory(con,req,res);
@@ -92,9 +94,11 @@ router.post('/loadDuty', util.ensureAuthenticated, function(req, res){
 router.post('/getName', util.ensureAuthenticated, function(req, res){
     duty_handler.getName(con,req,res);
 });
+
 router.post('/requestChangeDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.requestChangeDuty(con,req,res);
 });
+
 router.post('/showChangeDutyHistrory', util.ensureAuthenticated, function(req, res){
     duty_handler.showChangeDutyHistrory(con,req,res);
 });
@@ -114,5 +118,18 @@ router.post('/declineChangeDuty', util.ensureAuthenticated, function(req, res){
 router.post('/forceChangeDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.forceChangeDuty(con,req,res);
 });
+
+router.post('/showChangeDutyHistroryAll', util.ensureAuthenticated, function(req, res){
+    duty_handler.showChangeDutyHistroryAll(con,req,res);
+});
+
+router.post('/loadAllDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.loadAllDuty(con,req,res);
+});
+
+router.post('/autoMakeDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.autoMakeDuty(con,req,res);
+});
+
 
 module.exports = router;

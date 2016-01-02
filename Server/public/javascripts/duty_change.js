@@ -2,6 +2,25 @@
  * Created by HyunJae on 2015. 12. 27..
  */
 
+toastr.options = {
+    'closeButton': false,
+    'debug': false,
+    'newestOnTop': false,
+    'progressBar': false,
+    'positionClass': 'toast-top-right',
+    'preventDuplicates': false,
+    'onclick': null,
+    'showDuration': '300',
+    'hideDuration': '1000',
+    'timeOut': '5000',
+    'extendedTimeOut': '1000',
+    'showEasing': 'swing',
+    'hideEasing': 'linear',
+    'showMethod': 'fadeIn',
+    'hideMethod': 'fadeOut'
+};
+
+
 var endDate;
 
 var currentDate = new Date();
@@ -50,6 +69,7 @@ sendData.month = currentDate.getMonth() +1;
 $("#showresult").click(function(){
 
     $.post("showChangeDutyHistrory", function(res){
+
 
         var htmlString = "";
         var count = 0;
@@ -187,11 +207,10 @@ $("#request").click(function() {
 
     $.post('/duty/requestChangeDuty',sendData, function(res){
         if(res.length ==0){
-            $("#result").html("fail");
-            // 토스트 실패
+            toastr['error']('맞변경 신청 실패');
         }else{
-            $("#result").html("success");
-            // 토스트 성공
+            toastr['success']('맞변경 신청 완료');
+
         }
     });
 

@@ -2,6 +2,23 @@
  * Created by HyunJae on 2015. 12. 23..
  */
 
+toastr.options = {
+    'closeButton': false,
+    'debug': false,
+    'newestOnTop': false,
+    'progressBar': false,
+    'positionClass': 'toast-top-right',
+    'preventDuplicates': false,
+    'onclick': null,
+    'showDuration': '300',
+    'hideDuration': '1000',
+    'timeOut': '5000',
+    'extendedTimeOut': '1000',
+    'showEasing': 'swing',
+    'hideEasing': 'linear',
+    'showMethod': 'fadeIn',
+    'hideMethod': 'fadeOut'
+};
 
 var name;
 $.post('/duty/getUser', function(res){
@@ -16,17 +33,11 @@ $.post('/duty/getAddPoint', function(res){
 
 var select_mode = 0;
 
-
-
 $('#mode-dropdown li a').click(function(){
     //$('#seriesDropdown').on("hide.bs.dropdown");
     $('#mode-button').html($(this).html());
     select_mode = $(this).parent().index();
 });
-
-
-
-
 
 function generateHtml(response){
 
@@ -72,10 +83,6 @@ function generateHtml(response){
                 htmlString += "<td>"
                 htmlString +=  "" + data.point;
                 htmlString += "</td>"
-                //
-                //htmlString += "<td>"
-                //htmlString +=  "" + data.reason;
-                //htmlString += "</td>"
 
             htmlString += '</tr>';
 
@@ -100,7 +107,6 @@ function clickEvent(response){
         $('#cancel').addClass('btn-primary');
         $('#cancel').text('삭제');
 
-
         $(".modal-header").html("상 벌당직 수정");
 
         $("#modal-date").html("" + data.year +"년 " + data.month +"월 " + data.date+ "일 ");
@@ -108,7 +114,6 @@ function clickEvent(response){
         $("#modal-enroller").html(name);
 
         $("#modal-objects").val(data.receive_name);
-
 
         if(data.mode==0){
             select_mode=0;
@@ -136,8 +141,20 @@ function clickEvent(response){
             $.post('/duty/modifyPointHistoty', data, function(res){
 
                 // success 가 온다. 성공하면
+
+                if(res == "success"){
+                    toastr['success']('상벌당직 수정 성공');
+
+                    $.post('/duty/getAddPoint', function(res){
+                        generateHtml(res);
+                        clickEvent(res);
+                    });
+                }
+                else{
+                    toastr['error']('상벌당직 수정 실패');
+
+                }
                 console.log(res);
-                window.location.reload();
             });
 
         });
@@ -148,9 +165,19 @@ function clickEvent(response){
 
             $.post('/duty/removePointHistory', data, function(res){
 
-                // success 가 온다. 성공하면
+                if(res == "success"){
+                    toastr['success']('상벌당직 삭제 성공');
+
+                    $.post('/duty/getAddPoint', function(res){
+                        generateHtml(res);
+                        clickEvent(res);
+                    });
+                }
+                else{
+                    toastr['error']('상벌당직 삭제 실패');
+
+                }
                 console.log(res);
-                window.location.reload();
             });
 
         });

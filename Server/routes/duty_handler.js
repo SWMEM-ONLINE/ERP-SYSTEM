@@ -2,7 +2,391 @@
  * Created by HyunJae on 2015. 12. 20..
  */
 
+function Duty (date) {
+    this.date = date;
+    this.user1 = null;
+    this.user2 = null;
+    this.user3 = null;
+    this.user4 = null;
+    this.mode1 = null;
+    this.mode2 = null;
+    this.mode3 = null;
+    this.mode4 = null;
+    this.count = 0;
 
+    this.addUser = function(user, mode){
+        if(user != this.user1 && user != this.user2 && user != this.user3 && user != this.user4 ){
+            if(this.count ==0){
+                this.user1 = user;
+                this.mode1 = mode;
+                this.count++;
+                return true;
+            }else if(this.count == 1){
+                this.user2 = user;
+                this.mode2 = mode;
+                this.count++;
+                return true;
+            }else if(this.count == 2){
+                this.user3 = user;
+                this.mode3 = mode;
+                this.count++;
+                return true;
+            }else if (this.count ==3 ){
+                this.user4 = user;
+                this.mode4 = mode;
+                this.count++;
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
+    };
+}
+
+function pointSort(data){
+
+    //parseInt(tt)
+    var goodDuty = parseInt(data.good_point);
+    var badDuty = parseInt(data.bad_point);
+    var manageDuty = parseInt(data.manage_bad_point);
+
+    if(goodDuty>=badDuty){
+        goodDuty -=badDuty;
+        badDuty = 0;
+    }
+    else{
+        badDuty -= goodDuty;
+        goodDuty=0;
+    }
+
+    var result = {};
+    result.good_point = goodDuty;
+    result.bad_point = badDuty;
+    result.manage_bad_point = manageDuty;
+
+    return result;
+}
+
+function compare(a,b) {
+    if (a.last_month < b.last_month)
+        return -1;
+    if (a.last_month > b.last_month)
+        return 1;
+    return 0;
+}
+
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
+
+
+
+function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_count){
+
+
+    var bad_duty_list = [];
+    /*
+
+        memberlist2를 활용해 bad_duty_list를 만든다
+
+     */
+    while (true) {
+        var count = 0;
+        for (var i = 0; i < memberList2.length; i++) {
+            var member = memberList2[i];
+
+            if (member.bad_point > 0) {
+                bad_duty_list.push(member);
+                member.bad_point--;
+            }
+            else if (member.manage_bad_point > 0) {
+                bad_duty_list.push(member);
+                member.manage_bad_point--;
+            } else {
+                count++;
+            }
+        }
+
+        if (count == memberList2.length) {
+            break;
+        }
+    }
+
+    while(bad_duty_count>0 && bad_duty_list.length !=0){
+
+        for(var i =0 ; i < dutyList.length; i++){
+            var duty = dutyList[i];
+            if(bad_duty_list.length >0){
+                var member = bad_duty_list.shift();
+
+                if(duty.addUser(member.id , 1))
+                {
+
+                }
+                else
+                {
+                    console.log("fail to in " + duty.date + " is " + member.id );
+                    bad_duty_list.push(member);
+                }
+            }
+        }
+
+        bad_duty_count--;
+    }
+
+    while(true){
+
+        for(var i =0 ; i < dutyList.length; i++){
+
+            var duty = dutyList[i];
+
+            if(duty.count != duty_count){
+                var member = memberList.shift();
+                duty.addUser(member.id,0);
+                memberList.push(member);
+            }
+
+        }
+        if(isCompelte(dutyList,duty_count)){
+            break;
+        }
+    }
+
+    return dutyList;
+
+}
+
+function isCompelte(dutyList , duty_count){
+    var flag = 1;
+    for(var i = 0 ; i < dutyList.length; i++){
+        var duty = dutyList[i];
+        if(duty.count != duty_count){
+            flag = 0;
+        }
+    }
+    if(flag==1){
+        return true;
+    }else{
+        return false;
+    }
+
+}
+
+
+function autoMakeDuty(con,req,res){
+
+    console.log(req.body);
+
+    var selected_days =req.body['selected_days[]'];
+    var duty_count =req.body.duty_count;
+    var bad_duty_count = req.body.bad_duty_count;
+    var year = req.body.year;
+    var month = req.body.month;
+    var maxDays = numberOfDays(year,month);
+
+    var memberList = [] ;
+    var memberList2 = [];
+    var dutyList = [];
+
+    for(var i=1; i<=maxDays; i++){
+        var date = new Date(year,month-1,i);
+        var flag = 1 ;
+        for(var j=0; j< selected_days.length; j++){
+            var date2 = new Date(selected_days[j]);
+
+            if(date.getDate() == date2.getDate())
+            {
+                flag=0;
+            }
+            if(flag==0){
+                continue;
+            }
+
+        }
+        if(flag==0){
+            continue;
+        }
+
+        var duty = new Duty(date);
+        dutyList.push(duty);
+    }
+
+
+   // console.log(dutyList);
+
+    var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state = 10);";
+
+    console.log(query);
+    con.query(query, function(err, response){
+        if(err){
+            console.log(err);
+        }else{
+
+            for(var i =0;i<response.length;i++){
+                var data = response[i];
+                var Member ={};
+                Member.id = data.u_id;
+                Member.name = data.u_name;
+                Member.good_point = data.u_good_duty_point;
+                Member.bad_point = data.u_bad_duty_point;
+                Member.manage_bad_point = data.u_manager_bad_duty_point;
+                Member.last_month = data.u_last_duty;
+
+                var result = pointSort(Member);
+                Member.good_point = result.good_point;
+                Member.bad_point = result.bad_point;
+                Member.manage_bad_point = result.manage_bad_point;
+                memberList.push(Member);
+                var Member2 = clone(Member);
+                memberList2.push(Member2);
+            }
+
+            /*
+
+                멤버리스트는 저번달에 적은순으로 멤버리스트에 들어간다
+                멤버리스트 2는 저번달에 많은순으로 벌당직 리스트에 들어가게 된다.
+
+             */
+            memberList.sort(compare);
+            memberList2.sort(compare);
+            memberList2.reverse();
+            //console.log(memberList);
+
+            dutyList = generateDuty(memberList,memberList2,dutyList,duty_count,bad_duty_count);
+
+            console.log(dutyList);
+
+            insertDutyList(con,req,res,dutyList);
+
+            //console.log("send all memberList to browser");
+            //res.send(response);
+        }
+
+    });
+
+
+
+}
+
+
+function insertDutyList(con,req,res, dutyList){
+
+    for(var i = 0 ; i < dutyList.length; i++){
+        var duty = dutyList[i];
+        var date = duty.date;
+        var count = duty.count;
+        for(var j = 1 ; j<= count; j++){
+            var user_id = duty["user"+j];
+            var mode = duty["mode"+j];
+            updateUserPoint(con,req,res,user_id,mode);
+        }
+        var query;
+
+        if(count==1){
+            query = "INSERT INTO `swmem`.`t_duty` " +
+                "(`date`, `user_id1`, `user1_mode`) " +
+                "VALUES (" +
+                "'"+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"', " +
+                "'"+ duty.user1 +"', " +
+                "'"+ duty.mode1 +"');";
+            console.log(query);
+
+            con.query(query, function(err, response){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log(response);
+
+                }
+
+            });
+
+
+        }
+        else if(count==2){
+            query = "INSERT INTO `swmem`.`t_duty` " +
+                "(`date`, `user_id1`, `user_id2`, `user1_mode`, `user2_mode`) " +
+                "VALUES (" +
+                "'"+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"', " +
+                "'"+ duty.user1 +"', " +
+                "'"+ duty.user2 +"', " +
+                "'"+ duty.mode1 +"', " +
+                "'"+ duty.mode2 +"');";
+            console.log(query);
+            con.query(query, function(err, response){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log(response);
+                }
+
+            });
+        }
+        else if(count==3){
+            query = "INSERT INTO `swmem`.`t_duty` " +
+                "(`date`, `user_id1`, `user_id2`, `user_id3`,  `user1_mode`, `user2_mode`, `user3_mode`) " +
+                "VALUES (" +
+                "'"+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"', " +
+                "'"+ duty.user1 +"', " +
+                "'"+ duty.user2 +"', " +
+                "'"+ duty.user3 +"', " +
+                "'"+ duty.mode1 +"', " +
+                "'"+ duty.mode2 +"', " +
+                "'"+ duty.mode3 +"');";
+
+            console.log(query);
+            con.query(query, function(err, response){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log(response);
+                }
+
+            });
+        }
+        else if(count==4){
+            query = "INSERT INTO `swmem`.`t_duty` " +
+                "(`date`, `user_id1`, `user_id2`, `user_id3`, `user_id4`, `user1_mode`, `user2_mode`, `user3_mode`, `user4_mode`) " +
+                "VALUES (" +
+                "'"+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"', " +
+                "'"+ duty.user1 +"', " +
+                "'"+ duty.user2 +"', " +
+                "'"+ duty.user3 +"', " +
+                "'"+ duty.user4 +"', " +
+                "'"+ duty.mode1 +"', " +
+                "'"+ duty.mode2 +"', " +
+                "'"+ duty.mode3 +"', " +
+                "'"+ duty.mode4 +"');";
+            console.log(query);
+            con.query(query, function(err, response){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log(response);
+                }
+
+            });
+        }
+    }
+}
+
+function updateUserPoint(con,req,res,id,mode){
+
+    if(mode == 0){
+
+    }
+
+    else{
+
+    }
+
+}
 
 
 
@@ -38,133 +422,113 @@ function forceChangeDuty(con,req,res){
             console.log(err);
         }else{
 
-            if(response.length==0){
-                console.log("error");
+            var get_query1 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth()+1)
+                + "-" + request_date1.getDate()+ "');";
 
-            }else{
+            console.log(get_query1);
+            con.query(get_query1, function(err, response){
+                if(err){
+                    console.log(err);
+                }else{
 
-                console.log(response);
+                    if(response.length==0){
+                        console.log("error");
 
-                var get_query1 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth())
-                    + "-" + request_date1.getDate()+ "');";
-
-
-                console.log(get_query1);
-                con.query(get_query1, function(err, response){
-                    if(err){
-                        console.log(err);
                     }else{
 
-                        if(response.length==0){
-                            console.log("error");
+                        console.log(response);
 
-                        }else{
+                        var tmp = getRequestInfo(response[0] , request_id1);
+                        selected_user1 = tmp.selected_user;
+                        selected_mode1 = tmp.selected_mode;
+                        request_mode1 = tmp.request_mode;
 
-                            console.log(response);
-
-                            var tmp = getRequestInfo(response[0] , request_id1);
-                            selected_user1 = tmp.selected_user;
-                            selected_mode1 = tmp.selected_mode;
-                            request_mode1 = tmp.request_mode;
-
-                            var get_query2 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth())
-                                + "-" + request_date2.getDate()+ "');";
+                        var get_query2 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth()+1)
+                            + "-" + request_date2.getDate()+ "');";
 
 
-                            console.log(get_query2);
-                            con.query(get_query2, function(err, response){
-                                if(err){
-                                    console.log(err);
+                        console.log(get_query2);
+                        con.query(get_query2, function(err, response){
+                            if(err){
+                                console.log(err);
+                            }else{
+
+                                if(response.length==0){
+                                    console.log("error");
+
                                 }else{
 
-                                    if(response.length==0){
-                                        console.log("error");
+                                    console.log(response);
 
-                                    }else{
+                                    var tmp = getRequestInfo(response[0] , request_id2);
+                                    selected_user2 = tmp.selected_user;
+                                    selected_mode2 = tmp.selected_mode;
+                                    request_mode2 = tmp.request_mode;
 
-                                        console.log(response);
+                                    var change_query1 = "UPDATE `swmem`.`t_duty` " +
+                                        "SET `" + selected_user1+ "`='"+request_id2+"', " +
+                                        "`"+selected_mode1+"`='" +request_mode2 + "' " +
+                                        "WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth()+1)
+                                        + "-" + request_date1.getDate()+ "');";
 
-                                        var tmp = getRequestInfo(response[0] , request_id2);
-                                        selected_user2 = tmp.selected_user;
-                                        selected_mode2 = tmp.selected_mode;
-                                        request_mode2 = tmp.request_mode;
+                                    /*
+                                     request_user1 처리하는 부분
+                                     */
 
-                                        var change_query1 = "UPDATE `swmem`.`t_duty` " +
-                                            "SET `" + selected_user1+ "`='"+request_id2+"', " +
-                                            "`"+selected_mode1+"`='" +request_mode2 + "' " +
-                                            "WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth())
-                                            + "-" + request_date1.getDate()+ "');";
+                                    console.log(change_query1);
+                                    con.query(change_query1, function(err, response){
+                                        if(err){
+                                            console.log(err);
+                                        }else{
 
-                                        /*
-                                         request_user1 처리하는 부분
-                                         */
+                                            if(response.length==0){
+                                                console.log("error");
 
-                                        console.log(change_query1);
-                                        con.query(change_query1, function(err, response){
-                                            if(err){
-                                                console.log(err);
                                             }else{
 
-                                                if(response.length==0){
-                                                    console.log("error");
+                                                console.log(response);
 
-                                                }else{
+                                                var change_query2 = "UPDATE `swmem`.`t_duty` " +
+                                                    "SET `" + selected_user2+ "`='"+request_id1+"', " +
+                                                    "`"+selected_mode2+"`='" +request_mode1 + "' " +
+                                                    "WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth()+1)
+                                                    + "-" + request_date2.getDate()+ "');";
 
-                                                    console.log(response);
+                                                /*
+                                                 request_user1 처리하는 부분
+                                                 */
 
-                                                    var change_query2 = "UPDATE `swmem`.`t_duty` " +
-                                                        "SET `" + selected_user2+ "`='"+request_id1+"', " +
-                                                        "`"+selected_mode2+"`='" +request_mode1 + "' " +
-                                                        "WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth())
-                                                        + "-" + request_date2.getDate()+ "');";
-
-                                                    /*
-                                                     request_user1 처리하는 부분
-                                                     */
-
-                                                    console.log(change_query2);
-                                                    con.query(change_query2, function(err, response){
-                                                        if(err){
-                                                            console.log(err);
-                                                        }else{
-
-                                                            if(response.length==0){
-                                                                console.log("error");
-
-                                                            }else{
-
-                                                                console.log(response);
-
-                                                                res.send(response);
-
-                                                            }
-                                                        }
-                                                    });
+                                                console.log(change_query2);
+                                                con.query(change_query2, function(err, response){
+                                                    if(err){
+                                                        console.log(err);
+                                                        res.send({});
+                                                    }else{
+                                                        res.send(response);
+                                                    }
+                                                });
 
 
-                                                }
                                             }
-                                        });
+                                        }
+                                    });
 
-                                    }
                                 }
-                            });
+                            }
+                        });
 
 
-                        }
                     }
-                });
+                }
+            });
 
-            }
+
         }
     });
 
 
 
 }
-
-
-
 
 
 
@@ -431,6 +795,32 @@ function getID(con,req,res){
 }
 
 
+function showChangeDutyHistroryAll(con,req,res){
+
+    console.log(req.body);
+
+
+    var query = "SELECT * ,(select u_name from t_user where u_id = request_userid1),(select u_name from t_user where u_id = request_userid2) FROM swmem.t_duty_change_history ;";
+
+    console.log(query);
+    con.query(query, function(err, response){
+
+        if(err){
+            console.log(err);
+            res.send({});
+        }else{
+
+            console.log(response);
+            res.send(response);
+
+        }
+    });
+
+
+}
+
+
+
 function showChangeDutyHistrory(con,req,res){
 
     console.log(req.body);
@@ -449,25 +839,12 @@ function showChangeDutyHistrory(con,req,res){
             console.log(err);
         }else{
 
-            if(response.length==0){
-                console.log("error");
 
-            }else{
+            console.log(response);
+
+            res.send(response);
 
 
-                console.log(response);
-
-                res.send(response);
-
-                //if(response.affectedRows > 0){
-                //    res.send("success");
-                //    console.log("success");
-                //}else{
-                //    res.send("fail");
-                //    console.log("fail");
-                //}
-
-            }
         }
     });
 
@@ -575,6 +952,37 @@ function loadDuty(con,req,res){
 
 }
 
+
+function loadAllDuty(con,req,res){
+
+    var year = req.body.year;
+    var month = req.body.month;
+
+    var loadDutyQuery = "select * , " +
+        "(select u_name from t_user where user_id1= u_id)," +
+        "(select u_name from t_user where user_id2= u_id)," +
+        "(select u_name from t_user where user_id3= u_id)," +
+        "(select u_name from t_user where user_id4= u_id) " +
+        " from swmem.t_duty where month(date)= " + month + " and year(date) = " + year +";";
+
+
+    console.log(loadDutyQuery);
+    con.query(loadDutyQuery, function(err, response){
+
+        if(err){
+            console.log(err);
+        }else{
+
+            if(response.length==0){
+                console.log("error");
+                res.send("no data");
+            }else{
+                res.send(response);
+                console.log(response);
+            }
+        }
+    });
+}
 
 
 
@@ -729,17 +1137,10 @@ function getMemberList(con,req,res){
     console.log(query);
     con.query(query, function(err, response){
 
-        //console.log(response);
-
         console.log("send all memberList to browser");
         res.send(response);
-
     });
-
-
 }
-
-
 
 function getAddPoint(con,req,res){
 
@@ -861,6 +1262,14 @@ function addPoint(con,req,res){
     var recieveUserList = req.body['recieveUserList[]'];
 
 
+    if(typeof recieveUserList == "string"){
+        recieveUserList = new Array(recieveUserList);
+    }
+
+
+    console.log(typeof recieveUserList);
+    console.log(recieveUserList);
+
     for( var i =0; i<recieveUserList.length;i++){
 
         var recieveUser = recieveUserList[i];
@@ -870,10 +1279,15 @@ function addPoint(con,req,res){
 
         console.log(updatePointHistory);
         con.query(updatePointHistory, function(err, response){
-            console.log(response);
-            if(response.affectedRows < 1){
+            if(err){
+                console.log(err);
                 success_flag = 0;
+            }else{
+                console.log(response);
+
             }
+
+
         });
 
         var addPoint = "";
@@ -892,11 +1306,11 @@ function addPoint(con,req,res){
         }
         console.log(addPoint);
         con.query(addPoint, function(err, response){
-
-            console.log(response);
-
-            if(response.affectedRows < 1){
+            if(err){
+                console.log(err);
                 success_flag = 0;
+            }else{
+                console.log(response);
             }
         });
     }
@@ -1082,6 +1496,15 @@ function addPointQuery(id, mode, point){
 
 
 
+// 그달의 날짜수를 리턴해준다
+function numberOfDays(year, month) {
+    var d = new Date(year, month, 0);
+    return d.getDate();
+}
+
+
+
+
 exports.loadDuty =loadDuty;
 exports.getName = getName;
 exports.modifyPointHistoty =modifyPointHistoty;
@@ -1098,3 +1521,6 @@ exports.getID = getID;
 exports.declineChangeDuty = declineChangeDuty;
 exports.acceptChangeDuty = acceptChangeDuty;
 exports.forceChangeDuty = forceChangeDuty;
+exports.showChangeDutyHistroryAll = showChangeDutyHistroryAll;
+exports.loadAllDuty = loadAllDuty;
+exports.autoMakeDuty = autoMakeDuty;

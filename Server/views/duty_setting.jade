@@ -8,45 +8,56 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/fullcalendar.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
     .container.contents
-        h3 기술도서 대여
+        h3 당직 설정
         hr
         .content
-            #booksearch
-                button#borrowUsingQRcode.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
-                .input-group
-                    button#bookSearchCategory(type='button') 도서명
-                        button.dropdown-toggle(type='button', data-toggle='dropdown')
-                            span.caret
-                        ul#categoryDropdown.dropdown-menu
-                            li
-                                a(href='#') 도서명
-                            li
-                                a(href='#') 저자
-                            li
-                                a(href='#') 출판사
-                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
-                    button#bookSearchBtn(type='button') 검색
-            #noti
-                hr
-                h4 이번달 들어온 기술도서목록
-                hr
-            table#booklist.table.table-hover.table-bordered.table-condensed
-            .pageArea
-                ul.pagination
-    .modal.fade
-        .modal-dialog
-            .modal-content
-                .modal-header
-                    h4.modal-title
-                .modal-body
-                .modal-footer
-                    button#request.btn(type='button') 대여
-                    button#reserve.btn(type='button') 예약
-                    button#missing.btn(type='button') 분실신고
-                    button#return.btn(type='button', data-dismiss='modal') 닫기
+            input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
+            table.table
+                tr
+                    th 총 당직수
+                    th
+                        .btn-group
+                            a#duty_button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 0
+                            ul#duty_count.dropdown-menu(style='width:100%')
+                                li
+                                    a(href='#') 1
+                                li
+                                    a(href='#') 2
+                                li
+                                    a(href='#') 3
+                                li
+                                    a(href='#') 4
+                    th 벌당직수
+                    th
+                        .btn-group
+                            a#bad_duty_button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 0
+                            ul#bad_duty_count.dropdown-menu(style='width:100%')
+                                li
+                                    a(href='#') 1
+                                li
+                                    a(href='#') 2
+                                li
+                                    a(href='#') 3
+                                li
+                                    a(href='#') 4
+                    th 선택된 날짜수
+                    th
+                        #selected_days 0
+
+
+
+            #calendar.table
+
+            button#setting.btn.btn-block.hidden(type='button')  설정
+
+
 append script
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-    script(src='../javascripts/book_tech_index.js')
+    script(src='../javascripts/moment.min.js')
+    script(src='../javascripts/fullcalendar.js')
+    script(src='../javascripts/bootstrap-datepicker.js')
+    script(src='../javascripts/duty_setting.js')
