@@ -81,7 +81,17 @@ router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
 
-    var query = 'select * from t_user order by u_period';
+    var type = req.body.userType;
+
+    var query = 'select * from t_user';
+
+    if(type == '1')
+        query += ' WHERE u_state = 12';
+    else
+        query += ' WHERE u_state != 1 AND u_state != 12';
+
+    query += ' order by u_period';
+
 
     con.query(query,function(err,rows){
         if (err) {
