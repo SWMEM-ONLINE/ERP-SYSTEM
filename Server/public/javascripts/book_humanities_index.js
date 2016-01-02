@@ -84,7 +84,7 @@ function clickEvent(datalist){
                     else    toastr['info']('책 대여 성공');
                 });
                 $('div.modal').modal('hide');
-                window.location.reload();
+                //window.location.reload();
             }
         });
         $('button#reserve').unbind().click(function(){                  // Reserve button to reserve book.
@@ -100,10 +100,11 @@ function clickEvent(datalist){
         });
         $('button#missing').unbind().click(function(){                  // Missing button to enroll missingbook list.
             $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (data) {
-                toastr['info']('분실도서 등록 완료');
+                if(data === 'success')  toastr['info']('분실도서 등록 완료');
+                else    toastr['error']('분실도서 등록 실패');
             });
             $('div.modal').modal('hide');
-            window.location.reload();
+            //window.location.reload();
         });
         $('div.modal').modal();
     });

@@ -115,11 +115,11 @@ function loadmyappliedHardware(){               // 미완성된 함수.
 function turnInButton(datalist){
     $('button#turnIn').each(function(index){            // Turnin button & function
         $(this).unbind().click(function(event){
-            console.log(index);
-            $.post("/hardware/myhardware/turnIn", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id}, function (data) {
-                console.log(data);              // 대여에 성공했다는 토스트라도 띄워줄까.
+            $.post("/hardware/myhardware/turnIn", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id}, function (response) {
+                if(response === 'success')  toastr['success']('반납 성공');
+                else    toastr['error']('반납 실패');
             });
-            window.location.reload();
+            //window.location.reload();
         });
     });
 }
@@ -127,10 +127,11 @@ function turnInButton(datalist){
 function postponeButton(datalist){
     $('button#postpone').each(function(index){          // Postpone button & function
         $(this).unbind().click(function(){
-            $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id}, function (data) {
-                console.log(data);
+            $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id}, function (response) {
+                if(response === 'success')  toastr['success']('연장 성공');
+                else    toastr['error']('연장 실패');
             });
-            window.location.reload();
+            //window.location.reload();
         });
     });
 }
@@ -138,10 +139,11 @@ function postponeButton(datalist){
 function deleteRequestButton(datalist){
     $('button#deleteRequest').each(function(index){
         $(this).unbind().click(function(){
-            $.post('/hardware/myhardware/deleteRequest', {waiting_id: datalist[index].hw_id}, function(data){
-                console.log(data);
+            $.post('/hardware/myhardware/deleteRequest', {waiting_id: datalist[index].hw_id}, function(response){
+                if(response === 'success')  toastr['success']('신청 삭제 성공');
+                else    toastr['error']('신청 삭제 실패');
             });
-            window.location.reload();
+            //window.location.reload();
         });
     });
 }
@@ -166,11 +168,12 @@ function showdetailButton(datalist){
 
 function cancelmyApplyButton(data){
     $('button#cancelmyappliedHardware').unbind().click(function(){
-        $.post('/hardware/myhardware/cancelmyApply', {apply_id: data.ha_id}, function(res){
-
+        $.post('/hardware/myhardware/cancelmyApply', {apply_id: data.ha_id}, function(response){
+            if(response === 'success')  toastr['success']('신청취소 성공');
+            else    toastr['error']('신청취소 실패');
         });
         $('div.modal').modal('hide');
-        window.location.reload();
+        //window.location.reload();
     });
 }
 

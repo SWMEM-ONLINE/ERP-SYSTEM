@@ -27,6 +27,18 @@ function loadMydutyMain(con, req, res){
 
 }
 
+function getUserpermission(con, req, res){
+    var query = 'select u_state from t_user where u_id="' + req.session.passport.user.id + '"';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err;
+        }
+        res.send(response);
+    });
+}
+
+exports.getUserpermission = getUserpermission;
 exports.loadHardwareMain = loadHardwareMain;
 exports.loadBookMain = loadBookMain;
 exports.loadMileageMain = loadMileageMain;

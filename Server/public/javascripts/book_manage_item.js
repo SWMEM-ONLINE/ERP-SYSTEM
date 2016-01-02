@@ -239,6 +239,6 @@ function resetButton(datalist){
             else    toastr['error']('도서위치 변경실패');
         });
         $('div.modal').modal('hide');
-        window.location.reload();
+        //window.location.reload();
     });
 }

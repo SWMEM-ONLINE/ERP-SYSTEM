@@ -1,6 +1,26 @@
 /**
  * Created by jung-inchul on 2015. 12. 4..
  */
+
+toastr.options = {
+    'closeButton': false,
+    'debug': false,
+    'newestOnTop': false,
+    'progressBar': false,
+    'positionClass': 'toast-top-right',
+    'preventDuplicates': false,
+    'onclick': null,
+    'showDuration': '300',
+    'hideDuration': '1000',
+    'timeOut': '5000',
+    'extendedTimeOut': '1000',
+    'showEasing': 'swing',
+    'hideEasing': 'linear',
+    'showMethod': 'fadeIn',
+    'hideMethod': 'fadeOut'
+};
+
+
 $('ul.nav-pills li').click(function(){
     var index = $(this).index();
     $('ul.nav-pills li').removeClass('active');
@@ -54,31 +74,34 @@ function loadBorrowedBooklist(){
         $('#myBorrowedBook').html(htmlString);
         $('button#turnIn').each(function(index){                            // turnIn button function.
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/turnIn', {rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, due_date: datalist[index].b_due_date, reserved_cnt: datalist[index].b_reserved_cnt}, function(data){
-                    console.log(data);
+                $.post('/book/mybook/turnIn', {rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, due_date: datalist[index].b_due_date, reserved_cnt: datalist[index].b_reserved_cnt}, function(response){
+                    if(response==='success')    toastr['success']('반납 성공');
+                    else    toastr['error']('반납 실패');
                 });
-                window.location.reload();
+                //window.location.reload();
             });
         });
         $('button#postpone').each(function(index){                          // postpone button function
             if(datalist[index].br_extension_cnt === 0 && datalist[index].b_reserved_cnt === 0) {
                 $(this).unbind().click(function (event) {
-                    var due_date = new Date(datalist[index].b_due_date);
-                    due_date.setDate(due_date.getDate() + 14);
-                    var changedDate = due_date.getFullYear()+ '-'+(due_date.getMonth()+1)+'-'+due_date.getDate();
-                    $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id}, function (data) {
-                        console.log(data);
+                    //var due_date = new Date(datalist[index].b_due_date);
+                    //due_date.setDate(due_date.getDate() + 14);
+                    //var changedDate = due_date.getFullYear()+ '-'+(due_date.getMonth()+1)+'-'+due_date.getDate();
+                    $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id}, function (response) {
+                        if(response === 'success')  toastr['success']('연장 성공');
+                        else    toastr['error']('연장 실패');
                     });
-                    window.location.reload();
+                    //window.location.reload();
                 });
             }
         });
         $('button#missing').each(function(index){                           // missing button function
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/missing', {rental_id: datalist[index].br_id, book_id : datalist[index].b_id}, function(data){
-                    console.log(data);
+                $.post('/book/mybook/missing', {rental_id: datalist[index].br_id, book_id : datalist[index].b_id}, function(response){
+                    if(response === 'success')  toastr['success']('분실신고 성공');
+                    else    toastr['error']('분실등록 실패');
                 });
-                window.location.reload();
+                //window.location.reload();
             });
         });
     });
@@ -105,10 +128,11 @@ function loadReservedBooklist(){
         $('#myReservedBook').html(htmlString);
         $('button#cancelReservation').each(function(index){                 // cancelReservation button function
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/cancelReservation', {reserve_id: datalist[index].bre_id, book_id: datalist[index].b_id, reserved_cnt: datalist[index].b_reserved_cnt}, function(data){
-                    console.log(data);
+                $.post('/book/mybook/cancelReservation', {reserve_id: datalist[index].bre_id, book_id: datalist[index].b_id, reserved_cnt: datalist[index].b_reserved_cnt}, function(response){
+                    if(response === 'success')  toastr['success']('예약취소 성공');
+                    else    toastr['error']('에약취소 실패');
                 });
-                window.location.reload();
+                //window.location.reload();
             });
         });
     });
@@ -135,10 +159,11 @@ function loadAppliedBooklist(){
         $('#myAppliedBook').html(htmlString);
         $('button#cancelAppliedbook').each(function(index){
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/cancelAppliedbook', {apply_id: datalist[index].ba_id}, function(data){
-                    console.log(data);
+                $.post('/book/mybook/cancelAppliedbook', {apply_id: datalist[index].ba_id}, function(response){
+                    if(response === 'success')  toastr['success']('도서신청 취소 성공');
+                    else    toastr['error']('도서신청 취소 실패');
                 });
-                window.location.reload();
+                //window.location.reload();
             });
         });
     });

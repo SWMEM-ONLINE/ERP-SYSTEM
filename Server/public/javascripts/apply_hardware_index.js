@@ -22,26 +22,6 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
-function isNumberKey(obj) {
-    e = window.event;
-    if ((e.keyCode >= 48 && e.keyCode <= 57)
-        || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 8
-        || e.keyCode == 46 || e.keyCode == 37 || e.keyCode == 39
-        || e.keyCode == 35 || e.keyCode == 36 || e.keyCode == 9) {
-        if (e.keyCode == 48 || e.keyCode == 96) {
-            if (obj.value == "" || obj.value == "0") {
-                e.returnValue = false;
-            } else {
-                return;
-            }
-        } else {
-            return;
-        }
-    } else {
-        e.returnValue = false;
-    }
-}
-
 function addList() {
     var table = document.getElementById('addlist');
     var lastRow = table.rows.length;
@@ -181,7 +161,9 @@ $('#submit').click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data.status === 'success'){
-                    toastr['success']('성공');
+                    toastr['success']('하드웨어 신청 성공');
+                }else{
+                    toastr['error']('하드웨어 신청 실패');
                 }
             }
         });

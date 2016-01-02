@@ -97,7 +97,7 @@ function addHardware(){
                 toastr['error']('시리얼넘버는 100자 이하여야합니다');
                 return;
             }
-            var data ={
+            var data = {
                 name: name,
                 amount: amount,
                 serial: serial

@@ -26,4 +26,8 @@ router.post('/loadmyHardware', util.ensureAuthenticated, function(req, res, next
     main_handler.loadHardwareMain(con, req, res);
 });
 
+router.post('/getUserpermission', util.ensureAuthenticated, function(req, res, next){
+    main_handler.getUserpermission(con, req, res);
+});
+
 module.exports = router;

@@ -28,16 +28,16 @@ body
                            a(href='/book/tech') 기술도서대여
                         li
                            a(href='/book/mybook') 내도서현황
-                        li.divider
-                        li
+                        li.divider.manage.book.hidden
+                        li.manage.book.hidden
                            a(href='/book/manage/item') 도서관리
-                        li
+                        li.manage.book.hidden
                            a(href='/book/manage/apply') 신청도서 관리
-                        li
+                        li.manage.book.hidden
                            a(href='/book/manage/history') 대여 기록
-                        li
+                        li.manage.book.hidden
                            a(href='/book/manage/inArrears') 연체자 목록
-                        li
+                        li.manage.book.hidden
                            a(href='/book/manage/missing') 분실도서 목록
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 하드웨어
@@ -46,12 +46,12 @@ body
                            a(href='/hardware/assign') 대여신청
                         li
                            a(href='/hardware/myhardware') 대여확인
-                        li.divider
-                        li
+                        li.divider.manage.hardware.hidden
+                        li.manage.hardware.hidden
                            a(href='/hardware/manage/item') 하드웨어 관리
-                        li
+                        li.manage.hardware.hidden
                            a(href='/hardware/manage/request') 신청 관리
-                        li
+                        li.manage.hardware.hidden
                            a(href='/hardware/manage/history') 대여기록
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 회비
@@ -60,11 +60,12 @@ body
                            a(href='/fee/history') 회비 내역
                         li
                            a(href='/fee/unpaid') 미납 내역
-                        li
+                        li.divider.manage.fee.hidden
+                        li.manage.fee.hidden
                            a(href='/fee/register') 수입/지출 등록
-                        li
+                        li.manage.fee.hidden
                            a(href='/fee/charge') 회비 추가
-                        li
+                        li.manage.fee.hidden
                            a(href='/fee/manage') 회비 관리
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 당직
@@ -94,11 +95,12 @@ body
                            a(href='/apply/room') 프로젝트실
                         li
                            a(href='/apply/equipment') 비품
-                        li
+                        li.divider.manage.hidden
+                        li.manage.server.hidden
                            a(href='/apply/server/manage') 서버신청관리
-                        li
+                        li.manage.projectroom.hidden
                            a(href='/apply/room/manage') 프로젝트실신청관리
-                        li
+                        li.manage.equipment.hidden
                            a(href='/apply/equipment/manage') 비품신청관리
                   li
                      a(href='/vote') 설문
@@ -107,7 +109,7 @@ body
                      ul.dropdown-menu
                         li
                            a(href='/qna') 신청
-                        li
+                        li.manage.all.hidden
                            a(href='/qna/manage') 관리
                ul.nav.navbar-nav.navbar-right
                   li.dropdown
@@ -130,7 +132,8 @@ block foot
       h5
          small Copyright 2015 Samsung Software Membership, All Rights Reserved.
       h5
-         small Developed by Dongwon, Byeonkwon, Incheol, Hyunjae
+         small Developed by Dongwon, Byeonkwon, Inchul, Hyunjae
 block script
    script(src='http://code.jquery.com/jquery.js')
+   script(src='../javascripts/main_layout_index.js')
    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')

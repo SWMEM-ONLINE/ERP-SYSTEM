@@ -117,11 +117,12 @@ function clickEvent(datalist){
             //window.location.reload();
         });
         $('button#missing').unbind().click(function(){                  // Missing button to enroll missingbook list.
-            $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (data) {
-                toastr['info']('분실도서 등록 완료');
+            $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (response) {
+                if(response === 'success')  toastr['success']('분실도서 등록 성공');
+                else    toastr['error']('분실도서 등록 실패');
             });
             $('div.modal').modal('hide');
-            window.location.reload();
+            //window.location.reload();
         });
         $('div.modal').modal();
     });

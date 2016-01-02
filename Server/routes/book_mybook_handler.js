@@ -25,19 +25,22 @@ function loadAppliedBook(con, req, res){
 
 function turninBook(con, req, res){
     var today = getDate(new Date(), 0);
-    var query1 = 'insert into t_book_return SET ? ';
-    var query2 = 'update t_book set b_state=0, b_due_date=null, b_rental_username=null where b_id="' + req.body.book_id + '"';
-    var query3 = 'delete from t_book_rental where br_id="' + req.body.rental_id + '"';
-    var data = {
-        brt_user : req.session.passport.user.id,
-        brt_book_id : req.body.book_id,
-        brt_return_date : today,
-        brt_rental_date : req.body.rental_date
-    };
-
-    con.query(query1, data);
-    con.query(query2);
-    con.query(query3);
+    var query = 'insert into t_book_return SET brt_user="' + req.session.passport.user.id + '", brt_book_id=' + req.body.book_id + ', brt_rental_date="' + req.body.rental_date + '", brt_return_date="' + today + '";';
+    query += 'update t_book set b_state=0, b_due_date=null, b_rental_username=null where b_id="' + req.body.book_id + '";';
+    query += 'delete from t_book_rental where br_id="' + req.body.rental_id + '";';
+    //var data = {
+    //    brt_user : req.session.passport.user.id,
+    //    brt_book_id : req.body.book_id,
+    //    brt_return_date : today,
+    //    brt_rental_date : req.body.rental_date
+    //};
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    });
 
     /*
         반납일을 넘겼을 경우 자동 벌당직 부여하는곳.
@@ -48,53 +51,74 @@ function turninBook(con, req, res){
 
 function postponeBook(con, req, res){
     var query = 'select * from t_book a inner join t_book_rental b on a.b_id=b.br_book where b.br_id="' + req.body.rental_id + '"';
-    var query1 = 'update t_book_rental set br_extension_cnt=br_extension_cnt+1 where br_id=' + req.body.rental_id;
-    var query2 = 'update t_book set b_due_date="' + req.body.changed_due_date + '" where b_id="' + req.body.book_id + '"';
+    var query2 = 'update t_book_rental set br_extension_cnt=br_extension_cnt+1 where br_id=' + req.body.rental_id + ';';
+    query2 += 'update t_book set b_due_date="' + req.body.changed_due_date + '" where b_id="' + req.body.book_id + '"';
     con.query(query, function(err, response){
        if(response[0].br_extenstion_cnt === 1 || response[0].b_reserved_cnt != 0){
             res.send('연장할 수 없습니다');
        }else{
-           con.query(query1);
-           con.query(query2);
+           con.query(query2, function(err2, response2){
+               if(err2){
+                   res.send('failed');
+                   throw err2
+               }
+               res.send('success');
+           });
        }
     });
 }
 
 function missingBook(con, req, res){
-    var query1 = 'insert into t_book_loss SET ?';
-    var queryData = {
-        brl_user : req.session.passport.user.id,
-        brl_book_id : req.body.book_id,
-        brl_loss_date : req.body.loss_date
-    };
-    var query2 = 'update t_book set b_state=3 where b_id="' + req.body.book_id +'"';
-    var query3 = 'delete from t_book_rental where br_id="' + req.body.rental_id + '"';
-    var query4 = 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '"';
+    var query = 'insert into t_book_loss SET brl_user="' + req.session.passport.user.id + '", brl_book_id=' + req.body.book_id + ', brl_loss_date="' + req.body.loss_date + '";';
+    //var queryData = {
+    //    brl_user : req.session.passport.user.id,
+    //    brl_book_id : req.body.book_id,
+    //    brl_loss_date : req.body.loss_date
+    //};
+    query += 'update t_book set b_state=3 where b_id="' + req.body.book_id +'";';
+    query += 'delete from t_book_rental where br_id="' + req.body.rental_id + '";';
+    query += 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '"';
 
-    con.query(query1, queryData);
-    con.query(query2);
-    con.query(query3);
-    con.query(query4);
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    })
 }
 
 function cancelReservation(con, req, res){
     if(req.body.reserved_cnt > 1){
         var query = 'select bre_myturn from t_book_reserve where bre_id="' + req.body.reserve_id + '"';
         con.query(query, function(err, response){
-            var query1 = 'update t_book_reserve set bre_myturn=bre_myturn-1 where bre_myturn>'+ response[0].bre_myturn;
-            con.query(query1);
+            if(err){
+                res.send('failed');
+                throw err
+            }
+            var query1 = 'update t_book_reserve set bre_myturn=bre_myturn-1 where bre_myturn>'+ response[0].bre_myturn + ';';
+            query1 += 'update t_book set b_reserved_cnt=b_reserved_cnt-1 where b_id="' + req.body.book_id + '";';
+            query1 += 'delete from t_book_reserve where bre_id="' + req.body.reserve_id + '"';
+            con.query(query1, function(err2, response2){
+                if(err2){
+                    res.send('failed');
+                    throw err2
+                }
+                res.send('success');
+            });
         });
     }
-    var query2 = 'update t_book set b_reserved_cnt=b_reserved_cnt-1 where b_id="' + req.body.book_id + '"';
-    var query3 = 'delete from t_book_reserve where bre_id="' + req.body.reserve_id + '"';
-
-    con.query(query2);
-    con.query(query3);
 }
 
 function cancelAppliedbook(con, req, res){
     var query = 'delete from t_book_apply where ba_id="' + req.body.apply_id + '"';
-    con.query(query);
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    });
 }
 
 function imposeBadduty(con, userId, overtime){
