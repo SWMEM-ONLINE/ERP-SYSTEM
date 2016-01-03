@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
     var uBirth = req.body.birth;
     var uPhone = req.body.phone;
     var eMail = req.body.mail;
-    var uState = 4;
+    var uState = 104;
     var uPeriod = req.body.period;
     var uBranch = 'sw';
     var uDevice = 0;
