@@ -89,7 +89,8 @@ function missingBook(con, req, res){
 }
 
 function cancelReservation(con, req, res){
-    if(req.body.reserved_cnt > 1){
+
+    if(req.body.reserved_cnt >= 1){
         var query = 'select bre_myturn from t_book_reserve where bre_id="' + req.body.reserve_id + '"';
         con.query(query, function(err, response){
             if(err){

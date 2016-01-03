@@ -1,6 +1,7 @@
 /**
  * Created by jung-inchul on 2015. 11. 30..
  */
+
 toastr.options = {
     "closeButton": false,
     "debug": false,
@@ -102,14 +103,16 @@ function clickEvent(datalist){
                     else    toastr['info']('책 대여 성공');
                 });
                 $('div.modal').modal('hide');
-                window.location.reload();
+                //window.location.reload();
             }
         });
         $('button#reserve').unbind().click(function(){                  // Reserve button to reserve book.
             $.post("/book/reserveBook", {book_id : datalist[index].b_id, reserve_cnt: datalist[index].b_reserved_cnt}, function (data) {
                 $('div.modal').modal('hide');
-                if(data === 'failed'){
+                if(data === 'failed_2') {
                     toastr['error']('이미 대여했거나 예약중이시므로, 추가예약이 불가능합니다.');
+                }else if(data === 'failed_1'){
+                    toastr['error']('대여중인 책이 아니므로 예약이 불가능합니다');
                 }else{
                     toastr['info']('책 예약 성공');
                 }

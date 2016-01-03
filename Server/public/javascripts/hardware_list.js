@@ -1,7 +1,7 @@
 /**
  * Created by jung-inchul on 2015. 12. 7..
  */
-
+//
 toastr.options = {
     'closeButton': false,
     'debug': false,
@@ -19,7 +19,6 @@ toastr.options = {
     'showMethod': 'fadeIn',
     'hideMethod': 'fadeOut'
 };
-
 loadHardwarelist();
 
 /*
@@ -29,7 +28,7 @@ loadHardwarelist();
 function loadHardwarelist(){
     $.post('/hardware/loadHardwarelist', function(datalist){
         var htmlString = settingHTML(datalist);
-        $('#hardwarelist').html(htmlString);
+        $('table#hardwarelist').html(htmlString);
         $('.modal-header').text('하드웨어 대여');
         clickEvent(datalist);
     });

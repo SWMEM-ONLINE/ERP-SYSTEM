@@ -1,6 +1,25 @@
 /*
  * Created by jung-inchul on 2015. 11. 30..
  */
+
+toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
+
 var flag_category = 0;                                                  // This variable means index of category which user selected
 var category = ['b_name', 'b_author', 'b_publisher'];                   // Dropdown contents
 
@@ -30,7 +49,7 @@ $('#bookSearchBtn').click(function() {
         return false;
     }else{
         $('#noti').remove();                                            // remove '이번달 들어온 인문도서 목록입니다' content
-        $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : 'tech'}, function(data){
+        $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : 'humanities'}, function(data){
             settingHTML(data);
             clickEvent(data);
         });
@@ -90,8 +109,10 @@ function clickEvent(datalist){
         $('button#reserve').unbind().click(function(){                  // Reserve button to reserve book.
             $.post("/book/reserveBook", {book_id : datalist[index].b_id, reserve_cnt: datalist[index].b_reserved_cnt}, function (data) {
                 $('div.modal').modal('hide');
-                if(data === 'failed'){
+                if(data === 'failed_2') {
                     toastr['error']('이미 대여했거나 예약중이시므로, 추가예약이 불가능합니다.');
+                }else if(data === 'failed_1'){
+                    toastr['error']('대여중인 책이 아니므로 예약이 불가능합니다');
                 }else{
                     toastr['info']('책 예약 성공');
                 }

@@ -115,7 +115,8 @@ function missingBook(con, req, res){
 
 function reserveBook(con, req, res){
     var today = getDate(new Date(), 0);
-    var query = 'select br_user from t_book_rental where br_user="' + req.session.passport.user.id+'" and br_book_id="' + req.body.book_id + '"UNION select bre_user from t_book_reserve where bre_user="' + req.session.passport.user.id + '" and bre_book_id="' + req.body.book_id + '"';
+    var query = 'select * from t_book_rental where br_book_id="' + req.body.book_id + '"';
+    var query1 = 'select br_user from t_book_rental where br_user="' + req.session.passport.user.id+'" and br_book_id="' + req.body.book_id + '"UNION select bre_user from t_book_reserve where bre_user="' + req.session.passport.user.id + '" and bre_book_id="' + req.body.book_id + '"';
     var query2 = 'update t_book set b_reserved_cnt=b_reserved_cnt+1 where b_id="' + req.body.book_id + '";';
     query2 += 'insert into t_book_reserve SET bre_user="' + req.session.passport.user.id + '", bre_book_id=' + req.body.book_id + ', bre_myturn=' + (parseInt(req.body.reserve_cnt)+1) + ', bre_reserve_date="' + today + '"';
     //var queryData = {
@@ -124,18 +125,23 @@ function reserveBook(con, req, res){
     //    bre_myturn : parseInt(req.body.reserve_cnt) + 1,
     //    bre_reserve_date : today
     //};
-
-    con.query(query, function(err, rows, fields){
-        if(rows.length != 0){
-            res.send('failed');
-        }else{
-            con.query(query2, function(err2, response2){
-                if(err2){
-                    res.send('failed');
-                    throw err2
+    con.query(query, function(err, response){
+        if(response.length != 0){
+            con.query(query1, function(err2, response2){
+                if(response2.length != 0){
+                    res.send('failed_2');
+                }else{
+                    con.query(query2, function(err3, response3){
+                        if(err3){
+                            res.send('failed_3');
+                            throw err3
+                        }
+                        res.send('success');
+                    });
                 }
-                res.send('success');
             });
+        }else{
+            res.send('failed_1');
         }
     });
 }

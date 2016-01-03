@@ -43,44 +43,60 @@ function loadLender(con, req, res){
 }
 
 function turnInHardware(con, req, res){
-    var query1 = 'insert into t_hardware_waiting SET ?';
-    var dataset = {
-        hw_user : req.session.passport.user.id,
-        hw_hardware_id: req.body.hardware_id,
-        hw_request_date: getDate(new Date(), 0),
-        hw_kind : 1,
-        hw_rental_id : req.body.rental_id
-    };
-    con.query(query1, dataset, function(err, response){
-        if(err){
-            res.send('failed');
-            throw err
+    var query = 'select * from t_hardware_waiting where hw_rental_id="' + req.body.rental_id + '"';
+    con.query(query, function(err1, response1){
+        if(response1.length === 0){
+            var query1 = 'insert into t_hardware_waiting SET ?';
+            var dataset = {
+                hw_user : req.session.passport.user.id,
+                hw_hardware_id: req.body.hardware_id,
+                hw_request_date: getDate(new Date(), 0),
+                hw_kind : 2,
+                hw_rental_id : req.body.rental_id
+            };
+            con.query(query1, dataset, function(err2, response2){
+                if(err2){
+                    res.send('failed_2');
+                    throw err2
+                }
+                res.send('success');
+            });
+        }else{
+            res.send('failed_1');
         }
-        res.send('success');
     });
+
     // 운영자님에게 push 알림을 날린다.
 }
 
 function postponeHardware(con, req, res){
-    var query1 = 'insert into t_hardware_waiting SET ?';
-    var dataset = {
-        hw_user : req.session.passport.user.id,
-        hw_hardware_id : req.body.hardware_id,
-        hw_request_date : getDate(new Date(), 0),
-        hw_kind : 2,
-        hw_rental_id : req.body.rental_id
-    };
-    con.query(query1, dataset, function(err, response){
-        if(err){
-            res.send('failed');
-            throw err
+    var query = 'select * from t_hardware_waiting where hw_rental_id="' + req.body.rental_id + '"';
+    con.query(query, function(err1, response1){
+        if(response1.length === 0){
+            var query1 = 'insert into t_hardware_waiting SET ?';
+            var dataset = {
+                hw_user : req.session.passport.user.id,
+                hw_hardware_id : req.body.hardware_id,
+                hw_request_date : getDate(new Date(), 0),
+                hw_kind : 1,
+                hw_rental_id : req.body.rental_id
+            };
+            con.query(query1, dataset, function(err, response){
+                if(err){
+                    res.send('failed_2');
+                    throw err
+                }
+                res.send('success');
+                // 운영자님에게 push 알림을 날린다.
+            });
+        }else{
+            res.send('failed_1');
         }
-        res.send('success');
     });
-    // 운영자님에게 push 알림을 날린다.
 }
 function deleteRequest(con, req, res){
-    var query = 'delete from t_hardware_waiting where hw_id="' + req.body.waiting_id + '"';
+    var query = 'delete from t_hardware_waiting where hw_id="' + req.body.waiting_id + '";';
+    query += 'update t_hardware set h_remaining=h_remaining+1 where h_id="' + req.body.hardware_id + '"';
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
@@ -125,7 +141,7 @@ function cancelmyApply(con, req, res){
 function enrollHardware(con, req, res){
     var query = '';
     for(var i = 0; i < req.body.length; i++){
-        query += 'lock tables "t_hardware" insert into t_hardware set h_name="' + req.body[i].name + '", h_total=' + req.body[i].amount + ', h_remaining=' + req.body[i].amount + 'h_serial="' + req.body[i].serial + '";';
+        query += 'insert into t_hardware set h_name="' + req.body[i].name + '", h_total=' + req.body[i].amount + ', h_remaining=' + req.body[i].amount + ', h_serial="' + req.body[i].serial + '";';
         //var item = {
         //    h_name : req.body[i].name,
         //    h_total : req.body[i].amount,
@@ -133,6 +149,8 @@ function enrollHardware(con, req, res){
         //    h_serial : req.body[i].serial
         //};
     }
+
+    console.log(query);
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
@@ -231,28 +249,21 @@ function approveRequest(con, req, res){
                 var query_postpone = '';
                 var rentalIdlist = (req.body.rentalIdlist).split(',');
                 for(var j = 0; j < count; j++){
-                    query_postpone += 'update t_hardware_rental set hr_extension_cnt=hr_extension_cnt+1, hr_due_date=ADDDATE(hr_due_date, 14) where hr_id=' + parseInt(rentalIdlist[i]) + ';';
+                    query_postpone += 'update t_hardware_rental set hr_extension_cnt=hr_extension_cnt+1, hr_due_date=ADDDATE(hr_due_date, 14) where hr_id=' + parseInt(rentalIdlist[j]) + ';';
                 }
                 con.query(query_postpone);
                 break;
             case 2:         // # 반납
-                var query_turnin1 = 'update t_hardware set h_remaining=h_remaining+1 where h_id IN (' + req.body.hardwareIdlist + ')';
-                con.query(query_turnin1);
-
-                var query_turnin2 = 'select * from t_hardware_rental where hr_id IN (' + req.body.rentalIdlist + ')';
-                con.query(query_turnin2, function(err, response){
-                    if(err){
-                        res.send('failed');
-                        throw err
-                    }
-                    var query_turnin3 = '';
+                var query_turnin1 = 'select * from t_hardware_rental where hr_id IN (' + req.body.rentalIdlist + ')';
+                con.query(query_turnin1, function(err, response){
+                    var query_turnin2 = '';
                     for(var i = 0; i < response.length; i++){
-                        query_turnin3 += 'insert into t_hardware_return set ht_user="' + response[i].hr_user + '", ht_hardware_id="' + response[i].hr_hardware_id + '", ht_return_date="' + today + '", ht_rental_date="' + response[i].hr_rental_date + '";';
+                        query_turnin2 += 'insert into t_hardware_return set ht_user="' + response[i].hr_user + '", ht_hardware_id="' + response[i].hr_hardware_id + '", ht_return_date="' + today + '", ht_rental_date="' + response[i].hr_rental_date + '";';
                     }
-                    con.query(query_turnin3);
+                    query_turnin2 += 'update t_hardware set h_remaining=h_remaining+1 where h_id IN (' + req.body.hardwareIdlist + ');';
+                    query_turnin2 += 'delete from t_hardware_rental where hr_id IN (' + req.body.rentalIdlist + ')';
+                    con.query(query_turnin2)
                 });
-                var query_turnin4 = 'delete from t_hardware_waiting where hw_id IN (' + req.body.approveIdlist + ')';
-                con.query(query_turnin4);
                 break;
             default:        // # 새로 신청
         }
