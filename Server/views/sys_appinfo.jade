@@ -1,0 +1,26 @@
+//
+   Created by KIMDONGWON on 2016-01-02.
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/sys_appinfo.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .wrapper
+      article.container
+         h3 수원 통합관리시스템 정보
+         hr
+         .content
+            h4 자치회
+            #councillist
+            h4 Android Application
+            p
+               small ICS 이상의 안드로이드 디바이스에서 설치할 수 있습니다.
+            a(href='/swmem_android.apk')
+               img.android(src='../images/GooglePlayStore.png')
+append script
+   script(src='../javascripts/system_appinfo_index.js')
+

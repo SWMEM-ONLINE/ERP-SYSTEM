@@ -25,6 +25,7 @@ var hardware = require('./routes/hardware');
 var user = require('./routes/user');
 var qna = require('./routes/qna');
 var duty = require('./routes/duty');
+var system = require('./routes/system');
 /* routing pages@ */
 
 var util = require('./routes/util');
@@ -146,7 +147,7 @@ app.use('/hardware', hardware);
 app.use('/user',user);
 app.use('/qna',qna);
 app.use('/duty',duty);
-
+app.use('/sys',system);
 app.get('/',
     function(req, res) {
       if (req.isAuthenticated()) {
