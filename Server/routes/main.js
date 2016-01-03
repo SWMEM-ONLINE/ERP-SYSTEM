@@ -5,10 +5,10 @@ var express = require('express');
 var router = express.Router();
 var util = require('./util');
 var main_handler = require('./main_handler');
-
 var DB_handler = require('./DB_handler');
 var con = DB_handler.connectDB();
-/*
+
+
 /* GET users listing. */
 router.get('/', util.ensureAuthenticated, function(req, res, next) {
 

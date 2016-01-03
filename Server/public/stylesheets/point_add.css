@@ -1,0 +1,44 @@
+@media(max-width:767px){
+    div.card{
+        margin-left: 0;
+        margin-right: 0;
+    }
+    div.card:last-child{
+        margin-bottom:20px;
+    }
+}
+
+div.card {
+    background:#FFF;
+    border:1px solid #AAA;
+    border-bottom:3px solid #BBB;
+    padding:0px;
+    margin:5px;
+    margin-top:20px;
+    overflow:hidden;
+    width:260px;
+    height: 100%;
+    display:inline-block;
+    vertical-align: top;
+}
+
+.period {
+    text-align: center;
+    color: #000000;
+    font-size: 20px;
+}
+
+label{
+    font-size:16px;
+}
+
+p.blur{
+    color: dimgray;
+    font-size: 16px;
+}
+
+.row {
+    text-align: center;
+    font-size: 6px;
+
+}

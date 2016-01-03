@@ -1,0 +1,71 @@
+//
+   Created by HyunJae on 2015. 12. 23..
+
+extends main_layout
+append head
+    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/point_modify.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+    .container.contents
+        h3 상벌당직 수정
+        hr
+        .content
+            table#table.table.tab-content
+                thead
+                    tr
+                        th 날짜
+                        th 등록자
+                        th 대상자
+                        th 구분
+                        th 일
+                tbody#history
+
+        .modal.fade
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                        h4.modal-title 상벌당직 수정
+                    .modal-body
+                        .row
+                            h4 날짜
+                            p#modal-date
+                        .row
+                            h4 등록자
+                            p#modal-enroller.
+                        div
+                            h4 대상자(,로 구분)
+                            input#modal-objects.form-control
+                        .row
+                            h4 구분
+                            .btn-group
+                                a#mode-button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 구분
+                                ul#mode-dropdown.dropdown-menu(style='width:100%')
+                                    li
+                                        a(href='#') 상당직
+                                    li
+                                        a(href='#') 벌당직
+                                    li
+                                        a(href='#') 운영실 벌당직
+                        .row
+                            h4 일수
+                            .input-group
+                                input#modal-pointnumber.form-control(min='0', type='number')
+                                span.input-group-addon 일
+                        div
+                            h4 사유
+                            input#modal-reason.form-control
+                    .modal-footer
+                        button#modify.btn.btn-primary(type='button') 적용
+                        button#cancel.btn.btn-danger(type='button') 삭제
+                        button.btn.btn-default(type='button', data-dismiss='modal') 취소
+
+append script
+    script(src='../javascripts/bootstrap-datepicker.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../javascripts/point_modify.js')

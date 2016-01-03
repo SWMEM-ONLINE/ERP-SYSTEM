@@ -24,6 +24,7 @@ var fee = require('./routes/fee');
 var hardware = require('./routes/hardware');
 var user = require('./routes/user');
 var qna = require('./routes/qna');
+var duty = require('./routes/duty');
 /* routing pages@ */
 
 var util = require('./routes/util');
@@ -60,7 +61,6 @@ app.use(multer({ dest: './uploads/',
     done=true;
   }
 }));
-
 
 passport.use(new LocalStrategy({
       usernameField : 'id',
@@ -145,6 +145,7 @@ app.use('/fee',fee);
 app.use('/hardware', hardware);
 app.use('/user',user);
 app.use('/qna',qna);
+app.use('/duty',duty);
 
 app.get('/',
     function(req, res) {
