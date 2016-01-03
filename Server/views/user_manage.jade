@@ -1,0 +1,76 @@
+//
+   Created by KIMDONGWON on 2015-12-28.
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/user_manage.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .wrapper
+      article.container
+         h3 회원 관리
+         hr
+         .content
+            table#memberList.table
+                tbody
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title 회원 정보 관리
+            .modal-body
+                .form-group
+                    h5#type
+                    .profile-img
+                        img#profile
+                    .btn-group
+                        a#selectAdmin.btn.btn-default.dropdown-toggle(data-toggle='dropdown',number=0) 계정 전환
+                        ul#toggleAdmin.dropdown-menu
+                            li#type1
+                                a(href='#') 운영자로 전환
+                            li#type2
+                                a(href='#') 자치회장으로 전환
+                            li#type3
+                                a(href='#') 총무로 전환
+                            li#type4
+                                a(href='#') 자재부장으로 전환
+                            li#type5
+                                a(href='#') 생활장으로 전환
+                            li#type6
+                                a(href='#') 세미나장으로 전환
+                            li#type7
+                                a(href='#') 문화장으로 전환
+                            li#type8
+                                a(href='#') 네트워크장으로 전환
+                            li#type9
+                                a(href='#') 교육장으로 전환
+                            li#type100
+                                a(href='#') 정회원으로 전환
+                            li#type101
+                                a(href='#') 준회원으로 전환
+                            li#type102
+                                a(href='#') 수료예정으로 전환
+                            li#type103
+                                a(href='#') 가입대기자로 전환
+                            li#type104
+                                a(href='#') 비활성 계정으로 전환
+                p 아이디
+                h5#id
+                p 이름
+                h5#name
+                p 기수
+                h5#period
+                p 핸드폰번호
+                h5#phone
+                p E-mail
+                h5#mail
+            .modal-footer
+                button.btn#save(type='button') 계정 등급 저장
+                button.btn#reset(type='button') 비밀번호 초기화
+                button.btn(type='button', data-dismiss='modal') 닫기
+append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/user_manage_index.js')

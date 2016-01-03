@@ -80,117 +80,117 @@ inputId.focusout(function(){
 });
 
 
-    /* @gender select */
-    btn_male.on('click',function(){
-        male.checked = true;
-    });
+/* @gender select */
+btn_male.on('click',function(){
+    male.checked = true;
+});
 
-    btn_female.on('click',function(){
-        female.checked = true;
-    });
-    /* gender select@ */
+btn_female.on('click',function(){
+    female.checked = true;
+});
+/* gender select@ */
 
-    /* @image file select */
-    $('input[type=file]').change(function(e) {
-        var fn = $(this);
-        if(fn.val() != ''){
-            var fileName = fn.val().split( '\\' ).pop();
-            $('label[id = sign_up_img_label]').text(fileName);
-        }
-        else{
-            $('label[id = sign_up_img_label]').text('사진 선택');
-        }
-    });
-    /* image file select@ */
+/* @image file select */
+$('input[type=file]').change(function(e) {
+    var fn = $(this);
+    if(fn.val() != ''){
+        var fileName = fn.val().split( '\\' ).pop();
+        $('label[id = sign_up_img_label]').text(fileName);
+    }
+    else{
+        $('label[id = sign_up_img_label]').text('사진 선택');
+    }
+});
+/* image file select@ */
 
-    /* @sign form submit event */
-    $('#form').submit(function(){
-        /* @init */
-        var id = inputId.val();
-        var pw = inputPw.val();
-        var confirm = inputPwConfirm.val();
-        var birth = inputBirth.val();
-        var period = inputPeriod.val();
-        var phone = inputPhone.val();
-        var email = inputMail.val();
-        var img = inputImg.val();
-        result ='';
+/* @sign form submit event */
+$('#form').submit(function(){
+    /* @init */
+    var id = inputId.val();
+    var pw = inputPw.val();
+    var confirm = inputPwConfirm.val();
+    var birth = inputBirth.val();
+    var period = inputPeriod.val();
+    var phone = inputPhone.val();
+    var email = inputMail.val();
+    var img = inputImg.val();
+    result ='';
+    signup_success = true;
+    /* init @ */
 
-        /* init @ */
+    /* @id check */
+    if(idok === false){
+        result += idDuple;
+    }
+    if(id.length < 4){
+        signup_success = false;
+        result += idErr;
+    }
+    else if(idReg.test(id)){
+        signup_success = false;
+        result += idKoErr;
+    }
+    else if(pattern.test(id)){
+        signup_success = false;
+        result += idSpaceErr;
+    }
+    /* id check@ */
 
-        /* @id check */
-        if(idok === false){
-            result += idDuple;
-        }
-        if(id.length < 4){
-            signup_success = false;
-            result += idErr;
-        }
-        else if(idReg.test(id)){
-            signup_success = false;
-            result += idKoErr;
-        }
-        else if(pattern.test(id)){
-            signup_success = false;
-            result += idSpaceErr;
-        }
-        /* id check@ */
+    /* @password check */
+    if(pw.length < 4){
+        signup_success = false;
+        result += pwErr;
+    }
+    else if(pw != confirm){
+        signup_success = false;
+        result += pwDiff;
+    }
+    /* password check@ */
 
-        /* @password check */
-        if(pw.length < 4){
-            signup_success = false;
-            result += pwErr;
-        }
-        else if(pw != confirm){
-            signup_success = false;
-            result += pwDiff;
-        }
-        /* password check@ */
+    /* @birth check */
+    if(!birthReg.test(birth)){
+        signup_success = false;
+        result += birthErr;
+    }
+    /* birth check@ */
 
-        /* @birth check */
-        if(!birthReg.test(birth)){
-            signup_success = false;
-            result += birthErr;
-        }
-        /* birth check@ */
+    /* @period check */
+    if(!periodReg.test(period)){
+        signup_success = false;
+        result += periodErr;
+    }
+    /* period check@ */
 
-        /* @period check */
-        if(!periodReg.test(period)){
-            signup_success = false;
-            result += periodErr;
-        }
-        /* period check@ */
+    /* @phone check */
+    if(!phoneReg.test(phone)){
+        signup_success = false;
+        result += phoneErr;
+    }
+    /* phone check@ */
 
-        /* @phone check */
-        if(!phoneReg.test(phone)){
-            signup_success = false;
-            result += phoneErr;
-        }
-        /* phone check@ */
+    /* @email check */
+    if(!emailReg.test(email)){
+        signup_success = false;
+        result += emailErr;
+    }
+    /* email check@ */
 
-        /* @email check */
-        if(!emailReg.test(email)){
-            signup_success = false;
-            result += emailErr;
-        }
-        /* email check@ */
+    /* @image check */
+    if(img == ''){
+        signup_success = false;
+        result += imgErr;
+    }
+    /* image check@ */
 
-        /* @image check */
-        if(img == ''){
-            signup_success = false;
-            result += imgErr;
-        }
-        /* image check@ */
-
-        /* @can submit? */
-        if(signup_success){
-            signup_success = true;
-        }
-        else{
-            toastr['info'](result);
-            signup_success = false;
-        }
-        /* can submit?@ */
-            return signup_success;
-    });
-    /* sign form submit event@ */
+    /* @can submit? */
+    if(signup_success){
+        signup_success = true;
+    }
+    else{
+        toastr['info'](result);
+        signup_success = false;
+    }
+    /* can submit?@ */
+        return signup_success;
+});
+/* sign form submit event@ */
