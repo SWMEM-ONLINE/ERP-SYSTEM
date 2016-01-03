@@ -4,18 +4,11 @@
 
 
 function ensureAuthenticated(req, res, next) {
-    /*
-    console.log("baseUrl:");
-    console.log(req.baseUrl);
-    console.log("originalUrl:");
-    console.log(req.originalUrl);
-    console.log("url:");
-    console.log(req.url);
-    */
+
     res.locals.session = req.session;
 
     // 로그인이 되어 있으면, 다음 파이프라인으로 진행
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() && checkAuth(req)) {
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
         res.header('Expires', '-1');
         res.header('Pragma', 'no-cache');
@@ -24,6 +17,55 @@ function ensureAuthenticated(req, res, next) {
     // 로그인이 안되어 있으면, login 페이지로 진행
     res.redirect('/');
 };
+
+function checkAuth(req) {
+
+    var url = req.url;
+    var grade = parseInt(getUserGrade(req));
+
+    var result = false;
+
+    switch(url) {
+        case '/manage/loadbooklist' || '/manage/loadapplylist' ||
+        '/manage/loadnowHistory' || '/manage/loadinArrears' ||
+        '/manage/loadmissingBook':                                  //도서 관리
+            if(grade < 2 || grade == 4) //운영자, 회장, 자재부장
+                result = true;
+            break;
+        case '/manage/item' || '/manage/loadapplylist' ||
+        '/manage/loadnowHistory':                                   //하드웨어 관리
+            if(grade < 2 || grade == 4) //운영자, 회장, 자재부장
+                result = true;
+            break;
+        case '/register' || '/charge' ||
+        '/manage':                                                  //회비 관리
+            if(grade < 3) //운영자, 회장, 총무
+                result = true;
+            break;
+        case '/getApplyList/2':                                     //서버신청 관리
+            if(grade < 2 || grade == 8) //운영자, 회장, 네트워크장
+                result = true;
+            break;
+        case '/getApplyList/1':                                     //프로젝트실신청 관리
+            if(grade < 2 || grade == 6) //운영자, 회장, 세미나장
+                result = true;
+            break;
+        case '/getApplyList/3':                                     //비품신청 관리
+            if(grade < 2 || grade == 5) //운영자, 회장, 생활장
+                result = true;
+            break;
+        case '/qnalist':                                            //문의 관리
+            if(grade < 2) //운영자, 회장
+                result = true;
+            break;
+        default:
+            if(grade < 104)
+                result = true;
+            break;
+    }
+
+    return result;
+}
 
 function getCurDateWithTime(){
 
