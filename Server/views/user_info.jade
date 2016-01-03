@@ -42,10 +42,13 @@ block content
                            td#mail #{row.u_email}
                            td
                         tr
-                           td 모바일 디바이스 정보
-                           td#device #{row.u_device}
-                           td
-                              button.delete 삭제
+                           td 디바이스 정보
+                           if row.u_device != ''
+                              td#device #{row.u_device}
+                              td
+                                 button#deleteDevice.delete 삭제
+                           else
+                              td#device 등록된 디바이스 정보가 없습니다
          .card
             .edit-content
                form#form(method='post', enctype='multipart/form-data', action='/user/info/edit')

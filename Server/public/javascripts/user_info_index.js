@@ -25,6 +25,18 @@ var confirmPW = $('#confirmPW');
 var newPhone = $('#newPhone');
 var newMail = $('#newMail');
 
+$('#deleteDevice').click(function () {
+    $.ajax({
+        type:'post',
+        url:'/user/info/deleteDevice',
+        contentType:'application/json',
+        success: function(){
+            document.getElementById('device').innerHTML = '등록된 디바이스 정보가 없습니다';
+            $('table #deleteDevice').remove();
+        }
+    });
+});
+
 $('input[type=file]').change(function(e) {
     var fn = $(this);
     if(fn.val() != ''){

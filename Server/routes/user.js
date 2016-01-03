@@ -69,6 +69,7 @@ router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
             }
 
             query += ' where u_id = "' + uId + '"';
+            console.log(query);
             con.query(query, function (err, result) {
                 res.redirect('/user/info');
             });
@@ -151,6 +152,18 @@ router.post('/reset', util.ensureAuthenticated, function(req, res, next) {
     var id = req.body.u_id;
     var encPW = crypto.createHash('sha256').update('0000').digest('base64');
     var query = 'update t_user set u_password = "'+encPW+'" where u_id = "'+id + '"';
+    con.query(query,function(err,rows){
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+        res.json({status:'0'});
+    });
+});
+
+router.post('/info/deleteDevice', util.ensureAuthenticated, function(req, res, next) {
+    var uId = util.getUserId(req);
+    var query = 'update t_user set u_device = "" where u_id = "'+uId + '"';
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);

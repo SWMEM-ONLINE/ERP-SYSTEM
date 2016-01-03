@@ -46,10 +46,6 @@ div.profile-content table td{
 
 }
 
-div.profile-content table td:last-child{
-        font-weight: bold;
-}
-
 div.edit-content{
     color: #333333;
     margin:auto;
