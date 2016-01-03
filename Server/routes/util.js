@@ -8,37 +8,44 @@ function ensureAuthenticated(req, res, next) {
     res.locals.session = req.session;
 
     // 로그인이 되어 있으면, 다음 파이프라인으로 진행
-    if (req.isAuthenticated() && checkAuth(req)) {
+    if (req.isAuthenticated()) {
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
         res.header('Expires', '-1');
         res.header('Pragma', 'no-cache');
+
         return next();
     }
     // 로그인이 안되어 있으면, login 페이지로 진행
-    return res.redirect('/main');
+    return res.redirect('/');
 };
 
 function checkAuth(req) {
 
     var url = req.url;
+    console.log("url");
+    console.log(url);
     var grade = parseInt(getUserGrade(req));
 
     var result = false;
 
     switch(url) {
-        case '/manage/loadbooklist' || '/manage/loadapplylist' ||
-        '/manage/loadnowHistory' || '/manage/loadinArrears' ||
-        '/manage/loadmissingBook':                                  //도서 관리
+        case '/manage/loadbooklist':
+        case '/manage/loadapplylist':
+        case '/manage/loadnowHistory':
+        case '/manage/loadinArrears':
+        case '/manage/loadmissingBook':                                  //도서 관리
             if(grade < 2 || grade == 4) //운영자, 회장, 자재부장
                 result = true;
             break;
-        case '/manage/item' || '/manage/loadapplylist' ||
-        '/manage/loadnowHistory':                                   //하드웨어 관리
+        case '/manage/item':
+        case '/manage/loadapplylist':
+        case '/manage/loadnowHistory':                                   //하드웨어 관리
             if(grade < 2 || grade == 4) //운영자, 회장, 자재부장
                 result = true;
             break;
-        case '/register' || '/charge' ||
-        '/manage':                                                  //회비 관리
+        case '/register':
+        case '/charge':
+        case '/manage':                                                  //회비 관리
             if(grade < 3) //운영자, 회장, 총무
                 result = true;
             break;
@@ -58,7 +65,8 @@ function checkAuth(req) {
             if(grade < 2) //운영자, 회장
                 result = true;
             break;
-        case '/userlist' || '/finished':                            //회원 목록, 수료회원 목록
+        case '/userlist':
+        case '/finished':                            //회원 목록, 수료회원 목록
             if(grade < 10) //운영자, 자치회
                 result = true;
             break;
