@@ -114,7 +114,8 @@ function approveButton(datalist, flag){           // 승인 버튼
             toastr['error']('항목이 선택되지 않았습니다');
             return;
         }
-        $('#tableData tr.warning').each(function(index){
+        $('#tableData tr.warning').each(function(){
+            var index = $(this).index();
             if(datalist[index].hw_result != 0){
                 cnt_notWaiting++;
             }
@@ -137,7 +138,7 @@ function approveButton(datalist, flag){           // 승인 버튼
             approveIdlist = approveIdlist.substring(0, approveIdlist.length -1);
             hardwareIdlist = hardwareIdlist.substring(0, hardwareIdlist.length -1);
             rentalIdlist = rentalIdlist.substring(0, rentalIdlist.length -1);
-            userIdlist = userIdlist.substring(0, userIdlist -1);
+            userIdlist = userIdlist.substring(0, userIdlist.length -1);
         }else{
             $('#tableData tr').each(function(index){
                 if($(this).hasClass('warning')){
@@ -146,7 +147,6 @@ function approveButton(datalist, flag){           // 승인 버튼
             });
             approveIdlist = approveIdlist.substring(0, approveIdlist.length -1);
         }
-        console.log(approveIdlist);
         $.post('/hardware/manage/approveRequest', {type: flag, approveIdlist: approveIdlist, hardwareIdlist: hardwareIdlist, userIdlist: userIdlist, rentalIdlist: rentalIdlist}, function(response){
             if(response === 'success')   toastr['success']('승인처리 완료');
             else    toastr['error']('승인처리 실패');

@@ -175,7 +175,7 @@ function buyCompleteButton(datalist){
                 else    toastr['error']('주문실패');
             });
             $('div.modal').modal('hide');
-            window.location.reload();
+            //window.location.reload();
         }
     });
 }
@@ -264,7 +264,7 @@ function registerButton(datalist){
             else    toastr['error']('도서등록 실패');
         });
         $('div.modal').modal('hide');
-        window.location.reload();
+        //window.location.reload();
     });
 }
 

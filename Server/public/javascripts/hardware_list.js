@@ -1,6 +1,24 @@
 /**
  * Created by jung-inchul on 2015. 12. 7..
  */
+//
+toastr.options = {
+    'closeButton': false,
+    'debug': false,
+    'newestOnTop': false,
+    'progressBar': false,
+    'positionClass': 'toast-top-right',
+    'preventDuplicates': false,
+    'onclick': null,
+    'showDuration': '300',
+    'hideDuration': '1000',
+    'timeOut': '5000',
+    'extendedTimeOut': '1000',
+    'showEasing': 'swing',
+    'hideEasing': 'linear',
+    'showMethod': 'fadeIn',
+    'hideMethod': 'fadeOut'
+};
 loadHardwarelist();
 
 /*
@@ -10,7 +28,7 @@ loadHardwarelist();
 function loadHardwarelist(){
     $.post('/hardware/loadHardwarelist', function(datalist){
         var htmlString = settingHTML(datalist);
-        $('#hardwarelist').html(htmlString);
+        $('table#hardwarelist').html(htmlString);
         $('.modal-header').text('하드웨어 대여');
         clickEvent(datalist);
     });
@@ -69,10 +87,11 @@ function clickEvent(datalist){
             $('button#request').unbind().click(function(){
                 if(datalist[index].h_remaining != 0){
                     $.post("/hardware/borrow", {hardware_id: datalist[index].h_id}, function(response){
-                        consle.log(response);
+                        if(response === 'success')  toastr['success']('대여 성공');
+                        else    toastr['error']('대여 실패');
                     });        // borrow hardware
                     $('div.modal').modal('hide');
-                    window.location.reload();
+                    //window.location.reload();
                 }
             });
             $('div.modal').modal();

@@ -44,8 +44,8 @@ function borrowBook(con, req, res){
     var due_date = getDate(new Date(), 14);
 
     var query = 'select * from t_book_rental where br_book_id="' + req.body.book_id + '"';
-    con.query(query, function(err, response1) {
-        if (response1.length === 0) {
+    con.query(query, function(err, response) {
+        if (response.length === 0) {
             var query1 = 'select u_name from t_user where u_id="' + req.session.passport.user.id + '"';
             var query3 = 'insert into t_book_rental SET ?';
             var queryData = {
@@ -53,7 +53,7 @@ function borrowBook(con, req, res){
                 br_book_id: req.body.book_id,
                 br_rental_date: today
             };
-            con.query(query1, function (err, response2) {
+            con.query(query1, function (err2, response2) {
                 var query2 = 'update t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + response2[0].u_name + '" where b_id="' + req.body.book_id + '"';
                 con.query(query2);
             });
@@ -87,19 +87,23 @@ function searchBook(con, req, res){
 
 function missingBook(con, req, res){
     var today = getDate(new Date(), 0);
-    var query = 'UPDATE t_book set b_state=3 where b_id="' + req.body.book_id +'"';
-    var query2 = 'insert into t_book_loss SET ?';
-    var query3 = 'delete from t_book_rental where br_book_id="' + req.body.book_id + '"';
-    var query4 = 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '"';
-    var queryData = {
-        brl_user : req.session.passport.user.id,
-        brl_book_id : req.body.book_id,
-        brl_loss_date : today
-    };
-    con.query(query);
-    con.query(query2, queryData);
-    con.query(query3);
-    con.query(query4);
+    var query = 'UPDATE t_book set b_state=3 where b_id="' + req.body.book_id +'";';
+    query += 'delete from t_book_rental where br_book_id="' + req.body.book_id + '";';
+    query += 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '";';
+    query += 'insert into t_book_loss SET brl_user="' + req.session.passport.user.id + '", brl_book_id="' + req.body.book_id + '", brl_loss_date="' + today + '"';
+    //
+    //var queryData = {
+    //    brl_user : req.session.passport.user.id,
+    //    brl_book_id : req.body.book_id,
+    //    brl_loss_date : today
+    //};
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    });
 }
 
 /*
@@ -111,22 +115,33 @@ function missingBook(con, req, res){
 
 function reserveBook(con, req, res){
     var today = getDate(new Date(), 0);
-    var query = 'select br_user from t_book_rental where br_user="' + req.session.passport.user.id+'" and br_book_id="' + req.body.book_id + '"UNION select bre_user from t_book_reserve where bre_user="' + req.session.passport.user.id + '" and bre_book_id="' + req.body.book_id + '"';
-    var query1 = 'insert into t_book_reserve SET ?';
-    var query2 = 'update t_book set b_reserved_cnt=b_reserved_cnt+1 where b_id="' + req.body.book_id + '"';
-    var queryData = {
-        bre_user : req.session.passport.user.id,
-        bre_book_id : req.body.book_id,
-        bre_myturn : parseInt(req.body.reserve_cnt) + 1,
-        bre_reserve_date : today
-    };
-
-    con.query(query, function(err, rows, fields){
-        if(rows.length != 0){
-            res.send('failed');
+    var query = 'select * from t_book_rental where br_book_id="' + req.body.book_id + '"';
+    var query1 = 'select br_user from t_book_rental where br_user="' + req.session.passport.user.id+'" and br_book_id="' + req.body.book_id + '"UNION select bre_user from t_book_reserve where bre_user="' + req.session.passport.user.id + '" and bre_book_id="' + req.body.book_id + '"';
+    var query2 = 'update t_book set b_reserved_cnt=b_reserved_cnt+1 where b_id="' + req.body.book_id + '";';
+    query2 += 'insert into t_book_reserve SET bre_user="' + req.session.passport.user.id + '", bre_book_id=' + req.body.book_id + ', bre_myturn=' + (parseInt(req.body.reserve_cnt)+1) + ', bre_reserve_date="' + today + '"';
+    //var queryData = {
+    //    bre_user : req.session.passport.user.id,
+    //    bre_book_id : req.body.book_id,
+    //    bre_myturn : parseInt(req.body.reserve_cnt) + 1,
+    //    bre_reserve_date : today
+    //};
+    con.query(query, function(err, response){
+        if(response.length != 0){
+            con.query(query1, function(err2, response2){
+                if(response2.length != 0){
+                    res.send('failed_2');
+                }else{
+                    con.query(query2, function(err3, response3){
+                        if(err3){
+                            res.send('failed_3');
+                            throw err3
+                        }
+                        res.send('success');
+                    });
+                }
+            });
         }else{
-            con.query(query1, queryData);
-            con.query(query2);
+            res.send('failed_1');
         }
     });
 }
@@ -165,7 +180,13 @@ function loadmissingBook(con, req, res){
 function reenroll(con, req, res){
     var query = 'update t_book set b_state=0 where b_id IN (' + req.body.enrollList + ');';
     query += 'delete from t_book_loss where brl_book_id IN (' + req.body.enrollList + ');';
-    con.query(query);
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    });
 }
 
 function loadinArrears(con, req, res){
@@ -189,24 +210,27 @@ function enrollBook(con, req, res){
         for(var i = 0; i < response.length; i++){
             query1 += 'insert into t_book set b_type=' + response[i].ba_type + ', b_name="' + response[i].ba_name + '", b_isbn="' + response[i].ba_isbn + '", b_author="' + response[i].ba_author + '", b_publisher="' + response[i].ba_publisher + '", b_location="' + req.body.location + '", b_photo_url="' + response[i].ba_photo_url + '", b_price=' + response[i].ba_price + ';';
         }
-        con.query(query1);
+        query1 += 'delete from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
+        con.query(query1, function(err2, response2){
+            if(err2){
+                res.send('failed');
+                throw err2
+            }
+            res.send('success');
+        });
     });
-    var query2 = 'delete from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
-    con.query(query2, function(err, response){
+}
+
+function buyComplete(con, req, res){
+    var query = 'update t_book_apply set ba_state=1 where ba_id IN (' + req.body.buyIdlist + ');';
+    query += 'update t_book set b_new=0 where b_new=1 and b_type=' + req.body.type;
+    con.query(query, function(err, response){
         if(err){
             res.send('failed');
             throw err
         }
         res.send('success');
     });
-}
-
-function buyComplete(con, req, res){
-    var query = 'update t_book_apply set ba_state=1 where ba_id IN (' + req.body.buyIdlist + ')';
-    con.query(query);
-    var query1 = 'update t_book set b_new=0 where b_new=1 and b_type=' + req.body.type;
-    con.query(query1);
-    res.send('success');
 }
 
 function loadbooklist(con, req, res){
@@ -218,8 +242,13 @@ function loadbooklist(con, req, res){
 
 function resetbookLocation(con, req, res){
     var query = 'update t_book set b_location="' + req.body.location + '" where b_id IN (' + req.body.resetIdlist + ')';
-    con.query(query);
-    res.send('success');
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    });
 }
 
 function getDate(base, plusDate){

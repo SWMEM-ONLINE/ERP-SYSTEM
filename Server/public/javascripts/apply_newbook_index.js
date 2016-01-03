@@ -136,11 +136,9 @@ function clickEvent(datalist, flag){
             if(flag === 0){
                 $.post("/apply/newbook/request", datalist[index], function(data){
                     if(data === 'failed'){
-                        console.log(data);
                         toastr['error']('이미 누군가 신청한 책입니다');
                     }
                     else{
-                        console.log(data);
                         toastr['info']('도서신청에 성공했습니다');
                     }
                 });
@@ -182,7 +180,6 @@ function getInterparklist(pageIndex, searchWords, searchCategory) {
             });
         },
         error:function(response){
-            console.log(response);
             toastr['info']('검색에 실패하였습니다. 다시 시도해주세요');
         }
     });

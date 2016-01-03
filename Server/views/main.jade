@@ -45,28 +45,12 @@ block content
          .content
             .content-header
                h5 하드웨어 대여 현황
-            p
-               label(style='text-overflow : ellipsis;') Galaxy S4
-               span.badge D-3
-            p
-               label(style='text-overflow : ellipsis;') Galaxy Note2
-               span.badge D-4
-            p
-               label(style='text-overflow : ellipsis;') IPhone 6s
-               span.badge D-5
+            .content-myhardware
       .card.animated.bounceIn
          .content
             .content-header
                h5 도서 대여 현황
-            p
-               label(style='text-overflow : ellipsis;') Code complete
-               span.badge D-3
-            p
-               label(style='text-overflow : ellipsis;') Node.js
-               span.badge D-4
-            p
-               label(style='text-overflow : ellipsis;') javascript
-               span.badge D-5
-            p
-               label(style='text-overflow : ellipsis;') Android
-               span.badge D-5
+            .content-mybook
+append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/main_index.js')
