@@ -17,14 +17,14 @@ CREATE TABLE t_user ( u_id VARCHAR(20) NOT NULL primary key,
   u_state int,
   u_period VARCHAR(10),
   u_branch VARCHAR(10),
-  u_device int,
+  u_device VARCHAR(100),
   u_token VARCHAR(100),
   u_mileage int,
   u_good_duty_point int,
   u_bad_duty_point int,
   u_manager_bad_duty_point int,
   u_photo_url VARCHAR(200),
-  u_last_duty DATE,
+  u_last_duty int,
   u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
 --  u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -247,3 +247,35 @@ DROP TABLE IF EXISTS `t_fee`;
   );
 
     ---------------------------       당직 끝     -------------------------------------
+
+
+-------------------------------- 문의 ------------------------------------------
+  CREATE TABLE t_qna (
+    q_id int NOT NULL auto_increment primary key,
+    q_title VARCHAR(200),
+    q_content VARCHAR(1000),
+    q_state int,
+    q_writer VARCHAR(20),
+    q_write_date VARCHAR(20),
+    FOREIGN KEY(q_writer) REFERENCES t_user(u_id));
+
+
+    CREATE TABLE t_qna_reply (
+    qr_id int,
+    qr_content VARCHAR(200),
+    qr_writer VARCHAR(20),
+    qr_write_date VARCHAR(20),
+    FOREIGN KEY(qr_id) REFERENCES t_qna(q_id),
+    FOREIGN KEY(qr_writer) REFERENCES t_user(u_id));
+
+    -------------------------------- 자재 신청 ------------------------------------------
+    CREATE TABLE t_apply(
+    	a_id int NOT NULL auto_increment primary key,
+    	a_apply_type int,
+    	a_title VARCHAR(100),
+    	a_weblink VARCHAR(200),
+    	a_date VARCHAR(20),
+    	a_due_date VARCHAR(20),
+    	a_write_date VARCHAR(20),
+    	a_writer VARCHAR(20),
+      	FOREIGN KEY(a_writer) REFERENCES t_user(u_id));

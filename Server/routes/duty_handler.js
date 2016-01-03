@@ -575,6 +575,7 @@ function forceChangeDuty(con,req,res){
     con.query(insert_query, function(err, response){
         if(err){
             console.log(err);
+            res.send("fail");
         }else{
 
             var get_query1 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth()+1)
@@ -588,6 +589,7 @@ function forceChangeDuty(con,req,res){
 
                     if(response.length==0){
                         console.log("error");
+                        res.send("fail");
 
                     }else{
 
@@ -610,6 +612,7 @@ function forceChangeDuty(con,req,res){
 
                                 if(response.length==0){
                                     console.log("error");
+                                    res.send("fail");
 
                                 }else{
 
@@ -619,6 +622,8 @@ function forceChangeDuty(con,req,res){
                                     selected_user2 = tmp.selected_user;
                                     selected_mode2 = tmp.selected_mode;
                                     request_mode2 = tmp.request_mode;
+
+                                    console.log(selected_user2 + selected_mode2 + request_mode2);
 
                                     var change_query1 = "UPDATE `swmem`.`t_duty` " +
                                         "SET `" + selected_user1+ "`='"+request_id2+"', " +
@@ -638,6 +643,7 @@ function forceChangeDuty(con,req,res){
 
                                             if(response.length==0){
                                                 console.log("error");
+                                                res.send("fail");
 
                                             }else{
 
@@ -657,9 +663,9 @@ function forceChangeDuty(con,req,res){
                                                 con.query(change_query2, function(err, response){
                                                     if(err){
                                                         console.log(err);
-                                                        res.send({});
+                                                        res.send("fail");
                                                     }else{
-                                                        res.send(response);
+                                                        res.send("success");
                                                     }
                                                 });
 
@@ -696,7 +702,6 @@ function declineChangeDuty(con,req,res){
 
 
     var index = req.body.index;
-    index = 1;
 
 
     var update_query = "UPDATE `swmem`.`t_duty_change_history` SET `accepted`='2' WHERE `index`='" + index + "';";
@@ -707,16 +712,18 @@ function declineChangeDuty(con,req,res){
 
         if(err){
             console.log(err);
+            res.send("fail");
         }else{
 
             if(response.length==0){
                 console.log("error");
 
+                res.send("fail");
             }else{
 
                 console.log(response);
 
-                res.send(response);
+                res.send("success");
 
             }
         }
@@ -729,6 +736,9 @@ function declineChangeDuty(con,req,res){
  *  콜롬을 쌓아야 한다
  */
 function getRequestInfo(data , request_id){
+
+
+    console.log("getreq : " + request_id);
 
     var selected_user1 = "";
     var selected_mode1 = "";
@@ -788,17 +798,12 @@ function acceptChangeDuty(con,req,res){
     console.log(req.body);
 
     var index = req.body.index;
-    var request_date1 = req.body.request_date1;
-    var request_date2 = req.body.request_date2;
-    var request_id1 = req.body.request_id1;
-    var request_id2 = req.body.request_id2;
-
-    request_date1 = new Date(2016,1,1);
-    request_date2 = new Date(2016,1,2);
-    request_id1 = '1111';
-    request_id2 = '2222';
-    index = 1;
-
+    var request_date1 = new Date(req.body.request_date1);
+    var request_date2 = new Date(req.body.request_date2);
+    var request_id1 = req.body.rq_id1;
+    var request_id2 = req.body.rq_id2;
+    var rq_id1 = request_id1;
+    var rq_id2 = request_id2;
     var selected_user1 = "";
     var selected_mode1 = "";
     var request_mode1 = 0;
@@ -813,16 +818,18 @@ function acceptChangeDuty(con,req,res){
     con.query(update_query, function(err, response){
         if(err){
             console.log(err);
+            res.send("fail");
         }else{
 
             if(response.length==0){
                 console.log("error");
+                res.send("fail");
 
             }else{
 
                 console.log(response);
 
-                var get_query1 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth())
+                var get_query1 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth()+1)
                     + "-" + request_date1.getDate()+ "');";
 
 
@@ -830,46 +837,53 @@ function acceptChangeDuty(con,req,res){
                 con.query(get_query1, function(err, response){
                     if(err){
                         console.log(err);
+                        res.send("fail");
                     }else{
 
                         if(response.length==0){
                             console.log("error");
+                            res.send("fail");
 
                         }else{
 
-                            console.log(response);
+                            console.log(response[0]);
 
                             var tmp = getRequestInfo(response[0] , request_id1);
                             selected_user1 = tmp.selected_user;
                             selected_mode1 = tmp.selected_mode;
                             request_mode1 = tmp.request_mode;
 
-                            var get_query2 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth())
+                            var get_query2 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth()+1)
                                 + "-" + request_date2.getDate()+ "');";
 
 
                             console.log(get_query2);
                             con.query(get_query2, function(err, response){
                                 if(err){
+                                    res.send("fail");
                                     console.log(err);
                                 }else{
 
                                     if(response.length==0){
+                                        res.send("fail");
                                         console.log("error");
 
                                     }else{
 
-                                        console.log(response);
+                                        //console.log(response[0]);
 
                                         var tmp = getRequestInfo(response[0] , request_id2);
                                         selected_user2 = tmp.selected_user;
                                         selected_mode2 = tmp.selected_mode;
                                         request_mode2 = tmp.request_mode;
 
+
+                                        console.log(selected_user2);
+
                                         var change_query1 = "UPDATE `swmem`.`t_duty` " +
-                                            "SET `" + selected_user1+ "`='"+request_id2+"', " +
+                                            "SET `" + selected_user1+ "`='"+rq_id2+"', " +
                                             "`"+selected_mode1+"`='" +request_mode2 + "' " +
-                                            "WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth())
+                                            "WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth()+1)
                                             + "-" + request_date1.getDate()+ "');";
 
                                         /*
@@ -879,10 +893,12 @@ function acceptChangeDuty(con,req,res){
                                         console.log(change_query1);
                                         con.query(change_query1, function(err, response){
                                             if(err){
+                                                res.send("fail");
                                                 console.log(err);
                                             }else{
 
                                                 if(response.length==0){
+                                                    res.send("fail");
                                                     console.log("error");
 
                                                 }else{
@@ -890,9 +906,9 @@ function acceptChangeDuty(con,req,res){
                                                     console.log(response);
 
                                                     var change_query2 = "UPDATE `swmem`.`t_duty` " +
-                                                        "SET `" + selected_user2+ "`='"+request_id1+"', " +
+                                                        "SET `" + selected_user2+ "`='"+rq_id1+"', " +
                                                         "`"+selected_mode2+"`='" +request_mode1 + "' " +
-                                                        "WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth())
+                                                        "WHERE (`date`='"+request_date2.getFullYear()+"-"  + (request_date2.getMonth()+1)
                                                         + "-" + request_date2.getDate()+ "');";
 
                                                     /*
@@ -902,17 +918,19 @@ function acceptChangeDuty(con,req,res){
                                                     console.log(change_query2);
                                                     con.query(change_query2, function(err, response){
                                                         if(err){
+                                                            res.send("fail");
                                                             console.log(err);
                                                         }else{
 
                                                             if(response.length==0){
                                                                 console.log("error");
 
+                                                                res.send("fail");
                                                             }else{
 
                                                                 console.log(response);
 
-                                                                res.send(response);
+                                                                res.send("success");
 
                                                             }
                                                         }
@@ -1176,6 +1194,9 @@ function modifyPointHistoty(con,req,res){
     var modify_point = req.body.modify_point;
     var modify_mode = req.body.modify_mode;
 
+    if(typeof receiveId == "string"){
+        receiveId = new Array(receiveId);
+    }
 
     for(var i=0;i<receiveId.length;i++){
         var id = receiveId[i];
@@ -1354,7 +1375,11 @@ function getAddPoint(con,req,res){
                 var convertData = [];
                 var count = 0;
                 var time = datas[0].addTime.toString();
+
+
                 for(var i=0;i<datas.length;i++){
+
+
                     var data = datas[i];
 
                     if ( typeof convertData[count] == "undefined" )  {
@@ -1387,6 +1412,13 @@ function getAddPoint(con,req,res){
 
                         (convertData[count].receive_name).push(data.receive_name);
                         (convertData[count].receive_id).push(data.receive_id);
+                        convertData[count].year = data.year;
+                        convertData[count].month = data.month;
+                        convertData[count].date = data.date;
+                        convertData[count].addTime = data.addTime;
+                        convertData[count].mode = data.mode;
+                        convertData[count].point = data.point;
+                        convertData[count].reason = data.reason;
                     }
 
                 }
@@ -1538,9 +1570,8 @@ function loadMyDuty(con,req,res){
     var month = req.body.month;
     var year = req.body.year;
 
-
-    var query = "select * from swmem.t_duty where ( user_id1 = " + id + " or user_id2 = " + id + " or user_id3 = " + id + " or user_id4 = " + id
-        + ") and month(date)= " + month + " and year(date) = " + year;
+    var query = "select * from swmem.t_duty where ( user_id1 = '" + id + "' or user_id2 = '" + id + "' or user_id3 = '" + id + "' or user_id4 = '" + id
+        + "') and month(date)= " + month + " and year(date) = " + year;
 
     console.log(query);
 
