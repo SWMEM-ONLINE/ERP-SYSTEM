@@ -4,6 +4,16 @@
 
 
 function ensureAuthenticated(req, res, next) {
+    /*
+    console.log("baseUrl:");
+    console.log(req.baseUrl);
+    console.log("originalUrl:");
+    console.log(req.originalUrl);
+    console.log("url:");
+    console.log(req.url);
+    */
+    res.locals.session = req.session;
+
     // 로그인이 되어 있으면, 다음 파이프라인으로 진행
     if (req.isAuthenticated()) {
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
