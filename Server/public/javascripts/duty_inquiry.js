@@ -1,10 +1,7 @@
 /**
  * Created by HyunJae on 2015. 12. 23..
  */
-$.post("/duty/test", function(res){
 
-
-});
 
 $(document).ready(function() {
 

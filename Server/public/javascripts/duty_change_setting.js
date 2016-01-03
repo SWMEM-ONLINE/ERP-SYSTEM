@@ -142,12 +142,15 @@ $("#change").click(function() {
     sendData.request_id2 = request_user_id2[selected2];
 
     $.post('/duty/forceChangeDuty',sendData, function(res){
-        if(res.length ==0){
-            toastr['error']('맞변경 신청 실패');
-        }else{
-            toastr['success']('맞변경 신청 완료');
 
+        $("#memberinfo").addClass("hidden");
+        if(res == "success"){
+            toastr['success']('맞변경 완료');
         }
+        else{
+            toastr['error']('맞변경 에러');
+        }
+
     });
 
 });
@@ -423,6 +426,7 @@ function isAllSelected(){
             $('#changeMember1').html(request_user_name1[selected1]);
             $('#changeMember2').html(request_user_name2[selected2]);
             $("#memberinfo").removeClass('hidden');
+            //$("#change").removeClass('hidden');
         }
     }
 }

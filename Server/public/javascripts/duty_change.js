@@ -33,17 +33,6 @@ $.post("/duty/getID",function(res){
 });
 
 
-//$.post("/duty/declineChangeDuty", function(res){
-//
-//});
-//$.post("/duty/acceptChangeDuty", function(res){
-//
-//});
-//$.post("/duty/forceChangeDuty", function(res){
-//
-//});
-
-
 endDate =  numberOfDays(currentDate.getFullYear(), currentDate.getMonth()+1) - currentDate.getDate();
 var request_user_name2 = [];
 var request_user_id2 = [];
@@ -73,7 +62,7 @@ $("#showresult").click(function(){
 
         var htmlString = "";
         var count = 0;
-
+        var buttonList = [];
 
         $.each(res, function (idx, data) {
             var accept_button_id;
@@ -83,7 +72,7 @@ $("#showresult").click(function(){
             var rq_date2 = new Date(data.request_date2);
             var rq_id1 = data.request_userid1;
             var rq_name1 = data['(select u_name from t_user where u_id = request_userid1)'];
-            var rq_id2 = data.request_userid1;
+            var rq_id2 = data.request_userid2;
             var rq_name2 = data['(select u_name from t_user where u_id = request_userid2)'];
             var index = data.index;
             var accept = data.accepted;
@@ -118,15 +107,71 @@ $("#showresult").click(function(){
             }
 
             else if(accept==0 && rq_id1 != user_id){
-                accept_button_id = "accept"+count;
-                decline_button_id = "decline"+count;
-                count++;
+                accept_button_id = "accept" + count;
+                decline_button_id = "decline" + count;
+                buttonList.push(idx);
                 htmlString += "<td>";
 
                 htmlString += '<button id= "' +accept_button_id + '" type="button" class="btn btn-default" >수락</button>';
                 htmlString += '<button id= "' +decline_button_id + '" type="button" class="btn btn-default" >거절</button>';
+                $(document).on('click', "#accept"+count, function(){
+
+                    var sendData = {};
+                    sendData.index = index;
+                    sendData.request_date1 = rq_date1;
+                    sendData.request_date2 = rq_date2;
+                    sendData.rq_id1 = rq_id1;
+                    sendData.rq_id2 = rq_id2;
+
+
+                    $.post('/duty/acceptChangeDuty', sendData , function(res){
+
+                        if(res == "success"){
+                            toastr['success']('맞변경 수락 완료');
+                            $('div.modal').hide();
+
+                        }
+                        else{
+                            toastr['error']('맞변경 수락 에러');
+
+                        }
+
+
+
+                    });
+                    console.log(data);
+                });
+
+                $(document).on('click', "#decline"+count, function(){
+
+                    var sendData = {};
+                    sendData.index = index;
+                    sendData.request_date1 = rq_date1;
+                    sendData.request_date2 = rq_date2;
+                    sendData.rq_id1 = rq_id1;
+                    sendData.rq_id2 = rq_id2;
+
+
+                    $.post('/duty/declineChangeDuty', sendData , function(res){
+
+                        if(res == "success"){
+                            toastr['success']('맞변경 거부 완료');
+                            $('div.modal').hide();
+
+                        }
+                        else{
+                            toastr['success']('맞변경 거부 에러');
+
+                        }
+
+
+
+                    });
+                    console.log(data);
+                });
 
                 htmlString += "</td>";
+                count++;
 
             }
             // accept or decline
@@ -151,44 +196,8 @@ $("#showresult").click(function(){
 
         });
 
-        //
-        //$.each(res, function (idx, data) {
-        //    var accept_button_id;
-        //    var decline_button_id;
-        //    var rq_time = new Date(data.request_time);
-        //    var rq_date1 = new Date(data.request_date1);
-        //    var rq_date2 = new Date(data.request_date2);
-        //    var rq_id1 = data.request_userid1;
-        //    var rq_name1 = data['(select u_name from t_user where u_id = request_userid1)'];
-        //    var rq_id2 = data.request_userid1;
-        //    var rq_name2 = data['(select u_name from t_user where u_id = request_userid2)'];
-        //    var index = data.index;
-        //    var accept = data.accepted;
-        //
-        //
-        //    if(accept == 0 && (rq_id1 != user_id)){
-        //        accept_button_id = "accept"+count;
-        //        decline_button_id = "decline"+count;
-        //        count++;
-        //        $('#'+accept_button_id).click(function(){
-        //            $.post('/duty/acceptChangeDuty',  function(res){
-        //            });
-        //        });
-        //
-        //        $('#'+decline_button_id).click(function(){
-        //
-        //        });
-        //    }
-
-
-        //
-        //
-        //});
-
-
         $('#resultlist').html(htmlString);
         $('div.modal').modal();
-
 
     });
 
