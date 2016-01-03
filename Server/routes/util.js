@@ -15,7 +15,7 @@ function ensureAuthenticated(req, res, next) {
         return next();
     }
     // 로그인이 안되어 있으면, login 페이지로 진행
-    res.redirect('/');
+    return res.redirect('/main');
 };
 
 function checkAuth(req) {
