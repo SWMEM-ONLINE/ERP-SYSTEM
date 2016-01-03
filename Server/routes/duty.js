@@ -132,4 +132,13 @@ router.post('/autoMakeDuty', util.ensureAuthenticated, function(req, res){
 });
 
 
+router.post('/updateMemberPoint', util.ensureAuthenticated, function(req, res){
+    duty_handler.updateMemberPoint(con,req,res);
+});
+
+router.post('/test', util.ensureAuthenticated, function(req, res){
+    duty_handler.test(con,req,res);
+});
+
+
 module.exports = router;

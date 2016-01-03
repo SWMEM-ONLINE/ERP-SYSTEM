@@ -34,7 +34,7 @@ $.post('/duty/getMemberList', function(res){
 
 var periods = [];
 var select_user_list = new Array();
-var select_mode = 0;
+var select_mode = null;
 
 $('#mode-dropdown li a').click(function(){
     //$('#seriesDropdown').on("hide.bs.dropdown");
@@ -64,7 +64,12 @@ $("#send").click(function(){
 
         toastr['error']('선택된 사람이 없습니다!');
 
-    }else{
+    }else if(point ==0){
+        toastr['error']('부여된 일자가 없습니다!');
+    }else if(mode == null){
+        toastr['error']('선택된 상당직이 없습니다!');
+    }
+    else{
         $.post('/duty/addPoint' , sendData , function(res){
             if(res == "fail"){
                 toastr['error']('상벌당직 추가 실패');

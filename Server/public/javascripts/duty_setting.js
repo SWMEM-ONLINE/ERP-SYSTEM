@@ -20,6 +20,8 @@ $(document).ready(function() {
 
 });
 
+
+
 $('.datepicker').datepicker({
     format: "yyyy년 m월",
     minViewMode: 1,
@@ -42,6 +44,14 @@ $('.datepicker').on('changeDate',function(event){
 
 
 $("#setting").click(function (){
+
+    var falg = 1;
+
+    $.post("/duty/updateMemberPoint", function(res){
+        if(res != 'success'){
+            flag = 0;
+        }
+    });
 
     var sendData = {};
     sendData.selected_days = selected_days;
