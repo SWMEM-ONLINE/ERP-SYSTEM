@@ -20,4 +20,8 @@ router.post('/appinfo', util.ensureAuthenticated, function(req, res, next) {
     });
 });
 
+router.get('/manual', util.ensureAuthenticated, function(req, res, next) {
+    res.render('sys_manual', { title: '메뉴얼'});
+});
+
 module.exports = router;
