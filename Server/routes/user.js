@@ -82,15 +82,19 @@ router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
 
-    var type = req.body.userType;
+    var type = req.body.type;
 
     var query = 'select * from t_user';
 
-    if(type == '1')
-        query += ' WHERE u_state = 12';
-    else
-        query += ' WHERE u_state != 1 AND u_state != 12';
-
+    if(type == 'members'){
+        query += ' WHERE u_state <= 103';
+    }
+    else if(type == 'command'){
+        query += ' WHERE u_state <= 104';
+    }
+    else if(type == 'finished'){
+        query += ' WHERE u_state = 102';
+    }
     query += ' order by u_period';
 
 
@@ -182,7 +186,7 @@ router.get('/members', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.get('/finished', util.ensureAuthenticated, function(req, res, next) {
-    res.render('finish_member', {title: '수료예정회원관리'});
+    res.render('user_finish', {title: '수료예정회원관리'});
 });
 
 module.exports = router;

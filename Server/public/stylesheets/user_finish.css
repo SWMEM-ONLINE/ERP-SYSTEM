@@ -1,0 +1,54 @@
+article.container{
+    text-align: center;
+}
+
+div.content{
+    text-align: center;
+}
+
+hr {
+    border:1px solid #dddddd;
+}
+
+div.content table th{
+    text-align: center;
+}
+
+div.content table tr{
+    height: 50px;
+}
+
+div.content table td{
+    vertical-align: middle;
+}
+
+button {
+    background-color: #122359;
+    border: none;
+    height: 100%;
+    color: white;
+    border-radius: 4px;
+    transition: 0.3s all;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+@media(min-width:993px){
+    div.content{
+        width: 993px;
+        margin:auto;
+    }
+}
+
+@media(max-width:992px){
+    div.container{
+        padding:0;
+    }
+    article.container h3{
+        font-size: 35px;
+    }
+
+    div.content table{
+        font-size:12px;
+    }
+}

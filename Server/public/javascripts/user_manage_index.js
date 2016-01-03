@@ -34,7 +34,7 @@ function getMemberList(){
     var tbodyString = '';
 
     var send = {
-        u_id:$(this).attr('id')
+        type:'command'
     };
 
     $.ajax({
