@@ -58,6 +58,14 @@ function checkAuth(req) {
             if(grade < 2) //운영자, 회장
                 result = true;
             break;
+        case '/userlist' || '/finished':                            //회원 목록, 수료회원 목록
+            if(grade < 10) //운영자, 자치회
+                result = true;
+            break;
+        case '/members':                                            //회원 관리
+            if(grade < 2) //운영자, 회장
+                result = true;
+            break;
         default:
             if(grade < 104)
                 result = true;
