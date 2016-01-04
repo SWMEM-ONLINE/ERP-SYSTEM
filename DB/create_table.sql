@@ -25,6 +25,9 @@ CREATE TABLE t_user ( u_id VARCHAR(20) NOT NULL primary key,
   u_manager_bad_duty_point int,
   u_photo_url VARCHAR(200),
   u_last_duty int,
+  u_fee boolean,
+  u_hardware boolean,
+  u_book boolean,
   u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
 --  u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -205,17 +208,16 @@ DROP TABLE IF EXISTS `t_fee_type`;
   );
 
 DROP TABLE IF EXISTS `t_fee`;
-  CREATE TABLE t_fee ( f_id int NOT NULL auto_increment primary key,
+CREATE TABLE t_fee ( f_id int NOT NULL auto_increment primary key,
   f_payer VARCHAR(20) NOT NULL,
-  f_name VARCHAR(20),
   f_content VARCHAR(200),
   f_type int NOT NULL,
   f_price int,
   f_state BOOLEAN,
+  f_date VARCHAR(20),
   f_write_date VARCHAR(20),
   FOREIGN KEY(f_payer) REFERENCES t_user(u_id),
   FOREIGN KEY(f_type) REFERENCES t_fee_type(ft_id));
-
 
   ---------------------------       회비 끝     -------------------------------------
 
@@ -297,11 +299,6 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
   );
 
 
-
-    ---------------------------       당직 끝     -------------------------------------
-
-
--------------------------------- 문의 ------------------------------------------
   CREATE TABLE t_qna (
     q_id int NOT NULL auto_increment primary key,
     q_title VARCHAR(200),
@@ -320,7 +317,6 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     FOREIGN KEY(qr_id) REFERENCES t_qna(q_id),
     FOREIGN KEY(qr_writer) REFERENCES t_user(u_id));
 
-    -------------------------------- 자재 신청 ------------------------------------------
     CREATE TABLE t_apply(
     	a_id int NOT NULL auto_increment primary key,
     	a_apply_type int,
