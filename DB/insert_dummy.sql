@@ -70,4 +70,9 @@ insert into t_book values(7, 1, '거기, 우리가 있었다', '9788927806912', 
 insert into t_book values(8, 1, '미움받을 용기', '9788996991342', '기시미 이치로,고가 후미타케', '인플루엔셜', 'B-4', 'http://bimage.interpark.com/goods_image/2/8/3/6/226122836s.jpg', 0, 1, 0, 14900, 0, NULL, NULL);
 
 
+---------------------------  회비 디비   -------------------------------------
+
+insert into t_fee_type values(1, '회비');
+insert into t_fee_type values(2, '삼과비');
+insert into t_fee_type values(3, '기타');
 
