@@ -20,12 +20,14 @@ $("#toggleButton").click(function(){
     // 일반당직
     if(flag ==0){
         flag=1;
+        $(this).html("일반당직 체크리스트");
         loadNormalCheckList();
 
     }
     // 벌당직
     else{
         flag=0;
+        $(this).html("벌당직 체크리스트");
         loadBadCheckList();
     }
 
@@ -33,7 +35,6 @@ $("#toggleButton").click(function(){
 });
 
 function loadNormalCheckList(){
-    $(this).html("일반당직 체크리스트");
     $("#checkList").addClass("hidden");
     $("#badcheckList").removeClass("hidden");
     $.post('/duty/inquireCheckList', { type : "bad"} , function(res){
@@ -50,11 +51,9 @@ function loadNormalCheckList(){
 }
 
 function loadBadCheckList(){
-    $(this).html("벌당직 체크리스트");
     $("#badcheckList").addClass("hidden");
     $("#checkList").removeClass("hidden");
     $.post('/duty/inquireCheckList', { type : "normal"} , function(res){
-
 
         var type = "normal";
 
@@ -75,28 +74,6 @@ function addClickEvent(res, type){
 
         $(this).toggleClass("warning");
     });
-
-    //var data;
-    //var id;
-    //for(var i = 0 ; i< res.length; i++){
-    //
-    //    data = res[i];
-    //
-    //    if(type == "normal")
-    //    {
-    //        id = "normal" + data.index;
-    //    }
-    //    else{
-    //
-    //        id = "bad" + data.index;
-    //    }
-    //
-    //    $(document).on('click', "#"+id, function(){
-    //
-    //        $(this).toggleClass("warning");
-    //
-    //    });
-    //}
 
 }
 
