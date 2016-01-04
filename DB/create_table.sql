@@ -43,7 +43,7 @@ CREATE TABLE t_book (
   b_author VARCHAR(100),
   b_publisher VARCHAR(30),
   b_location VARCHAR(10),
-  b_photo_urn VARCHAR(200),
+  b_photo_url VARCHAR(200),
   b_state int DEFAULT '0',
   b_new int DEFAULT '1',
   b_price int,

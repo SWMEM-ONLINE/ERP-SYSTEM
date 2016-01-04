@@ -2,65 +2,103 @@
  * Created by HyunJae on 2016. 1. 4..
  */
 
+var flag= 0;
+
+
 $.post('/duty/inquireCheckList', { type : "normal"} , function(res){
 
     var type = "normal";
-
     genarateHtml(res,type);
-
+    addClickEvent(res, type);
     console.log(res);
 
 });
 
-$("#pushButton").click(function(){
 
-
-
-});
-
-
-
-var flag= 0;
 $("#toggleButton").click(function(){
 
     // 일반당직
     if(flag ==0){
-        $(this).html("일반당직 체크리스트");
-        $("#checkList").addClass("hidden");
-        $("#badcheckList").removeClass("hidden");
-        $.post('/duty/inquireCheckList', { type : "bad"} , function(res){
-
-            flag=1;
-            var type = "bad";
-
-            genarateHtml(res,type);
-
-            console.log(res);
-            console.log(flag);
-
-        });
+        flag=1;
+        loadNormalCheckList();
 
     }
     // 벌당직
     else{
-        $(this).html("벌당직 체크리스트");
-        $("#badcheckList").addClass("hidden");
-        $("#checkList").removeClass("hidden");
-        $.post('/duty/inquireCheckList', { type : "normal"} , function(res){
-            flag=0;
-
-            var type = "normal";
-
-            genarateHtml(res,type);
-
-            console.log(res);
-            console.log(flag);
-
-        });
+        flag=0;
+        loadBadCheckList();
     }
 
 
 });
+
+function loadNormalCheckList(){
+    $(this).html("일반당직 체크리스트");
+    $("#checkList").addClass("hidden");
+    $("#badcheckList").removeClass("hidden");
+    $.post('/duty/inquireCheckList', { type : "bad"} , function(res){
+
+        var type = "bad";
+
+        genarateHtml(res,type);
+        addClickEvent(res,type);
+
+        console.log(res);
+        console.log(flag);
+
+    });
+}
+
+function loadBadCheckList(){
+    $(this).html("벌당직 체크리스트");
+    $("#badcheckList").addClass("hidden");
+    $("#checkList").removeClass("hidden");
+    $.post('/duty/inquireCheckList', { type : "normal"} , function(res){
+
+
+        var type = "normal";
+
+        genarateHtml(res,type);
+        addClickEvent(res,type);
+        console.log(res);
+        console.log(flag);
+
+    });
+}
+
+
+
+
+function addClickEvent(res, type){
+
+    $('table tr').click(function(){
+
+        $(this).toggleClass("warning");
+    });
+
+    //var data;
+    //var id;
+    //for(var i = 0 ; i< res.length; i++){
+    //
+    //    data = res[i];
+    //
+    //    if(type == "normal")
+    //    {
+    //        id = "normal" + data.index;
+    //    }
+    //    else{
+    //
+    //        id = "bad" + data.index;
+    //    }
+    //
+    //    $(document).on('click', "#"+id, function(){
+    //
+    //        $(this).toggleClass("warning");
+    //
+    //    });
+    //}
+
+}
 
 
 function genarateHtml(res, type){
@@ -91,7 +129,14 @@ function genarateHtml(res, type){
         grade = data.grade;
         index = data.index;
 
-        htmlString+="<tr id = " + index +">";
+        if(type == "normal")
+        {
+            htmlString+="<tr id = normal" + index +">";
+        }
+        else{
+            htmlString+="<tr id = bad" + index +">";
+        }
+
         htmlString+="<td>";
         htmlString+=grade;
         htmlString+="</td>";
@@ -105,9 +150,13 @@ function genarateHtml(res, type){
 
     }
 
-    if(type == "normal"){
+    if(type == "normal")
+    {
         $("#checkList").html(htmlString);
-    }else{
+    }
+    else{
         $("#badcheckList").html(htmlString);
     }
+
+
 }

@@ -319,13 +319,13 @@ function autoMakeDuty(con,req,res){
         dutyList.push(duty);
     }
 
-
     var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state = 10);";
 
     console.log(query);
     con.query(query, function(err, response){
         if(err){
             console.log(err);
+            res.send("fail");
         }else{
 
             for(var i =0;i<response.length;i++){

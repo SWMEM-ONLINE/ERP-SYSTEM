@@ -1,0 +1,105 @@
+//
+   Created by HyunJae on 2016. 1. 4..
+
+extends main_layout
+
+append head
+    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/duty_checklist_setting.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+    .container.contents
+
+        h3 CheckList 설정
+
+        ul.nav.nav-pills.nav-justified
+            li.active
+                a(href="#") CheckList 추가
+            li
+                a(href="#") 일반당직 CheckList
+            li
+                a(href="#") 벌당직 CheckList
+
+        hr
+        .content
+
+            table#checkList.table.table-responsive.hidden.list
+            table#badcheckList.table.table-responsive.hidden.list
+            table.table#addlist
+                thead
+                    tr
+                        th 일반당직 / 벌당직
+                        th 등급
+                        th 구역
+                        th 내용
+                        th 추가
+                tbody
+                    tr
+                        td
+                            .btn-group
+                                button#dutyButton.dropdown-toggle(type='button', data-toggle='dropdown') 당직
+                                ul#dutyDropDown.dropdown-menu
+                                    li
+                                        a(href='#') 일반당직
+                                    li
+                                        a(href='#') 벌당직
+                        td
+                            .btn-group
+                                button#gradeButton.dropdown-toggle(type='button', data-toggle='dropdown') 등급
+                                ul#dropdown.dropdown-menu
+                                    li
+                                        a(href='#') A
+                                    li
+                                        a(href='#') B
+                                    li
+                                        a(href='#') C
+
+                        td
+                            input#section(type='text', placeholder='구역')
+                        td
+                            input#content(type='text', placeholder='200자이내' )
+                        td
+                            button#add.plusminus(type='button') 추가
+            .modal.fade
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            h4.modal-title CheckList 수정
+                        .modal-body
+                            table
+                                tbody
+                                    tr
+                                        td
+                                            p 등급
+                                        td
+                                            .btn-group
+                                                button#modal_grade_Button.dropdown-toggle(type='button', data-toggle='dropdown') 등급
+                                                ul#modal_grade_dropdown.dropdown-menu
+                                                    li
+                                                        a(href='#') A
+                                                    li
+                                                        a(href='#') B
+                                                    li
+                                                        a(href='#') C
+                                    tr
+                                        td
+                                            p 구역
+                                        td
+                                            input#modal_section(type='text', placeholder='구역')
+
+                                    tr
+                                        td
+                                            p 내용
+                                        td
+                                            input#modal_content(type='text', placeholder='내용')
+                        .modal-footer
+                            button#modify.btn.btn-warning(type='button') 수정
+                            button#delete.btn.btn-danger(type='button') 삭제
+                            button#cancel.btn(type='button') 취소
+append script
+    script(src='../javascripts/bootstrap-datepicker.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../javascripts/duty_checklist_setting.js')

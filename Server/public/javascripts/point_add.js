@@ -26,11 +26,8 @@ var dateHtml = date.getFullYear() + "년 " + (date.getMonth()+1)  + "월 " + dat
 
 $("#date").html(dateHtml);
 
-$.post('/duty/getMemberList', function(res){
 
-    generateMemberTable(res);
-    clickEvent(res);
-});
+loadMemberList();
 
 var periods = [];
 var select_user_list = new Array();
@@ -76,12 +73,36 @@ $("#send").click(function(){
             }
             else{
                 toastr['success']('상벌당직 추가 성공');
+
+
+
+                loadMemberList();
+
+                select_mode = null;
+
+                $("#point").val("");
+                $("#reason").val("");
+                $("#mode-button").html("구분");
+
+
+
             }
         });
     }
 
 
 });
+
+
+
+function loadMemberList(){
+    $.post('/duty/getMemberList', function(res){
+
+        generateMemberTable(res);
+        clickEvent(res);
+    });
+
+}
 
 
 function generateMemberTable(res){

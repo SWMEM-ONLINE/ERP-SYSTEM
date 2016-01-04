@@ -40,7 +40,7 @@ block content
                             p#modal-enroller.
                         div
                             h4 대상자(,로 구분)
-                            input#modal-objects.form-control
+                            input#modal-objects.form-control(readonly='readonly')
                         .row
                             h4 구분
                             .btn-group
@@ -61,7 +61,7 @@ block content
                             h4 사유
                             input#modal-reason.form-control
                     .modal-footer
-                        button#modify.btn.btn-primary(type='button') 적용
+                        button#modify.btn.btn-warning(type='button') 수정
                         button#cancel.btn.btn-danger(type='button') 삭제
                         button.btn.btn-default(type='button', data-dismiss='modal') 취소
 

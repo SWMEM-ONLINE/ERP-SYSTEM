@@ -75,11 +75,10 @@ function personDuty(year, month){
         var htmlString = res.name + "님은";
         $('#name').html(htmlString);
 
-        htmlString = "입니다";
+        htmlString = "    ";
         $('#foot').html(htmlString);
 
     });
-
 
     var sendData ={};
     sendData.year = year;

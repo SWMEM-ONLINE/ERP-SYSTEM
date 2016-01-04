@@ -48,10 +48,6 @@ function insertCheckList(con,req,res){
     var section = req.body.section;
     var content = req.body.content;
 
-    type ="normal";
-    grade = "A";
-    section = "asdf";
-    content = "asdfasdfsd";
 
     var table = "";
 
@@ -94,12 +90,6 @@ function modifyCheckList(con,req,res){
     var content = req.body.content;
     var index = req.body.index;
 
-    type ="normal";
-    grade = "A";
-    section = "asdf";
-    content = "asdfasdfsd";
-    index = "1";
-
     var table = "";
 
     if(type == "normal")
@@ -114,7 +104,6 @@ function modifyCheckList(con,req,res){
     var query = "UPDATE `swmem`.`"+ table +"` " +
         "SET `grade`='"+grade+"', `section`='" + section +"', `content`='" +  content + "' " +
         "WHERE `index`='" + index + "';";
-
 
     console.log(query);
     con.query(query, function(err, response){
@@ -138,9 +127,6 @@ function deleteCheckList(con,req,res){
 
     var type = req.body.type;
     var index = req.body.index;
-
-    type ="normal";
-    index = 1;
 
     var table = "";
 
@@ -172,7 +158,9 @@ function deleteCheckList(con,req,res){
 
 }
 
+
 exports.inquireCheckList = inquireCheckList;
 exports.insertCheckList = insertCheckList;
 exports.modifyCheckList = modifyCheckList;
 exports.deleteCheckList = deleteCheckList;
+

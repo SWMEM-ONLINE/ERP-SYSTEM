@@ -46,6 +46,10 @@ router.get('/changeSetting', util.ensureAuthenticated, function(req, res, next) 
     res.render('duty_change_setting', { title: '당직 맞변경 관리' });
 });
 
+router.get('/checkListSetting', util.ensureAuthenticated, function(req, res, next) {
+    res.render('checklist_setting', { title: 'CheckList 관리' });
+});
+
 
 
 
@@ -150,9 +154,7 @@ router.post('/loadTodayDuty', util.ensureAuthenticated, function(req, res){
  *  checkList handle
  */
 router.post('/inquireCheckList', util.ensureAuthenticated, function(req, res){
-    console.log("1");
     checklist_handler.inquireCheckList(con,req,res);
-    console.log("1");
 });
 
 router.post('/insertCheckList', util.ensureAuthenticated, function(req, res){
@@ -166,6 +168,7 @@ router.post('/modifyCheckList', util.ensureAuthenticated, function(req, res){
 router.post('/deleteCheckList', util.ensureAuthenticated, function(req, res){
     checklist_handler.deleteCheckList(con,req,res);
 });
+
 
 
 module.exports = router;
