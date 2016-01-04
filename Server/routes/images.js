@@ -18,9 +18,8 @@ router.get('/', function(req, res, next) {
 
     fs.stat("./uploads/"+name, function(err, stat) {
 
-        if (err) throw err; // Fail if the file can't be read.
+        //if (err) throw err; // Fail if the file can't be read.
 
-        console.log('Server running at http://localhost:8124/');
 
         var ext = name.substring(name.lastIndexOf(".")+1);  // jpg
         console.log('ext:'+ext);
@@ -34,10 +33,12 @@ router.get('/', function(req, res, next) {
         rs = fs.createReadStream("./uploads/" + name); // public/img.jpg을 읽는다
 
         util.pump(rs, res, function(err) {
+            /*
             if(err) {
                 console.log("util.pump error");
                 throw err;
             }
+            */
         });
 
     });
