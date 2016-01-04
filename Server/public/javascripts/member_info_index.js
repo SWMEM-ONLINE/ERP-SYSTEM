@@ -3,45 +3,54 @@
  */
 
 var degree = ['','운영자','회장','총무','자재부장','생활장','세미나장','문화장','네트워크장','교육장'];
+var COMMAND_DEGREE = 9;
 degree[100] = '정회원';
 degree[101] = '준회원';
-degree[102] = '수료회원';
-degree[103] = '가입대기';
-degree[104] = '비활성화';
+degree[102] = '수료예정회원';
+degree[103] = '비활성화';
+degree[104] = '가입대기';
+degree[105] = '수료회원';
 
 getMemberList();
 
 function getMemberList(){
     var periodNum = '';
     var tbodyString = '';
-
-    $.post('/user/userlist',function(data){
-        tbodyString += '<tr>';
-        var periodCnt = 0;
-        for(var i=0;i<data.length;i++){
-            var user = data[i];
-            if(periodCnt % 5 == 0 && i != 0){
-                tbodyString += '</tr><tr>';
+    var send = {
+        type:'members'
+    };
+    $.ajax({
+        type:'post',
+        url:'/user/userlist',
+        data:JSON.stringify(send),
+        contentType:'application/json',
+        success: function(data) {
+            tbodyString += '<tr>';
+            var periodCnt = 0;
+            for (var i = 0; i < data.length; i++) {
+                var user = data[i];
+                if (periodCnt % 5 == 0 && i != 0) {
+                    tbodyString += '</tr><tr>';
+                }
+                if (periodNum != user.u_period) {
+                    tbodyString += '</tr><th colspan="5">' + user.u_period + '</th></tr><tr>';
+                    periodNum = user.u_period;
+                    periodCnt = 0;
+                }
+                var classString = 'table-clickable';
+                tbodyString += '<td id="' + user.u_id + '" class="' + classString + '">' + user.u_name + '</td>';
+                periodCnt++;
             }
-            if(periodNum != user.u_period){
-                tbodyString += '</tr><th colspan="5">'+user.u_period+'</th></tr><tr>';
-                periodNum = user.u_period;
-                periodCnt = 0;
+            var remain = periodCnt % 5;
+            if (remain > 0) {
+                for (i = remain; i < 5; i++) {
+                    tbodyString += '<td></td>';
+                }
             }
-            var classString = 'table-clickable';
-            tbodyString += '<td id="'+user.u_id+'" class="'+classString+'">'+user.u_name+'</td>';
-            periodCnt++;
+            tbodyString += '</tr>';
+            $('#memberList tbody').empty();
+            $('#memberList tbody').append(tbodyString);
         }
-        var remain = periodCnt % 5;
-        if(remain > 0){
-            for (i = remain; i < 5; i++) {
-                tbodyString += '<td></td>';
-            }
-        }
-
-        tbodyString += '</tr>';
-        $('#memberList tbody').empty();
-        $('#memberList tbody').append(tbodyString);
     });
 }
 

@@ -6,6 +6,7 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/user_finish.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
    .wrapper
@@ -13,15 +14,17 @@ block content
          h3 회원 관리
          hr
          .content
-            table.table
+            table.table#memberList
                thead
                   tr
                      th 이름
-                     th 도서대여여부
-                     th 하드웨어대여여부
-                     th 회비연체여부
-                     th 수료처리
+                     th 기수
+                     th 도서대여
+                     th 하드웨어대여
+                     th 회비연체
+                     th 수료
                tbody
 
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../javascripts/user_finish_index.js')
