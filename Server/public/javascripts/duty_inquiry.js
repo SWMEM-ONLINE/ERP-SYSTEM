@@ -68,8 +68,6 @@ $('#toggle').click(function(){
 personDuty(new Date().getFullYear(), new Date().getMonth()+1);
 
 
-
-
 function personDuty(year, month){
 
     $.post('/duty/getUser', function(res){
@@ -147,24 +145,6 @@ function generateHtml(datas){
 
 }
 
-/*
- events: [ // put the array in the `events` property
- {
- title  : 'event1',
- start  : '2010-01-01'
- },
- {
- title  : 'event2',
- start  : '2010-01-05',
- end    : '2010-01-07'
- },
- {
- title  : 'event3',
- start  : '2010-01-09T12:30:00',
- }
- ],
-
- */
 function makeEvent(res){
 
     var event = [] ;
@@ -224,5 +204,4 @@ function setElement(name, mode, date){
         element.color= 'white';
     }
     return element;
-
 }

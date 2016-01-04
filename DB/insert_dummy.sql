@@ -50,14 +50,8 @@ INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1
 ---------------------------  당직 디비   -------------------------------------
 
 
-insert into t_hardware values(1, 0, 'All in 1 Super Multi Adapter', 1, 1);
-insert into t_hardware values(2, 0, 'ALTERA DE2', 2, 2);
-insert into t_hardware values(3, 0, 'DIRECT VOX PROAUDIO( PHW-22 )', 2, 0);
-insert into t_hardware values(4, 0, '로지텍 웹캠 프로 9000', 3, 1);
-insert into t_hardware values(5, 1, 'Chromecast', 1, 1);
-insert into t_hardware values(6, 1, 'Kinect (Window용)', 1, 0);
-insert into t_hardware values(7, 1, 'Tizen Reference Phone', 1, 1);
-insert into t_hardware values(8, 1, 'Galaxy Gear S2', 1, 0);
+
+---------------------------  도서 디비   -------------------------------------
 
 
 insert into t_book values(1, 0, '실무환경에 맞춘 node.js 프로그래밍', '9788983798077', '조인석,황수빈', '혜지원', 'A-1', 'http://bimage.interpark.com/goods_image/4/6/6/8/213914668s.jpg', 0, 2, 1, 23000, 0, NULL, NULL);
@@ -69,5 +63,15 @@ insert into t_book values(6, 1, '돌아서서 후회하지 않는 대화법', '9
 insert into t_book values(7, 1, '거기, 우리가 있었다', '9788927806912', '정현주', '중앙북스', 'B-3', 'http://bimage.interpark.com/goods_image/9/6/7/1/245679671s.jpg', 0, 2, 0, 13800, 0, NULL, NULL);
 insert into t_book values(8, 1, '미움받을 용기', '9788996991342', '기시미 이치로,고가 후미타케', '인플루엔셜', 'B-4', 'http://bimage.interpark.com/goods_image/2/8/3/6/226122836s.jpg', 0, 1, 0, 14900, 0, NULL, NULL);
 
+---------------------------  하드웨어 디비   -------------------------------------
+
+insert into t_hardware values(1, 'All in 1 Super Multi Adapter', 1, 1, null);
+insert into t_hardware values(2, 'ALTERA DE2', 2, 2, null);
+insert into t_hardware values(3, 'DIRECT VOX PROAUDIO( PHW-22 )', 2, 0, null);
+insert into t_hardware values(4, '로지텍 웹캠 프로 9000', 3, 1, null);
+insert into t_hardware values(5, 'Chromecast', 1, 1, '2B07101W93CS');
+insert into t_hardware values(6, 'Kinect (Window용)', 1, 1, '003567721642');
+insert into t_hardware values(7, 'Tizen Reference Phone', 1, 1, 'RF1D40SEYEV');
+insert into t_hardware values(8, 'Galaxy Gear S2', 1, 0, 'DFJWIOJ331DFJLFDSKL112');
 
 

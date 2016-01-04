@@ -9,6 +9,7 @@ var util = require('./util');
 var con = DB_handler.connectDB();
 var router = express.Router();
 var duty_handler = require('./duty_handler');
+var checklist_handler = require('./duty_checklist_handler');
 
 /*
  *  Part. 겟
@@ -138,6 +139,32 @@ router.post('/updateMemberPoint', util.ensureAuthenticated, function(req, res){
 
 router.post('/test', util.ensureAuthenticated, function(req, res){
     duty_handler.test(con,req,res);
+});
+
+router.post('/loadTodayDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.loadTodayDuty(con,req,res);
+});
+
+
+/**
+ *  checkList handle
+ */
+router.post('/inquireCheckList', util.ensureAuthenticated, function(req, res){
+    console.log("1");
+    checklist_handler.inquireCheckList(con,req,res);
+    console.log("1");
+});
+
+router.post('/insertCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.insertCheckList(con,req,res);
+});
+
+router.post('/modifyCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.modifyCheckList(con,req,res);
+});
+
+router.post('/deleteCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.deleteCheckList(con,req,res);
 });
 
 

@@ -10,30 +10,6 @@
  */
 var util = require('./util');
 
-function test(con,req,res){
-
-
-    var userids = ["1111","2222","3333"];
-
-    util.sendList(userids,"123","123", function(err,data){
-        if(err){
-            console.log(err);
-        }else{
-            console.log(data);
-        }
-
-    });
-
-    util.send("1111","!23","123", function(err,data){
-        if(err){
-            console.log(err);
-        }else{
-            console.log(data);
-        }
-    });
-}
-
-
 function Duty(date) {
     this.date = date;
     this.user1 = null;
@@ -75,6 +51,30 @@ function Duty(date) {
         return false;
     };
 }
+
+function test(con,req,res){
+
+
+    var userids = ["1111","2222","3333"];
+
+    util.sendList(userids,"123","123", function(err,data){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(data);
+        }
+
+    });
+
+    util.send("1111","!23","123", function(err,data){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(data);
+        }
+    });
+}
+
 
 function updateMemberPoint(con,req,res){
 
@@ -1569,7 +1569,6 @@ function loadMyDuty(con,req,res){
 
     var month = req.body.month;
     var year = req.body.year;
-
     var query = "select * from swmem.t_duty where ( user_id1 = '" + id + "' or user_id2 = '" + id + "' or user_id3 = '" + id + "' or user_id4 = '" + id
         + "') and month(date)= " + month + " and year(date) = " + year;
 
@@ -1585,6 +1584,7 @@ function loadMyDuty(con,req,res){
             for (var i=0;i<response.length;i++){
                 var row = response[i];
                 datas[i] ={};
+                datas[i].year = year;
                 datas[i].month = row.date.getMonth() + 1;
                 datas[i].date = row.date.getDate();
 
@@ -1633,6 +1633,47 @@ function getUser(con, req, res){
             data.manager_bad_duty_point = response[0].u_manager_bad_duty_point;
             res.send(data);
             console.log(data);
+        }
+    });
+
+
+}
+
+
+function loadTodayDuty(con,req,res){
+
+
+    var currentDate = new Date();
+    var year = currentDate.getFullYear();
+    var month = currentDate.getMonth()+1;
+    var date = currentDate.getDate();
+
+
+    var query = "SELECT * , (SELECT u_name from t_user where u_id = user_id1  ),(SELECT u_name from t_user where u_id = user_id2  ),(SELECT u_name from t_user where u_id = user_id3  ),(SELECT u_name from t_user where u_id = user_id4  ) FROM swmem.t_duty " +
+        "WHERE `date`=" +
+        "'" + year + "" +
+        "-" +
+        "" + month + "" +
+        "-" +
+        "" +date + "';";
+
+    con.query(query,function(err, response){
+
+        if(err){
+            console.log(err);
+            res.send("error");
+        }
+        else{
+            var data = response[0];
+
+            data.name1 = data['(SELECT u_name from t_user where u_id = user_id1  )'];
+            data.name2 = data['(SELECT u_name from t_user where u_id = user_id2  )'];
+            data.name3 = data['(SELECT u_name from t_user where u_id = user_id3  )'];
+            data.name4 = data['(SELECT u_name from t_user where u_id = user_id4  )'];
+
+            console.log(data);
+            res.send(data);
+
         }
     });
 
@@ -1728,5 +1769,5 @@ exports.showChangeDutyHistroryAll = showChangeDutyHistroryAll;
 exports.loadAllDuty = loadAllDuty;
 exports.autoMakeDuty = autoMakeDuty;
 exports.updateMemberPoint = updateMemberPoint;
-
+exports.loadTodayDuty = loadTodayDuty;
 exports.test = test;

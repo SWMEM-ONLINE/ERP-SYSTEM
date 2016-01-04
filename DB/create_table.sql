@@ -43,15 +43,17 @@ CREATE TABLE t_book (
   b_author VARCHAR(100),
   b_publisher VARCHAR(30),
   b_location VARCHAR(10),
-  b_photo_url VARCHAR(200),
+  b_photo_urn VARCHAR(200),
   b_state int DEFAULT '0',
-  b_total int,
   b_new int DEFAULT '1',
   b_price int,
   b_reserved_cnt int DEFAULT '0',
   b_due_date VARCHAR(20),
   b_rental_username VARCHAR(20)
-  );CREATE TABLE t_book_apply (
+  );
+
+DROP TABLE IF EXISTS `t_book_apply`;
+CREATE TABLE t_book_apply (
   ba_id int NOT NULL auto_increment primary key,
   ba_type int,
   ba_user VARCHAR(20),
@@ -62,8 +64,8 @@ CREATE TABLE t_book (
   ba_photo_url VARCHAR(200),
   ba_apply_date VARCHAR(20),
   ba_price int,
+  ba_state int DEFAULT ‘0’,
   FOREIGN KEY(ba_user) REFERENCES t_user(u_id));
-
 
 DROP TABLE IF EXISTS `t_book_return`;
 CREATE TABLE t_book_return (
@@ -85,7 +87,6 @@ CREATE TABLE t_book_rental (
   FOREIGN KEY(br_book_id) REFERENCES t_book(b_id),
   FOREIGN KEY(br_user) REFERENCES t_user(u_id));
 
-
 DROP TABLE IF EXISTS `t_book_reserve`;
 CREATE TABLE t_book_reserve (
   bre_id int NOT NULL auto_increment primary key,
@@ -105,7 +106,6 @@ CREATE TABLE t_book_loss (
   FOREIGN KEY(brl_book_id) REFERENCES t_book(b_id),
   FOREIGN KEY(brl_user) REFERENCES t_user(u_id));
 
-
 ---------------------------       도서 끝     -------------------------------------
 
 
@@ -115,10 +115,10 @@ CREATE TABLE t_book_loss (
 DROP TABLE IF EXISTS `t_hardware`;
 CREATE TABLE t_hardware (
   h_id int NOT NULL auto_increment primary key,
-  h_type int,
   h_name VARCHAR(100),
   h_total int DEFAULT '1',
-  h_remaining int DEFAULT '1'
+  h_remaining int DEFAULT '1',
+  h_serial VARCHAR(100) DEFAULT NULL
 );
 
 
@@ -135,20 +135,49 @@ CREATE TABLE t_hardware_return (
 
 
 
-
-
 DROP TABLE IF EXISTS `t_hardware_rental`;
 CREATE TABLE t_hardware_rental (
   hr_id int NOT NULL auto_increment primary key,
-  hr_user VARCHAR(20),
+  hr_user_id VARCHAR(20),
+  hr_user_name VARCHAR(20),
   hr_hardware_id int,
   hr_rental_date VARCHAR(20),
   hr_due_date VARCHAR(20),
   hr_extension_cnt int DEFAULT '0',
   FOREIGN KEY(hr_hardware_id) REFERENCES t_hardware(h_id),
-  FOREIGN KEY(hr_user) REFERENCES t_user(u_id)
+  FOREIGN KEY(hr_user_id) REFERENCES t_user(u_id)
   );
 
+DROP TABLE IF EXISTS `t_hardware_waiting`;
+CREATE TABLE t_hardware_waiting (
+  hw_id int NOT NULL auto_increment primary key,
+  hw_user VARCHAR(20),
+  hw_kind int DEFAULT 0,
+  hw_result int DEFAULT 0,
+  hw_hardware_id int,
+  hw_rental_id int,
+  hw_request_date VARCHAR(20),
+  FOREIGN KEY(hw_hardware_id) REFERENCES t_hardware(h_id),
+  FOREIGN KEY(hw_user) REFERENCES t_user(u_id),
+  FOREIGN KEY(hw_rental_id) REFERENCES t_hardware_rental(hr_id)
+);
+
+DROP TABLE IF EXISTS `t_hardware_apply`;
+CREATE TABLE t_hardware_apply (
+  ha_id int NOT NULL auto_increment primary key,
+  ha_project_title VARCHAR(50),
+  ha_requester VARCHAR(20),
+  ha_role VARCHAR(50),
+  ha_upper_category VARCHAR(20),
+  ha_lower_category VARCHAR(20),
+  ha_item_name VARCHAR(50),
+  ha_size VARCHAR(20),
+  ha_amount int,
+  ha_maker VARCHAR(50),
+  ha_link VARCHAR(500),
+  ha_result int,
+  FOREIGN KEY(ha_requester) REFERENCES t_user(u_id)
+  );
 
 ---------------------------       하드웨어 끝     -------------------------------------
 
@@ -245,6 +274,29 @@ DROP TABLE IF EXISTS `t_fee`;
     FOREIGN KEY(send_user) REFERENCES t_user(u_id),
     PRIMARY KEY (`index`)
   );
+
+
+DROP TABLE IF EXISTS `t_duty_checklist`;
+  CREATE TABLE `t_duty_checklist` (
+    `add_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `grade` varchar(40) NOT NULL,
+    `section` varchar(40) NOT NULL,
+    `content` varchar(250) NOT NULL,
+    `index` int(20) NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`index`)
+  );
+
+DROP TABLE IF EXISTS `t_duty_bad_checklist`;
+  CREATE TABLE `t_duty_bad_checklist` (
+    `add_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `grade` varchar(40) NOT NULL,
+    `section` varchar(40) NOT NULL,
+    `content` varchar(250) NOT NULL,
+    `index` int(20) NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`index`)
+  );
+
+
 
     ---------------------------       당직 끝     -------------------------------------
 
