@@ -3,23 +3,22 @@
  */
 
 toastr.options = {
-    'closeButton': false,
-    'debug': false,
-    'newestOnTop': false,
-    'progressBar': false,
-    'positionClass': 'toast-top-right',
-    'preventDuplicates': false,
-    'onclick': null,
-    'showDuration': '300',
-    'hideDuration': '1000',
-    'timeOut': '5000',
-    'extendedTimeOut': '1000',
-    'showEasing': 'swing',
-    'hideEasing': 'linear',
-    'showMethod': 'fadeIn',
-    'hideMethod': 'fadeOut'
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
 };
-
 
 $('ul.nav-pills li').click(function(){
     var index = $(this).index();
@@ -54,7 +53,7 @@ loadBorrowedBooklist();
 function loadBorrowedBooklist(){
     $.post('/book/mybook/borrowed', function(datalist){
         if(datalist.length === 0){
-            $('div#myBorrowedBook').html('<tr><td><h4 class="text-center">대여한 도서가 없습니다.</h4></td></tr>');
+            $('#myBorrowedBook').html('<tr><th>대여한 도서가 없습니다.</th></tr>');
             return;
         }
         var htmlString = '<tbody>';
@@ -65,7 +64,7 @@ function loadBorrowedBooklist(){
             htmlString += '</td><td width="5%">';
             htmlString += '<div class="btn-group-vertical">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 도서반납 </button>';
-            if(data.br_extension_cnt === 0 && data.b_reserved_cnt === 0)   htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
+            if(data.br_extension_cnt === 0 && data.b_reserved_cnt === 0 && data.diff <= 0)   htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
             else    htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm disabled"> 대여연장 </button>';
             htmlString += '<button id="missing" type="button" class="btn btn-danger btn-sm"> 분실신고 </button></div>';
             htmlString += '</td></tr>';
@@ -74,34 +73,32 @@ function loadBorrowedBooklist(){
         $('#myBorrowedBook').html(htmlString);
         $('button#turnIn').each(function(index){                            // turnIn button function.
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/turnIn', {rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, due_date: datalist[index].b_due_date, reserved_cnt: datalist[index].b_reserved_cnt}, function(response){
+                $.post('/book/mybook/turnIn', {reserved_cnt: datalist[index].b_reserved_cnt, rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, due_date: datalist[index].b_due_date}, function(response){
                     if(response==='success')    toastr['success']('반납 성공');
-                    else    toastr['error']('반납 실패');
+                    else if(response === 'failed')  toastr['error']('반납 실패');
+                    else    toastr['info']('반납성공\n벌당직' + response + '일 부여');
                 });
-                //window.location.reload();
+                loadBorrowedBooklist();
             });
         });
         $('button#postpone').each(function(index){                          // postpone button function
-            if(datalist[index].br_extension_cnt === 0 && datalist[index].b_reserved_cnt === 0) {
+            if(datalist[index].br_extension_cnt === 0 && datalist[index].b_reserved_cnt === 0 && datalist[index].diff <= 0) {
                 $(this).unbind().click(function (event) {
-                    //var due_date = new Date(datalist[index].b_due_date);
-                    //due_date.setDate(due_date.getDate() + 14);
-                    //var changedDate = due_date.getFullYear()+ '-'+(due_date.getMonth()+1)+'-'+due_date.getDate();
                     $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id}, function (response) {
                         if(response === 'success')  toastr['success']('연장 성공');
                         else    toastr['error']('연장 실패');
                     });
-                    //window.location.reload();
+                    loadBorrowedBooklist();
                 });
             }
         });
         $('button#missing').each(function(index){                           // missing button function
             $(this).unbind().click(function(event){
-                $.post('/book/mybook/missing', {rental_id: datalist[index].br_id, book_id : datalist[index].b_id}, function(response){
+                $.post('/book/mybook/missing', {book_id : datalist[index].b_id}, function(response){
                     if(response === 'success')  toastr['success']('분실신고 성공');
                     else    toastr['error']('분실등록 실패');
                 });
-                //window.location.reload();
+                loadBorrowedBooklist();
             });
         });
     });
@@ -113,7 +110,7 @@ function loadBorrowedBooklist(){
 function loadReservedBooklist(){
     $.post('/book/mybook/reserved', function(datalist){
         if(datalist.length === 0){
-            $('div#myReservedBook').html('<tr><td><h4 class="text-center">예약한 도서가 없습니다.</h4></td></tr>');
+            $('#myReservedBook').html('<tr><th>예약한 도서가 없습니다.</th></tr>');
             return;
         }
         var htmlString = '<tbody>';
@@ -132,7 +129,7 @@ function loadReservedBooklist(){
                     if(response === 'success')  toastr['success']('예약취소 성공');
                     else    toastr['error']('에약취소 실패');
                 });
-                //window.location.reload();
+                loadReservedBooklist();
             });
         });
     });
@@ -144,7 +141,7 @@ function loadReservedBooklist(){
 function loadAppliedBooklist(){
     $.post('/book/mybook/applied', function(datalist){
         if(datalist.length === 0){
-            $('div#myAppliedBook').html('<tr><td><h4 class="text-center">신청한 도서가 없습니다.</h4></td></tr>');
+            $('#myAppliedBook').html('<tr><th>신청한 도서가 없습니다.</th></tr>');
             return;
         }
         var htmlString = '<tbody>';
@@ -163,7 +160,7 @@ function loadAppliedBooklist(){
                     if(response === 'success')  toastr['success']('도서신청 취소 성공');
                     else    toastr['error']('도서신청 취소 실패');
                 });
-                //window.location.reload();
+                loadAppliedBooklist();
             });
         });
     });

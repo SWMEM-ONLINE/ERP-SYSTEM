@@ -51,9 +51,9 @@ $('#newbookSearchBtn').click(function() {
 $('#loadMyapplication').click(function(){
     $.post('/apply/newbook/loadMyapply', function(res){
         settingHTML(res, 1);
-        //clickEvent(res, 1);
     });
 });
+
 function settingHTML(datalist, flag){
     if(datalist.length === 0){
         if(flag === 0){
@@ -130,8 +130,6 @@ function clickEvent(datalist, flag){
         }
         $('div.modal-body').html(string);
 
-
-
         $('button#request').unbind().click(function(){
             if(flag === 0){
                 $.post("/apply/newbook/request", datalist[index], function(data){
@@ -141,6 +139,7 @@ function clickEvent(datalist, flag){
                     else{
                         toastr['info']('도서신청에 성공했습니다');
                     }
+                    settingHTML(datalist, 0);
                 });
             }else{
                 $.post("/apply/newbook/deleteMyapply", datalist[index], function (data) {

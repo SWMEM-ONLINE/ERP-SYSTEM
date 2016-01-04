@@ -30,10 +30,14 @@ $('#categoryDropdown li a').click(function(){
     flag_category = $(this).parent().index();
 });
 
-$.post('/book/loadNewTechbook', function(data){                         // Load new Tech booklist
-    settingHTML(data);
-    clickEvent(data);
-});
+init();
+
+function init(){
+    $.post('/book/loadNewTechbook', function(data){                         // Load new Tech booklist
+        settingHTML(data);
+        clickEvent(data);
+    });
+}
 
 $('#bookSearchWords').keydown(function(){
     if(event.keyCode == 13){                                            // 'keycode==13' means Enter
@@ -101,6 +105,7 @@ function clickEvent(datalist){
                 $.post("/book/borrowBook", {book_id : datalist[index].b_id}, function (data) {
                     if(data === 'failed')   toastr['error']('책 대여 실패');
                     else    toastr['info']('책 대여 성공');
+                    init();
                 });
                 $('div.modal').modal('hide');
                 //window.location.reload();
@@ -116,6 +121,7 @@ function clickEvent(datalist){
                 }else{
                     toastr['info']('책 예약 성공');
                 }
+                init();
             });
             //window.location.reload();
         });
@@ -123,6 +129,7 @@ function clickEvent(datalist){
             $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (response) {
                 if(response === 'success')  toastr['success']('분실도서 등록 성공');
                 else    toastr['error']('분실도서 등록 실패');
+                init();
             });
             $('div.modal').modal('hide');
             //window.location.reload();

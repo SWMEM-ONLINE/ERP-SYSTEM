@@ -100,7 +100,7 @@ router.post('/manage/approveRequest', util.ensureAuthenticated, function(req, re
 });
 
 router.post('/manage/rejectRequest', util.ensureAuthenticated, function(req, res){
-    hardware_handler.approveRequest(con, req, res);
+    hardware_handler.rejectRequest(con, req, res);
 });
 
 router.get('/manage/history', util.ensureAuthenticated, function(req, res){

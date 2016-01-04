@@ -56,7 +56,7 @@ today.setHours(9);
 function loadmyHardware(){
     $.post('/hardware/myhardware/borrowed', function(datalist){
         if(datalist.length === 0){              // If user doesn't borrow anyone.
-            $('div#myHardware').html('<tbody><th><tr><td><h4 class="text-center">예약한 일반 하드웨어가 없습니다.</h4></td></tr></th></tbody>');
+            $('#myHardware').html('<tr><th>대여한 하드웨어 없습니다.</th></tr>');
             return;
         }
         var htmlString = '<tbody>';
@@ -67,7 +67,8 @@ function loadmyHardware(){
             htmlString += makeProgressbar(today, data.hr_rental_date, data.hr_due_date);
             htmlString += '</td><td width="5%"><div class="btn-group-vertical">';
             htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 반납신청 </button>';
-            htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 연장신청 </button>';
+            if(data.diff <= 0)  htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 연장신청 </button>';
+            else    htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm disabled"> 연장불가 </button>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
@@ -85,7 +86,7 @@ function loadmyHardware(){
 function loadmyRequestedHardware(){
     $.post('/hardware/myhardware/requested', function(datalist){
         if(datalist.length === 0){
-            $('div#myrequestedHardware').html('<tbody><th><tr><td><h4 class="text-center"> 요청이 없습니다. </h4></td></tr></th></tbody>');
+            $('#myrequestedHardware').html('<tr><th>요청이 없습니다.</th></tr>');
             return;
         }
         var htmlString = '<tbody>';
@@ -107,17 +108,18 @@ function loadmyRequestedHardware(){
             htmlString += '</p></td><td width="5%"><div class="btn-group-vertical">';
             htmlString += '<button id="deleteRequest" type="button" class="btn btn-danger btn-sm"> 삭제 </button>';
             htmlString += '</td></tr>';
+
         });
         htmlString += '</tbody>';
         $('#myrequestedHardware').html(htmlString);
-        deleteRequestButton(datalist);
+        deleterequestButton(datalist);
     });
 }
 
 function loadmyappliedHardware(){               // 미완성된 함수.
     $.post('/hardware/myhardware/applied', function(datalist){
         if(datalist.length === 0){
-            $('div#myappliedHardware').html('<tbody><th><tr><td><h4 class="text-center"> 신청한 하드웨어가 없습니다.</h4></td></tr></th></tbody>');
+            $('#myappliedHardware').html('<tr><th>신청한 하드웨어가 없습니다.</th></tr>');
             return;
         }
         var htmlString = '<tbody>';
@@ -138,6 +140,7 @@ function turnInButton(datalist){
                 if(response === 'success')  toastr['success']('반납신청 성공');
                 else if(response === 'failed_2')    toastr['error']('반납신청 실패');
                 else toastr['error']('이미 연장이나 반납했습니다');
+                loadmyHardware();
             });
             //window.location.reload();
         });
@@ -146,25 +149,28 @@ function turnInButton(datalist){
 
 function postponeButton(datalist){
     $('button#postpone').each(function(index){          // Postpone button & function
-        $(this).unbind().click(function(){
-            $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id}, function (response) {
-                if(response === 'success')  toastr['success']('연장신청 성공');
-                else if(response === 'failed_2')    toastr['error']('연장신청 실패');
-                else    toastr['error']('이미 연장이나 반납했습니다');
+        if(datalist[index].diff <= 0){
+            $(this).unbind().click(function(){
+                $.post("/hardware/myhardware/postpone", {rental_id: datalist[index].hr_id, hardware_id: datalist[index].hr_hardware_id}, function (response) {
+                    if(response === 'success')  toastr['success']('연장신청 성공');
+                    else if(response === 'failed_2')    toastr['error']('연장신청 실패');
+                    else    toastr['error']('이미 연장이나 반납했습니다');
+                    loadmyHardware();
+                });
+                //window.location.reload();
             });
-            //window.location.reload();
-        });
+        }
     });
 }
 
-function deleteRequestButton(datalist){
+function deleterequestButton(datalist){
     $('button#deleteRequest').each(function(index){
         $(this).unbind().click(function(){
-            $.post('/hardware/myhardware/deleteRequest', {waiting_id: datalist[index].hw_id, hardware_id: datalist[index].hw_hardware_id}, function(response){
-                if(response === 'success')  toastr['success']('신청 삭제 성공');
-                else    toastr['error']('신청 삭제 실패');
+            $.post('/hardware/myhardware/deleteRequest', {waiting_id: datalist[index].hw_id}, function(response) {
+                if (response === 'success')  toastr['success']('삭제 성공');
+                else    toastr['failed']('삭제 실패');
+                loadmyRequestedHardware();
             });
-            //window.location.reload();
         });
     });
 }
@@ -192,6 +198,7 @@ function cancelmyApplyButton(data){
         $.post('/hardware/myhardware/cancelmyApply', {apply_id: data.ha_id}, function(response){
             if(response === 'success')  toastr['success']('신청취소 성공');
             else    toastr['error']('신청취소 실패');
+            loadmyappliedHardware();
         });
         $('div.modal').modal('hide');
         //window.location.reload();

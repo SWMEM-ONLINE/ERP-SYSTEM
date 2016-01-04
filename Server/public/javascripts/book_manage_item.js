@@ -160,7 +160,7 @@ $('#bookSearchBtn').click(function() {
 function loadbooklist(select){
     $.post('/book/manage/loadbooklist', {flag: select}, function(datalist){
         settingHTML(datalist);
-        resetlocationButton(datalist);
+        resetlocationButton(datalist, select);
     });
 }
 
@@ -173,7 +173,7 @@ function settingHTML(datalist){
         htmlString += '<td><h4 class="bookTitle">' + data.b_name;
         if(data.b_state === 1) htmlString += ' <span class="label label-warning">' + data.b_rental_username + '님이 대여중</span></h4>';
         else    htmlString += '</h4>';
-        htmlString += '<p>' + data.b_author + ' | ' + data.b_publisher + '</span></p></tr>';
+        htmlString += '<p>' + data.b_author + ' | ' + data.b_publisher + ' | ' + data.b_location + '</p></tr>';
     });
     htmlString += '</tbody>';
     $('table#booklist').html(htmlString);
@@ -239,6 +239,7 @@ function resetButton(datalist){
             else    toastr['error']('도서위치 변경실패');
         });
         $('div.modal').modal('hide');
+        loadbooklist(flag);
         //window.location.reload();
     });
 }

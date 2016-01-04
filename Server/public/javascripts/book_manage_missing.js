@@ -60,7 +60,7 @@ function reenrollButton(datalist){
         $.post('/book/manage/reenroll', {enrollList: enrollList}, function(response){
             if(response=== 'success')   toastr['success']('재등록 성공');
             else    toastr['error']('재등록 실패');
-
         });
+        window.location.reload();
     });
 }

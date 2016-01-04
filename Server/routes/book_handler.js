@@ -91,12 +91,7 @@ function missingBook(con, req, res){
     query += 'delete from t_book_rental where br_book_id="' + req.body.book_id + '";';
     query += 'delete from t_book_reserve where bre_book_id="' + req.body.book_id + '";';
     query += 'insert into t_book_loss SET brl_user="' + req.session.passport.user.id + '", brl_book_id="' + req.body.book_id + '", brl_loss_date="' + today + '"';
-    //
-    //var queryData = {
-    //    brl_user : req.session.passport.user.id,
-    //    brl_book_id : req.body.book_id,
-    //    brl_loss_date : today
-    //};
+
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
