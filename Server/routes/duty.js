@@ -9,6 +9,7 @@ var util = require('./util');
 var con = DB_handler.connectDB();
 var router = express.Router();
 var duty_handler = require('./duty_handler');
+var checklist_handler = require('./duty_checklist_handler');
 
 /*
  *  Part. 겟
@@ -43,6 +44,10 @@ router.get('/setting', util.ensureAuthenticated, function(req, res, next) {
 
 router.get('/changeSetting', util.ensureAuthenticated, function(req, res, next) {
     res.render('duty_change_setting', { title: '당직 맞변경 관리' });
+});
+
+router.get('/checkListSetting', util.ensureAuthenticated, function(req, res, next) {
+    res.render('checklist_setting', { title: 'CheckList 관리' });
 });
 
 
@@ -139,6 +144,31 @@ router.post('/updateMemberPoint', util.ensureAuthenticated, function(req, res){
 router.post('/test', util.ensureAuthenticated, function(req, res){
     duty_handler.test(con,req,res);
 });
+
+router.post('/loadTodayDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.loadTodayDuty(con,req,res);
+});
+
+
+/**
+ *  checkList handle
+ */
+router.post('/inquireCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.inquireCheckList(con,req,res);
+});
+
+router.post('/insertCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.insertCheckList(con,req,res);
+});
+
+router.post('/modifyCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.modifyCheckList(con,req,res);
+});
+
+router.post('/deleteCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.deleteCheckList(con,req,res);
+});
+
 
 
 module.exports = router;

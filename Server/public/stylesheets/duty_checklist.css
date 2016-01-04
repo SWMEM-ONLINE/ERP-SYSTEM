@@ -1,66 +1,160 @@
-div.content table th{
+/**
+ * Created by jung-inchul on 2015. 11. 24..
+ */
+@media(max-width:992px) {
+    .container{
+        padding: 0;
+    }
+    div.content{
+        width:100%;
+        margin:0;
+    }
+    #newbookSearchWords{
+        width: 45%;
+    }
+    #bookSearchWords{
+        width: 70%;
+    }
+    .input-group{
+        font-size:15px;
+    }
+    h4.bookTitle{
+        font-size: 20px;
+    }
+    h3{
+        font-size: 30px;
+    }
+    #noti h4{
+        font-size: 19px;
+    }
+}
+@media(min-width:992px) {
+    div.content{
+        width:900px;
+        margin:auto;
+    }
+    #newbookSearchWords,#bookSearchWords{
+        width: 600px;
+    }
+}
+
+div.input-group{
+    margin:0 auto;
     text-align: center;
 }
 
-div.tooltip {
-    width: 300px;
-
+#interparkBooksearch{
+    margin-bottom: 10px;
 }
 
-div.tooltip-inner {
-    text-align: left;
-    max-width: 310px;
+.bookSmallImg{
+    height: 120px;
+    width: 100px;
 }
 
-div.content a{
-    color:#34495e;
-    font-weight: bold;
+.bookLargeImg{
+    height: 240px;
+    width: 190px;
 }
 
-@media(min-width:993px){
-    div.content h1{
-        margin-bottom: 30px;
-    }
-    div.content h3{
-        margin-bottom: 30px;
-    }
-    div.content{
-        margin:auto;
-        padding:0;
-        width: 900px;
-    }
-    div.content table{
-        width: 100%;
-    }
-    .checker{
-        width: 40px;
-    }
-
-    .part{
-        width: 150px;
-    }
+table#booklist tbody tr td:first-child{
+    width: 120px;
+    min-width: 80px;
 }
 
-@media(max-width:992px){
-    div.content h1{
-        font-size: 40px;
-        margin-bottom: 30px;
-    }
-    div.content h3{
-        font-size: 25px;
-        margin-bottom: 30px;
-    }
-    div.contents{
-        padding: 0;
-    }
-    div.content table{
-        width: 100%;
-        font-size: 14px;
-    }
-    .checker{
-        width: 10%;
-    }
-    .part{
-        width: 20%;
-    }
+h4.bookTitle{
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+hr{
+    border:1px solid #e7e9ec;
+}
+
+.container{
+    text-align: center;
+}
+
+button{
+    background-color: #122359;
+    border:none;
+    color:white;
+    height: 36px;
+}
+
+button:hover{
+    background-color: #BBB;
+    transition:0.5s all;
+    color:black;
+}
+
+button#bookSearchCategory{
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+button#newbookSearchBtn,#bookSearchBtn{
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+
+button#loadMyapplication,
+button#request,
+button#reserve,
+button#missing,
+button#return {
+    margin-left: 5px;
+    border-radius: 4px;
+}
+
+input#newbookSearchWords,#bookSearchWords{
+    text-align: center;
+    height: 36px;
+    border: 2px solid #122359;
+}
+
+div.pageArea{
+    text-align: center;
+}
+
+table {
+    width:100%;
+}
+
+table tr:hover td{
+    color: black;
+}
+
+#bookSearchWords{
+    text-align: center;
+}
+#noti{
+    text-align: center;
+}
+#noti h4{
+    color: #122359;
+}
+
+ul.pagination{
+    text-align:center;
+}
+
+.dropdown-toggle .caret{
+    margin-left:0;
+}
+
+tr.even{
+    background-color: #e1e6e5;
+}
+
+th {
+    text-align: center;
+}
+
+button#borrowUsingQRcode{
+    margin: 0 auto;
+    width:95%;
+    margin-bottom: 10px;
+    border-radius: 4px;
 }
