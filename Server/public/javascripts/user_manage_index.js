@@ -96,7 +96,7 @@ $('#memberList').on('click','td',function(){
             $('div.modal #mail').html(data[0].u_email);
             $('div.modal #type').html(degree[data[0].u_state]);
             $('div.modal #selectAdmin').html('계정 전환');
-            document.getElementById('profile').setAttribute('src','http://localhost:3000/image?name='+data[0].u_photo_url);
+            document.getElementById('profile').setAttribute('src','/image?name='+data[0].u_photo_url);
             document.getElementById('selectAdmin').setAttribute('number',0);
             $('div.modal').modal();
         }

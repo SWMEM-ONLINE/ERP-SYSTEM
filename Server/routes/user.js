@@ -93,7 +93,7 @@ router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
     else if(type == 'command'){
         query += ' WHERE u_state <= 104';
     }
-    else if(type == 'finished'){
+    else if(type == 'finish'){
         query += ' WHERE u_state = 102';
     }
     query += ' order by u_period';

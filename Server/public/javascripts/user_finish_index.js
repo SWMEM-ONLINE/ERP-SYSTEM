@@ -23,8 +23,7 @@ getMemberList();
 
 function getMemberList(){
     var send = {
-        //type:'finished'
-        type:'members'
+        type:'finish'
     };
 
     $.ajax({
