@@ -1,7 +1,7 @@
 /**
  * Created by jung-inchul on 2015. 11. 24..
  */
-@media(max-width:992px) {
+/*@media(max-width:992px) {
     .container{
         padding: 0;
     }
@@ -36,6 +36,40 @@
     #newbookSearchWords,#bookSearchWords{
         width: 600px;
     }
+}*/
+
+hr {
+    border:1px solid #dddddd;
+}
+
+.container{
+    text-align: center;
+}
+
+
+@media(min-width:993px){
+    div.content{
+        width: 993px;
+        margin:auto;
+    }
+    .input-group{
+        width: 100%;
+    }
+    input#newbookSearchWords,#bookSearchWords{
+        width: 70%;
+    }
+}
+
+@media(max-width:992px){
+    article.container{
+        padding:0;
+    }
+    div.content table{
+        font-size:12px;
+    }
+    input#newbookSearchWords,#bookSearchWords{
+        width: 60%;
+    }
 }
 
 div.input-group{
@@ -62,30 +96,11 @@ table#booklist tbody tr td:first-child{
     min-width: 80px;
 }
 
-h4.bookTitle{
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-hr{
-    border:1px solid #e7e9ec;
-}
-
-.container{
-    text-align: center;
-}
-
 button{
     background-color: #122359;
     border:none;
     color:white;
     height: 36px;
-}
-
-button:hover{
-    background-color: #BBB;
-    transition:0.5s all;
-    color:black;
 }
 
 button#bookSearchCategory{

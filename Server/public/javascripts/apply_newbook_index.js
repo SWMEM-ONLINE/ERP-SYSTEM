@@ -73,16 +73,16 @@ function settingHTML(datalist, flag){
                 if (flag === 0) {
                     htmlString += '<td><img class="bookSmallImg" src="' + data.coverLargeUrl + '"></td>';
                     htmlString += '<td><div class="bookInfo">';
-                    htmlString += '<h4 class="bookTitle">' + data.title;
+                    htmlString += '<h4 class="bookTitle">' + data.title +'</h4>';
                     for(var i = 0; i < response.length; i++){
                         if(response[i].b_isbn === data.isbn){
-                            htmlString += '&nbsp<span class="label label-danger">' + response[i].cnt + '권 존재</span>';
+                            htmlString += '<p><span class="label label-danger">' + response[i].cnt + '권 존재</span></p>';
                         }else if(response[i].cnt === data.isbn){
-                            htmlString += '&nbsp<span class="label label-primary">신청중</span>';
+                            htmlString += '<p><span class="label label-primary">신청중</span></p>';
                             break;
                         }
                     }
-                    htmlString += '</h4><p>' + ' 저자 : ' + data.author + '</p><p>' + " 출판사 : " + data.publisher + '</p><p>' + "정가 : " + data.priceStandard + '원</p></div></td>';
+                    htmlString += '<p>' + ' 저자 : ' + data.author + '</p><p>' + " 출판사 : " + data.publisher + '</p><p>' + "정가 : " + data.priceStandard + '원</p></div></td>';
                     htmlString += '</tr>';
                 } else {
                     htmlString += '<td><img class="bookSmallImg" src="' + data.ba_photo_url + '"></td>';
@@ -118,37 +118,23 @@ function clickEvent(datalist, flag){
     $('tr').click(function() {
         var index = $(this).index();
         var string = '';
-        if (flag === 0) {            // flag가 0인 경우 신청하는 곳.
-            string += '<img class="bookLargeImg" src="' + datalist[index].coverLargeUrl + '"/>';
-            string += '<h4 class="bookTitle">' + datalist[index].title + '</h4>';
-            string += '<p>' + '저자 : ' + datalist[index].author + '</p><p>출판사 : ' + datalist[index].publisher + '</p><p>정가 : ' + datalist[index].priceStandard + ' 원</p>';
-        } else {                      // flag가 1인 경우 신청취소하는 곳.
-            string += '<p> 신청을 취소하려면 <span style="color:red;font-weight:bold;">하단의 신청취소</span>를 눌러요 ^^ </p>';
-            string += '<img class="bookLargeImg" src="' + datalist[index].b_img + '"/>';
-            string += '<h4 class="bookTitle">' + datalist[index].b_name + '</h4>';
-            string += '<p>' + '저자 : ' + datalist[index].b_author + '</p><p>출판사 : ' + datalist[index].b_publisher + '</p><p>정가 : ' + datalist[index].b_price + ' 원</p><p>';
-        }
+        console.log(datalist[index]);
+
+        string += '<img class="bookLargeImg" src="' + datalist[index].coverLargeUrl + '"/>';
+        string += '<h4 class="bookTitle">' + datalist[index].title + '</h4>';
+        string += '<p>' + '저자 : ' + datalist[index].author + '</p><p>출판사 : ' + datalist[index].publisher + '</p><p>정가 : ' + datalist[index].priceStandard + ' 원</p>';
+
         $('div.modal-body').html(string);
 
-
-
         $('button#request').unbind().click(function(){
-            if(flag === 0){
-                $.post("/apply/newbook/request", datalist[index], function(data){
-                    if(data === 'failed'){
-                        toastr['error']('이미 누군가 신청한 책입니다');
-                    }
-                    else{
-                        toastr['info']('도서신청에 성공했습니다');
-                    }
-                });
-            }else{
-                $.post("/apply/newbook/deleteMyapply", datalist[index], function (data) {
-                    if(data === 'failed')   toastr['error']('신청취소 실패');
-                    else    toastr['info']('신청을 취소하였습니다');
-                    window.location.reload();
-                });
-            }
+            $.post("/apply/newbook/request", datalist[index], function(data){
+                if(data === 'failed'){
+                    toastr['error']('이미 누군가 신청한 책입니다');
+                }
+                else{
+                    toastr['info']('도서신청에 성공했습니다');
+                }
+            });
             $('div.modal').modal('hide');
         });
         $('div.modal').modal();
