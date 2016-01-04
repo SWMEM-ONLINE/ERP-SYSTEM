@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
-    private static final String URL = "http://ec2-52-69-176-156.ap-northeast-1.compute.amazonaws.com:3000";
+    private static final String URL = "http:211.189.127.124:3000";
     private static int REQUEST_RENT = 0;
 
     private Button qrButton;

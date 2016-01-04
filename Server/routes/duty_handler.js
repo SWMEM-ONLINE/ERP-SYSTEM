@@ -278,8 +278,17 @@ function isCompelte(dutyList , duty_count){
 function autoMakeDuty(con,req,res){
 
     console.log(req.body);
+    console.log(req.body['selected_days[]']);
 
-    var selected_days =req.body['selected_days[]'];
+
+    var selected_days;
+
+    if( req.body['selected_days[]']!= "undefined"){
+        selected_days  = new Array();
+    }else{
+        selected_days =req.body['selected_days[]'];
+    }
+
     var duty_count =req.body.duty_count;
     var bad_duty_count = req.body.bad_duty_count;
     var year = req.body.year;
@@ -1094,8 +1103,8 @@ function loadDuty(con,req,res){
         }else{
 
             if(response.length==0){
-                console.log("error");
-
+                console.log("no data");
+                res.send("no data");
             }else{
                 var data = response[0];
                 var sendData ;
@@ -1664,16 +1673,23 @@ function loadTodayDuty(con,req,res){
             res.send("error");
         }
         else{
-            var data = response[0];
 
-            data.name1 = data['(SELECT u_name from t_user where u_id = user_id1  )'];
-            data.name2 = data['(SELECT u_name from t_user where u_id = user_id2  )'];
-            data.name3 = data['(SELECT u_name from t_user where u_id = user_id3  )'];
-            data.name4 = data['(SELECT u_name from t_user where u_id = user_id4  )'];
+            if(response.length ==0){
 
-            console.log(data);
-            res.send(data);
+                res.send({});
 
+            }
+            else{
+                var data = response[0];
+
+                data.name1 = data['(SELECT u_name from t_user where u_id = user_id1  )'];
+                data.name2 = data['(SELECT u_name from t_user where u_id = user_id2  )'];
+                data.name3 = data['(SELECT u_name from t_user where u_id = user_id3  )'];
+                data.name4 = data['(SELECT u_name from t_user where u_id = user_id4  )'];
+
+                console.log(data);
+                res.send(data);
+            }
         }
     });
 

@@ -47,7 +47,7 @@ CREATE TABLE t_book (
   b_state int DEFAULT '0',
   b_new int DEFAULT '1',
   b_price int,
-  b_reserved_cnt int DEFAULT '0',
+  b_reserved_cnt int DEFAULT 0,
   b_due_date VARCHAR(20),
   b_rental_username VARCHAR(20)
   );
@@ -64,7 +64,7 @@ CREATE TABLE t_book_apply (
   ba_photo_url VARCHAR(200),
   ba_apply_date VARCHAR(20),
   ba_price int,
-  ba_state int DEFAULT ‘0’,
+  ba_state int DEFAULT 0,
   FOREIGN KEY(ba_user) REFERENCES t_user(u_id));
 
 DROP TABLE IF EXISTS `t_book_return`;
@@ -83,7 +83,7 @@ CREATE TABLE t_book_rental (
   br_user VARCHAR(20),
   br_book_id int,
   br_rental_date VARCHAR(20),
-  br_extension_cnt int DEFAULT '0',
+  br_extension_cnt int DEFAULT 0,
   FOREIGN KEY(br_book_id) REFERENCES t_book(b_id),
   FOREIGN KEY(br_user) REFERENCES t_user(u_id));
 

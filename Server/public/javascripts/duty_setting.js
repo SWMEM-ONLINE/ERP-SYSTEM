@@ -25,7 +25,7 @@ var currentDate = new Date();
 var selected_days = [];
 var duty_count = null;
 var bad_duty_count = null;
-var year = currentDate.getFullYear;
+var year = currentDate.getFullYear();
 var month = currentDate.getMonth()+1;
 $(document).ready(function() {
 
@@ -62,35 +62,44 @@ $('.datepicker').on('changeDate',function(event){
 
 $("#setting").click(function (){
 
-    var falg = 1;
-
-    $.post("/duty/updateMemberPoint", function(res){
-        if(res != 'success'){
-            flag = 0;
-        }
-    });
+    var flag = 1;
 
     var sendData = {};
+
     sendData.selected_days = selected_days;
     sendData.duty_count = duty_count;
     sendData.bad_duty_count = bad_duty_count;
     sendData.year = year;
     sendData.month = month;
+    console.log(sendData);
 
-    $.post("/duty/autoMakeDuty", sendData, function(res){
 
-        if(res == "success"){
-            toastr['success']('당직 설정 완료');
-            $('div.modal').hide();
+    $.post("/duty/loadAllDuty",sendData, function(res){
 
+        if(res=="no data"){
+            $.post("/duty/updateMemberPoint", function(res){
+                if(res != 'success'){
+                    toastr['error']('멤버 정렬에 실패하였습니다.');
+                }
+                $.post("/duty/autoMakeDuty", sendData, function(res){
+
+                    if(res == "success"){
+                        toastr['success']('당직 설정 완료');
+                        $('div.modal').hide();
+                    }
+                    else{
+                        toastr['error']('당직 설정 에러');
+                    }
+                });
+            });
         }
+
         else{
-            toastr['error']('맞변경 수락 에러');
-
+            toastr['error']('이미 당직이 설정되었습니다.');
         }
-
 
     });
+
 
 });
 
@@ -125,6 +134,7 @@ function day_click(date) {
             $(this).css('background-color', 'white');
         }
     }
+
     if(flag){
         selected_days.push(date.format());
         $("#selected_days").html(""+selected_days.length);
