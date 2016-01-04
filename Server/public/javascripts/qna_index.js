@@ -19,8 +19,8 @@ function myqnaList(pageNum){
             var tbodyString = '';
             var paginationString = '';
             if(totalPage == 0){
-                tbodyString += '<tr>';
-                tbodyString += '<td colspan=3><h4>문의 기록이 없습니다</h4></td>';
+                tbodyString += '<tr class="empty">';
+                tbodyString += '<td  colspan=3><h4>문의 기록이 없습니다</h4></td>';
                 tbodyString += '</tr>';
             }
             else{
