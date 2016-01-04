@@ -52,16 +52,14 @@ INSERT INTO `swmem`.`t_duty` (`date`, `user_id1`, `user_id2`, `user_id3`, `user1
 
 
 ---------------------------  도서 디비   -------------------------------------
-
-
-insert into t_book values(1, 0, '실무환경에 맞춘 node.js 프로그래밍', '9788983798077', '조인석,황수빈', '혜지원', 'A-1', 'http://bimage.interpark.com/goods_image/4/6/6/8/213914668s.jpg', 0, 2, 1, 23000, 0, NULL, NULL);
-insert into t_book values(2, 0, '난 정말 JAVA를 공부한 적이 없다구요', '9788996094029', '윤성우', '오렌지미디어', 'A-2', 'http://bimage.interpark.com/goods_image/8/7/5/7/203498757s.jpg', 0, 1, 1, 28000, 0, NULL, NULL);
-insert into t_book values(3, 0, 'OpenCV를 이용한 영상처리', '9788973387717', '임동훈', '자유아카데미', 'A-3', 'http://bimage.interpark.com/goods_image/4/9/5/1/225384951s.jpg', 0, 3, 0, 22000, 0, NULL, NULL);
-insert into t_book values(4, 0, 'AngularJS 반응형 웹앱 개발과 성능 최적화', '9788960777200', '아미트 가랏(Amit Gharat),마티아스 넬센(Matthias Nehlsen)', '에이콘출판사', 'A-4', 'http://bimage.interpark.com/goods_image/7/5/5/3/239947553s.jpg', 0, 2, 0, 28000, 0, NULL, NULL);
-insert into t_book values(5, 1, '하루 세 줄, 마음정리법', '9788997142361', '고바야시 히로유키', '지식공간', 'B-1', 'http://bimage.interpark.com/goods_image/6/9/4/6/246096946s.jpg', 0, 1, 1, 11000, 0, NULL, NULL);
-insert into t_book values(6, 1, '돌아서서 후회하지 않는 대화법', '9788956013947', '박봉수', '무한', 'B-2', 'http://bimage.interpark.com/goods_image/9/9/1/2/242589912s.jpg', 0, 3, 1, 13000, 0, NULL, NULL);
-insert into t_book values(7, 1, '거기, 우리가 있었다', '9788927806912', '정현주', '중앙북스', 'B-3', 'http://bimage.interpark.com/goods_image/9/6/7/1/245679671s.jpg', 0, 2, 0, 13800, 0, NULL, NULL);
-insert into t_book values(8, 1, '미움받을 용기', '9788996991342', '기시미 이치로,고가 후미타케', '인플루엔셜', 'B-4', 'http://bimage.interpark.com/goods_image/2/8/3/6/226122836s.jpg', 0, 1, 0, 14900, 0, NULL, NULL);
+insert into t_book values(2, 0, '실무환경에 맞춘 node.js 프로그래밍', '9788983798077', '조인석,황수빈', '혜지원', 'A-1', 'http://bimage.interpark.com/goods_image/4/6/6/8/213914668s.jpg', 0, 1, 23000, 0, NULL, NULL);
+insert into t_book values(3, 0, '난 정말 JAVA를 공부한 적이 없다구요', '9788996094029', '윤성우', '오렌지미디어', 'A-2', 'http://bimage.interpark.com/goods_image/8/7/5/7/203498757s.jpg', 0, 1, 28000, 0, NULL, NULL);
+insert into t_book values(4, 0, 'OpenCV를 이용한 영상처리', '9788973387717', '임동훈', '자유아카데미', 'A-3', 'http://bimage.interpark.com/goods_image/4/9/5/1/225384951s.jpg', 0, 0, 22000, 0, NULL, NULL);
+insert into t_book values(5, 0, 'AngularJS 반응형 웹앱 개발과 성능 최적화', '9788960777200', '아미트 가랏(Amit Gharat),마티아스 넬센(Matthias Nehlsen)', '에이콘출판사', 'A-4', 'http://bimage.interpark.com/goods_image/7/5/5/3/239947553s.jpg', 0, 0, 28000, 0, NULL, NULL);
+insert into t_book values(6, 1, '하루 세 줄, 마음정리법', '9788997142361', '고바야시 히로유키', '지식공간', 'B-1', 'http://bimage.interpark.com/goods_image/6/9/4/6/246096946s.jpg', 0, 1, 11000, 0, NULL, NULL);
+insert into t_book values(7, 1, '돌아서서 후회하지 않는 대화법', '9788956013947', '박봉수', '무한', 'B-2', 'http://bimage.interpark.com/goods_image/9/9/1/2/242589912s.jpg', 0, 1, 13000, 0, NULL, NULL);
+insert into t_book values(8, 1, '거기, 우리가 있었다', '9788927806912', '정현주', '중앙북스', 'B-3', 'http://bimage.interpark.com/goods_image/9/6/7/1/245679671s.jpg', 0, 0, 13800, 0, NULL, NULL);
+insert into t_book values(9, 1, '미움받을 용기', '9788996991342', '기시미 이치로,고가 후미타케', '인플루엔셜', 'B-4', 'http://bimage.interpark.com/goods_image/2/8/3/6/226122836s.jpg', 0, 0, 14900, 0, NULL, NULL);
 
 ---------------------------  하드웨어 디비   -------------------------------------
 
