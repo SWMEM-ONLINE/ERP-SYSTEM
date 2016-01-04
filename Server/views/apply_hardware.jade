@@ -18,6 +18,7 @@ block content
          table.table#addlist
             thead
                tr
+                  th 프로젝트명
                   th 용도
                   th 분류
                   th 품목
@@ -32,6 +33,8 @@ block content
                      |삭제
             tbody
                tr
+                  td
+                     input#projectName_0(type='text', placeholder='프로젝트명')
                   td
                      input#use_0(type='text', placeholder='용도')
                   td

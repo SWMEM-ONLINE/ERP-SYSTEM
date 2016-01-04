@@ -70,12 +70,16 @@ function loadmyHardware(){
             htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 연장신청 </button>';
             htmlString += '</td></tr>';
         });
+
+
         htmlString += '</tbody>';
         $('#myHardware').html(htmlString);
         turnInButton(datalist);
         postponeButton(datalist);
     });
 }
+
+
 
 /*
     Load Special Hardware list that user borrowed from database named 'datalist'
@@ -173,13 +177,12 @@ function showdetailButton(datalist){
     $('button#showDetail').each(function(index){
         $(this).unbind().click(function(){
             var string = '<table class="table table-striped table-bordered">';
-            string += '<tr class="warning"><th colspan="2">' + datalist[index].ha_item_name + '</th></tr>';
-            string += '<tr><td colspan="2">' + datalist[index].ha_project_title + '</td></tr>';
-            string += '<tr><td colspan="2">' + datalist[index].ha_team_name + '<span class="label label-warning">PL : ' + datalist[index].ha_pl_name + '</span></td></tr>';
-            string += '<tr><td>구분 : ' + datalist[index].ha_category + '</td><td>Hardware 역할 : ' + datalist[index].ha_role + '</td></tr>';
-            string += '<tr><td>규격 : ' + datalist[index].ha_size + '</td><td>연락처 : ' + datalist[index].ha_call + '</td></tr>';
-            string += '<tr><td>제조업체 : ' + datalist[index].ha_manufactor + '</td><td>판매업체 : ' + datalist[index].ha_salesmall + '</td></tr>';
-            string += '<tr><td colspan="2"><a href="' +datalist[index].ha_url + '" target="_blank" style="color:blue">URL 이동</a></td></tr>';
+            string += '<tr class="warning"><th colspan="4">' + datalist[index].ha_item_name + '</th></tr>';
+            string += '<tr><td colspan="4">' + datalist[index].ha_project_title + '</td></tr>';
+            string += '<tr><td>분류</td><td>' + datalist[index].ha_upper_category + '</td><td>품목</td><td>' + datalist[index].ha_lower_category + '</td></tr>';
+            string += '<tr><td>규격</td><td>' + datalist[index].ha_size + '</td><td>수량</td><td>' + datalist[index].ha_amount + '</td></tr>';
+            string += '<tr><td>Maker</td><td>' + datalist[index].ha_maker + '</td><td>신청자</td><td>' + datalist[index].u_name + '</td></tr>';
+            string += '<tr><td colspan="4"><a href="' +datalist[index].ha_url + '" target="_blank" style="color:blue">URL 이동</a></td></tr>';
             $('div.modal-body').html(string);
             $('div.modal').modal();
             cancelmyApplyButton(datalist[index]);
@@ -187,14 +190,15 @@ function showdetailButton(datalist){
     });
 }
 
+
 function cancelmyApplyButton(data){
     $('button#cancelmyappliedHardware').unbind().click(function(){
         $.post('/hardware/myhardware/cancelmyApply', {apply_id: data.ha_id}, function(response){
             if(response === 'success')  toastr['success']('신청취소 성공');
             else    toastr['error']('신청취소 실패');
+            loadmyappliedHardware();
         });
         $('div.modal').modal('hide');
-        //window.location.reload();
     });
 }
 

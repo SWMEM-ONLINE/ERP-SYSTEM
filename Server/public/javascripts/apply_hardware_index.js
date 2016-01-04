@@ -27,43 +27,46 @@ function addList() {
     var table = document.getElementById('addlist');
     var lastRow = table.rows.length;
     var newRow = table.insertRow(lastRow);
-    var use = newRow.insertCell(0);
-    var type = newRow.insertCell(1);
-    var label = newRow.insertCell(2);
-    var name = newRow.insertCell(3);
-    var ea = newRow.insertCell(4);
-    var count = newRow.insertCell(5);
-    var maker = newRow.insertCell(6);
-    var link = newRow.insertCell(7);
-    var btn = newRow.insertCell(8);
+    var projectName = newRow.insertCell(0);
+    var use = newRow.insertCell(1);
+    var type = newRow.insertCell(2);
+    var label = newRow.insertCell(3);
+    var name = newRow.insertCell(4);
+    var ea = newRow.insertCell(5);
+    var count = newRow.insertCell(6);
+    var maker = newRow.insertCell(7);
+    var link = newRow.insertCell(8);
+    var btn = newRow.insertCell(9);
 
-    var str0 = '<input id="use_'+rowCount+'" type="text" placeholder="용도">';
-    var str1 = '<input id="type_'+rowCount+'" type="text" placeholder="분류">';
-    var str2 = '<input id="label_'+rowCount+'" type="text" placeholder="품목">';
-    var str3 = '<input id="name_'+rowCount+'" type="text" placeholder="부품명">';
-    var str4 = '<input id="ea_'+rowCount+'" type="text" placeholder="규격">';
-    var str5 = '<input id="count_'+rowCount+'" type="text" placeholder="수량">';
-    var str6 = '<input id="maker_'+rowCount+'" type="text" placeholder="Maker">';
-    var str7 = '<input id="link_'+rowCount+'" type="text" placeholder="Link">';
-    var str8 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
+    var str0 = '<input id="projectName_'+rowCount+'" type="text" placeholder="프로젝트명">';
+    var str1 = '<input id="use_'+rowCount+'" type="text" placeholder="용도">';
+    var str2 = '<input id="type_'+rowCount+'" type="text" placeholder="분류">';
+    var str3 = '<input id="label_'+rowCount+'" type="text" placeholder="품목">';
+    var str4 = '<input id="name_'+rowCount+'" type="text" placeholder="부품명">';
+    var str5 = '<input id="ea_'+rowCount+'" type="text" placeholder="규격">';
+    var str6 = '<input id="count_'+rowCount+'" type="text" placeholder="수량">';
+    var str7 = '<input id="maker_'+rowCount+'" type="text" placeholder="Maker">';
+    var str8 = '<input id="link_'+rowCount+'" type="text" placeholder="Link">';
+    var str9 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
 
-    use.innerHTML = str0;
-    type.innerHTML = str1;
-    label.innerHTML = str2;
-    name.innerHTML = str3;
-    ea.innerHTML = str4;
-    count.innerHTML = str5;
-    maker.innerHTML = str6;
-    link.innerHTML = str7;
-    btn.innerHTML = str8;
+    projectName.innerHTML = str0;
+    use.innerHTML = str1;
+    type.innerHTML = str2;
+    label.innerHTML = str3;
+    name.innerHTML = str4;
+    ea.innerHTML = str5;
+    count.innerHTML = str6;
+    maker.innerHTML = str7;
+    link.innerHTML = str8;
+    btn.innerHTML = str9;
 
     var Allrows = document.getElementById('addlist').rows;
-    Allrows[lastRow-1].deleteCell(8);
-    var changedRow = Allrows[lastRow-1].insertCell(8);
+    Allrows[lastRow-1].deleteCell(9);
+    var changedRow = Allrows[lastRow-1].insertCell(9);
     changedRow.innerHTML = '<button id="minus" type="button" onclick="deleteRow(this)" class="plusminus">－</button>';
 
     rowCount = rowCount + 1;
-};
+}
 
 function deleteRow(obj){
     var tr = obj.parentNode.parentNode;
@@ -104,6 +107,7 @@ function addExplain() {
 };
 
 $('#submit').click(function(){
+    var Projectname;
     var Use;
     var Type;
     var Label;
@@ -113,9 +117,14 @@ $('#submit').click(function(){
     var Maker;
     var Link;
 
+    var Category;
+    var Explain;
+
     var arr = new Array();
+
     var complete = true;
     for ( var i = 0; i < rowCount; i++) {
+        Projectname = $('#projectName_'+i).val();
         Use = $('#use_'+ i).val();
         Type = $('#type_'+i).val();
         Label = $('#label_'+i).val();
@@ -127,38 +136,57 @@ $('#submit').click(function(){
 
         /* check value */
 
-        if(Use != "" && Type != "" && Label != "" && Name != "" && Ea != "" && Count != "" && Maker != "" && Link != ""){
-            var sData = {
-                use:Use,
-                type:Type,
-                label:Label,
-                name:Name,
-                ea:Ea,
-                count:Count,
-                maker:Maker,
-                link:Link
-            };
-            arr.push(sData);
+        for(var j = 0; j < rowCountExp; j++){
+            Category = $('#kind_' + j).val();
+            Explain = $('#explain_' + j).val();
+
+            if(Category === "" || Explain === ""){
+                complete = false;
+                break;
+            }
+
+            if(Category === Type) {
+                complete = true;
+                var sData = {
+                    projectName: Projectname,
+                    use:Use,
+                    type:Type,
+                    label:Label,
+                    name:Name,
+                    ea:Ea,
+                    count:Count,
+                    maker:Maker,
+                    link:Link,
+                    explain:Explain
+                };
+                arr.push(sData);
+                break;
+            }else{
+                complete = false;
+            }
         }
-        else{
+
+        if(Use === "" || Type === "" || Label === "" || Name === "" || Ea === "" || Count === "" || Maker === "" || Link === ""){
             complete = false;
-            break;
         }
+
+        if(complete === false)  break;
     }
 
     if(!complete){
         toastr['info']('입력을 확인하세요');
     }
     else{
-        var temp = JSON.stringify(arr);
+        var temp1 = JSON.stringify(arr);
+
         $.ajax({
             type:'post',
             url:'/apply/hardware',
-            data:temp,
+            data:temp1,
             contentType:'application/json',
             success: function(data){
-                if(data.status === 'success'){
-                    toastr['success']('하드웨어 신청 성공');
+                if(data === 'success'){
+                    toastr['success']('하드웨어 등록 성공')
                 }else{
                     toastr['error']('하드웨어 신청 실패');
                 }
