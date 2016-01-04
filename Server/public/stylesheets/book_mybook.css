@@ -1,13 +1,29 @@
 /**
  * Created by jung-inchul on 2015. 11. 24..
  */
+
+
+article.container{
+    text-align: center;
+}
+
+div.content{
+    text-align: center;
+}
+
 @media(max-width:992px) {
     .container{
+        padding: 0;
+    }
+    article.container{
         padding: 0;
     }
     div.content{
         width:100%;
         margin:0;
+    }
+    div.content table{
+        width: 100%;
     }
     #newbookSearchWords{
         width: 45%;
@@ -16,37 +32,16 @@
         text-align:center;
         width: 70%;
     }
-    .input-group{
-        font-size:15px;
-    }
-    h4.bookTitle{
-        font-size: 20px;
-    }
-    h3{
-        font-size: 30px;
-    }
 }
 @media(min-width:992px) {
-    div.content{
-        width:900px;
-        margin:auto;
-    }
     #newbookSearchWords,#bookSearchWords{
         text-align: center;
         width: 600px;
     }
-}
-.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
-    background-color: #122359;
-}
-
-.nav-pills>li>a{
-    background-color: #dfdfdf;
-    color: black;
-}
-
-h4.bookTitle{
-    color: #0100FF;
+    div.content{
+        width:993px;
+        margin:auto;
+    }
 }
 
 .btn-group-vertical{
@@ -57,27 +52,6 @@ button#turnIn{
     vertical-align: middle;
 }
 
-@media(max-width:992px) {
-    .container{
-        padding: 0;
-    }
-    div.content{
-        width:100%;
-        margin:0;
-    }
-    h3{
-        font-size: 30px;
-    }
-    div.content table{
-        width: 100%;
-    }
-}
-@media(min-width:993px) {
-    div.content{
-        width:993px;
-        margin:auto;
-    }
-}
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
     background-color: #122359;
 }
@@ -89,10 +63,6 @@ button#turnIn{
 
 .btn-group-vertical{
     vertical-align: middle;
-}
-
-hr{
-    border:1px solid #e7e9ec;
 }
 
 table th{
@@ -128,13 +98,8 @@ table#booklist tbody tr td:first-child{
     min-width: 80px;
 }
 
-h4.bookTitle{
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
 hr {
-    border: 1px solid #e7e9ec;
+    border:1px solid #dddddd;
 }
 
 button{
@@ -159,4 +124,3 @@ input#newbookSearchWords,#bookSearchWords{
     height: 36px;
     border: 2px solid #122359;
 }
-

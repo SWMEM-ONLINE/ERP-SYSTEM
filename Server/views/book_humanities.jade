@@ -9,32 +9,33 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .container.contents
-        h3 인문학도서 대여
-        hr
-        .content
-            #booksearch
-                button#borrowUsingQRcode.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
-                .input-group
-                    button#bookSearchCategory(type='button') 도서명
-                        button.dropdown-toggle(type='button', data-toggle='dropdown')
-                            span.caret
-                        ul#categoryDropdown.dropdown-menu
-                            li
-                                a(href='#') 도서명
-                            li
-                                a(href='#') 저자
-                            li
-                                a(href='#') 출판사
-                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
-                    button#bookSearchBtn(type='button') 검색
-            #noti
-                hr
-                h4 이번달 들어온 인문학도서목록
-                hr
-            table#booklist.table.table-hover.table-bordered.table-condensed
-            .pageArea
-                ul.pagination
+    .wrapper
+        article.container
+            h3 인문학도서 대여
+            hr
+            .content
+                #booksearch
+                    button#borrowUsingQRcode.btn-block.visible-xs.visible-sm(type='button') QR코드로 대여하기
+                    .input-group
+                        button#bookSearchCategory(type='button') 도서명
+                            button.dropdown-toggle(type='button', data-toggle='dropdown')
+                                span.caret
+                            ul#categoryDropdown.dropdown-menu
+                                li
+                                    a(href='#') 도서명
+                                li
+                                    a(href='#') 저자
+                                li
+                                    a(href='#') 출판사
+                        input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
+                        button#bookSearchBtn(type='button') 검색
+                #noti
+                    hr
+                    h4 이번달 들어온 인문학도서목록
+                    hr
+                table#booklist.table.table-hover.table-bordered.table-condensed
+                .pageArea
+                    ul.pagination
     .modal.fade
         .modal-dialog
             .modal-content

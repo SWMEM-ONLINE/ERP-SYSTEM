@@ -10,32 +10,33 @@ append head
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/book_mybook.css')
 block content
-    .container.contents
-        h3 도서관리
-        hr
-        .content
-            ul.nav.nav-pills.nav-justified
-                li.active
-                    a(href="#") 기술서적
-                li
-                    a(href="#") 인문서적
+    .wrapper
+        artice.container
+            h3 도서관리
             hr
-            #booksearch
-                .input-group
-                    button#bookSearchCategory(type='button') 도서명
-                        button.dropdown-toggle(type='button', data-toggle='dropdown')
-                            span.caret
-                        ul#categoryDropdown.dropdown-menu
-                            li
-                                a(href='#') 도서명
-                            li
-                                a(href='#') 저자
-                            li
-                                a(href='#') 출판사
-                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
-                    button#bookSearchBtn(type='button') 검색
-            hr
-            table#booklist.table.table-hover.table-bordered.table-condensed
+            .content
+                ul.nav.nav-pills.nav-justified
+                    li.active
+                        a(href="#") 기술서적
+                    li
+                        a(href="#") 인문서적
+                hr
+                #booksearch
+                    .input-group
+                        button#bookSearchCategory(type='button') 도서명
+                            button.dropdown-toggle(type='button', data-toggle='dropdown')
+                                span.caret
+                            ul#categoryDropdown.dropdown-menu
+                                li
+                                    a(href='#') 도서명
+                                li
+                                    a(href='#') 저자
+                                li
+                                    a(href='#') 출판사
+                        input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
+                        button#bookSearchBtn(type='button') 검색
+                hr
+                table#booklist.table.table-hover.table-bordered.table-condensed
     .modal.fade
         .modal-dialog
             .modal-content
