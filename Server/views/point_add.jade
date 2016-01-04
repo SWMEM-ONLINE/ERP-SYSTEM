@@ -10,44 +10,35 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/point_add.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .container.contents
-        h3 상벌당직 추가
-        hr
-        .content
-            p#date
-
-            table.table
-                tr
-                    th 구분
-                    th
-                        .btn-group
-                            a#mode-button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 구분
-                            ul#mode-dropdown.dropdown-menu(style='width:100%')
-                                li
-                                    a(href='#') 상당직
-                                li
-                                    a(href='#') 벌당직
-                                li
-                                    a(href='#') 운영실 벌당직
-                    th 일수
-                    th
-                        input(type='number', min='0', value ='0')#point
-                    th 사유
-                    th
-                        input(type='text',maxlength="50", placeholder="100자 이내")#reason
-
-
-            h4 회원 목록
-
-            table#memberList.table.table-bordered
-
-
-
-            #tmp
-
-            button#send(type='button') 추가
-            p#result
-
+    .wrapper
+        article.container
+            h3 상벌당직 추가
+            hr
+            .content
+                p#date
+                table.table
+                    tr
+                        th 구분
+                        th
+                            .btn-group
+                                a#mode-button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 구분
+                                ul#mode-dropdown.dropdown-menu
+                                    li
+                                        a(href='#') 상당직
+                                    li
+                                        a(href='#') 벌당직
+                                    li
+                                        a(href='#') 운영실 벌당직
+                        th 일수
+                        th
+                            input#point(type='number', min='0', value ='0')
+                        th 사유
+                        th
+                            input(type='text',maxlength="50", placeholder="100자 이내")#reason
+                h5 회원 목록
+                table#memberList.table.table-bordered
+                button#send(type='button') 추가
+                p#result
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

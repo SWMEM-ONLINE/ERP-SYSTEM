@@ -7,26 +7,23 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
-    link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/duty_inquiry.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/fullcalendar.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
 block content
-    .container.contents
-        h3 당직 조회
-        button#toggle(type='button').btn.btn-block 전체회원조회
-        hr
-        .content
-            input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
-            div#person
+    .wrapper
+        article.container
+            h3 당직 조회
+            hr
+            .content
+                button#toggle(type='button').btn.btn-block 전체회원조회
+                input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
+                div#person
                     p#name.blur
                     #duty
                     p#foot.blur
-            div#all.hidden
+                div#all.hidden
                     #calendar.text-center
-
-
-
-
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src="../javascripts/duty_inquiry.js")

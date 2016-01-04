@@ -7,53 +7,52 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/duty_change.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
-    link(rel='stylesheet', type='text/css', href='../stylesheets/apply_newbook.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .title
-        .container
-            h2 당직 맞변경 신청
-            h2#tmp
-            button#showresult.btn.btn-default.btn-block(type='button') 맞변경 신청 결과 조회
-    article.container
-        .modal.fade
-            .modal-dialog
-                .modal-content
-                    .modal-header
-                        h4.modal-title 맞변경 신청 결과 조회
-                    .modal-body
-                        table.table
-                            tbody#resultlist
-                    .modal-footer
-                        button.btn.btn-default(type='button', data-dismiss='modal') 닫기
-        .row
-            .col-xs-12.col-md-6
-                h3 변경 신청자 1
-                div
-                    p#noduty.text-center
-                    table.table.table-hover
-                        tbody#memberList
-            .col-xs-12.col-md-6
-                h3 변경 신청자 2
-                div
-                    input.datepicker#date_picker(type='text', placeholder='날짜 선택', readonly="readonly")
-                    table.table.table-hover
-                        tbody
-                            tr
-                                td#user_1.hidden
-                            tr
-                                td#user_2.hidden
-                            tr
-                                td#user_3.hidden
-                            tr
-                                td#user_4.hidden
-        // Main component for a primary marketing message or call to action
+    .wrapper
+        article.container
+            h3 당직 맞변경 신청
+            hr
+            button#showresult(type='button') 맞변경 신청 결과 조회
+            .content
+                .row
+                    .col-xs-12.col-md-6
+                        h4 변경 신청자 1
+                        div
+                            p#noduty.text-center
+                            table.table.table-hover
+                                tbody#memberList
+                    .col-xs-12.col-md-6
+                        h4 변경 신청자 2
+                        div
+                            input.datepicker#date_picker(type='text', placeholder='날짜 선택', readonly="readonly")
+                            table.table.table-hover
+                                tbody
+                                    tr
+                                        td#user_1.hidden
+                                    tr
+                                        td#user_2.hidden
+                                    tr
+                                        td#user_3.hidden
+                                    tr
+                                        td#user_4.hidden
         #memberinfo.hidden
             h3#requestmember2.text-center
             p.text-center 과 (와) 교환
             button#request.btn.btn-lg(type='button') 신청
             #result
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title 맞변경 신청 결과 조회
+                .modal-body
+                    table.table
+                        tbody#resultlist
+                .modal-footer
+                    button(type='button', data-dismiss='modal') 닫기
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

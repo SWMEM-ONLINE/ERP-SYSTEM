@@ -11,35 +11,27 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .container.contents
-        h3 상벌당직 조회
-        hr
-        .content
-
-            input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
-
-            p#name.blur
-            p#total
-            p#foot.blur
-
-            p#name2.blur
-            p#point_status
-            p#foot2.blur.
-
-
-            table.table
-                thead
-                    tr
-                        th 일자
-                        th 등록자
-                        th 구분
-                        th 일수
-                        th 사유
-                tbody#history
-
-
-
-
+    .wrapper
+        article.container
+            h3 상벌당직 조회
+            hr
+            .content
+                input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
+                p#name.blur
+                p#total
+                p#foot.blur
+                p#name2.blur
+                p#point_status
+                p#foot2.blur
+                table.table
+                    thead
+                        tr
+                            th 일자
+                            th 등록자
+                            th 구분
+                            th 일수
+                            th 사유
+                    tbody#history
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
