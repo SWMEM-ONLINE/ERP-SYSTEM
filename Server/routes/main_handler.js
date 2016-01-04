@@ -2,7 +2,7 @@
  * Created by jung-inchul on 2015. 12. 15..
  */
 function loadBookMain(con, req, res){
-    var query = 'select b_name name, DATEDIFF(CURDATE(), b_due_date) diff from t_book where b_rental_username ="' + req.session.passport.user.name + '"';
+    var query = 'select b.b_name name, DATEDIFF(CURDATE(), b.b_due_date) diff from t_book_rental a inner join t_book b on a.br_book_id=b.b_id where br_user=' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
     });

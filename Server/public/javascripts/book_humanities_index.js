@@ -29,10 +29,14 @@ $('#categoryDropdown li a').click(function(){
     flag_category = $(this).parent().index();
 });
 
-$.post('/book/loadNewHumanitiesbook', function(data){                   // Load new Humanities booklist
-    settingHTML(data);
-    clickEvent(data);
-});
+init();
+
+function init(){
+    $.post('/book/loadNewHumanitiesbook', function(data){                   // Load new Humanities booklist
+        settingHTML(data);
+        clickEvent(data);
+    });
+}
 
 $('#bookSearchWords').keydown(function(){
     if(event.keyCode == 13){                                            // 'keycode==13' means Enter
@@ -58,7 +62,7 @@ $('#bookSearchBtn').click(function() {
 
 
 function settingHTML(datalist){
-    var htmlString = '<tbody>';
+    var htmlString = '';
     $.each(datalist, function(idx, data){
         if(idx % 2 == 0){                                               // Seperate idx to even and odd
             htmlString += '<tr class="even">';
@@ -73,8 +77,8 @@ function settingHTML(datalist){
         htmlString += '</h4><p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
         htmlString += '</tr>';
     });
-    htmlString += '</tbody>';
-    $('#booklist').html(htmlString);
+    $('#booklist tbody').empty();
+    $('#booklist tbody').append(htmlString);
     $('.modal-title').text('도서 대여하기');
 }
 
@@ -101,9 +105,9 @@ function clickEvent(datalist){
                 $.post("/book/borrowBook", {book_id : datalist[index].b_id}, function (data) {
                     if(data === 'failed')   toastr['error']('책 대여 실패');
                     else    toastr['info']('책 대여 성공');
+                    init();
                 });
                 $('div.modal').modal('hide');
-                //window.location.reload();
             }
         });
         $('button#reserve').unbind().click(function(){                  // Reserve button to reserve book.
@@ -116,16 +120,16 @@ function clickEvent(datalist){
                 }else{
                     toastr['info']('책 예약 성공');
                 }
+                init();
             });
-            //window.location.reload();
         });
         $('button#missing').unbind().click(function(){                  // Missing button to enroll missingbook list.
             $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (data) {
                 if(data === 'success')  toastr['info']('분실도서 등록 완료');
                 else    toastr['error']('분실도서 등록 실패');
+                init();
             });
             $('div.modal').modal('hide');
-            //window.location.reload();
         });
         $('div.modal').modal();
     });

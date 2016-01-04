@@ -160,7 +160,7 @@ $('#bookSearchBtn').click(function() {
 function loadbooklist(select){
     $.post('/book/manage/loadbooklist', {flag: select}, function(datalist){
         settingHTML(datalist);
-        resetlocationButton(datalist);
+        resetlocationButton(datalist, select);
     });
 }
 
@@ -239,6 +239,7 @@ function resetButton(datalist){
             else    toastr['error']('도서위치 변경실패');
         });
         $('div.modal').modal('hide');
+        loadbooklist(flag);
         //window.location.reload();
     });
 }

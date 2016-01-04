@@ -51,9 +51,9 @@ $('#newbookSearchBtn').click(function() {
 $('#loadMyapplication').click(function(){
     $.post('/apply/newbook/loadMyapply', function(res){
         settingHTML(res, 1);
-        //clickEvent(res, 1);
     });
 });
+
 function settingHTML(datalist, flag){
     if(datalist.length === 0){
         if(flag === 0){
@@ -118,8 +118,6 @@ function clickEvent(datalist, flag){
     $('tr').click(function() {
         var index = $(this).index();
         var string = '';
-        console.log(datalist[index]);
-
         string += '<img class="bookLargeImg" src="' + datalist[index].coverLargeUrl + '"/>';
         string += '<h4 class="bookTitle">' + datalist[index].title + '</h4>';
         string += '<p>' + '저자 : ' + datalist[index].author + '</p><p>출판사 : ' + datalist[index].publisher + '</p><p>정가 : ' + datalist[index].priceStandard + ' 원</p>';

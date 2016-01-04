@@ -168,6 +168,8 @@ function clickHardware(datalist){
                 $.post('/hardware/manage/alter', alterData, function(response){
                     if(response === 'success')  toastr['success']('변경 성공');
                     else    toastr['error']('변경 실패');
+                    alterHardware();
+                    $('div.modal').modal('hide');
                 });
             }
         });
@@ -175,6 +177,7 @@ function clickHardware(datalist){
             $.post('/hardware/manage/delete', {hardware_id : datalist[index].h_id}, function(response){
                 if(response === 'success')   toastr['success']('삭제 성공');
                 else    toastr['error']('삭제 실패');
+                alterHardware();
                 $('div.modal').modal('hide');
             });
         });

@@ -71,9 +71,7 @@ function loadMyDuty(){
                 type = "벌당직";
             }
 
-            htmlString += '<p><label style="text-overflow: ellipsis;">'
-                + data.month + '월 ' + data.date + '일 ' + type
-                '</label>';
+            htmlString += '<p><label style="text-overflow: ellipsis;">'+ data.month + '월 ' + data.date + '일 ' + type + '</label>';
 
 
             if(diff <= -7){
@@ -95,7 +93,7 @@ function loadMyDuty(){
 // 나의 하드웨어 대여 현황 부르고 - 인철파트
 function loadmyHardware(){
     $.post('/main/loadmyHardware', function(datalist){
-        var myhardwareHTML = settingHTML(datalist);;
+        var myhardwareHTML = settingHTML(datalist, 'hardware');
         $('.content-myhardware').html(myhardwareHTML);
     });
 }
@@ -103,12 +101,12 @@ function loadmyHardware(){
 // 도서 대여 현황 부르고 - 인철파트
 function loadmyBook(){
     $.post('/main/loadmyBook', function(datalist){
-        var mybookHTML = settingHTML(datalist);
+        var mybookHTML = settingHTML(datalist, 'book');
         $('.content-mybook').html(mybookHTML);
     });
 }
 
-function settingHTML(datalist){
+function settingHTML(datalist, flag){
     var htmlString = '';
     $.each(datalist, function(idx, data){
         htmlString += '<p><label>' + data.name + '</label>';

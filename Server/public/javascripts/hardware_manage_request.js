@@ -20,10 +20,13 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
+var temp = 0;
+
 $('ul.nav-pills li').click(function(){
     var index = $(this).index();
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');
+    temp = index;
     loadRequest(index);
 });
 
@@ -155,6 +158,7 @@ function approveButton(datalist, flag){           // 승인 버튼
         $.post('/hardware/manage/approveRequest', {type: flag, approveIdlist: approveIdlist, hardwareIdlist: hardwareIdlist, userIdlist: userIdlist, rentalIdlist: rentalIdlist}, function(response){
             if(response === 'success')   toastr['success']('승인처리 완료');
             else    toastr['error']('승인처리 실패');
+            loadRequest(temp);
         });
     });
 }
@@ -163,12 +167,12 @@ function rejectButton(datalist, flag){            // 거절 버튼
     $('button#reject').unbind().click(function(){
         var rejectlist = '';
 
-        if($('#tableData tr.success').length == 0){
+        if($('#tableData tr.warning').length === 0){
             toastr['error']('항목이 선택되지 않았습니다');
             return;
         }
         $('#tableData tr').each(function(index){
-            if($(this).hasClass('success')){
+            if($(this).hasClass('warning')){
                 rejectlist += datalist[index].hw_id + ',';
             }
         });
@@ -176,10 +180,12 @@ function rejectButton(datalist, flag){            // 거절 버튼
         $.post('/hardware/manage/rejectRequest', {type: flag, rejectlist: rejectlist}, function(response){
             if(response === 'success')   toastr['success']('미승인처리 완료');
             else    toastr['error']('미승인처리 실패');
+            loadRequest(temp);
         });
     });
 }
 
+// 이 함수는 고쳐야 한다.
 function detailButton(datalist){            // 자세히 보기 버튼
     $('button#detail').each(function(index){
         $(this).unbind().click(function(){

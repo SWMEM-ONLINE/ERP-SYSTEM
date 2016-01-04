@@ -137,7 +137,7 @@ function loadapplylist(flag){
             htmlString += '<tr><td><img class="bookImg" src="' + data.ba_photo_url + '"/</td>';
             htmlString += '<td><span class="label label-success">' + data.u_period + ' ' + data.u_name + '</span>';
             htmlString += '<p><h4 class="bookTitle">' + data.ba_name;
-            if(data.ba_state === '1') htmlString += ' <span class="label label-danger"> 주문완료 </span></h4>';
+            if(data.ba_state === 1) htmlString += ' <span class="label label-danger"> 주문완료 </span></h4>';
             else    htmlString += '</h4>';
             htmlString += '<p>' + data.ba_author + ' | ' + data.ba_publisher + '</span></p></tr>';
         });
@@ -149,12 +149,12 @@ function loadapplylist(flag){
             $('#checkSum').text(calSum(datalist) + '원');
         });
         selectAllButton();
-        buyCompleteButton(datalist);
+        buyCompleteButton(datalist, flag);
         enrollButton(datalist);
     });
 }
 
-function buyCompleteButton(datalist){
+function buyCompleteButton(datalist, flag){
     $('button#buyCompleteButton').unbind().click(function(){
         var buyIdlist = '';
         var type = 0;
@@ -175,7 +175,7 @@ function buyCompleteButton(datalist){
                 else    toastr['error']('주문실패');
             });
             $('div.modal').modal('hide');
-            //window.location.reload();
+            loadapplylist(flag);
         }
     });
 }
@@ -203,7 +203,7 @@ function enrollButton(datalist){
         var state = 0;
         $('#applyTableData tr.warning').each(function(){
             var idx = $(this).index();
-            if(datalist[idx].ba_state === '0'){
+            if(datalist[idx].ba_state === 0){
                 state = 1;
             }
         });
@@ -264,7 +264,7 @@ function registerButton(datalist){
             else    toastr['error']('도서등록 실패');
         });
         $('div.modal').modal('hide');
-        //window.location.reload();
+        window.location.reload();
     });
 }
 
