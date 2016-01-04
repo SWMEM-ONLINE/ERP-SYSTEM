@@ -33,16 +33,17 @@ function loadmyBook(){
 function settingHTML(datalist){
     var htmlString = '';
     $.each(datalist, function(idx, data){
-        htmlString += '<p><label style="text-overflow: ellipsis;">' + data.name + '</label>';
+        htmlString += '<p><label>' + data.name + '</label>';
         var diff = parseInt(data.diff);
 
         if(diff <= -7){
-            htmlString += '  <span class="label label-default">D' + data.diff + '</span>';
+            htmlString += '  <span class="badge">D' + data.diff + '</span>';
         }else if(diff < 0){
-            htmlString += '  <span class="label label-warning">D' + data.diff + '</span>';
+            htmlString += '  <span class="badge">D' + data.diff + '</span>';
         }else{
-            htmlString += '  <span class="label label-danger">D+' + data.diff + '</span>';
+            htmlString += '  <span class="badge">D+' + data.diff + '</span>';
         }
+        htmlString += '</p>';
     });
     return htmlString;
 }
