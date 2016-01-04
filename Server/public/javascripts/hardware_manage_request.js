@@ -46,7 +46,6 @@ function loadRequest(flag){
             $('#tableData tr').click(function(){
                 $(this).toggleClass('warning');
                 $('#temp').text(calSum(datalist) + '원');
-
             });
             approveButton(datalist, flag);
             rejectButton(datalist, flag);
@@ -75,11 +74,11 @@ function setTable(datalist, flag){                //  html 테이블 만들기
         });
         htmlString += '</tbody>';
     }else{
-        htmlString = '<thead><tr><th>PL</th><th>프로젝트 이름</th><th>처리상태</th><th>자세히</th></tr></thead>';
+        htmlString = '<thead><tr><th>신청자</th><th>프로젝트 이름</th><th>처리상태</th><th>자세히</th></tr></thead>';
         htmlString += '<tfoot><tr><th colspan="4"><button type="button" id="approve" class="btn btn-primary">승인</button><button type="button" id="reject" class="btn btn-danger">미승인</button><button type="button" id="down2excel" class="btn btn-info">엑셀로 다운</button><span id="temp" class="pull-right">0 원</span></th></tr></tfoot>';
         htmlString += '<tbody id="tableData">';
         $.each(datalist, function(idx, data){
-            htmlString += '<tr><td>' + data.ha_pl_name + '</td><td>' + data.ha_project_title + '</td><td>';
+            htmlString += '<tr><td>' + data.u_name + '</td><td>' + data.ha_project_title + '</td><td>';
             if(data.ha_result === 0) {
                 htmlString += '<span class="label label-warning"> 대기중 </span></td>';
             }else {
@@ -116,8 +115,14 @@ function approveButton(datalist, flag){           // 승인 버튼
         }
         $('#tableData tr.warning').each(function(){
             var index = $(this).index();
-            if(datalist[index].hw_result != 0){
-                cnt_notWaiting++;
+            if(flag === 3){
+                if(datalist[index].ha_result != 0){
+                    cnt_notWaiting++;
+                }
+            }else{
+                if(datalist[index].hw_result != 0){
+                    cnt_notWaiting++;
+                }
             }
         });
 
@@ -181,13 +186,9 @@ function detailButton(datalist){            // 자세히 보기 버튼
             var string = '<table class="table table-striped table-bordered">';
             string += '<tr class="warning"><th colspan="4">' + datalist[index].ha_item_name + '</th></tr>';
             string += '<tr><td colspan="4">' + datalist[index].ha_project_title + '</td></tr>';
-            string += '<tr><td>Team</td><td colspan="2">' + datalist[index].ha_team_name + '</td><td><span class="label label-warning">PL : ' + datalist[index].ha_pl_name + '</span></td></tr>';
-            string += '<tr><td>구분</td><td>' + datalist[index].ha_category + '</td><td>역할</td><td>' + datalist[index].ha_role + '</td></tr>';
-            string += '<tr><td>규격</td><td>' + datalist[index].ha_size + '</td><td>연락처</td><td>' + datalist[index].ha_call + '</td></tr>';
-            string += '<tr><td>제조업체</td><td>' + datalist[index].ha_manufactor + '</td><td>판매업체</td><td>' + datalist[index].ha_salesmall + '</td></tr>';
-            string += '<tr><td>단가</td><td>' + datalist[index].ha_price + '</td><td>수량</td><td>' + datalist[index].ha_cnt + '</td></tr>';
-            string += '<tr><td>규격</td><td>' + datalist[index].ha_size + '</td><td>총액</td><td>' + datalist[index].ha_total + '</td></tr>';
-            string == '<tr><td></td>'
+            string += '<tr><td>분류</td><td>' + datalist[index].ha_upper_category + '</td><td>품목</td><td>' + datalist[index].ha_lower_category + '</td></tr>';
+            string += '<tr><td>규격</td><td>' + datalist[index].ha_size + '</td><td>수량</td><td>' + datalist[index].ha_amount + '</td></tr>';
+            string += '<tr><td>Maker</td><td>' + datalist[index].ha_maker + '</td><td>신청자</td><td>' + datalist[index].u_name + '</td></tr>';
             string += '<tr><td colspan="4"><a href="' +datalist[index].ha_url + '" target="_blank" style="color:blue">URL 이동</a></td></tr>';
             $('div.modal-body').html(string);
             $('div.modal').modal();

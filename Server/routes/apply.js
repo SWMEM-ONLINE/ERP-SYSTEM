@@ -107,14 +107,20 @@ router.get('/hardware', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
-
-    var query = 'INSERT into t_hardware SET ?';
-    console.log(req.body);
-    //con.query(query, data, function(err, response){
-    //    res.send('책이 신청되었습니다');
-    //});
-    res.send({status:'success'});
+    var query = '';
+    var datalist = req.body;
+    for(var i = 0; i < datalist.length; i++){
+        query += 'insert into t_hardware_apply set ha_project_title="' + datalist[i].projectName + '", ha_requester="' + req.session.passport.user.id + '", ha_role="' + datalist[i].use + '", ha_upper_category="' + datalist[i].type + '", ha_lower_category="' + datalist[i].label + '", ha_item_name="' + datalist[i].name + '", ha_size="' + datalist[i].ea + '", ha_amount="' + datalist[i].count + '", ha_maker="' + datalist[i].maker + '", ha_link="' + datalist[i].link + '", ha_explain="' + datalist[i].explain + '";';
+    }
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            throw err
+        }
+        res.send('success');
+    })
 });
+
 /* hardware@ */
 
 router.get('/room/manage', util.ensureAuthenticated, function(req, res, next) {

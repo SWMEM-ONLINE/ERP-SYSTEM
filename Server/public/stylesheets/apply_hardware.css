@@ -107,3 +107,7 @@ div.content button.plusminus{
 div.content button#minus{
     background-color: #ff000d;
 }
+
+#explainlist td:first-child,td:last-child{
+    width:200px;
+}

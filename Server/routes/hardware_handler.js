@@ -121,7 +121,7 @@ function loadmyHardware(con, req, res){
 }
 
 function loadmyappliedHardware(con, req, res){
-    var query = 'select * from t_hardware_apply where ha_requester="' + req.session.passport.user.id + '"';
+    var query = 'select *, b.u_name from t_hardware_apply a inner join t_user b on a.ha_requester=b.u_id where a.ha_requester="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
     });
@@ -214,7 +214,7 @@ function loadRequest(con, req, res){
 }
 
 function loadApply(con, req, res){
-    var query = 'select * from t_hardware_apply';
+    var query = 'select *, b.u_name from t_hardware_apply a inner join t_user b on a.ha_requester=b.u_id';
     con.query(query, function(err, response){
        res.send(response);
     });
