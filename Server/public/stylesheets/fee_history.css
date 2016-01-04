@@ -1,3 +1,10 @@
+article.container{
+    text-align: center;
+}
+
+div.content{
+    text-align: center;
+}
 @media(min-width:993px){
     div.content table{
         width: 993px;
@@ -15,7 +22,6 @@
 
 div.content table{
     margin:auto;
-    color: black;
 }
 
 div.content table input{

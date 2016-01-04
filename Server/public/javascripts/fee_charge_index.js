@@ -65,7 +65,7 @@ function addList() {
 
     var str0 = '<input id="date_'+rowCount+'" type="text" placeholder="날짜선택" onclick="calendar(this)" class="datepicker" readonly="readonly">';
     date.innerHTML = str0;
-    var str1 = '<div class="btn-group"><button id="type_'+rowCount+'" type="button" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">구분</button><ul class="dropdown-menu"><li id="type1_'+rowCount+'" onclick="typecheck(this.id)"><a>회비</a></li><li id="type2_'+rowCount+'" onclick="typecheck(this.id)"><a>삼과비</a></li><li id="type3_'+rowCount+'" onclick="typecheck(this.id)"><a>기타</a></li></ul></div>';
+    var str1 = '<div class="btn-group"><button id="type_'+rowCount+'" class="type" type="button" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">구분</button><ul class="dropdown-menu"><li id="type1_'+rowCount+'" onclick="typecheck(this.id)"><a>회비</a></li><li id="type2_'+rowCount+'" onclick="typecheck(this.id)"><a>삼과비</a></li><li id="type3_'+rowCount+'" onclick="typecheck(this.id)"><a>기타</a></li></ul></div>';
     type.innerHTML = str1;
     var str2 ='<input id="content_'+rowCount+'" type="text" placeholder="내용">';
     content.innerHTML = str2;

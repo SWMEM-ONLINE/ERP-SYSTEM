@@ -1,6 +1,23 @@
+article.container{
+    text-align: center;
+}
+
+div.content{
+    text-align: center;
+}
+
+hr {
+    border:1px solid #dddddd;
+}
+
+img.android{
+    width:300px;
+}
+
 @media(min-width:993px){
-    div.content table{
+    div.content{
         width: 993px;
+        margin:auto;
     }
     .modal-dialog{
         width: 400px;
@@ -11,8 +28,14 @@
     div.container{
         padding:0;
     }
+    article.container h3{
+        font-size: 35px;
+    }
     div.content table{
         font-size: 14px;
+    }
+    button.type{
+        font-size:5px;
     }
 }
 
@@ -25,7 +48,7 @@ div.content table{
     overflow-y: auto;
 }
 
-div.content .modal-body table{
+.modal-body table{
     width: 100%;
 }
 
@@ -37,7 +60,7 @@ div.content table input{
     border-radius: 4px;
 }
 
-div.content button{
+button{
     text-align: center;
     border:none;
     height: 34px;
@@ -46,32 +69,24 @@ div.content button{
     color: white;
 }
 
-div.content button.plusminus{
+button.plusminus{
     width: 34px;
 }
 
-div.content button#minus{
+button#minus{
     background-color: #ff000d;
 }
 
-div.content table #type{
-    width: 100%;
-}
-
-div.content .table>tbody>tr>td{
+.table>tbody>tr>td{
     padding: 5px;
 }
 
-div.content table thead{
-    border-bottom: 2px solid #dddddd;
-}
-
-div.content table,th,tr,td{
+table,th,tr,td{
     text-align: center;
     transition: 0.5s all;
 }
 
-div.content button#submit{
+button#submit{
     margin-top:10px;
     margin-bottom:10px;
 }

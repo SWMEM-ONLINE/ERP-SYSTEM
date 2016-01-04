@@ -9,50 +9,51 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/fee_history.css')
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
 block content
-    .container.contents
-        h3 회비 수입/지출 내역
-        hr
-        .content
-            table.table
-                thead
-                    tr
-                        th
-                            input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
-                        th 구분
-                        th 내용
-                        th 금액
-                tbody
-                    if result.length == 0
+    .wrapper
+        article.container
+            h3 회비 수입/지출 내역
+            hr
+            .content
+                table.table
+                    thead
                         tr
-                            td(colspan=4)
-                                h3 데이터가 없습니다
-                    else
-                        for row in result
-                            tr
-                                td= row.fm_date
-                                if row.fm_money_type === 1
-                                    td.text-danger 지출
-                                else
-                                    td.text-primary 수입
-                                td= row.fm_money_content
-                                if row.fm_money_type === 1
-                                    td.text-danger= row.fm_price
-                                else
-                                    td.text-primary= row.fm_price
-                        tfoot
-                            tr
-                                td
-                                td
-                                th 월 수입
-                                td.text-primary= deposit
-                            tr
-                                td
-                                td
-                                th 월 지출
-                                td.text-danger= withdraw
+                            th
+                                input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
+                            th 구분
+                            th 내용
+                            th 금액
+                    tbody
+                        if result.length == 0
                             tr
                                 td(colspan=4)
-                                    button#excelSave(type='button') 엑셀로 저장
+                                    h4 데이터가 없습니다
+                        else
+                            for row in result
+                                tr
+                                    td= row.fm_date
+                                    if row.fm_money_type === 1
+                                        td.text-danger 지출
+                                    else
+                                        td.text-primary 수입
+                                    td= row.fm_money_content
+                                    if row.fm_money_type === 1
+                                        td.text-danger= row.fm_price
+                                    else
+                                        td.text-primary= row.fm_price
+                            tfoot
+                                tr
+                                    td
+                                    td
+                                    th 월 수입
+                                    td.text-primary= deposit
+                                tr
+                                    td
+                                    td
+                                    th 월 지출
+                                    td.text-danger= withdraw
+                                tr
+                                    td(colspan=4)
+                                        button#excelSave(type='button') 엑셀로 저장
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='../javascripts/apply_history_index.js')

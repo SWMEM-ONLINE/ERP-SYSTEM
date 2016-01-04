@@ -81,7 +81,6 @@ function selectCondition(string){
 }
 
 function reloadList(data){
-
     $.ajax({
         type:'post',
         url:'/fee/manage/search',
@@ -90,39 +89,44 @@ function reloadList(data){
         success: function(rows){
             var tbodyString = '';
             $('#memberList tbody').empty();
-            for(var i=0;i<rows.length;i++){
-                var row = rows[i];
-                var type;
-                var state;
-                tbodyString += '<tr>';
-                tbodyString += '<td class="hidden">'+row.f_id+'</td>';
-                tbodyString += '<td>'+row.f_date+'</td>';
-                if(row.f_type == 1)
-                    type = '회비';
+            if(rows.length == 0){
+                tbodyString += '<tr class="empty"><td colspan="4"><h4>내역이 없습니다</h4></td></tr>';
+            }
+            else{
+                for(var i=0;i<rows.length;i++){
+                    var row = rows[i];
+                    var type;
+                    var state;
+                    tbodyString += '<tr>';
+                    tbodyString += '<td class="hidden">'+row.f_id+'</td>';
+                    tbodyString += '<td>'+row.f_date+'</td>';
+                    if(row.f_type == 1)
+                        type = '회비';
 
-                else if(row.f_type == 2){
-                    type = '삼과비';
-                }
-                else if(row.f_type == 3){
-                    type = '기타';
-                }
-                tbodyString += '<td>'+type+'</td>';
-                tbodyString += '<td>'+row.u_name+'</td>';
-                if(row.f_state == 0){
-                    state = '미납';
-                    tbodyString += '<td class="text-danger">'+state+'</td>';
-                }
-                else if(row.f_state == 1){
-                    state = '납부';
-                    tbodyString += '<td>'+state+'</td>';
-                }
+                    else if(row.f_type == 2){
+                        type = '삼과비';
+                    }
+                    else if(row.f_type == 3){
+                        type = '기타';
+                    }
+                    tbodyString += '<td>'+type+'</td>';
+                    tbodyString += '<td>'+row.u_name+'</td>';
+                    if(row.f_state == 0){
+                        state = '미납';
+                        tbodyString += '<td class="text-danger">'+state+'</td>';
+                    }
+                    else if(row.f_state == 1){
+                        state = '납부';
+                        tbodyString += '<td>'+state+'</td>';
+                    }
 
-                tbodyString += '<td class="hidden">'+row.u_id+'</td>';
-                tbodyString += '<td class="hidden">'+row.u_period+'</td>';
-                tbodyString += '<td class="hidden">'+row.f_content+'</td>';
-                tbodyString += '<td class="hidden">'+row.f_price+'</td>';
-                tbodyString += '<td class="hidden">'+row.f_write_date+'</td>';
-                tbodyString += '</tr>';
+                    tbodyString += '<td class="hidden">'+row.u_id+'</td>';
+                    tbodyString += '<td class="hidden">'+row.u_period+'</td>';
+                    tbodyString += '<td class="hidden">'+row.f_content+'</td>';
+                    tbodyString += '<td class="hidden">'+row.f_price+'</td>';
+                    tbodyString += '<td class="hidden">'+row.f_write_date+'</td>';
+                    tbodyString += '</tr>';
+                }
             }
             $('#memberList tbody').append(tbodyString);
         }
@@ -202,8 +206,6 @@ $('#memberList tbody').on('click','tr:not(.empty)',function () {
     $('div.modal .modal-body').html(modalBody);
     $('div.modal').modal();
 });
-
-
 
 $('#pay').click(function(){
     if(!$('#pay').hasClass('disabled')) {

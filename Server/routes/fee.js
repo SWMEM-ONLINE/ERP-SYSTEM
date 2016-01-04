@@ -271,7 +271,7 @@ router.post('/manage/search', util.ensureAuthenticated, function(req, res, next)
             var during;
             curDate.setMonth(curDate.getMonth() - term);
             during = curDate.getFullYear()+'/'+(curDate.getMonth()+1)+'/'+curDate.getDate();
-            query += ' f_date > ' + during;
+            query += ' f_write_date > ' + during;
             flag = 1;
         }
     }
@@ -302,7 +302,7 @@ router.post('/manage/search', util.ensureAuthenticated, function(req, res, next)
         }
         query += ' u_name = "'+ name +'"';
     }
-    query += ' order by f_date DESC';
+    query += ' order by f_write_date DESC';
     console.log(query);
     con.query(query,function(err,data){
         var rows = JSON.stringify(data);
