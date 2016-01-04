@@ -141,14 +141,14 @@ CREATE TABLE t_hardware_return (
 DROP TABLE IF EXISTS `t_hardware_rental`;
 CREATE TABLE t_hardware_rental (
   hr_id int NOT NULL auto_increment primary key,
-  hr_user_id VARCHAR(20),
+  hr_user VARCHAR(20),
   hr_user_name VARCHAR(20),
   hr_hardware_id int,
   hr_rental_date VARCHAR(20),
   hr_due_date VARCHAR(20),
   hr_extension_cnt int DEFAULT '0',
   FOREIGN KEY(hr_hardware_id) REFERENCES t_hardware(h_id),
-  FOREIGN KEY(hr_user_id) REFERENCES t_user(u_id)
+  FOREIGN KEY(hr_user) REFERENCES t_user(u_id)
   );
 
 DROP TABLE IF EXISTS `t_hardware_waiting`;
