@@ -144,7 +144,7 @@ function generateMemberTable(res){
 
             period = periods[i];
             htmlString += "<tr>";
-            htmlString += "<th style='text-align: center' colspan='4' class ='" + period +"'>";
+            htmlString += "<th style='text-align: center' colspan='5' class ='" + period +"'>";
             htmlString += period +"기";
             htmlString += "</th>";
             htmlString += "</tr>";

@@ -17,7 +17,7 @@ block content
             for row in result
                h5 #{row.u_period} #{row.u_name}
                .profile-img
-                  img(src='http://localhost:3000/image?name=#{row.u_photo_url}')
+                  img(src='/image?name=#{row.u_photo_url}')
                .profile-content
                   table
                      tbody
