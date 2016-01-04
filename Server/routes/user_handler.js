@@ -9,7 +9,7 @@ function loadBookInfo(con, req, res){
     var query = 'select b_name, b_due_date from t_book where b_rental_username="' + util.getUserId(req) + '"';
     con.query(query, function(err, rows){
         var cnt = rows.length;
-        if(0<cnt)
+        if(0<cnt){}
 
     });
 }
@@ -18,7 +18,7 @@ function loadHardwareInfo(con, req, res){
     var query = 'select * from t_hardware a inner join t_hardware_rental b on a.h_id=b.hr_hardware_id where b.hr_user="' + util.getUserId(req) + '"';
     con.query(query, function(err, rows){
         var cnt = rows.length;
-        if(0<cnt)
+        if(0<cnt){}
 
     });
 }
@@ -29,7 +29,7 @@ function loadFeeInfo(con, req, res){
     var connection = db_handler.connectDB();
     con.query(query, function(err,rows){
         var cnt = rows.length;
-        if(0<cnt)
+        if(0<cnt){}
 
     });
 
