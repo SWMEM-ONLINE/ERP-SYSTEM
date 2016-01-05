@@ -13,7 +13,7 @@ var cookieParser = require('cookie-parser')
 var session = require('express-session');
 
 /* @routing pages */
-var login = require('./routes/login');
+//var login = require('./routes/login');
 var signup = require('./routes/signup');
 var imageload = require('./routes/images');
 var index_main = require('./routes/main');
@@ -133,7 +133,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use('/', login);
+//app.use('/', login);
 app.use('/signup',signup);
 app.use('/image',imageload);
 app.use('/main', index_main);
@@ -148,19 +148,19 @@ app.use('/sys',system);
 app.get('/',
     function(req, res) {
       if (req.isAuthenticated()) {
+        console.log("/main");
         res.redirect('/main');
       }
+      console.log("/로그인");
       res.render('index_login', { title: '로그인' });
     });
 
 app.post('/',
     passport.authenticate('local', { failureRedirect: '/', failureFlash: true  }),
     function(req, res) {
-      //console.log("login post app.js");
 
-      //console.log(req.session);
-      //console.log(req.session.passport.user);
       res.redirect('/main');
+
     });
 
 app.get('/logout', function(req, res){
