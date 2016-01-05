@@ -63,6 +63,7 @@ $('.datepicker').on('changeDate',function(event){
 $("#setting").click(function (){
 
     var flag = 1;
+    $("#setting").addClass("hidden");
 
     var sendData = {};
 
@@ -75,7 +76,6 @@ $("#setting").click(function (){
 
 
     $.post("/duty/loadAllDuty",sendData, function(res){
-
         if(res=="no data"){
             $.post("/duty/updateMemberPoint", function(res){
                 if(res != 'success'){
@@ -85,7 +85,6 @@ $("#setting").click(function (){
 
                     if(res == "success"){
                         toastr['success']('당직 설정 완료');
-                        $('div.modal').hide();
                     }
                     else{
                         toastr['error']('당직 설정 에러');
