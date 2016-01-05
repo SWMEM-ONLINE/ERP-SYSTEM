@@ -23,6 +23,13 @@ toastr.options = {
 var flag_category = 0;                                                  // This variable means index of category which user selected
 var category = ['b_name', 'b_author', 'b_publisher'];                   // Dropdown contents
 
+
+$("#borrowUsingQRcode").click(function(){
+    window.Android.callQRActivity();
+});
+
+
+
 $('#categoryDropdown li a').click(function(){
     $('#seriesDropdown').on("hide.bs.dropdown");
     $('#bookSearchCategory').html($(this).html());
