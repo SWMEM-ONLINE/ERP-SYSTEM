@@ -200,9 +200,7 @@ function hasToken(){
 }
 
 function getToken(token){
-    $.post('/main/getToken',{ token : token, deviceName : "samsung"} , function(response){
-
-
+    $.post('/main/getToken',{ token : token, device : "samsung"} , function(response){
         if(response=="success"){
             toastr['success']('기기 등록 완료');
         }else{
