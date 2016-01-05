@@ -171,7 +171,7 @@ function ensureAuthenticated(req, res, next) {
     res.locals.session = req.session;
 
     // 로그인이 되어 있으면, 다음 파이프라인으로 진행
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() && checkAuth(req)) {
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
         res.header('Expires', '-1');
         res.header('Pragma', 'no-cache');
@@ -208,7 +208,7 @@ function checkAuth(req) {
             break;
         case '/register':
         case '/charge':
-        case '/manage':                                                  //회비 관리
+        case '/manage':                                             //회비 관리
             if(grade < 3) //운영자, 회장, 총무
                 result = true;
             break;
@@ -229,12 +229,20 @@ function checkAuth(req) {
                 result = true;
             break;
         case '/userlist':
-        case '/finished':                            //회원 목록, 수료회원 목록
+        case '/finished':                                           //회원 목록, 수료회원 목록
             if(grade < 10) //운영자, 자치회
                 result = true;
             break;
         case '/members':                                            //회원 관리
             if(grade < 2) //운영자, 회장
+                result = true;
+            break;
+        case '/getMemberList':                                      //당직 관리
+        case '/getUser':
+        case '/setting':
+        case '/changeSetting':
+        case '/inquireAllCheckList':
+            if(grade < 2 || grade == 5) //운영자, 회장, 생활장
                 result = true;
             break;
         default:

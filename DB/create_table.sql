@@ -331,34 +331,4 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     );
 
 
-CREATE TABLE t_qna (
-    q_id int NOT NULL auto_increment primary key,
-    q_title VARCHAR(200),
-    q_content VARCHAR(1000),
-    q_state int,
-    q_writer VARCHAR(20),
-    q_write_date VARCHAR(20),
-    FOREIGN KEY(q_writer) REFERENCES t_user(u_id)
-);
-
-
-CREATE TABLE t_qna_reply (
-    qr_id int,
-    qr_content VARCHAR(200),
-    qr_writer VARCHAR(20),
-    qr_write_date VARCHAR(20),
-    FOREIGN KEY(qr_id) REFERENCES t_qna(q_id),
-    FOREIGN KEY(qr_writer) REFERENCES t_user(u_id)
-);
-
-
-CREATE TABLE t_apply(
-    a_id int NOT NULL auto_increment primary key,
-    a_apply_type int,
-    a_title VARCHAR(100),
-    a_weblink VARCHAR(200),
-    a_write_date VARCHAR(20),
-    a_writer VARCHAR(20),
-    FOREIGN KEY(a_writer) REFERENCES t_user(u_id)
-);
 
