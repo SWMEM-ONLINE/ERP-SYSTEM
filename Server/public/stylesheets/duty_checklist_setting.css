@@ -32,6 +32,10 @@
     vertical-align: middle;
 }
 
+.solidtd{
+    border-top: 3px solid;
+}
+
 hr{
     border:1px solid #e7e9ec;
 }

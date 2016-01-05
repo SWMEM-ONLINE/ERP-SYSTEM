@@ -51,8 +51,6 @@ router.get('/checkListSetting', util.ensureAuthenticated, function(req, res, nex
 });
 
 
-
-
 /*
  *  Part. 포스트
  */
@@ -167,6 +165,28 @@ router.post('/modifyCheckList', util.ensureAuthenticated, function(req, res){
 
 router.post('/deleteCheckList', util.ensureAuthenticated, function(req, res){
     checklist_handler.deleteCheckList(con,req,res);
+});
+router.post('/inquireAllCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.inquireAllCheckList(con,req,res);
+});
+
+router.post('/inquireBadCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.inquireBadCheckList(con,req,res);
+});
+
+router.post('/inquireALLBadCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.inquireALLBadCheckList(con,req,res);
+});
+
+router.post('/insertBadCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.insertBadCheckList(con,req,res);
+});
+
+router.post('/modifyBadCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.modifyBadCheckList(con,req,res);
+});
+router.post('/deleteBadCheckList', util.ensureAuthenticated, function(req, res){
+    checklist_handler.deleteBadCheckList(con,req,res);
 });
 
 

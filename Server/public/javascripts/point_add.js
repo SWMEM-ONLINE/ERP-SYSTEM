@@ -85,7 +85,6 @@ $("#send").click(function(){
                 $("#mode-button").html("구분");
 
 
-
             }
         });
     }

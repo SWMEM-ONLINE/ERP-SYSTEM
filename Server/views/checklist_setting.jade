@@ -14,55 +14,20 @@ block content
     .container.contents
 
         h3 CheckList 설정
-
+        hr
         ul.nav.nav-pills.nav-justified
             li.active
-                a(href="#") CheckList 추가
+                a(href="#") 일반당직
             li
-                a(href="#") 일반당직 CheckList
-            li
-                a(href="#") 벌당직 CheckList
+                a(href="#") 벌당직
 
         hr
+        button#add_normal_duty.btn.btn-block(input="button") 일반당직 추가
+        button#add_bad_duty.btn.btn-block.hidden(input="button") 벌당직 추가
         .content
-
-            table#checkList.table.table-responsive.hidden.list
+            table#checkList.table.table-responsive.list
             table#badcheckList.table.table-responsive.hidden.list
-            table.table#addlist
-                thead
-                    tr
-                        th 일반당직 / 벌당직
-                        th 등급
-                        th 구역
-                        th 내용
-                        th 추가
-                tbody
-                    tr
-                        td
-                            .btn-group
-                                button#dutyButton.dropdown-toggle(type='button', data-toggle='dropdown') 당직
-                                ul#dutyDropDown.dropdown-menu
-                                    li
-                                        a(href='#') 일반당직
-                                    li
-                                        a(href='#') 벌당직
-                        td
-                            .btn-group
-                                button#gradeButton.dropdown-toggle(type='button', data-toggle='dropdown') 등급
-                                ul#dropdown.dropdown-menu
-                                    li
-                                        a(href='#') A
-                                    li
-                                        a(href='#') B
-                                    li
-                                        a(href='#') C
 
-                        td
-                            input#section(type='text', placeholder='구역')
-                        td
-                            input#content(type='text', placeholder='200자이내' )
-                        td
-                            button#add.plusminus(type='button') 추가
             .modal.fade
                 .modal-dialog
                     .modal-content
@@ -73,17 +38,25 @@ block content
                                 tbody
                                     tr
                                         td
-                                            p 등급
+                                            p#grade_or_day
                                         td
                                             .btn-group
-                                                button#modal_grade_Button.dropdown-toggle(type='button', data-toggle='dropdown') 등급
-                                                ul#modal_grade_dropdown.dropdown-menu
+                                                button#modal_Button.dropdown-toggle(type='button', data-toggle='dropdown')
+                                                ul#modal_dropdown.dropdown-menu
                                                     li
-                                                        a(href='#') A
+                                                        a#drop0(href='#')
                                                     li
-                                                        a(href='#') B
+                                                        a#drop1(href='#')
                                                     li
-                                                        a(href='#') C
+                                                        a#drop2(href='#')
+                                                    li.bad
+                                                        a#drop3(href='#')
+                                                    li.bad
+                                                        a#drop4(href='#')
+                                                    li.bad
+                                                        a#drop5(href='#')
+                                                    li.bad
+                                                        a#drop6(href='#')
                                     tr
                                         td
                                             p 구역
@@ -96,6 +69,7 @@ block content
                                         td
                                             input#modal_content(type='text', placeholder='내용')
                         .modal-footer
+                            button#add.btn.btn-danger(type='button') 추가
                             button#modify.btn.btn-warning(type='button') 수정
                             button#delete.btn.btn-danger(type='button') 삭제
                             button#cancel.btn(type='button') 취소
