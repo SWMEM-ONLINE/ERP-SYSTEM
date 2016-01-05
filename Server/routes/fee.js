@@ -18,10 +18,8 @@ router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
         }
 
         var send = JSON.stringify(rows);
-        res.render('fee_unpaid', { title: '회비미납내역',result:JSON.parse(send)});
+        res.render('fee_unpaid', { title: '회비미납내역', grade: util.getUserGrade(req), result:JSON.parse(send)});
     });
-
-
 });
 /*
 router.post('/unpaidList', util.ensureAuthenticated, function(req, res, next) {
@@ -105,7 +103,7 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
         var send = JSON.stringify(rows);
         var deposit = getTotalDeposit(rows);
         var withdraw = getTotalWithdraw(rows);
-        res.render('fee_history', { title: '회비내역', result:JSON.parse(send), deposit:deposit,withdraw:withdraw});
+        res.render('fee_history', { title: '회비내역', grade: util.getUserGrade(req), result:JSON.parse(send), deposit:deposit,withdraw:withdraw});
     });
 
 });
@@ -134,7 +132,7 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
 
 router.get('/register', util.ensureAuthenticated, function(req, res, next) {
 
-    res.render('fee_register', { title: '회비등록' });
+    res.render('fee_register', { title: '회비등록', grade: util.getUserGrade(req) });
 });
 
 router.post('/register/add', util.ensureAuthenticated, function(req, res, next) {
@@ -180,7 +178,7 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
 });
 
 router.get('/charge', util.ensureAuthenticated, function(req, res, next) {
-    res.render('fee_charge',{title:'회비 추가'});
+    res.render('fee_charge',{title:'회비 추가', grade: util.getUserGrade(req)});
 });
 
 router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
@@ -250,7 +248,7 @@ function getTotalWithdraw(arr){
 }
 
 router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
-    res.render('fee_manage',{title:'회비 관리'});
+    res.render('fee_manage',{title:'회비 관리', grade: util.getUserGrade(req)});
 });
 
 router.post('/manage/search', util.ensureAuthenticated, function(req, res, next) {

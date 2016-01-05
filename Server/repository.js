@@ -11,7 +11,7 @@ var config = {
     user:"root",
     password:"qwer1234",
     database:"swmem"
-}
+};
 
 var conn = mysql.createConnection(config);
 
@@ -35,7 +35,7 @@ function getUserInfo(req, res){
 
 
     });
-};
+}
 
 function setUserInfo(req, res){
 
@@ -66,7 +66,7 @@ function setUserInfo(req, res){
         return true;
 
     });
-};
+}
 
 function checkUserId(req, res){
 
@@ -91,7 +91,7 @@ function checkUserId(req, res){
         }
 
     });
-};
+}
 
 
 exports.getUserInfo = getUserInfo;
