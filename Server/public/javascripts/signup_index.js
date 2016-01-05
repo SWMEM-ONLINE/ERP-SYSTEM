@@ -12,9 +12,10 @@ var male=$('#sex_male');
 var female=$('#sex_female');
 
 /* @regex */
-var idReg= /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+var idReg= /^[a-zA-Z]{1}[a-zA-Z0-9]{3,11}$/;
+var nameReg= /^[가-힣]{2,5}$/;
 var periodReg = /^[0-9]{2}(\-)[1-2]{1}$/;
-var phoneReg = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
+var phoneReg = /^01[0-9]{1}[0-9]{4}[0-9]{4}$/;
 var birthReg =   /^(\d{2})(\d{2})(\d{2})$/;
 var emailReg =  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 var pattern = new RegExp(' ');
@@ -28,7 +29,7 @@ var idSpaceErr='ID에 빈칸은 불필요합니다<br>';
 var idExist='아이디가 중복됩니다<br>';
 var pwErr='Password 길이가 짧습니다<br>';
 var pwDiff='Password가 다릅니다<br>';
-var nameErr='이름이 중복됩니다<br>';
+var nameErr='이름을 확인하세요<br>';
 var birthErr='생년월일 형식을 지켜주세요<br>';
 var periodErr='기수 형식을 지켜주세요<br>';
 var phoneErr='전화번호 형식을 지켜주세요<br>';
@@ -64,19 +65,31 @@ toastr.options = {
 };
 
 inputId.focusout(function(){
-    $.post('/signup/checkid', {userid : inputId.val()}, function(data){
+    if(!idReg.test(inputId.val())){
+        signup_success = false;
+        idok = false;
+        toastr['error']('ID 재입력하세요');
+    }
+    else if(inputId.val() < 4){
+        signup_success = false;
+        idok = false;
+        toastr['error']('ID가 짧습니다');
+    }
+    else{
+        $.post('/signup/checkid', {userid : inputId.val()}, function(data){
 
-        if(data.status === '0'){
-            toastr['error']('ID 사용불가능');
-            signup_success = false;
-            idok = false;
-        }
-        else{
-            toastr['info']('ID 사용가능');
-            signup_success = true;
-            idok = true;
-        }
-    });
+            if(data.status === '0'){
+                toastr['error']('ID 사용불가능');
+                signup_success = false;
+                idok = false;
+            }
+            else{
+                toastr['info']('ID 사용가능');
+                signup_success = true;
+                idok = true;
+            }
+        });
+    }
 });
 
 
@@ -107,6 +120,7 @@ $('input[type=file]').change(function(e) {
 $('#form').submit(function(){
     /* @init */
     var id = inputId.val();
+    var name = inputName.val();
     var pw = inputPw.val();
     var confirm = inputPwConfirm.val();
     var birth = inputBirth.val();
@@ -126,7 +140,7 @@ $('#form').submit(function(){
         signup_success = false;
         result += idErr;
     }
-    else if(idReg.test(id)){
+    else if(!idReg.test(id)){
         signup_success = false;
         result += idKoErr;
     }
@@ -146,6 +160,13 @@ $('#form').submit(function(){
         result += pwDiff;
     }
     /* password check@ */
+
+    /* @name check */
+    if(!nameReg.test(name)){
+        signup_success = false;
+        result += nameErr;
+    }
+    /* name check@ */
 
     /* @birth check */
     if(!birthReg.test(birth)){
