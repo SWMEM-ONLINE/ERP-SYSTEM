@@ -126,7 +126,9 @@ passport.deserializeUser(function(user, done) {
 app.set('trust proxy', 1);
 app.use(session({ secret: 'swmem2016',
   resave: false,
-  saveUninitialized: true })); // session secret
+  saveUninitialized: true,
+  cookie:{maxAge:24*60*60*1000}
+})); // session secret
 
 app.use(flash());
 app.use(passport.initialize());
