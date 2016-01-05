@@ -1377,6 +1377,7 @@ function getAddPoint(con,req,res){
             if(datas.length==0){
 
                 console.log("there is no data");
+                res.send({});
 
             }
 

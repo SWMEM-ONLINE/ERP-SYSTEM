@@ -127,8 +127,8 @@ $("#showresult").click(function(){
                     $.post('/duty/acceptChangeDuty', sendData , function(res){
 
                         if(res == "success"){
+                            $('div.modal').modal('hide');
                             toastr['success']('맞변경 수락 완료');
-                            $('div.modal').hide();
 
                         }
                         else{
@@ -155,8 +155,8 @@ $("#showresult").click(function(){
                     $.post('/duty/declineChangeDuty', sendData , function(res){
 
                         if(res == "success"){
+                            $('div.modal').modal('hide');
                             toastr['success']('맞변경 거부 완료');
-                            $('div.modal').hide();
 
                         }
                         else{
