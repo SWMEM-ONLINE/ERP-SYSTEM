@@ -33,7 +33,7 @@ function myqnaList(pageNum){
                         tbodyString += '<td>답변대기</td>';
                     }
                     else if(list.q_state == 1){
-                        tbodyString += '<th>답변완료</th>';
+                        tbodyString += '<td>답변완료</td>';
                     }
                     tbodyString += '<td class="hidden">'+pageNum+'</td>';
                     tbodyString += '</tr>';
