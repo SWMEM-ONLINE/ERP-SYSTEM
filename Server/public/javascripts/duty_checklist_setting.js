@@ -62,120 +62,6 @@ $('#add_bad_duty').click(function(){
 
 
 
-function addNormalDuty(type){
-
-    $("#add").removeClass("hidden");
-    $("#modify").addClass("hidden");
-    $("#delete").addClass("hidden");
-    $("#cancel").removeClass("hidden");
-    var grade_day = null;
-    var idx = 0;
-    var sendData = {};
-
-    if(type == "normal"){
-        $('#modal_Button').html("A");
-        $(".bad").addClass("hidden");
-        $("#drop0").html("A");
-        $("#drop1").html("B");
-        $("#drop2").html("C");
-        $("#grade_or_day").html("등급");
-        grade_day = "A";
-    }
-    else{
-        $(".bad").removeClass("hidden");
-        $('#modal_Button').html("일");
-        $("#drop0").html("일");
-        $("#drop1").html("월");
-        $("#drop2").html("화");
-        $("#drop3").html("수");
-        $("#drop4").html("목");
-        $("#drop5").html("금");
-        $("#drop6").html("토");
-        $("#grade_or_day").html("요일");
-        grade_day = "일";
-    }
-
-
-    $("#modal_section").val("");
-    $("#modal_content").val("");
-
-
-    $('#modal_dropdown li a').click(function(){
-        $('#modal_Button').html($(this).html());
-        idx = $(this).parent().index();
-        if(type == "normal"){
-            grade_day = gradeList[idx];
-        }
-        else{
-            grade_day = dayList[idx];
-        }
-
-    });
-
-    $("#add").click(function(){
-
-        sendData.section = $("#modal_section").val();
-        sendData.content = $("#modal_content").val();
-
-
-
-
-        if(!isAllSet(sendData.section, sendData.content)){
-            return;
-        }
-
-
-        if(type == "normal"){
-
-            sendData.grade = grade_day;
-            $.post("/duty/insertCheckList", sendData, function(res){
-                $(".modal").modal('hide');
-
-                if(res == "success"){
-                    toastr['success']('CheckList 추가 성공');
-                    loadNormalCheckList();
-                }
-                else{
-                    toastr['error']('CheckList 추가 실패');
-                }
-
-            });
-        }
-        else{
-
-            sendData.day = grade_day;
-            $.post("/duty/insertBadCheckList", sendData, function(res){
-                $(".modal").modal('hide');
-
-                if(res == "success"){
-                    toastr['success']('CheckList 추가 성공');
-                    loadBadCheckList();
-                }
-                else{
-                    toastr['error']('CheckList 추가 실패');
-                }
-
-            });
-        }
-
-        $("#add").unbind("click");
-        $("#delete").unbind("click");
-        $("#modify").unbind("click");
-    });
-
-
-    $("#cancel").click(function(){
-
-        $(".modal").modal('hide');
-        $("#delete").unbind("click");
-        $("#add").unbind("click");
-        $("#modify").unbind("click");
-    });
-
-    $(".modal").modal();
-
-
-}
 
 
 function isAllSet(section , content){
@@ -475,7 +361,139 @@ function genarateModal(data, type){
         $("#delete").unbind("click");
     });
 
+
+    $('.modal').on('hidden.bs.modal', function () {
+        // 무언가를 한다…
+        $("#add").unbind("click");
+        $("#modify").unbind("click");
+        $("#delete").unbind("click");
+        $("#cancel").unbind("click");
+    })
+
+    $(".modal").modal();
+}
+
+
+function addNormalDuty(type){
+
+    $("#add").removeClass("hidden");
+    $("#modify").addClass("hidden");
+    $("#delete").addClass("hidden");
+    $("#cancel").removeClass("hidden");
+    var grade_day = null;
+    var idx = 0;
+    var sendData = {};
+
+    if(type == "normal"){
+        $('#modal_Button').html("A");
+        $(".bad").addClass("hidden");
+        $("#drop0").html("A");
+        $("#drop1").html("B");
+        $("#drop2").html("C");
+        $("#grade_or_day").html("등급");
+        grade_day = "A";
+    }
+    else{
+        $(".bad").removeClass("hidden");
+        $('#modal_Button').html("일");
+        $("#drop0").html("일");
+        $("#drop1").html("월");
+        $("#drop2").html("화");
+        $("#drop3").html("수");
+        $("#drop4").html("목");
+        $("#drop5").html("금");
+        $("#drop6").html("토");
+        $("#grade_or_day").html("요일");
+        grade_day = "일";
+    }
+
+
+    $("#modal_section").val("");
+    $("#modal_content").val("");
+
+
+    $('#modal_dropdown li a').click(function(){
+        $('#modal_Button').html($(this).html());
+        idx = $(this).parent().index();
+        if(type == "normal"){
+            grade_day = gradeList[idx];
+        }
+        else{
+            grade_day = dayList[idx];
+        }
+
+    });
+
+    $("#add").click(function(){
+
+        sendData.section = $("#modal_section").val();
+        sendData.content = $("#modal_content").val();
+
+
+
+
+        if(!isAllSet(sendData.section, sendData.content)){
+            return;
+        }
+
+
+        if(type == "normal"){
+
+            sendData.grade = grade_day;
+            $.post("/duty/insertCheckList", sendData, function(res){
+                $(".modal").modal('hide');
+
+                if(res == "success"){
+                    toastr['success']('CheckList 추가 성공');
+                    loadNormalCheckList();
+                }
+                else{
+                    toastr['error']('CheckList 추가 실패');
+                }
+
+            });
+        }
+        else{
+
+            sendData.day = grade_day;
+            $.post("/duty/insertBadCheckList", sendData, function(res){
+                $(".modal").modal('hide');
+
+                if(res == "success"){
+                    toastr['success']('CheckList 추가 성공');
+                    loadBadCheckList();
+                }
+                else{
+                    toastr['error']('CheckList 추가 실패');
+                }
+
+            });
+        }
+
+        $("#add").unbind("click");
+        $("#delete").unbind("click");
+        $("#modify").unbind("click");
+    });
+
+
+    $("#cancel").click(function(){
+
+        $(".modal").modal('hide');
+        $("#delete").unbind("click");
+        $("#add").unbind("click");
+        $("#modify").unbind("click");
+    });
+
+
+
+    $('.modal').on('hidden.bs.modal', function () {
+        // 무언가를 한다…
+        $("#add").unbind("click");
+        $("#modify").unbind("click");
+        $("#delete").unbind("click");
+        $("#cancel").unbind("click");
+    })
+
     $(".modal").modal();
 
 }
-
