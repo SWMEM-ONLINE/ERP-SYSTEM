@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 
 
 
-        getInstanceIdToken();
+        //getInstanceIdToken();
 
 
         myWebView = (WebView) findViewById(R.id.webview);
@@ -83,8 +83,12 @@ public class MainActivity extends Activity {
 
 
                 } else if(action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)){
-                    Toast.makeText(getApplicationContext(), "등록이 완료되었습니다", Toast.LENGTH_SHORT).show();
-
+                    String token = intent.getStringExtra("token");
+                    //Toast.makeText(getApplicationContext(), "등록이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                    myWebView.loadUrl("javascript:" +
+                            "getToken("+token+");" +
+                            "");
+                    // myWebView.loadUrl("/duty/inquiry");
                 }
 
             }
@@ -179,10 +183,10 @@ public class MainActivity extends Activity {
 
         }
 
-        public void hasToken(){
+        public void getToken(){
             handler.post(new Runnable() {
                 public void run() {
-
+                    getInstanceIdToken();
                 }
             });
 

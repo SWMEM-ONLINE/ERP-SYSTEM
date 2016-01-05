@@ -32,4 +32,12 @@ router.post('/getUserpermission', util.ensureAuthenticated, function(req, res, n
     main_handler.getUserpermission(con, req, res);
 });
 
+router.post('/hasToken', util.ensureAuthenticated, function(req, res, next){
+    main_handler.hasToken(con, req, res);
+});
+
+router.post('/getToken', util.ensureAuthenticated, function(req, res, next){
+    main_handler.getToken(con, req, res);
+});
+
 module.exports = router;

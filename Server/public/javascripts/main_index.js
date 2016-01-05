@@ -2,13 +2,29 @@
  * Created by jung-inchul on 2016. 1. 1..
  */
 
-
+toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
 
 loadmyHardware();
 loadmyBook();
 loadMyDuty();
 loadTodayDuty();
-
+hasToken();
 // 오늘의 당직자 부르고 - 현재파트
 
 function loadTodayDuty(){
@@ -156,3 +172,43 @@ function settingHTML(datalist, flag){
 
     return htmlString;
 }
+
+
+
+
+function hasToken(){
+    $.post('/main/hasToken', function(response){
+
+        console.log(response);
+
+        if(response =="true"){
+            window.Android.getToken();
+        }
+        else if(response == "error"){
+            toastr['error']('디비 접근 에러.');
+
+        }
+        else if(response == "fail"){
+            toastr['error']('토큰이 존재하지 않습니다');
+
+        }
+        else{
+            toastr['error']('에러!!');
+
+        }
+    });
+}
+
+function getToken(token){
+    $.post('/main/getToken',{ token : token, deviceName : "samsung"} , function(response){
+
+
+        if(response=="success"){
+            toastr['success']('기기 등록 완료');
+        }else{
+            toastr['error']('에러!!');
+        }
+    });
+}
+
+
