@@ -331,7 +331,7 @@ function getYear(date){
 
 function getMonth(date){
     if(10<date.length){
-        return date.substring(5,7);;
+        return date.substring(5,7);
     }
     return 0;
 }
