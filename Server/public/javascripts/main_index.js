@@ -24,28 +24,37 @@ function loadTodayDuty(){
 
     $.post('/duty/loadTodayDuty' , function(response){
         // type , month , date ,year
+        var flag = 1;
         var htmlString = '';
         var data = response;
 
         if(data.name1!= null){
+            flag=0;
             htmlString += '<p><label style="text-overflow: ellipsis;">'
                 + data.name1 +
             '</label>';
         }
         if(data.name2!= null){
+            flag=0;
             htmlString += '<p><label style="text-overflow: ellipsis;">'
                 + data.name2 +
                 '</label>';
         }
         if(data.name3!= null){
+            flag=0;
             htmlString += '<p><label style="text-overflow: ellipsis;">'
                 + data.name3 +
                 '</label>';
         }
         if(data.name4!= null){
+            flag=0;
             htmlString += '<p><label style="text-overflow: ellipsis;">'
                 + data.name4 +
                 '</label>';
+        }
+
+        if(flag==1){
+            $('.content-today_duty').html("<p> 이번달 당직이 없습니다 </p>");
         }
 
         $('.content-today_duty').html(htmlString);
