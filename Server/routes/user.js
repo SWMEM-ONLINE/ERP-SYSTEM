@@ -158,7 +158,7 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
                 u_fee = 1;
 
             /*도서미납 내역 체크*/
-            query = 'select b_name name, DATEDIFF(CURDATE(), b_due_date) diff from t_book where b_rental_username ="' + u_id + '"';
+            query = 'select b.b_name name, DATEDIFF(CURDATE(), b.b_due_date) diff from t_book_rental a inner join t_book b on a.br_book_id=b.b_id where br_user="' + u_id + '"';
 
             con.query(query,function(err,rows2){
                 if (err) {
@@ -171,7 +171,7 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
                     console.log("미반납 도서 있음");
                 }
                 /*하드웨어미납 내역 체크*/
-                query = 'select b.h_name name, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id where a.hr_user_id="' + u_id + '"';
+                query = 'select b.h_name name, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id where a.hr_user="' + u_id + '"';
 
                 con.query(query,function(err,rows3){
                     if (err) {
