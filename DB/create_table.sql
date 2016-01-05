@@ -291,7 +291,7 @@ DROP TABLE IF EXISTS `t_duty_checklist`;
 DROP TABLE IF EXISTS `t_duty_bad_checklist`;
   CREATE TABLE `t_duty_bad_checklist` (
     `add_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `grade` varchar(40) NOT NULL,
+    `day` varchar(40) NOT NULL,
     `section` varchar(40) NOT NULL,
     `content` varchar(250) NOT NULL,
     `index` int(20) NOT NULL AUTO_INCREMENT,

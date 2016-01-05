@@ -3,6 +3,7 @@
  */
 
 
+
 loadmyHardware();
 loadmyBook();
 loadMyDuty();
@@ -11,6 +12,16 @@ loadTodayDuty();
 // 오늘의 당직자 부르고 - 현재파트
 
 function loadTodayDuty(){
+
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    var date = date.getDate();
+
+    var html = year+"."+month+"."+date;
+
+    $('#today').html(html);
+
     $.post('/duty/loadTodayDuty' , function(response){
         // type , month , date ,year
         var htmlString = '';

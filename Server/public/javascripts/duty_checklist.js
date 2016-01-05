@@ -4,61 +4,49 @@
 
 var flag= 0;
 
-
-$.post('/duty/inquireCheckList', { type : "normal"} , function(res){
-
-    var type = "normal";
-    genarateHtml(res,type);
-    addClickEvent(res, type);
-    console.log(res);
-
-});
-
+loadNormalCheckList();
 
 $("#toggleButton").click(function(){
 
-    // 일반당직
+    // 벌당직 소환
     if(flag ==0){
         flag=1;
         $(this).html("일반당직 체크리스트");
-        loadNormalCheckList();
+        loadBadCheckList();
 
     }
-    // 벌당직
+    // 일반당직 소환
     else{
         flag=0;
         $(this).html("벌당직 체크리스트");
-        loadBadCheckList();
+        loadNormalCheckList();
     }
 
 
 });
 
-function loadNormalCheckList(){
+function loadBadCheckList(){
+
     $("#checkList").addClass("hidden");
     $("#badcheckList").removeClass("hidden");
-    $.post('/duty/inquireCheckList', { type : "bad"} , function(res){
 
-        var type = "bad";
+    $.post('/duty/inquireBadCheckList', { day : getDay() } , function(res){
 
-        genarateHtml(res,type);
-        addClickEvent(res,type);
-
+        badGenarateHtml(res);
+        addClickEvent(res);
         console.log(res);
         console.log(flag);
 
     });
 }
 
-function loadBadCheckList(){
+function loadNormalCheckList(){
     $("#badcheckList").addClass("hidden");
     $("#checkList").removeClass("hidden");
-    $.post('/duty/inquireCheckList', { type : "normal"} , function(res){
+    $.post('/duty/inquireCheckList',{grade :getGrade()} , function(res){
 
-        var type = "normal";
-
-        genarateHtml(res,type);
-        addClickEvent(res,type);
+        normalGenarateHtml(res);
+        addClickEvent(res);
         console.log(res);
         console.log(flag);
 
@@ -68,7 +56,7 @@ function loadBadCheckList(){
 
 
 
-function addClickEvent(res, type){
+function addClickEvent(res){
 
     $('table tr').click(function(){
 
@@ -78,13 +66,14 @@ function addClickEvent(res, type){
 }
 
 
-function genarateHtml(res, type){
+function normalGenarateHtml(res){
 
     var data;
     var content;
     var section;
     var grade;
     var index;
+    var prev = "";
     var htmlString = "";
     htmlString+="<tr>";
     htmlString+="<th>";
@@ -106,13 +95,14 @@ function genarateHtml(res, type){
         grade = data.grade;
         index = data.index;
 
-        if(type == "normal")
-        {
-            htmlString+="<tr id = normal" + index +">";
+        if(prev != section){
+            prev = section;
+            htmlString+="<tr id = normal" + index +" class='solidtd'>";
         }
         else{
-            htmlString+="<tr id = bad" + index +">";
+            htmlString+="<tr id = normal" + index +">";
         }
+
 
         htmlString+="<td>";
         htmlString+=grade;
@@ -124,16 +114,65 @@ function genarateHtml(res, type){
         htmlString+=content;
         htmlString+="</td>";
         htmlString+="</tr>";
-
     }
 
-    if(type == "normal")
-    {
-        $("#checkList").html(htmlString);
-    }
-    else{
-        $("#badcheckList").html(htmlString);
+    $("#checkList").html(htmlString);
+}
+function badGenarateHtml(res){
+
+    var data;
+    var content;
+    var section;
+    var day = getDay();
+    var index;
+    var htmlString = "";
+    htmlString+="<tr>";
+    htmlString+="<th>";
+    htmlString+="요일";
+    htmlString+="</th>";
+    htmlString+="<th>";
+    htmlString+="구역";
+    htmlString+="</th>";
+    htmlString+="<th>";
+    htmlString+="내용";
+    htmlString+="</th>";
+    htmlString+="</tr>";
+
+    for(var i = 0 ; i< res.length; i++){
+
+        data = res[i];
+        content = data.content;
+        section = data.section;
+        index = data.index;
+
+        htmlString+="<tr id = normal" + index +">";
+        htmlString+="<td>";
+        htmlString+=day;
+        htmlString+="</td>";
+        htmlString+="<td>";
+        htmlString+=section;
+        htmlString+="</td>";
+        htmlString+="<td>";
+        htmlString+=content;
+        htmlString+="</td>";
+        htmlString+="</tr>";
     }
 
+    $("#badcheckList").html(htmlString);
+}
+
+
+function getDay(){
+
+    var days = ["일","월","화","수","목","금","토"];
+    var day  = new Date().getDay();
+
+    return days[day];
+
+}
+
+function getGrade(){
+
+    return "A";
 
 }

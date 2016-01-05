@@ -57,6 +57,10 @@ div.input-group{
     width: 190px;
 }
 
+.solidtd{
+    border-top: 3px solid;
+}
+
 table#booklist tbody tr td:first-child{
     width: 120px;
     min-width: 80px;
