@@ -3,9 +3,6 @@ CREATE DATABASE IF NOT EXISTS swmem;
 ALTER SCHEMA `swmem`  DEFAULT CHARACTER SET utf8 ;
 use swmem;
 
-
----------------------------  유져 관련 디비   -------------------------------------
-
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE t_user ( u_id VARCHAR(20) NOT NULL primary key,
   u_password VARCHAR(100) NOT NULL,
@@ -29,13 +26,6 @@ CREATE TABLE t_user ( u_id VARCHAR(20) NOT NULL primary key,
   u_hardware boolean,
   u_book boolean,
   u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-
---  u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  ---------------------------       유져 끝     -------------------------------------
-
-
-
-  ---------------------------  도서 관련 디비   -------------------------------------
 
 DROP TABLE IF EXISTS `t_book`;
 CREATE TABLE t_book (
@@ -109,12 +99,6 @@ CREATE TABLE t_book_loss (
   FOREIGN KEY(brl_book_id) REFERENCES t_book(b_id),
   FOREIGN KEY(brl_user) REFERENCES t_user(u_id));
 
----------------------------       도서 끝     -------------------------------------
-
-
-
----------------------------  하드웨어 관련 디비   -------------------------------------
-
 DROP TABLE IF EXISTS `t_hardware`;
 CREATE TABLE t_hardware (
   h_id int NOT NULL auto_increment primary key,
@@ -182,11 +166,6 @@ CREATE TABLE t_hardware_apply (
   FOREIGN KEY(ha_requester) REFERENCES t_user(u_id)
   );
 
----------------------------       하드웨어 끝     -------------------------------------
-
----------------------------  회비 관련 디비   -------------------------------------
-
-
 
 DROP TABLE IF EXISTS `t_fee_manage`;
   CREATE TABLE t_fee_manage ( fm_id int NOT NULL auto_increment primary key,
@@ -219,12 +198,6 @@ CREATE TABLE t_fee ( f_id int NOT NULL auto_increment primary key,
   FOREIGN KEY(f_payer) REFERENCES t_user(u_id),
   FOREIGN KEY(f_type) REFERENCES t_fee_type(ft_id));
 
-  ---------------------------       회비 끝     -------------------------------------
-
-
-
-  ---------------------------  당직 관련 디비   -------------------------------------
-
 
   DROP TABLE IF EXISTS `t_duty`;
   CREATE TABLE `t_duty` (
@@ -246,7 +219,6 @@ CREATE TABLE t_fee ( f_id int NOT NULL auto_increment primary key,
   );
 
 
--- 0:wait 1:accept 2:decline
   DROP TABLE IF EXISTS `t_duty_change_history`;
   CREATE TABLE `t_duty_change_history` (
     `request_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -328,7 +300,6 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     	a_writer VARCHAR(20),
       	FOREIGN KEY(a_writer) REFERENCES t_user(u_id));
 
--------------------- 생활지수 DB ---------------------------
     CREATE TABLE t_life (
       l_id int NOT NULL auto_increment primary key,
       l_year VARCHAR(5),
@@ -358,4 +329,3 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
       lc_a int,
       lc_b int
     );
------------------------------------------------------------
