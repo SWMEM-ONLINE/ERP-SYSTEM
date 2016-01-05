@@ -65,7 +65,7 @@ toastr.options = {
 };
 
 inputId.focusout(function(){
-    if(!idReg.test(inputId.val())){
+    if(!idReg.test(inputId.val()) || inputId.val() == 'null' || inputId.val() == 'undefined'){
         signup_success = false;
         idok = false;
         toastr['error']('ID 재입력하세요');
