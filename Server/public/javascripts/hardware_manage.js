@@ -148,7 +148,7 @@ function clickHardware(datalist){
         modalString += '<tr class="warning"><td>하드웨어 이름</td><td><input type="text" id="hardwareName" value="' + datalist[index].h_name + '"></td></tr>';
         modalString += '<tr><td>총 수량</td><td><input type="number" id="hardwareTotal" value="' + datalist[index].h_total + '" min="0"></td></tr>';
         modalString += '<tr><td>남은 수량</td><td><input type="number" id="hardwareRemaining" value="' + datalist[index].h_remaining + '" min="0"></td></tr>';
-        modalString += '<tr><td>시리얼번호</td><td><input type="text" id="hardwareSerial" value="' + datalist[index].h_serial + '"</td></tr></table>';
+        modalString += '<tr><td>시리얼번호</td><td><input type="text" id="hardwareSerial" value="' + datalist[index].h_serial + '"></td></tr></table>';
         $('div.modal-body').html(modalString);
         $('div.modal').modal();
 

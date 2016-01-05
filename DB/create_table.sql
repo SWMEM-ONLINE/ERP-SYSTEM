@@ -327,3 +327,35 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     	a_write_date VARCHAR(20),
     	a_writer VARCHAR(20),
       	FOREIGN KEY(a_writer) REFERENCES t_user(u_id));
+
+-------------------- 생활지수 DB ---------------------------
+    CREATE TABLE t_life (
+      l_id int NOT NULL auto_increment primary key,
+      l_year VARCHAR(5),
+      l_month VARCHAR(5),
+      l_recent int default 1,
+      l_first VARCHAR(20) default '-',
+      l_first_cnt int default 0,
+      l_first_point int default 0,
+      l_second VARCHAR(20) default '-',
+      l_second_cnt int default 0,
+      l_second_point int default 0,
+      l_third VARCHAR(20) default '-',
+      l_third_cnt int default 0,
+      l_third_point int default 0,
+      l_fourth VARCHAR(20) default '-',
+      l_fourth_cnt int default 0,
+      l_fourth_point int default 0,
+      l_fifth VARCHAR(20) default '-',
+      l_fifth_cnt int default 0,
+      l_fifth_point int default 0,
+      l_total int default 0,
+      l_grade VARCHAR(5) default '-'
+     );
+
+    CREATE TABLE t_life_cut (
+      lc_id int NOT NULL auto_increment primary key,
+      lc_a int,
+      lc_b int
+    );
+-----------------------------------------------------------

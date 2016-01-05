@@ -146,7 +146,7 @@ $('#bookSearchWords').keydown(function(){
 $('#bookSearchBtn').click(function() {
     var searchWords = $('#bookSearchWords').val();                  // Get typing data in textbox
     if (searchWords.length == 0) {                                  // type nothing situation
-        toastr['error']('검색어를 입력해주세요');
+        toastr['error']('검색어를 입력해주세요 ^^');
         return false;
     }else{
         $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : (flag === 0 ? 'tech' : 'humanities')}, function(datalist){
@@ -165,15 +165,15 @@ function loadbooklist(select){
 }
 
 function settingHTML(datalist){
-    var htmlString = '<tfoot><tr><th colspan="2"><button type="button" id="resetLocation">위치변경</button></th></tr></tfoot>';
+    var htmlString = '<tfoot><tr><th colspan="2"><button type="button" id="resetLocation" class="btn btn-primary">위치변경</button></th></tr></tfoot>';
     htmlString += '<span class="pull-right"> </span></th></tr></tfoot>';
     htmlString += '<tbody id="booklistData">';
     $.each(datalist, function(idx, data){
         htmlString += '<tr><td><img class="bookImg" src="' + data.b_photo_url + '"</td>';
         htmlString += '<td><h4 class="bookTitle">' + data.b_name;
-        htmlString += '</h4>';
-        if(data.b_state === 1) htmlString += '<p class="label label-warning">' + data.b_rental_username + '님이 대여중</p>';
-        htmlString += '<p>' + data.b_author + ' | ' + data.b_publisher + '</p></tr>';
+        if(data.b_state === 1) htmlString += ' <span class="label label-warning">' + data.b_rental_username + '님이 대여중</span></h4>';
+        else    htmlString += '</h4>';
+        htmlString += '<p>' + data.b_author + ' | ' + data.b_publisher + ' | ' + data.b_location + '</p></tr>';
     });
     htmlString += '</tbody>';
     $('table#booklist').html(htmlString);
@@ -214,7 +214,7 @@ function makelocationData(){
         if(divide % 2 === 0){
             modalString += '  ' + '<span class="label label-warning col-xs"> ' + key + '</span>' + '  ' + value + '</td>';
         }else{
-            modalString += '  ' + '<span class="label label-info"> ' + key + '</span>' + '  ' + value + '</td>';
+            modalString += '  ' + '<span class="label label-info"> ' + key + '</span>' + '  ' + value + '</td></h6>';
         }
     });
     modalString += '</tr>';

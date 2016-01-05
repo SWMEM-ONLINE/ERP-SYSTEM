@@ -126,7 +126,8 @@ function clickEvent(datalist){
             //window.location.reload();
         });
         $('button#missing').unbind().click(function(){                  // Missing button to enroll missingbook list.
-            $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (response) {
+            $.post("/book/missingBook",
+                {book_id : datalist[index].b_id}, function (response) {
                 if(response === 'success')  toastr['success']('분실도서 등록 성공');
                 else    toastr['error']('분실도서 등록 실패');
                 init();

@@ -170,11 +170,14 @@ function makeProgressbar(t2, t3){
     var string = '';
     var text = '';
     var today = new Date();
-    today.setHours(1);
+
     var borrow_date = new Date(t2);
     var due_date = new Date(t3);
+    today.setHours(9);
+    borrow_date.setHours(9);
+    due_date.setHours(9);
     if(due_date.getTime() <= today.getTime()){
-        var gap = parseInt(today.getTime() - due_date.getTime()) / (3600000* 24);
+        var gap = parseInt(today.getTime() - due_date.getTime()) / (3600000* 24) + 1;
         if(gap === 0) text = '대여 기한이 오늘까지입니다.';
         else text = gap + '일 지났습니다.';
         string += '<div class="progress progress-striped active">';
@@ -182,9 +185,10 @@ function makeProgressbar(t2, t3){
         string += '</div></div>';
     }
     else{
-        var numerator = parseInt((due_date.getTime() - today.getTime()) / (3600000 * 24));
+        var numerator = parseInt((due_date.getTime() - today.getTime()) / (3600000 * 24)) + 1;
         var denominator = parseInt((due_date.getTime()-borrow_date.getTime()) / ( 3600000 * 24 ));
         var percent = (100 - (numerator / denominator * 100));
+        console.log(numerator);
         text = numerator + '일 남았습니다.';
         string += '<div class="progress progress-striped active">';
         string += '<div class="progress-bar ' + (numerator > 7 ? 'progress-bar' : 'progress-bar-danger' ) + '" role="progressbar" style="width:' + percent + '%">' + text;
