@@ -98,7 +98,8 @@ router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
     }
     query += ' order by u_period';
 
-
+    console.log('query');
+    console.log(query);
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
