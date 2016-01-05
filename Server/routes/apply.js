@@ -16,7 +16,7 @@ var APPLY_TYPE_EQUIPMENT = 3;
 
 /* @book */
 router.get('/newbook', util.ensureAuthenticated, function(req, res, next) {
-    res.render('apply_newbook', { title: '도서 신청'});
+    res.render('apply_newbook', { title: '도서 신청', grade: util.getUserGrade(req)});
 });
 
 router.post('/newbook/request', util.ensureAuthenticated, function(req, res){
@@ -46,7 +46,7 @@ router.get('/room', util.ensureAuthenticated, function(req, res, next) {
             throw err;
         }
         var send = JSON.stringify(rows);
-        res.render('apply_room_server_equip', {title: '프로젝트실 신청',lists: JSON.parse(send)});
+        res.render('apply_room_server_equip', {title: '프로젝트실 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
     });
 });
 router.post('/room', util.ensureAuthenticated, function(req, res, next) {
@@ -67,7 +67,7 @@ router.get('/server', util.ensureAuthenticated, function(req, res, next) {
             throw err;
         }
         var send = JSON.stringify(rows);
-        res.render('apply_room_server_equip', {title: '서버 신청', lists: JSON.parse(send)});
+        res.render('apply_room_server_equip', {title: '서버 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
     });
 });
 
@@ -89,7 +89,7 @@ router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
             throw err;
         }
         var send = JSON.stringify(rows);
-        res.render('apply_room_server_equip', {title: '비품 신청', lists: JSON.parse(send)});
+        res.render('apply_room_server_equip', {title: '비품 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
     });
 });
 router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
@@ -103,7 +103,7 @@ router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
 
 /* @hardware */
 router.get('/hardware', util.ensureAuthenticated, function(req, res, next) {
-    res.render('apply_hardware', {title: '하드웨어 신청'});
+    res.render('apply_hardware', {title: '하드웨어 신청', grade: util.getUserGrade(req)});
 });
 
 router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
@@ -124,15 +124,15 @@ router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
 /* hardware@ */
 
 router.get('/room/manage', util.ensureAuthenticated, function(req, res, next) {
-    res.render('apply_manage',{title:'프로젝트실 신청관리'});
+    res.render('apply_manage',{title:'프로젝트실 신청관리', grade: util.getUserGrade(req)});
 });
 
 router.get('/server/manage', util.ensureAuthenticated, function(req, res, next) {
-    res.render('apply_manage',{title:'서버 신청 관리'});
+    res.render('apply_manage',{title:'서버 신청 관리', grade: util.getUserGrade(req)});
 });
 
 router.get('/equipment/manage', util.ensureAuthenticated, function(req, res, next) {
-    res.render('apply_manage',{title:'비품 신청 관리'});
+    res.render('apply_manage',{title:'비품 신청 관리', grade: util.getUserGrade(req)});
 });
 
 router.post('/setApplyList/:type', util.ensureAuthenticated, function(req, res, next) {

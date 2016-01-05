@@ -28,17 +28,18 @@ body
                            a(href='/book/tech') 기술도서대여
                         li
                            a(href='/book/mybook') 내도서현황
-                        li.divider.manage.book
-                        li.manage.book
-                           a(href='/book/manage/item') 도서관리
-                        li.manage.book
-                           a(href='/book/manage/apply') 신청도서 관리
-                        li.manage.book
-                           a(href='/book/manage/history') 대여 기록
-                        li.manage.book
-                           a(href='/book/manage/inArrears') 연체자 목록
-                        li.manage.book
-                           a(href='/book/manage/missing') 분실도서 목록
+                        if grade == 1 || grade == 2 || grade == 4
+                           li.divider
+                           li
+                              a(href='/book/manage/item') 도서관리
+                           li
+                              a(href='/book/manage/apply') 신청도서 관리
+                           li
+                              a(href='/book/manage/history') 대여 기록
+                           li
+                              a(href='/book/manage/inArrears') 연체자 목록
+                           li
+                              a(href='/book/manage/missing') 분실도서 목록
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 하드웨어
                      ul.dropdown-menu
@@ -46,13 +47,14 @@ body
                            a(href='/hardware/assign') 대여신청
                         li
                            a(href='/hardware/myhardware') 대여확인
-                        li.divider.manage.hardware
-                        li.manage.hardware
-                           a(href='/hardware/manage/item') 하드웨어 관리
-                        li.manage.hardware
-                           a(href='/hardware/manage/request') 신청 관리
-                        li.manage.hardware
-                           a(href='/hardware/manage/history') 대여기록
+                        if grade == 1 || grade == 2
+                           li.divider
+                           li
+                              a(href='/hardware/manage/item') 하드웨어 관리
+                           li
+                              a(href='/hardware/manage/request') 신청 관리
+                           li
+                              a(href='/hardware/manage/history') 대여기록
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 회비
                      ul.dropdown-menu
@@ -60,13 +62,14 @@ body
                            a(href='/fee/history') 회비 내역
                         li
                            a(href='/fee/unpaid') 미납 내역
-                        li.divider.manage.fee
-                        li.manage.fee
-                           a(href='/fee/register') 수입/지출 등록
-                        li.manage.fee
-                           a(href='/fee/charge') 회비 추가
-                        li.manage.fee
-                           a(href='/fee/manage') 회비 관리
+                        if grade == 1 || grade == 2 || grade == 3
+                           li.divider
+                           li
+                              a(href='/fee/register') 수입/지출 등록
+                           li
+                              a(href='/fee/charge') 회비 추가
+                           li
+                              a(href='/fee/manage') 회비 관리
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 당직
                      ul.dropdown-menu
@@ -78,18 +81,19 @@ body
                            a(href='/duty/point') 상벌당직 조회
                         li
                            a(href='/duty/checklist') CheckList
-                        li.divider
-                        li
-                           a(href='/duty/add') 상벌당직추가
-                        li
-                           a(href='/duty/modify') 상벌당직수정
-                        li
-                           a(href='/duty/setting') 당직설정
-                        li
-                           a(href='/duty/changeSetting') 당직 맞변경 관리
-                        li
-                           a(href='/duty/checkListSetting') CheckList설정
-
+                        if grade < 100
+                           li.divider
+                           li
+                              a(href='/duty/add') 상벌당직추가
+                           li
+                              a(href='/duty/modify') 상벌당직수정
+                        if grade == 1 || grade == 2 || grade == 5
+                           li
+                              a(href='/duty/setting') 당직설정
+                           li
+                              a(href='/duty/changeSetting') 당직 맞변경 관리
+                           li
+                              a(href='/duty/checkListSetting') CheckList설정
                   li
                      a(href='#') 스케쥴
                   li.dropdown
@@ -105,22 +109,39 @@ body
                            a(href='/apply/room') 프로젝트실
                         li
                            a(href='/apply/equipment') 비품
-                        li.divider.manage
-                        li.manage.server
-                           a(href='/apply/server/manage') 서버신청관리
-                        li.manage.projectroom
-                           a(href='/apply/room/manage') 프로젝트실신청관리
-                        li.manage.equipment
-                           a(href='/apply/equipment/manage') 비품신청관리
+                        case grade
+                           when 1
+                           when 2
+                              li.divider
+                                 li
+                                    a(href='/apply/server/manage') 서버신청관리
+                                 li
+                                    a(href='/apply/room/manage') 프로젝트실신청관리
+                                 li
+                                    a(href='/apply/equipment/manage') 비품신청관리
+                           when 5
+                              li.divider
+                                 li
+                                    a(href='/apply/equipment/manage') 비품신청관리
+                           when 6
+                              li.divider
+                                 li
+                                    a(href='/apply/room/manage') 프로젝트실신청관리
+                           when 8
+                              li.divider
+                                 li
+                                    a(href='/apply/server/manage') 서버신청관리
                   li
-                     a(href='/vote') 설문
+                     a(href='#') 설문
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 문의
                      ul.dropdown-menu
                         li
                            a(href='/qna') 신청
-                        li.manage.all
-                           a(href='/qna/manage') 관리
+                        if grade < 100
+                           li.divider
+                           li
+                              a(href='/qna/manage') 관리
                ul.nav.navbar-nav.navbar-right
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') USER
@@ -131,12 +152,15 @@ body
                            a(href='/user/members') 회원 목록
                         li
                            a(href='/user/lifeEvaluation') 생활 지수
-                        li
-                           a(href='/user/manage') 회원 관리
-                        li
-                           a(href='/user/finished') 수료 회원 관리
-                        li
-                           a(href='/logout') 로그아웃
+                        if grade == 1 || grade == 2
+                           li.divider
+                           li
+                              a(href='/user/manage') 회원 관리
+                           li
+                              a(href='/user/finished') 수료 회원 관리
+                           li.divider
+                           li
+                              a(href='/logout') 로그아웃
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') SYSTEM
                      ul.dropdown-menu
@@ -154,5 +178,3 @@ block foot
 block script
    script(src='http://code.jquery.com/jquery.js')
    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
-   script(src='../javascripts/main_layout_index.js')
-   script(src='../../javascripts/main_layout_index.js')

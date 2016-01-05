@@ -26,16 +26,16 @@ var total = 0;
 function loadlifeEvaluation(){
     $.post('/user/load_curlifeEval', function(datalist){
         var tableString = '<thead><tr class="warning"><th colspan="3">' + datalist[0][0].l_year + '년' + datalist[0][0].l_month + '월 생활등급' + '</th></tr></thead>';
-        tableString += '<tfoot><tr><th colspan="3"><button type="button" id="showhistoryButton" class="btn btn-info">과거등급 보기</button>';
+        tableString += '<tfoot><tr><th colspan="3"><button type="button" id="showhistoryButton" class="btn btn-info">과거등급 보기</button></th></tr>';
 
 
         if(datalist[1][0].u_state === 2 || datalist[1][0].u_state === '2'){
-            tableString += '<button type="button" id="addevalButton" class="btn btn-danger">생활등급 추가</button>';
-            tableString += '<button type="button" id="altercutButton" class="btn btn-success">등급컷 변경</button>';
+            tableString += '<tr><th colspan="3"><button type="button" id="addevalButton" class="btn btn-danger">생활등급 추가</button>';
+            tableString += '<button type="button" id="altercutButton" class="btn btn-success">등급컷 변경</button></th></tr>';
         }
 
 
-        tableString += '</th></tr></tfoot><tbody>';
+        tableString += '</tfoot><tbody>';
         tableString += '<tr><td>' + datalist[0][0].l_first + '</td><td>' + datalist[0][0].l_first_point + '</td><td>' + datalist[0][0].l_first_cnt + '</td></tr>';
         tableString += '<tr><td>' + datalist[0][0].l_second + '</td><td>' + datalist[0][0].l_second_point + '</td><td>' + datalist[0][0].l_second_cnt + '</td></tr>';
         tableString += '<tr><td>' + datalist[0][0].l_third + '</td><td>' + datalist[0][0].l_third_point + '</td><td>' + datalist[0][0].l_third_cnt + '</td></tr>';

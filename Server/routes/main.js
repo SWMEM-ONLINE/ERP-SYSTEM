@@ -11,7 +11,7 @@ var con = DB_handler.connectDB();
 
 /* GET users listing. */
 router.get('/', util.ensureAuthenticated, function(req, res, next) {
-    res.render('main', { title: '메인' });
+    res.render('main', { title: '메인', grade: util.getUserGrade(req) });
     //main_handler.loadBookMain(con, req, res);
     //main_handler.loadHardwareMain(con, req, res);
 });
