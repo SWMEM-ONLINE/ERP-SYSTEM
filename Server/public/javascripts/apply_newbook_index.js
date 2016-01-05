@@ -48,7 +48,8 @@ $('#newbookSearchBtn').click(function() {
     }
 });
 
-function settingHTML(datalist){
+function settingHTML(datalist, pageIndex, totalResults, searchWords, searchCategory){
+
     if(datalist.length === 0){
         toastr['info']('검사 결과가 없습니다');
     }else {
@@ -63,7 +64,6 @@ function settingHTML(datalist){
                 htmlString += '<td><img class="bookSmallImg" src="' + data.coverLargeUrl + '"></td>';
                 htmlString += '<td><div class="bookInfo">';
                 htmlString += '<h4 class="bookTitle">' + data.title +'</h4>';
-                console.log(response);
                 for(var i = 0; i < response.length; i++){
                     if(response[i].b_isbn === data.isbn){
                         htmlString += '<p><span class="label label-danger">' + response[i].cnt + '권 존재</span></p>';
@@ -78,20 +78,33 @@ function settingHTML(datalist){
 
             htmlString += '</tbody>';
             $('#newbooklist').html(htmlString);
+
+
             var pagination_string = '';
-            var number = parseInt(datalist.totalResults / datalist.maxResults) + 1;
+            var number = parseInt(totalResults / 20) + 1;
+
             for (var i = 1; i <= number; i++) {
                 pagination_string += '<li><a href="#">' + i + '</a></li>';
             }
+
             $('.pagination').html(pagination_string);
+
+            $('.pagination li:nth-child(' + pageIndex + ')').addClass('active');
+
+            $('.pagination li').click(function(){
+                var index = $(this).index();
+                getInterparklist(index+1, searchWords, searchCategory);
+            });
+
+
             $('.modal-title').text('도서 신청하기');
             $('#request').text('신청');
-            clickEvent(datalist);
+            clickEvent(datalist, pageIndex, totalResults, searchWords, searchCategory);
         });
     }
 }
 
-function clickEvent(datalist){
+function clickEvent(datalist, pageIndex, totalResults, searchWords, searchCategory){
     $('tr').click(function() {
         var index = $(this).index();
         var string = '';
@@ -108,7 +121,7 @@ function clickEvent(datalist){
                 }
                 else{
                     toastr['info']('도서신청에 성공했습니다');
-                    settingHTML(datalist);
+                    settingHTML(datalist, pageIndex, totalResults, searchWords, searchCategory);
                 }
             });
             $('div.modal').modal('hide');
@@ -133,13 +146,7 @@ function getInterparklist(pageIndex, searchWords, searchCategory) {
         async : true,
         dataType : 'jsonp',
         success:function(response){
-            settingHTML(response.item, 0);
-            //clickEvent(response.item, 0);
-            $('.pagination li:nth-child(' + pageIndex + ')').addClass('active');
-            $('.pagination li').click(function(){
-                var index = $(this).index();
-                getInterparklist(index+1, searchWords, searchCategory);
-            });
+            settingHTML(response.item, pageIndex, response.totalResults, searchWords, searchCategory);
         },
         error:function(response){
             toastr['info']('검색에 실패하였습니다. 다시 시도해주세요');
