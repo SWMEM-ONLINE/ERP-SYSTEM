@@ -55,9 +55,10 @@ function loadTodayDuty(){
 
         if(flag==1){
             $('.content-today_duty').html("<p> 이번달 당직이 없습니다 </p>");
+        }else{
+            $('.content-today_duty').html(htmlString);
         }
 
-        $('.content-today_duty').html(htmlString);
 
 
     });
