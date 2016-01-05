@@ -157,12 +157,12 @@ CREATE TABLE t_hardware_apply (
   ha_role VARCHAR(50),
   ha_upper_category VARCHAR(20),
   ha_lower_category VARCHAR(20),
-  ha_item_name VARCHAR(50),
+  ha_item_name VARCHAR(100),
   ha_size VARCHAR(20),
   ha_amount int,
   ha_maker VARCHAR(50),
   ha_link VARCHAR(500),
-  ha_result int,
+  ha_result int default 0,
   ha_explain VARCHAR(200),
   FOREIGN KEY(ha_requester) REFERENCES t_user(u_id)
   );
