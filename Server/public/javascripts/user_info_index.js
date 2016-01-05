@@ -50,7 +50,7 @@ $('input[type=file]').change(function(e) {
 
 $('#form').submit(function(){
     var emailReg =  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-    var phoneReg = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
+    var phoneReg = /^01[0-9]{1}[0-9]{4}[0-9]{4}$/;
     var editSuccess = true;
 
     if(currentPW.val() == ''){
