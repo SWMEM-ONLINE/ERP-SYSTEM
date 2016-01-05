@@ -144,8 +144,11 @@ function reserveBook(con, req, res){
 function loadnowHistory(con, req, res){
     var query = 'select * from t_book_rental a inner join t_book b on a.br_book_id=b.b_id inner join t_user c on a.br_user=c.u_id';
     con.query(query, function(err, response){
-        if(err)
+        console.log(response);
+        if(err){
             res.send('failed');
+            throw err
+        }
         res.send(response);
     });
 }

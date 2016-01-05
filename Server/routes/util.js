@@ -197,35 +197,35 @@ function checkAuth(req) {
         case '/manage/loadnowHistory':
         case '/manage/loadinArrears':
         case '/manage/loadmissingBook':                                  //도서 관리
-            if(grade < 2 || grade == 4) //운영자, 회장, 자재부장
+            if(grade <= 2 || grade == 4) //운영자, 회장, 자재부장
                 result = true;
             break;
         case '/manage/item':
         case '/manage/loadapplylist':
         case '/manage/loadnowHistory':                                   //하드웨어 관리
-            if(grade < 2 || grade == 4) //운영자, 회장, 자재부장
+            if(grade <= 2 || grade == 4) //운영자, 회장, 자재부장
                 result = true;
             break;
         case '/register':
         case '/charge':
         case '/manage':                                             //회비 관리
-            if(grade < 3) //운영자, 회장, 총무
+            if(grade <= 3) //운영자, 회장, 총무
                 result = true;
             break;
         case '/getApplyList/2':                                     //서버신청 관리
-            if(grade < 2 || grade == 8) //운영자, 회장, 네트워크장
+            if(grade <= 2 || grade == 8) //운영자, 회장, 네트워크장
                 result = true;
             break;
         case '/getApplyList/1':                                     //프로젝트실신청 관리
-            if(grade < 2 || grade == 6) //운영자, 회장, 세미나장
+            if(grade <= 2 || grade == 6) //운영자, 회장, 세미나장
                 result = true;
             break;
         case '/getApplyList/3':                                     //비품신청 관리
-            if(grade < 2 || grade == 5) //운영자, 회장, 생활장
+            if(grade <= 2 || grade == 5) //운영자, 회장, 생활장
                 result = true;
             break;
         case '/qnalist':                                            //문의 관리
-            if(grade < 2) //운영자, 회장
+            if(grade <= 2) //운영자, 회장
                 result = true;
             break;
         case '/finished':                                           //수료회원 목록
@@ -252,7 +252,7 @@ function checkAuth(req) {
         case '/updateMemberPoint':
         case '/autoMakeDuty':
         case '/showChangeDutyHistroryAll':
-            if(grade < 2 || grade == 5) //운영자, 회장, 생활장
+            if(grade <= 2 || grade == 5) //운영자, 회장, 생활장
                 result = true;
             break;
         default:
