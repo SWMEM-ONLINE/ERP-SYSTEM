@@ -13,7 +13,7 @@ function connectDB(){
     var connection = mysql.createConnection({
         host : '127.0.0.1',
         user : 'root',
-        port : '3306',
+        port : '3001',
         password : 'qwer1234',
         database : 'swmem',
         multipleStatements : true
