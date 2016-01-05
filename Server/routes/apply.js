@@ -39,7 +39,7 @@ router.post('/newbook/checkDuplication', function(req, res){
 /* apply push */
 /* @room */
 router.get('/room', util.ensureAuthenticated, function(req, res, next) {
-    var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_ROOM+' Order by a_write_date';
+    var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_ROOM+' and a_due_date > "'+ util.getCurDate() +'" Order by a_write_date';
     con.query(query, function(err,rows){
         if (err) {
             console.error(err);
@@ -82,7 +82,7 @@ router.post('/server', util.ensureAuthenticated, function(req, res, next) {
 
 /* @equipment */
 router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
-    var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_EQUIPMENT+' Order by a_write_date';
+    var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_EQUIPMENT+' and a_due_date > "'+ util.getCurDate() +'" Order by a_write_date';
     con.query(query, function(err,rows){
         if (err) {
             console.error(err);

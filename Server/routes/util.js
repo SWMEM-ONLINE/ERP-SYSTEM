@@ -266,7 +266,20 @@ function checkAuth(req) {
 function getCurDateWithTime(){
 
     var now = new Date();
-    var datetime = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate();
+    var datetime = now.getFullYear();
+    var month = (now.getMonth()+1);
+    var date = now.getDate();
+
+    if(month < 10)
+        datetime += '/0'+month;
+    else
+        datetime += '/'+month;
+
+    if(date < 10)
+        datetime += '/0'+date;
+    else
+        datetime += '/'+date;
+
     var hour = now.getHours();
     var minute = now.getMinutes();
     var second = now.getSeconds();
@@ -292,8 +305,20 @@ function getCurDateWithTime(){
 function getCurDate(){
 
     var now = new Date();
-    var datetime = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate();
+    var datetime = now.getFullYear();
+    var month = (now.getMonth()+1);
+    var date = now.getDate();
 
+    if(month < 10)
+        datetime += '/0'+month;
+    else
+        datetime += '/'+month;
+
+    if(date < 10)
+        datetime += '/0'+date;
+    else
+        datetime += '/'+date;
+    
     return datetime;
 }
 
@@ -306,7 +331,7 @@ function getYear(date){
 
 function getMonth(date){
     if(10<date.length){
-        return date.substring(5,7);;
+        return date.substring(5,7);
     }
     return 0;
 }
