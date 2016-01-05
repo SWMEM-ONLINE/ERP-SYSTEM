@@ -9,14 +9,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,15 +34,21 @@ public class MainActivity extends Activity {
 
     // Javascript 함수처리를 위한 핸들러
     private final Handler handler = new Handler();
+
+    // 토큰을 받은것에 대한 리시버를 등록한다
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private WebView myWebView;
+
+    // 보여주기 위한 웹뷰
+   private WebView myWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         registBroadcastReceiver();
+
+
+
         getInstanceIdToken();
 
 
@@ -56,10 +58,6 @@ public class MainActivity extends Activity {
         webSettings.setJavaScriptEnabled(true);
         myWebView.loadUrl(URL);
         myWebView.addJavascriptInterface(new JavaScriptInterface(), "Android");
-
-
-       // myWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
-
 
     }
 
@@ -78,7 +76,7 @@ public class MainActivity extends Activity {
                 String action = intent.getAction();
 
                 if(action.equals(QuickstartPreferences.REGISTRATION_READY)){
-
+                    //asdf/
 
                 } else if(action.equals(QuickstartPreferences.REGISTRATION_GENERATING)){
                     Toast.makeText(getApplicationContext(), "현재 푸쉬서버 등록중입니다 ", Toast.LENGTH_SHORT).show();
@@ -103,8 +101,7 @@ public class MainActivity extends Activity {
                 new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
 
     }
-    /**
-     */
+
 
     @Override
     protected void onPause() {
@@ -149,29 +146,20 @@ public class MainActivity extends Activity {
 
             if(resultCode == Activity.RESULT_OK)
             {
+
                 String contents = data.getStringExtra("data");
                 //위의 contents 값에 scan result가 들어온다.
 
-                Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_SHORT).show();
-
-
+                //myWebView.loadUrl("javascript:<함수명>('<arg>')");
+                myWebView.loadUrl("javascript:" +
+                        "toastr['info']('" + contents+"');" +
+                        "");
             }
-
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
 
-    public class MyWebViewClient extends WebViewClient {
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            // TODO Auto-generated method stub
-            myWebView.loadUrl(url);
-            return true;
-        }
-    }
     private class JavaScriptInterface
     {
         @JavascriptInterface
@@ -189,22 +177,36 @@ public class MainActivity extends Activity {
                 }
             });
 
+        }
 
+        public void hasToken(){
+            handler.post(new Runnable() {
+                public void run() {
+
+                }
+            });
+
+        }
+
+        public void sendToken(){
+            handler.post(new Runnable() {
+                public void run() {
+
+                }
+            });
+
+        }
+
+        public void getDeviceInformation(){
+            handler.post(new Runnable() {
+                public void run() {
+
+                }
+            });
 
         }
 
 
 
-
     }
-
-    public void startQR(){
-        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-
-        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-
-        startActivityForResult(intent, REQUEST_RENT);
-    }
-
-
 }
