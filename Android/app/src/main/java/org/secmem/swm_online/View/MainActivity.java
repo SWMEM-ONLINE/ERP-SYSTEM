@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
@@ -24,7 +25,6 @@ import org.secmem.swm_online.R;
 
 public class MainActivity extends Activity {
 
-
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
     //private static final String URL = "http:211.189.127.124:3000";
@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
 
     // 보여주기 위한 웹뷰
    private WebView myWebView;
+    private String deviceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         registBroadcastReceiver();
 
-
+        deviceName = Build.MANUFACTURER + " " + Build.MODEL ;
 
         //getInstanceIdToken();
 
@@ -86,7 +87,7 @@ public class MainActivity extends Activity {
                     String token = intent.getStringExtra("token");
                     //Toast.makeText(getApplicationContext(), "등록이 완료되었습니다", Toast.LENGTH_SHORT).show();
                     myWebView.loadUrl("javascript:" +
-                            "getToken('"+token+"');" +
+                            "getToken('"+token+"','"+deviceName+"');" +
                             "");
                     // myWebView.loadUrl("/duty/inquiry");
                 }

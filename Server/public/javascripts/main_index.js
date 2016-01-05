@@ -199,8 +199,8 @@ function hasToken(){
     });
 }
 
-function getToken(token){
-    $.post('/main/getToken',{ token : token, device : "samsung"} , function(response){
+function getToken(token,device){
+    $.post('/main/getToken',{ token : token, device : device} , function(response){
         if(response=="success"){
             toastr['success']('기기 등록 완료');
         }else{
