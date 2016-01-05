@@ -229,12 +229,29 @@ function checkAuth(req) {
                 result = true;
             break;
         case '/finished':                                           //수료회원 목록
+        case '/add':                                                //상벌당직 추가
+        case '/modify':                                             //상벌당직 수정
+        case '/getMemberList':
+        case '/addPoint':
+        case '/getAddPoint':
+        case '/modifyPointHistoty':
+        case '/removePointHistory':
             if(grade < 10) //운영자, 자치회
                 result = true;
             break;
         case '/setting':                                             //당직 관리
         case '/changeSetting':
-        case '/inquireAllCheckList':
+        case '/checkListSetting':
+        case '/deleteCheckList':
+        case '/modifyCheckList':
+        case '/insertCheckList':
+        case '/deleteBadCheckList':
+        case '/modifyBadCheckList':
+        case '/insertBadCheckList':
+        case '/inquireALLBadCheckList':
+        case '/updateMemberPoint':
+        case '/autoMakeDuty':
+        case '/showChangeDutyHistroryAll':
             if(grade < 2 || grade == 5) //운영자, 회장, 생활장
                 result = true;
             break;
@@ -243,7 +260,6 @@ function checkAuth(req) {
                 result = true;
             break;
     }
-
     return result;
 }
 
