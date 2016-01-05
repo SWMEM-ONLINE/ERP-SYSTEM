@@ -71,8 +71,6 @@ function hasToken(con, req, res){
             }
         }
     });
-
-
 }
 function getToken(con, req, res){
 
