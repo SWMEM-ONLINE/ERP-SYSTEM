@@ -252,7 +252,7 @@ function checkAuth(req) {
         case '/updateMemberPoint':
         case '/autoMakeDuty':
         case '/showChangeDutyHistroryAll':
-            if(grade < 2 || grade == 5) //운영자, 회장, 생활장
+            if(grade <= 2 || grade == 5) //운영자, 회장, 생활장
                 result = true;
             break;
         default:
