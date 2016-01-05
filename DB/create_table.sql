@@ -31,10 +31,10 @@ DROP TABLE IF EXISTS `t_book`;
 CREATE TABLE t_book (
   b_id int NOT NULL auto_increment primary key,
   b_type int,
-  b_name VARCHAR(150),
+  b_name VARCHAR(200),
   b_isbn VARCHAR(20),
-  b_author VARCHAR(100),
-  b_publisher VARCHAR(30),
+  b_author VARCHAR(200),
+  b_publisher VARCHAR(50),
   b_location VARCHAR(10),
   b_photo_url VARCHAR(200),
   b_state int DEFAULT '0',
