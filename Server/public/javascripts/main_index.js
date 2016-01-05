@@ -182,14 +182,14 @@ function hasToken(){
         console.log(response);
 
         if(response =="true"){
-            window.Android.getToken();
+
         }
         else if(response == "error"){
             toastr['error']('디비 접근 에러.');
 
         }
-        else if(response == "fail"){
-            toastr['error']('토큰이 존재하지 않습니다');
+        else if(response == "false"){
+            window.Android.getToken();
 
         }
         else{
