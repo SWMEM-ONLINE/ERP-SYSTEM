@@ -1,0 +1,93 @@
+/**
+ * Created by jung-inchul on 2015. 11. 24..
+ */
+
+
+article.container{
+    text-align: center;
+}
+
+div.content{
+    text-align: center;
+}
+
+@media(max-width:992px) {
+    .container{
+        padding: 0;
+    }
+    article.container{
+        padding: 0;
+    }
+    div.content{
+        width:100%;
+        margin:0;
+    }
+    div.content table{
+        width: 100%;
+    }
+}
+@media(min-width:992px) {
+    div.content{
+        width:993px;
+        margin:auto;
+    }
+}
+
+.btn-group-vertical{
+    vertical-align: middle;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+    background-color: #122359;
+}
+
+.nav-pills>li>a{
+    background-color: #dfdfdf;
+    color: black;
+}
+
+.btn-group-vertical{
+    vertical-align: middle;
+}
+
+table th{
+    text-align: center;
+    vertical-align: middle;
+}
+
+div.input-group{
+    margin:0 auto;
+    text-align: center;
+}
+
+hr {
+    border:1px solid #dddddd;
+}
+
+button{
+    background-color: #122359;
+    border:none;
+    color:white;
+    height: 36px;
+}
+
+table#lifeEvaluationTable{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table#gradecutTable {
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table td {
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    text-align: center;
+}

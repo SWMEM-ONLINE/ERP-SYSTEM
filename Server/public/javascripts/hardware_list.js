@@ -87,8 +87,8 @@ function clickEvent(datalist){
             $('button#request').unbind().click(function(){
                 if(datalist[index].h_remaining != 0){
                     $.post("/hardware/borrow", {hardware_id: datalist[index].h_id}, function(response){
-                        if(response === 'success')  toastr['success']('대여 성공');
-                        else    toastr['error']('대여 실패');
+                        if(response === 'success')  toastr['success']('대여신청 성공');
+                        else    toastr['error']('대여신청 실패');
                         loadHardwarelist();
                     });        // borrow hardware
                     $('div.modal').modal('hide');
