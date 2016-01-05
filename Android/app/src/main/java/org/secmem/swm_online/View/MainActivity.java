@@ -33,11 +33,8 @@ public class MainActivity extends Activity {
     private static final String URL = "http:211.189.127.124:3000";
     private static int REQUEST_RENT = 0;
 
-    private Button qrButton;
-    private Button mRegistrationButton;
-    private ProgressBar mRegistrationProgressBar;
+
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private TextView mInformationTextView;
     private WebView myWebView;
 
     @Override
@@ -46,42 +43,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         registBroadcastReceiver();
-        mInformationTextView = (TextView) findViewById(R.id.informationTextView);
-        mInformationTextView.setVisibility(View.GONE);
-
-        mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
-        mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
-        qrButton =  (Button) findViewById(R.id.qr_btn);
-        mRegistrationButton = (Button) findViewById(R.id.registrationButton);
-
-        mRegistrationButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * @param view
-             */
-            @Override
-            public void onClick(View view) {
-                getInstanceIdToken();
-            }
-        });
-
-        qrButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-
-                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-
-                startActivityForResult(intent, REQUEST_RENT);
+        getInstanceIdToken();
 
 
-            }
-        });
-
-
-        //걍 실행되자마자 토큰 갖어오게 해둠
-       // getInstanceIdToken();
-
-        // 웹뷰 설정
         myWebView = (WebView) findViewById(R.id.webview);
         myWebView.setWebViewClient(new WebViewClient());
         WebSettings webSettings = myWebView.getSettings();
@@ -110,18 +74,15 @@ public class MainActivity extends Activity {
                 String action = intent.getAction();
 
                 if(action.equals(QuickstartPreferences.REGISTRATION_READY)){
-                    mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
-                    mInformationTextView.setVisibility(View.GONE);
+
+
                 } else if(action.equals(QuickstartPreferences.REGISTRATION_GENERATING)){
-                    mRegistrationProgressBar.setVisibility(ProgressBar.VISIBLE);
-                    mInformationTextView.setVisibility(View.VISIBLE);
-                    mInformationTextView.setText(getString(R.string.registering_message_generating));
+                    Toast.makeText(getApplicationContext(), "현재 푸쉬서버 등록중입니다 ", Toast.LENGTH_SHORT).show();
+
+
                 } else if(action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)){
-                    mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
-                    mRegistrationButton.setText(getString(R.string.registering_message_complete));
-                    mRegistrationButton.setEnabled(false);
-                    String token = intent.getStringExtra("token");
-                    mInformationTextView.setText(token);
+                    Toast.makeText(getApplicationContext(), "등록이 완료되었습니다", Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -198,8 +159,6 @@ public class MainActivity extends Activity {
         QRcode 핸들러 정의
 
      */
-
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(requestCode == REQUEST_RENT) {
@@ -210,15 +169,14 @@ public class MainActivity extends Activity {
                 //위의 contents 값에 scan result가 들어온다.
 
                 Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_SHORT).show();
-                mInformationTextView.setText(contents);
+
+
             }
 
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-
 
 
     public class MyWebViewClient extends WebViewClient {
@@ -243,6 +201,14 @@ public class MainActivity extends Activity {
             startActivityForResult(intent, REQUEST_RENT);
 
         }
+    }
+
+    public void startQR(){
+        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+
+        startActivityForResult(intent, REQUEST_RENT);
     }
 
 
