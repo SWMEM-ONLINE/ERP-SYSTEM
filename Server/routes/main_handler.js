@@ -56,7 +56,7 @@ function hasToken(con, req, res){
             if(response.length ==1){
                 var data = response[0];
                 var token = data.u_token;
-                if(token == null || token == "undefine")
+                if(token == null || token == "undefined" || token == "")
                 {
                     res.send("false");
                 }
