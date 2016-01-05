@@ -24,9 +24,10 @@ function loadTodayDuty(){
 
     $.post('/duty/loadTodayDuty' , function(response){
         // type , month , date ,year
-        var flag = 1;
+        console.log(response);
         var htmlString = '';
         var data = response;
+        console.log(data);
 
         if(data.name1!= null){
             flag=0;
@@ -53,12 +54,15 @@ function loadTodayDuty(){
                 '</label>';
         }
 
-        if(flag==1){
-            $('.content-today_duty').html("<p> 이번달 당직이 없습니다 </p>");
-        }else{
-            $('.content-today_duty').html(htmlString);
+        if(data === "no data"){
+            console.log("ddd");
+            htmlString = '<p><label style="text-overflow: ellipsis;">'
+                + '오늘의 당직이 없습니다.' +
+                '</label>';
+            console.log(htmlString);
         }
 
+        $('#content-today_duty').html(htmlString);
 
 
     });
@@ -104,6 +108,10 @@ function loadMyDuty(){
             }
         });
 
+        if(response.length==0){
+            htmlString = "<p style='text-overflow: ellipsis;'> 이번달 당직이 없습니다. </p>"
+        }
+
         $('.content-my_duty').html(htmlString);
 
 
@@ -129,7 +137,7 @@ function loadmyBook(){
 function settingHTML(datalist, flag){
     var htmlString = '';
     if(datalist.length === 0){
-        if(flag === 'book') htmlString += '<p> 대여중인 도서가 없습니다 </p>';
+        if(flag === 'book') htmlString += '<p> 대여중인 도서가 없습니다. </p>';
         else htmlString += '<p> 대여중인 하드웨어가 없습니다.'
     }else{
         $.each(datalist, function(idx, data){

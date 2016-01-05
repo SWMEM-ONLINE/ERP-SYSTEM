@@ -97,3 +97,6 @@ INSERT INTO `swmem`.`t_duty_bad_checklist` (`day`, `section`, `content`) VALUES 
 
 INSERT INTO `swmem`.`t_duty_bad_checklist` (`day`, `section`, `content`) VALUES ('일', '프로젝트실', '바닥청소(빗자루질&대걸레질)');
 INSERT INTO `swmem`.`t_duty_bad_checklist` (`day`, `section`, `content`) VALUES ('일', '프로젝트실', '의자 및 책상 정리');
+
+INSERT INTO `swmem`.`t_life` (`l_id`, `l_year`, `l_month`, `l_recent`, `l_first`, `l_first_cnt`, `l_first_point`, `l_second`, `l_second_cnt`, `l_second_point`, `l_third`, `l_third_cnt`, `l_third_point`, `l_fourth`, `l_fourth_cnt`, `l_fourth_point`, `l_fifth`, `l_fifth_cnt`, `l_fifth_point`, `l_total`, `l_grade`) VALUES ('1', '2015', '12', '1', '사진', '11', '3', '당직 미흡', '0', '6', '당직 굿', '31', '-1', '-', '0', '0', '-', '0', '0', '2', 'A');
+INSERT INTO `swmem`.`t_life_cut` (`lc_id`, `lc_a`, `lc_b`) VALUES ('1', '20', '30');

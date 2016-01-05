@@ -189,6 +189,10 @@ router.post('/deleteBadCheckList', util.ensureAuthenticated, function(req, res){
     checklist_handler.deleteBadCheckList(con,req,res);
 });
 
+router.post('/getRecentGrade', util.ensureAuthenticated, function(req, res){
+    checklist_handler.getRecentGrade(con,req,res);
+});
+
 
 
 module.exports = router;

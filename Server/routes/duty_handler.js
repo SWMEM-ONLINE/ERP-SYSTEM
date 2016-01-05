@@ -1677,7 +1677,7 @@ function loadTodayDuty(con,req,res){
 
             if(response.length ==0){
 
-                res.send({});
+                res.send("no data");
 
             }
             else{

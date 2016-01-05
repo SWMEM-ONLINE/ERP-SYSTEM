@@ -20,9 +20,10 @@ function inquireCheckList(con,req,res){
             res.send(err);
         }
         else{
-
             for(var i = 0 ; i< response.length; i++){
-               sendData.push(response[i]);
+                var data = response[i];
+
+               sendData.push(data);
             }
 
             res.send(sendData);
@@ -288,6 +289,35 @@ function deleteBadCheckList(con,req,res){
 
 }
 
+
+function getRecentGrade(con,req,res){
+
+    var query = "SELECT l_grade FROM swmem.t_life where l_recent = 1;";
+
+    console.log(query);
+    con.query(query,function(err,response){
+
+        if(err){
+            console.log("error");
+            res.send("error");
+        }else{
+            console.log(response);
+
+            var data = response[0];
+            var grade = data.l_grade;
+
+            console.log(response);
+            console.log(data);
+            console.log(grade);
+            res.send(grade);
+
+        }
+
+    });
+}
+
+
+
 exports.inquireCheckList = inquireCheckList;
 exports.inquireAllCheckList = inquireAllCheckList;
 exports.insertCheckList = insertCheckList;
@@ -299,4 +329,6 @@ exports.inquireALLBadCheckList = inquireALLBadCheckList;
 exports.insertBadCheckList = insertBadCheckList;
 exports.modifyBadCheckList = modifyBadCheckList;
 exports.deleteBadCheckList = deleteBadCheckList;
+
+exports.getRecentGrade = getRecentGrade;
 
