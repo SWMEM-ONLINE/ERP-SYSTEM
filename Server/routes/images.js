@@ -20,28 +20,58 @@ router.get('/', function(req, res, next) {
 
         if (err) {
             console.log(err);
-            throw err;
-        } // Fail if the file can't be read.
+            name = 'noImage.jpg';
+            fs.stat("./uploads/"+name, function(err, stat) {
 
+                if (err) {
+                    console.log(err);
+                    res.json({status:'1'});
+                }else{
 
-        var ext = name.substring(name.lastIndexOf(".")+1);  // jpg
+                    var ext = name.substring(name.lastIndexOf(".")+1);  // jpg
 
-        var rs;
-        res.writeHead(200, {
-            'Content-Type' : 'image/' + ext,
-            'Content-Length' : stat.size,
-        });
+                    var rs;
+                    res.writeHead(200, {
+                        'Content-Type' : 'image/' + ext,
+                        'Content-Length' : stat.size,
+                    });
 
-        rs = fs.createReadStream("./uploads/" + name); // public/img.jpg을 읽는다
+                    rs = fs.createReadStream("./uploads/" + name); // public/img.jpg을 읽는다
 
-        util.pump(rs, res, function(err) {
+                    util.pump(rs, res, function(err) {
 
-            if(err) {
-                console.log(err);
-                throw err;
-            }
+                        if(err) {
+                            console.log(err);
+                            res.json({status:'1'});
+                        }
 
-        });
+                    });
+
+                }
+
+            });
+        }else{
+
+            var ext = name.substring(name.lastIndexOf(".")+1);  // jpg
+
+            var rs;
+            res.writeHead(200, {
+                'Content-Type' : 'image/' + ext,
+                'Content-Length' : stat.size,
+            });
+
+            rs = fs.createReadStream("./uploads/" + name); // public/img.jpg을 읽는다
+
+            util.pump(rs, res, function(err) {
+
+                if(err) {
+                    console.log(err);
+                    res.json({status:'1'});
+                }
+
+            });
+
+        }
 
     });
 
