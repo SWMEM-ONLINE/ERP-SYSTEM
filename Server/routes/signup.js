@@ -26,7 +26,7 @@ router.post('/', function(req, res, next) {
     var uState = 104;
     var uPeriod = req.body.period;
     var uBranch = 'sw';
-    var uDevice = 0;
+    var uDevice = '';
     var uToken = '';
     var uMileage = 0;
     var uGoodPoint = 0;
@@ -35,8 +35,8 @@ router.post('/', function(req, res, next) {
     var uPhotoUrl = req.files.sign_up_img.name;
 
 
-    console.log('u_name:'+userName) // form files
-    console.log('uPhotoUrl:'+uPhotoUrl) // form files
+    console.log('u_name:'+userName); // form files
+    console.log('uPhotoUrl:'+uPhotoUrl); // form files
 
     var connection = db_handler.connectDB();
 
