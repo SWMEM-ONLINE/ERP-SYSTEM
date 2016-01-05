@@ -163,6 +163,7 @@ CREATE TABLE t_hardware_apply (
   ha_maker VARCHAR(50),
   ha_link VARCHAR(500),
   ha_result int,
+  ha_explain VARCHAR(200),
   FOREIGN KEY(ha_requester) REFERENCES t_user(u_id)
   );
 

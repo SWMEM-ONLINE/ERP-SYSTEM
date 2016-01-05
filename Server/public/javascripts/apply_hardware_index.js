@@ -179,7 +179,6 @@ $('#submit').click(function(){
     else{
         var temp1 = JSON.stringify(arr);
         console.log(arr);
-        console.log(temp1);
         $.ajax({
             type:'post',
             url:'/apply/hardware',
