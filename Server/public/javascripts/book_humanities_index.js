@@ -24,9 +24,9 @@ var flag_category = 0;                                                  // This 
 var category = ['b_name', 'b_author', 'b_publisher'];                   // Dropdown contents
 
 
-window.Android.callQRActivity();
-
-
+$("#borrowUsingQRcode").click(function(){
+    window.Android.callQRActivity();
+});
 
 
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
@@ -30,10 +31,13 @@ public class MainActivity extends Activity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
-    private static final String URL = "http:211.189.127.124:3000";
+    //private static final String URL = "http:211.189.127.124:3000";
+    private static final String URL = "http:52.69.176.156:3000";
+
     private static int REQUEST_RENT = 0;
 
-
+    // Javascript 함수처리를 위한 핸들러
+    private final Handler handler = new Handler();
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private WebView myWebView;
 
@@ -135,26 +139,6 @@ public class MainActivity extends Activity {
         }
     }
 
-//    @Override
-//    public boolean onKeyUp(int keyCode, KeyEvent event) {
-//        // TODO Auto-generated method stub
-//        if(keyCode == KeyEvent.KEYCODE_MENU){
-//            if(isMenuOpen){
-//                translateOutAnim.start();
-//                isMenuOpen = false;
-//            }
-//            else{
-//                translateInAnim.start();
-//                isMenuOpen = true;
-//            }
-//
-//            return true;
-//        }
-//        return super.onKeyUp(keyCode, event);
-//    }
-
-
-
     /*
         QRcode 핸들러 정의
 
@@ -192,15 +176,26 @@ public class MainActivity extends Activity {
     {
         @JavascriptInterface
         public void callQRActivity(){
-            // do sth..
-            Toast.makeText(MainActivity.this,"QR Activity called by javascript",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 
-            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+            handler.post(new Runnable() {
+                public void run() {
+                    Toast.makeText(MainActivity.this, "QR Activity called by javascript", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 
-            startActivityForResult(intent, REQUEST_RENT);
+                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+
+                    startActivityForResult(intent, REQUEST_RENT);
+
+                }
+            });
+
+
 
         }
+
+
+
+
     }
 
     public void startQR(){
