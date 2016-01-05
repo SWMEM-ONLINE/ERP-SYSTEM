@@ -3,8 +3,9 @@
  */
 $('#loginButton').submit(function(){
     var broswerInfo = navigator.userAgent;
+    var userid = document.getElementById('login_id');
     if(broswerInfo.indexOf("APP_SWMEM_ANDROID")>-1){
-        alert($('#login_id').val());
-        window.SWMEM_ANDROID.sendDeviceAndToken($('#login_id').val());
+        alert(userid);
+        window.SWMEM_ANDROID.sendDeviceAndToken(userid);
     }
 });
