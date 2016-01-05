@@ -228,18 +228,11 @@ function checkAuth(req) {
             if(grade < 2) //운영자, 회장
                 result = true;
             break;
-        case '/userlist':
-        case '/finished':                                           //회원 목록, 수료회원 목록
+        case '/finished':                                           //수료회원 목록
             if(grade < 10) //운영자, 자치회
                 result = true;
             break;
-        case '/members':                                            //회원 관리
-            if(grade < 2) //운영자, 회장
-                result = true;
-            break;
-        case '/getMemberList':                                      //당직 관리
-        case '/getUser':
-        case '/setting':
+        case '/setting':                                             //당직 관리
         case '/changeSetting':
         case '/inquireAllCheckList':
             if(grade < 2 || grade == 5) //운영자, 회장, 생활장
