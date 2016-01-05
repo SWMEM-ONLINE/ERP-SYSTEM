@@ -78,18 +78,14 @@ public class MainActivity extends Activity {
 
                 if(action.equals(QuickstartPreferences.REGISTRATION_READY)){
                     //asdf/
-
                 } else if(action.equals(QuickstartPreferences.REGISTRATION_GENERATING)){
-                    Toast.makeText(getApplicationContext(), "현재 푸쉬서버 등록중입니다 ", Toast.LENGTH_SHORT).show();
-
-
+                    //Toast.makeText(getApplicationContext(), "현재 푸쉬서버 등록중입니다 ", Toast.LENGTH_SHORT).show();
                 } else if(action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)){
                     String token = intent.getStringExtra("token");
                     //Toast.makeText(getApplicationContext(), "등록이 완료되었습니다", Toast.LENGTH_SHORT).show();
                     myWebView.loadUrl("javascript:" +
                             "getToken('"+token+"','"+deviceName+"');" +
                             "");
-                    // myWebView.loadUrl("/duty/inquiry");
                 }
 
             }
@@ -106,7 +102,6 @@ public class MainActivity extends Activity {
                 new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
 
     }
-
 
     @Override
     protected void onPause() {
