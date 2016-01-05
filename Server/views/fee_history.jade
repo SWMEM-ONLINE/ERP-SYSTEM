@@ -40,21 +40,22 @@ block content
                                         td.text-danger= row.fm_price
                                     else
                                         td.text-primary= row.fm_price
-                            tfoot
-                                tr
-                                    td
-                                    td
-                                    th 월 수입
-                                    td.text-primary= deposit
-                                tr
-                                    td
-                                    td
-                                    th 월 지출
-                                    td.text-danger= withdraw
-                                tr
-                                    td(colspan=4)
-                                        button#excelSave(type='button') 엑셀로 저장
+                    tfoot
+                        if result.length != 0
+                            tr
+                                td
+                                td
+                                th 월 수입
+                                td.text-primary= deposit
+                            tr
+                                td
+                                td
+                                th 월 지출
+                                td.text-danger= withdraw
+                            tr
+                                td(colspan=4)
+                                    button#excelSave(type='button') 엑셀로 저장
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
-    script(src='../javascripts/apply_history_index.js')
+    script(src='../javascripts/fee_history_index.js')
 

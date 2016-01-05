@@ -9,9 +9,23 @@ $('.datepicker').datepicker({
         autoclose: true
 });
 
+getFeeList();
+
+function getFeeList(){
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        $('.datepicker').val(year+'년 '+month+'월');
+        feeList(year, month);
+}
+
 $('.datepicker').on('changeDate',function(event){
         var year = event.date.getFullYear();
         var month = event.date.getMonth() + 1;
+        feeList(year,month);
+});
+
+function feeList(year,month){
         if(month < 10){
                 month = '0' + month;
         }
@@ -58,4 +72,4 @@ $('.datepicker').on('changeDate',function(event){
                 $('.table tbody').html(string);
                 $('.table tfoot').html(tfoot);
         });
-});
+}
