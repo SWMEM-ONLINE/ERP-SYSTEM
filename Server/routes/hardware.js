@@ -13,7 +13,7 @@ var hardware_handler = require('./hardware_handler');
  *  Part. Borrow hardware
  */
 router.get('/assign', util.ensureAuthenticated, function(req, res, next) {
-    res.render('hardware_list', { title: '하드웨어 대여' });
+    res.render('hardware_list', { title: '하드웨어 대여', grade: util.getUserGrade(req) });
 });
 
 router.post('/loadHardwarelist', util.ensureAuthenticated, function(req, res){
@@ -32,7 +32,7 @@ router.post('/lender', util.ensureAuthenticated, function(req, res){
  *  Part. My hardware
  */
 router.get('/myhardware',util.ensureAuthenticated, function(req, res, next) {
-    res.render('hardware_myhardware', { title: '나의 하드웨어' });
+    res.render('hardware_myhardware', { title: '나의 하드웨어', grade: util.getUserGrade(req) });
 });
 
 router.post('/myhardware/borrowed',util.ensureAuthenticated, function(req, res){
@@ -68,7 +68,7 @@ router.post('/myhardware/cancelmyApply', util.ensureAuthenticated, function(req,
  */
 
 router.get('/manage/item', util.ensureAuthenticated, function(req, res, next){
-    res.render('hardware_manage_item', { title: '하드웨어 관리'});
+    res.render('hardware_manage_item', { title: '하드웨어 관리', grade: util.getUserGrade(req)});
 });
 
 router.post('/manage/enroll', util.ensureAuthenticated, function(req, res){
@@ -84,7 +84,7 @@ router.post('/manage/delete', util.ensureAuthenticated, function(req, res){
 });
 
 router.get('/manage/request', util.ensureAuthenticated, function(req, res){
-    res.render('hardware_manage_request', {title: '하드웨어 신청 관리'});
+    res.render('hardware_manage_request', {title: '하드웨어 신청 관리', grade: util.getUserGrade(req)});
 });
 
 router.post('/manage/loadRequest', util.ensureAuthenticated, function(req, res){
@@ -104,7 +104,7 @@ router.post('/manage/rejectRequest', util.ensureAuthenticated, function(req, res
 });
 
 router.get('/manage/history', util.ensureAuthenticated, function(req, res){
-    res.render('hardware_manage_history', {title : '하드웨어 대여기록'});
+    res.render('hardware_manage_history', {title : '하드웨어 대여기록', grade: util.getUserGrade(req)});
 });
 
 router.post('/manage/loadNow', util.ensureAuthenticated, function(req, res){

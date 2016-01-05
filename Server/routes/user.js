@@ -15,7 +15,7 @@ router.get('/info', util.ensureAuthenticated, function(req, res, next) {
         console.log(response);
         var send = JSON.stringify(response);
         console.log(JSON.parse(send));
-        res.render('user_info', {title: '사용자 정보',result:JSON.parse(send)});
+        res.render('user_info', {title: '사용자 정보', grade: util.getUserGrade(req), result:JSON.parse(send)});
     });
 });
 
@@ -235,19 +235,19 @@ router.post('/info/deleteDevice', util.ensureAuthenticated, function(req, res, n
 });
 
 router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
-    res.render('user_manage', {title: '회원 관리'});
+    res.render('user_manage', {title: '회원 관리', grade: util.getUserGrade(req)});
 });
 
 router.get('/members', util.ensureAuthenticated, function(req, res, next) {
-    res.render('member_info', {title: '회원 목록'});
+    res.render('member_info', {title: '회원 목록', grade: util.getUserGrade(req)});
 });
 
 router.get('/finished', util.ensureAuthenticated, function(req, res, next) {
-    res.render('user_finish', {title: '수료예정회원관리'});
+    res.render('user_finish', {title: '수료예정회원관리', grade: util.getUserGrade(req)});
 });
 
 router.get('/lifeEvaluation', util.ensureAuthenticated, function(req, res, next){
-    res.render('user_lifeEvaluation', {title: '생활등급'});
+    res.render('user_lifeEvaluation', {title: '생활등급', grade: util.getUserGrade(req)});
 });
 
 router.post('/load_curlifeEval', util.ensureAuthenticated, function(req, res){

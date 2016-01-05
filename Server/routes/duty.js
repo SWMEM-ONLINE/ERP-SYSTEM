@@ -15,39 +15,39 @@ var checklist_handler = require('./duty_checklist_handler');
  *  Part. 겟
  */
 router.get('/inquiry', util.ensureAuthenticated, function(req, res, next) {
-    res.render('duty_inquiry', { title: '당직 조회' });
+    res.render('duty_inquiry', { title: '당직 조회', grade: util.getUserGrade(req) });
 });
 
 router.get('/change', util.ensureAuthenticated, function(req, res, next) {
-    res.render('duty_change', { title: '당직 교환' });
+    res.render('duty_change', { title: '당직 교환', grade: util.getUserGrade(req)});
 });
 
 router.get('/point', util.ensureAuthenticated, function(req, res, next) {
-    res.render('point_inquiry', { title: '상벌당직 조회' });
+    res.render('point_inquiry', { title: '상벌당직 조회', grade: util.getUserGrade(req)});
 });
 
 router.get('/checklist', util.ensureAuthenticated, function(req, res, next) {
-    res.render('duty_checklist', { title: 'CheckList' });
+    res.render('duty_checklist', { title: 'CheckList', grade: util.getUserGrade(req)});
 });
 
 router.get('/add', util.ensureAuthenticated, function(req, res, next) {
-    res.render('point_add', { title: '상벌당직추가' });
+    res.render('point_add', { title: '상벌당직추가', grade: util.getUserGrade(req)});
 });
 
 router.get('/modify', util.ensureAuthenticated, function(req, res, next) {
-    res.render('point_modify', { title: '상벌당직수정' });
+    res.render('point_modify', { title: '상벌당직수정', grade: util.getUserGrade(req)});
 });
 
 router.get('/setting', util.ensureAuthenticated, function(req, res, next) {
-    res.render('duty_setting', { title: '당직설정' });
+    res.render('duty_setting', { title: '당직설정', grade: util.getUserGrade(req)});
 });
 
 router.get('/changeSetting', util.ensureAuthenticated, function(req, res, next) {
-    res.render('duty_change_setting', { title: '당직 맞변경 관리' });
+    res.render('duty_change_setting', { title: '당직 맞변경 관리', grade: util.getUserGrade(req)});
 });
 
 router.get('/checkListSetting', util.ensureAuthenticated, function(req, res, next) {
-    res.render('checklist_setting', { title: 'CheckList 관리' });
+    res.render('checklist_setting', { title: 'CheckList 관리', grade: util.getUserGrade(req)});
 });
 
 

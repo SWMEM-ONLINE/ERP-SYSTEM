@@ -9,7 +9,7 @@ var util = require('./util');
 var COMMAND_DEGREE = 9;
 
 router.get('/appinfo', util.ensureAuthenticated, function(req, res, next) {
-    res.render('sys_appinfo', { title: '시스템 정보'});
+    res.render('sys_appinfo', { title: '시스템 정보', grade: util.getUserGrade(req)});
 });
 
 router.post('/appinfo', util.ensureAuthenticated, function(req, res, next) {
@@ -21,7 +21,7 @@ router.post('/appinfo', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.get('/manual', util.ensureAuthenticated, function(req, res, next) {
-    res.render('sys_manual', { title: '메뉴얼'});
+    res.render('sys_manual', { title: '메뉴얼', grade: util.getUserGrade(req)});
 });
 
 module.exports = router;
