@@ -42,9 +42,9 @@ function getMemberList(){
                 for (var i = 0; i < data.length; i++) {
 
                     var finish = data[i];
-                    var book = 1;
-                    var hardware = 1;
-                    var fee = 1;
+                    var book = finish.u_book;
+                    var hardware = finish.u_hardware;
+                    var fee = finish.u_fee;
                     tbodyString += '<tr>';
                     tbodyString += '<td>' + finish.u_name + '</td>' + '<td>' + finish.u_period + '</td>';
                     if (book > 0) {
