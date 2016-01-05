@@ -107,3 +107,9 @@ table#history td {
     width: 100px;
     border-right: 1px dashed #ddd;
 }
+.commentDiv{
+    width: 100%;
+}
+#comment{
+    width: 70%;
+}

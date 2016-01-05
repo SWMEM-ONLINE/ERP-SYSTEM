@@ -66,17 +66,12 @@ $('#history tbody').on('click','tr:not(.empty)',function () {
         arr.push($(this).text());
     });
     $('.modal-title').text(arr[1]);
-    console.log(arr);
-    tbodyString += '<p>'+arr[0]+'</p>';
-    tbodyString += '<p>'+arr[5]+'</p>';
-    tbodyString += '<p>'+arr[2]+'</p>';
-    tbodyString += '<p>'+arr[6]+'</p>';
-    tbodyString += '<input id="comment" type="text" onkeypress="submitEnter(event,'+arr[4]+')"/>';
-    tbodyString += '<table id="commentTable" class="table">';
-    tbodyString += '<tbody>';
-    tbodyString += '</tbody>';
-    tbodyString += '</table>';
-    $('div.modal .modal-body').html(tbodyString);
+    $('p#p1').text(arr[0]);
+    $('p#p2').text(arr[5]);
+    $('p#p3').text(arr[2]);
+    $('p#p4').text(arr[6]);
+    document.getElementById('comment').setAttribute('onkeypress','submitEnter(event,'+arr[4]+')');
+    document.getElementById('commentEnter').setAttribute('q_id',arr[4]);
     if(arr[3] == 1){
         $('#solve').addClass('hidden');
     }
@@ -115,6 +110,32 @@ function commentList(q_id){
 function submitEnter(e,q_id){
     if(e.keyCode == 13){
         var comment = $('#comment').val();
+        if(comment != '') {
+            var data = {
+                q_id: q_id,
+                content: comment
+            };
+            $.ajax({
+                type: 'post',
+                url: '/qna/setQnaReply',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.status === '0') {
+                        commentList(q_id);
+                        $('#comment').val('');
+                    }
+                }
+            });
+        }
+    }
+}
+
+$('#commentEnter').on('click',function(){
+    var comment = $('#comment').val();
+    var q_id = document.getElementById('commentEnter').getAttribute('q_id');
+
+    if(comment != ''){
         var data = {
             q_id:q_id,
             content:comment
@@ -132,7 +153,8 @@ function submitEnter(e,q_id){
             }
         });
     }
-}
+});
+
 
 $('#solve').click(function(){
     var data = {

@@ -85,25 +85,30 @@ function commentList(q_id){
 $('#submit').click(function(){
     var title = $('#title').val();
     var qna = $('#qna').val();
-    var data = {
-        title:title,
-        content:qna
-    };
-
-    $.ajax({
-        type:'post',
-        url:'/qna/add',
-        data:JSON.stringify(data),
-        contentType:'application/json',
-        success: function(data){
-            if(data.status === '0'){
-                toastr['success']('성공');
-                myqnaList(1);
-                $('#title').val('');
-                $('#qna').val('');
+    if(title != '' && qna != '') {
+        var data = {
+            title: title,
+            content: qna
+        };
+        console.log(data);
+        $.ajax({
+            type: 'post',
+            url: '/qna/qnaAdd',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.status === '0') {
+                    toastr['success']('성공');
+                    myqnaList(1);
+                    $('#title').val('');
+                    $('#qna').val('');
+                }
             }
-        }
-    });
+        });
+    }
+    else{
+        toastr['error']('내용을 입력하세요');
+    }
 });
 
 $('#history tbody').on('click','tr:not(.empty)',function () {
@@ -113,16 +118,11 @@ $('#history tbody').on('click','tr:not(.empty)',function () {
         arr.push($(this).text());
     });
     $('.modal-title').text(arr[0]);
-    console.log(arr);
-    tbodyString += '<p>'+arr[4]+'</p>';
-    tbodyString += '<p>'+arr[1]+'</p>';
-    tbodyString += '<p>'+arr[5]+'</p>';
-    tbodyString += '<input id="comment" type="text" onkeypress="submitEnter(event,'+arr[3]+')"/>';
-    tbodyString += '<table id="commentTable" class="table">';
-    tbodyString += '<tbody>';
-    tbodyString += '</tbody>';
-    tbodyString += '</table>';
-    $('div.modal .modal-body').html(tbodyString);
+    $('p#p1').text(arr[4]);
+    $('p#p2').text(arr[1]);
+    $('p#p3').text(arr[5]);
+    document.getElementById('comment').setAttribute('onkeypress','submitEnter(event,'+arr[3]+')');
+    document.getElementById('commentEnter').setAttribute('q_id',arr[3]);
     commentList(arr[3]);
     $('div.modal').modal();
 });
@@ -130,6 +130,32 @@ $('#history tbody').on('click','tr:not(.empty)',function () {
 function submitEnter(e,q_id){
     if(e.keyCode == 13){
         var comment = $('#comment').val();
+        if(comment != ''){
+            var data = {
+                q_id:q_id,
+                content:comment
+            };
+            $.ajax({
+                type:'post',
+                url:'/qna/setQnaReply',
+                data:JSON.stringify(data),
+                contentType:'application/json',
+                success: function(data){
+                    if(data.status === '0'){
+                        commentList(q_id);
+                        $('#comment').val('');
+                    }
+                }
+            });
+        }
+    }
+}
+
+$('#commentEnter').on('click',function(){
+    var comment = $('#comment').val();
+    var q_id = document.getElementById('commentEnter').getAttribute('q_id');
+
+    if(comment != ''){
         var data = {
             q_id:q_id,
             content:comment
@@ -147,4 +173,4 @@ function submitEnter(e,q_id){
             }
         });
     }
-}
+});

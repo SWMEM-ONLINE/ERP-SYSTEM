@@ -16,13 +16,11 @@ router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
     res.render('qna_manage', { title: '문의 관리', grade: util.getUserGrade(req)});
 });
 
-router.post('/add', util.ensureAuthenticated, function(req, res, next) {
-
-    var arr = req.body;
+router.post('/qnaAdd', util.ensureAuthenticated, function(req, res, next) {
 
     var id = 0;
-    var title = arr.title;
-    var content = arr.content;
+    var title = req.body.title;
+    var content = req.body.content;
     var state = 0;  //0:등록, 1:응답대기, 2:해결, 3:삭제
     var writer = util.getUserId(req);
     var date = util.getCurDateWithTime();
@@ -37,10 +35,9 @@ router.post('/add', util.ensureAuthenticated, function(req, res, next) {
             throw err;
             res.json({status:'101'});
         }
-        db_handler.disconnectDB(connection);
-
         res.json({status:'0'});
     });
+    db_handler.disconnectDB(connection);
 });
 
 router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
