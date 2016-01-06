@@ -29,6 +29,23 @@ div.navbar-default{
     width: 100%;
 }
 
+.navbar-default .navbar-toggle:hover:before, .navbar-default .navbar-toggle:focus:before,.navbar-default .navbar-nav > li > a:focus{
+    color:white;
+}
+
+@media(max-width:767px){
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a{
+        color:white;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus{
+        color:#58595b;
+    }
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus{
+    color:white;
+}
+
 ul.bottom-links li{
     display: inline-block;
 }
