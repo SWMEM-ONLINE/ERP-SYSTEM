@@ -23,6 +23,11 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
+$('button#example').click(function(){
+    var modalString = '<table id='
+
+});
+
 function addList() {
     var table = document.getElementById('addlist');
     var lastRow = table.rows.length;
@@ -104,7 +109,7 @@ function addExplain() {
     changedRow.innerHTML = '<button id="minus" type="button" onclick="deleteRowExp(this)" class="plusminus">－</button>';
 
     rowCountExp = rowCountExp + 1;
-};
+}
 
 $('#submit').click(function(){
     var Projectname;
@@ -122,7 +127,7 @@ $('#submit').click(function(){
 
     var arr = new Array();
 
-    var complete = true;
+    var message = '성공';
     for ( var i = 0; i < rowCount; i++) {
         Projectname = $('#projectName_'+i).val();
         Use = $('#use_'+ i).val();
@@ -132,7 +137,12 @@ $('#submit').click(function(){
         Ea = $('#ea_'+i).val();
         Count = $('#count_'+i).val();
         Maker = $('#maker_'+i).val();
+
         Link = $('#link_'+i).val();
+        var checkHttp = Link.substring(0, 6);
+        if(checkHttp != 'http://'){
+            Link = 'http://' + Link;
+        }
 
         /* check value */
 
@@ -141,12 +151,12 @@ $('#submit').click(function(){
             Explain = $('#explain_' + j).val();
 
             if(Category === "" || Explain === ""){
-                complete = false;
+                message = '빈 칸이 있습니다';
                 break;
             }
 
             if(Category === Type) {
-                complete = true;
+                message = 'true';
                 var sData = {
                     projectName: Projectname,
                     use:Use,
@@ -162,21 +172,22 @@ $('#submit').click(function(){
                 arr.push(sData);
                 break;
             }else{
-                complete = false;
+                message = '분류를 확인하세요';
             }
         }
 
         if(Use === "" || Type === "" || Label === "" || Name === "" || Ea === "" || Count === "" || Maker === "" || Link === ""){
-            complete = false;
+            message = '빈 칸이 있습니다';
         }
 
-        if(complete === false)  break;
+        if(!($.isNumeric(Count)))   message = '수량은 숫자를 입력하세요';
+
+        if(message != 'true')  break;
     }
 
-    if(!complete){
-        toastr['info']('입력을 확인하세요');
-    }
-    else{
+    if(message != 'true'){
+        toastr['error'](message);
+    }else{
         var temp1 = JSON.stringify(arr);
         console.log(arr);
         $.ajax({

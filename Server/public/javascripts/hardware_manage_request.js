@@ -78,7 +78,7 @@ function setTable(datalist, flag){                //  html 테이블 만들기
         htmlString += '</tbody>';
     }else{
         htmlString = '<thead><tr><th>신청자</th><th>프로젝트 이름</th><th>처리상태</th><th>자세히</th></tr></thead>';
-        htmlString += '<tfoot><tr><th colspan="4"><button type="button" id="approve" class="btn btn-primary">승인</button><button type="button" id="reject" class="btn btn-danger">미승인</button><button type="button" id="down2excel" class="btn btn-info">엑셀로 다운</button><span id="temp" class="pull-right">0 원</span></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="4"><button type="button" id="approve" class="btn btn-primary">승인</button><button type="button" id="reject" class="btn btn-danger">미승인</button><button type="button" id="down2excel" class="btn btn-info">엑셀로 다운</button></th></tr></tfoot>';
         htmlString += '<tbody id="tableData">';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>' + data.u_name + '</td><td>' + data.ha_project_title + '</td><td>';
@@ -92,16 +92,6 @@ function setTable(datalist, flag){                //  html 테이블 만들기
         htmlString += '</tbody>';
     }
     $('#requestTable').html(htmlString);
-}
-
-function calSum(datalist){
-    var sum = 0;
-    $('#tableData tr').each(function(index){
-        if($(this).hasClass('warning')){
-            sum += datalist[index].ha_total;
-        }
-    });
-    return sum;
 }
 
 function approveButton(datalist, flag){           // 승인 버튼
@@ -195,7 +185,7 @@ function detailButton(datalist){            // 자세히 보기 버튼
             string += '<tr><td>분류</td><td>' + datalist[index].ha_upper_category + '</td><td>품목</td><td>' + datalist[index].ha_lower_category + '</td></tr>';
             string += '<tr><td>규격</td><td>' + datalist[index].ha_size + '</td><td>수량</td><td>' + datalist[index].ha_amount + '</td></tr>';
             string += '<tr><td>Maker</td><td>' + datalist[index].ha_maker + '</td><td>신청자</td><td>' + datalist[index].u_name + '</td></tr>';
-            string += '<tr><td colspan="4"><a href="' +datalist[index].ha_url + '" target="_blank" style="color:blue">URL 이동</a></td></tr>';
+            string += '<tr><td colspan="4"><a href="' +datalist[index].ha_link + '" target="_blank" style="color:blue">URL 이동</a></td></tr>';
             $('div.modal-body').html(string);
             $('div.modal').modal();
         });

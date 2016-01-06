@@ -151,6 +151,15 @@ function loadapplylist(flag){
         selectAllButton();
         buyCompleteButton(datalist, flag);
         enrollButton(datalist);
+        down2excelButton(datalist);
+    });
+}
+
+function down2excelButton(datalist){
+    $('button#down2excel').click(function(){
+        $('table tbody#applyTableData tr.warning').each(function(){
+            var index = $(this).index();
+        });
     });
 }
 
