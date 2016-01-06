@@ -209,4 +209,16 @@ function getToken(token,device){
     });
 }
 
+function rentBookByQR(content){
+    toastr['success'](content);
+
+    if(content == null || content == "undefined" || content == ""){
+        toastr['error']("데이터가 올바르지 않습니다.");
+    }
+
+
+
+
+
+}
 

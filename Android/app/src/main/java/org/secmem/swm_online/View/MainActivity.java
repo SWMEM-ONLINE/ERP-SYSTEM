@@ -152,7 +152,7 @@ public class MainActivity extends Activity {
 
                 //myWebView.loadUrl("javascript:<함수명>('<arg>')");
                 myWebView.loadUrl("javascript:" +
-                        "toastr['info']('" + contents+"');" +
+                        "rentBookByQR('" + contents+"');" +
                         "");
             }
         }
@@ -197,17 +197,6 @@ public class MainActivity extends Activity {
             });
 
         }
-
-        @JavascriptInterface
-        public void getDeviceInformation(){
-            handler.post(new Runnable() {
-                public void run() {
-
-                }
-            });
-
-        }
-
 
 
     }
