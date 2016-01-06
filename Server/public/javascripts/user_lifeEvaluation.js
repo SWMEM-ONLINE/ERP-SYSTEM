@@ -77,6 +77,7 @@ function loadhistoryButton(){
 
 function newlifeEvalButton(dataset, cut_A, cut_B){
     $('button#addevalButton').click(function(){
+        total = 0;
         $('.modal-title').text('생활등급 추가');
         var modalString = '<table id="temp" class="table table-striped table-condensed">';
         modalString += '<tr><th>항목</th><th>가중치</th><th>횟수</th></tr>';
@@ -114,6 +115,7 @@ function altercutButton(cut_A, cut_B){
 
 function enrollButton(){
     $('button#enrollLifeeval').click(function(){
+
         var datalist = new Array();
 
         var state = true;
@@ -136,7 +138,7 @@ function enrollButton(){
             toastr['error']('숫자만 입력해주세요');
         }else{
             var jsonData = JSON.stringify(datalist);
-
+            console.log(jsonData);
             $.ajax({
                 type:'post',
                 url:'/user/enroll_lifeEval',
