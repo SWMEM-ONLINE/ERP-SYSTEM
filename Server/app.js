@@ -79,10 +79,12 @@ passport.use(new LocalStrategy({
         if(0<rows.length){
           //비번 체크
           console.log('pw check');
-          if(encPW == rows[0].u_password){
+
+          if(encPW == rows[0].u_password && rows[0].u_state < 104){
             //성공
+
             var user = { 'id':rows[0].u_id,
-              'password':rows[0].u_password,
+              'password':'',
               'grade':rows[0].u_state,
               'name':rows[0].u_name};
 
