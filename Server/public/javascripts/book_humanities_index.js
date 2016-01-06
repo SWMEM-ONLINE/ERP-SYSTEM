@@ -48,7 +48,7 @@ $('#bookSearchWords').keydown(function(){
 
 $('#bookSearchBtn').click(function() {
     var searchWords = $('#bookSearchWords').val();                      // Get typing data in textbox
-    if (searchWords.length == 0) {                                  // type nothing situation
+    if (searchWords.length === 0) {                                  // type nothing situation
         toastr['error']('검색어를 입력해주세요');
         return false;
     }else{
@@ -63,23 +63,28 @@ $('#bookSearchBtn').click(function() {
 
 function settingHTML(datalist){
     var htmlString = '';
-    $.each(datalist, function(idx, data){
-        if(idx % 2 == 0){                                               // Seperate idx to even and odd
-            htmlString += '<tr class="even">';
-        }else{
-            htmlString += '<tr>';
-        }
-        htmlString += '<td><img class="bookSmallImg" src="' + data.b_photo_url + '"></td>';
-        htmlString += '<td><div class="bookInfo"><h4 class="bookTitle">' + data.b_name;
-        if(data.b_state === 1)  htmlString += '&nbsp<span class="label label-primary">대여중</span>';
-        else if(data.b_state === 3) htmlString += '&nbsp<span class="label label-danger">분실도서</span>';
-        if(data.b_reserved_cnt > 0) htmlString += '&nbsp<span class="label label-warning">예약중</span>';
-        htmlString += '</h4><p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
-        htmlString += '</tr>';
-    });
-    $('#booklist tbody').empty();
-    $('#booklist tbody').append(htmlString);
-    $('.modal-title').text('도서 대여하기');
+    if(datalist.length === 0){
+        htmlString += '<tr><th style="text-align:center; font-size: 20px"> 검색 결과가 없습니다. </></th></tr>';
+        $('#booklist tbody').html(htmlString);
+    }else{
+        $.each(datalist, function(idx, data){
+            if(idx % 2 == 0){                                               // Seperate idx to even and odd
+                htmlString += '<tr class="even">';
+            }else{
+                htmlString += '<tr>';
+            }
+            htmlString += '<td><img class="bookSmallImg" src="' + data.b_photo_url + '"></td>';
+            htmlString += '<td><div class="bookInfo"><h4 class="bookTitle">' + data.b_name;
+            if(data.b_state === 1)  htmlString += '&nbsp<span class="label label-primary">대여중</span>';
+            else if(data.b_state === 3) htmlString += '&nbsp<span class="label label-danger">분실도서</span>';
+            if(data.b_reserved_cnt > 0) htmlString += '&nbsp<span class="label label-warning">예약중</span>';
+            htmlString += '</h4><p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
+            htmlString += '</tr>';
+        });
+        $('#booklist tbody').empty();
+        $('#booklist tbody').append(htmlString);
+        $('.modal-title').text('도서 대여하기');
+    }
 }
 
 function clickEvent(datalist){

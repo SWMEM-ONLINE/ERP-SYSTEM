@@ -2,6 +2,9 @@
  * Created by jung-inchul on 2015. 11. 26..
  */
 
+var fs = require('fs');
+var excel = require('node-excel-export');
+
 /*
     Load new tech or humanities booklist. Send one select query and return data.
     * b_state

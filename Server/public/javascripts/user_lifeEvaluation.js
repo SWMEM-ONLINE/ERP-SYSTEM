@@ -20,7 +20,7 @@ toastr.options = {
 };
 
 loadlifeEvaluation();
-var grade;
+var grade = 'A';
 var total = 0;
 
 function loadlifeEvaluation(){

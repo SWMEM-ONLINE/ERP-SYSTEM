@@ -278,13 +278,6 @@ router.post('/load_pastlifeEval', util.ensureAuthenticated, function(req, res){
 router.post('/enroll_lifeEval', util.ensureAuthenticated, function(req, res){
     var datalist = req.body;
     var today = new Date();
-    //var total = 0;
-    //
-    //for(var i = 0; i < 5; i++){
-    //    total += (parseInt(datalist[i].cnt) * parseInt(datalist[i].point));
-    //}
-
-    console.log(datalist);
 
     var query = 'update t_life set l_recent=0;';
     query += 'insert into t_life set l_year="' + today.getFullYear() + '", l_month="' + (today.getMonth()+1) + '", l_first="' + datalist[0].content + '", l_first_cnt="' + datalist[0].cnt + '", l_first_point="' + datalist[0].point + '", ';
@@ -293,6 +286,7 @@ router.post('/enroll_lifeEval', util.ensureAuthenticated, function(req, res){
     query += 'l_fourth="' + datalist[3].content + '", l_fourth_cnt="' + datalist[3].cnt + '", l_fourth_point="' + datalist[3].point + '", ';
     query += 'l_fifth="' + datalist[4].content + '", l_fifth_cnt="' + datalist[4].cnt + '", l_fifth_point="' + datalist[4].point + '", '
     query += 'l_total=' + datalist[1].total + ', l_grade="' + datalist[1].grade + '";';
+
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
