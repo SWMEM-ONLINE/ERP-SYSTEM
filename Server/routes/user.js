@@ -225,7 +225,7 @@ router.post('/reset', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/info/deleteDevice', util.ensureAuthenticated, function(req, res, next) {
     var uId = util.getUserId(req);
-    var query = 'update t_user set u_device = "" and u_token = "" where u_id = "'+uId + '"';
+    var query = 'update t_user set u_device = "",u_token = "" where u_id = "'+uId + '"';
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
