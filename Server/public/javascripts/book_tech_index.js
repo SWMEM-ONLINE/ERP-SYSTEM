@@ -72,9 +72,12 @@ $('#bookSearchBtn').click(function() {
 function settingHTML(datalist){
     var htmlString = '';
     if(datalist.length === 0){
+        htmlString = '';
         htmlString += '<tr><th style="text-align:center; font-size: 20px"> 검색 결과가 없습니다. </></th></tr>';
+        $('#booklist tbody').empty();
         $('#booklist tbody').html(htmlString);
     }else{
+        htmlString = '';
         $.each(datalist, function(idx, data){
             if(idx % 2 == 0){                                               // Seperate idx to even and odd
                 htmlString += '<tr class="even">';
