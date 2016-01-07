@@ -72,6 +72,7 @@ function settingHTML(datalist){
     var htmlString = '';
     if(datalist.length === 0){
         htmlString += '<tr><th style="text-align:center; font-size: 20px"> 검색 결과가 없습니다. </></th></tr>';
+        $('#booklist tbody').empty();
         $('#booklist tbody').html(htmlString);
     }else{
         $.each(datalist, function(idx, data){
