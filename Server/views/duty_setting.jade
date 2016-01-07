@@ -12,46 +12,46 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .container.contents
-        h3 당직 설정
-        hr
-        .content
-            input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
-            table.table
-                tr
-                    th 총 당직수
-                    th
-                        .btn-group
-                            a#duty_button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 0
-                            ul#duty_count.dropdown-menu(style='width:100%')
-                                li
-                                    a(href='#') 1
-                                li
-                                    a(href='#') 2
-                                li
-                                    a(href='#') 3
-                                li
-                                    a(href='#') 4
-                    th 벌당직수
-                    th
-                        .btn-group
-                            a#bad_duty_button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 0
-                            ul#bad_duty_count.dropdown-menu(style='width:100%')
-                                li
-                                    a(href='#') 1
-                                li
-                                    a(href='#') 2
-                                li
-                                    a(href='#') 3
-                                li
-                                    a(href='#') 4
-                    th 제외된 날짜수
-                    th
-                        #selected_days 0
-            #calendar.table
-            button#setting.btn.btn-block.hidden(type='button')  설정
-
-
+    .wrapper
+        article.container
+            h3 당직 설정
+            hr
+            .content
+                input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
+                table.table
+                    tbody
+                        tr
+                            th 총 당직수
+                            th
+                                .btn-group
+                                    button#duty_button.btn.dropdown-toggle(data-toggle='dropdown') 0
+                                    ul#duty_count.dropdown-menu(style='width:100%')
+                                        li
+                                            a(href='#') 1
+                                        li
+                                            a(href='#') 2
+                                        li
+                                            a(href='#') 3
+                                        li
+                                            a(href='#') 4
+                            th 벌당직수
+                            th
+                                .btn-group
+                                    button#bad_duty_button.btn.dropdown-toggle(data-toggle='dropdown') 0
+                                    ul#bad_duty_count.dropdown-menu(style='width:100%')
+                                        li
+                                            a(href='#') 1
+                                        li
+                                            a(href='#') 2
+                                        li
+                                            a(href='#') 3
+                                        li
+                                            a(href='#') 4
+                            th 제외된 날짜수
+                            th
+                                #selected_days 0
+                #calendar.table
+                button#setting.btn.hidden(type='button')  설정
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../javascripts/moment.min.js')

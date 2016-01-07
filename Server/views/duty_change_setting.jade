@@ -13,13 +13,13 @@ append head
 block content
     .wrapper
         article.container
-            h2 당직 맞변경 신청 관리
+            h3 당직 맞변경 신청 관리
             hr
-            button#showresult(type='button') 맞변경 신청 결과 조회
-            article.container
+            button#showresult.btn(type='button') 맞변경 신청 결과 조회
+            .content
                 .row
                     .col-xs-12.col-md-6
-                        h3 변경 당사자 1
+                        h4 변경 당사자 1
                         div
                             input.datepicker#date_picker1(type='text', placeholder='날짜 선택', readonly="readonly")
                             table.table.table-hover
@@ -33,7 +33,7 @@ block content
                                     tr
                                         td#rq_1_user_4.hidden
                     .col-xs-12.col-md-6
-                        h3 변경 당사자 2
+                        h4 변경 당사자 2
                         div
                             input.datepicker#date_picker2(type='text', placeholder='날짜 선택', readonly="readonly")
                             table.table.table-hover
@@ -46,13 +46,12 @@ block content
                                         td#rq_2_user_3.hidden
                                     tr
                                         td#rq_2_user_4.hidden
-            // Main component for a primary marketing message or call to action
-        #memberinfo.hidden
-            h3#changeMember1.text-center
-            p.text-center 과 (와)
-            h3#changeMember2.text-center
-            button#change.btn.btn-lg(type='button') 교환
-            #result
+                #memberinfo.hidden
+                    h3#changeMember1.text-center
+                    p.text-center 과 (와)
+                    h3#changeMember2.text-center
+                    button#change.btn(type='button') 교환
+                    #result
     .modal.fade
         .modal-dialog
             .modal-content
@@ -62,7 +61,7 @@ block content
                     table.table
                         tbody#resultlist
                 .modal-footer
-                    button.btn.btn-default(type='button', data-dismiss='modal') 닫기
+                    button.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

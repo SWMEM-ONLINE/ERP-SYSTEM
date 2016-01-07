@@ -112,8 +112,8 @@ $("#showresult").click(function(){
                 buttonList.push(idx);
                 htmlString += "<td>";
 
-                htmlString += '<button id= "' +accept_button_id + '" type="button" class="btn btn-default" >수락</button>';
-                htmlString += '<button id= "' +decline_button_id + '" type="button" class="btn btn-default" >거절</button>';
+                htmlString += '<button id= "' +accept_button_id + '" type="button" class="btn" >수락</button>';
+                htmlString += '<button id= "' +decline_button_id + '" type="button" class="btn" >거절</button>';
                 $(document).on('click', "#accept"+count, function(){
 
                     var sendData = {};

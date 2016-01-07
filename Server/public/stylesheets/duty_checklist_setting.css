@@ -1,24 +1,3 @@
-@media(max-width:992px) {
-    .container{
-        padding: 0;
-    }
-    div.content{
-        width:100%;
-        margin:0;
-    }
-    h3{
-        font-size: 30px;
-    }
-    div.content table{
-        width: 100%;
-    }
-}
-@media(min-width:993px) {
-    div.content{
-        width:993px;
-        margin:auto;
-    }
-}
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
     background-color: #122359;
 }
@@ -28,81 +7,15 @@
     color: black;
 }
 
-.btn-group-vertical{
-    vertical-align: middle;
-}
-
-.solidtd{
-    border-top: 3px solid;
-}
-
-hr{
-    border:1px solid #e7e9ec;
-}
-
-table th{
+input{
     text-align: center;
-}
-
-table td{
-    text-align: center;
-}
-
-div.contents{
-    position: relative;
-    text-align: center;
-}
-
-div.content table{
-    margin-left: auto;
-    margin-right: auto;
-}
-
-button#enroll{
-    text-align: center;
-    border:none;
+    border:1px solid #cccccc;
     height: 34px;
     border-radius: 4px;
-    background-color: #122359;
-    color: white;
+    margin-top:10px;
+    margin-bottom:10px;
 }
 
-button#plus{
-    text-align: center;
-    border:none;
-    height: 34px;
-    border-radius: 4px;
-    background-color: #122359;
-    color: white;
-}
-
-div.content button#minus{
-    background-color: #ff000d;
-    text-align: center;
-    border:none;
-    height: 34px;
-    border-radius: 4px;
-    color: white;
-}
-
-.scrollup {
-    position: fixed; /* 위치 고정 */
-    float: right; /* 오른쪽으로 */
-    height: 32px; /* 높이 32픽셀 */
-    right: 10px; /* 오른쪽에서 10픽셀 */
-    bottom: 10px; /* 아래에서 10픽셀 */
-    opacity: 0.7; /* 투명도이며 최고값은 1 */
-}
-
-button{
-    background-color: #122359;
-    border:none;
-    color:white;
-    height: 36px;
-}
-
-button:hover{
-    background-color: #BBB;
-    transition:0.5s all;
-    color:black;
+button#add_normal_duty,button#add_bad_duty{
+    margin-bottom:10px;
 }

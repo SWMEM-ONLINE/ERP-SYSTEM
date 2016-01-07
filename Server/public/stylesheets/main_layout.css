@@ -124,7 +124,7 @@ button {
     padding: 6px 12px;
 }
 
-.table>tbody>tr>td{
+.table>tbody>tr>td,.table>tbody>tr>th{
     vertical-align: middle;
 }
 

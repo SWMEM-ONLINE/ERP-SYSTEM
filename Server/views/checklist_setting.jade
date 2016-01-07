@@ -11,68 +11,64 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/duty_checklist_setting.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .container.contents
+    .wrapper
+        article.container
+            h3 CheckList 설정
+            hr
+            .content
+                ul.nav.nav-pills.nav-justified
+                    li.active
+                        a(href="#") 일반당직
+                    li
+                        a(href="#") 벌당직
+                hr
+                button#add_normal_duty.btn.btn-block(input="button") 일반당직 추가
+                button#add_bad_duty.btn.btn-block.hidden(input="button") 벌당직 추가
+                table#checkList.table.table-responsive.list
+                table#badcheckList.table.table-responsive.hidden.list
+    .modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title CheckList 수정
+                .modal-body
+                    table.table
+                        tbody
+                            tr
+                                td
+                                    #grade_or_day
+                                td
+                                    .btn-group
+                                        button#modal_Button.btn.dropdown-toggle(type='button', data-toggle='dropdown')
+                                        ul#modal_dropdown.dropdown-menu
+                                            li
+                                                a#drop0(href='#')
+                                            li
+                                                a#drop1(href='#')
+                                            li
+                                                a#drop2(href='#')
+                                            li.bad
+                                                a#drop3(href='#')
+                                            li.bad
+                                                a#drop4(href='#')
+                                            li.bad
+                                                a#drop5(href='#')
+                                            li.bad
+                                                a#drop6(href='#')
+                            tr
+                                td 구역
+                                td
+                                    input#modal_section(type='text', placeholder='구역')
 
-        h3 CheckList 설정
-        hr
-        ul.nav.nav-pills.nav-justified
-            li.active
-                a(href="#") 일반당직
-            li
-                a(href="#") 벌당직
-
-        hr
-        button#add_normal_duty.btn.btn-block(input="button") 일반당직 추가
-        button#add_bad_duty.btn.btn-block.hidden(input="button") 벌당직 추가
-        .content
-            table#checkList.table.table-responsive.list
-            table#badcheckList.table.table-responsive.hidden.list
-
-            .modal.fade
-                .modal-dialog
-                    .modal-content
-                        .modal-header
-                            h4.modal-title CheckList 수정
-                        .modal-body
-                            table
-                                tbody
-                                    tr
-                                        td
-                                            p#grade_or_day
-                                        td
-                                            .btn-group
-                                                button#modal_Button.dropdown-toggle(type='button', data-toggle='dropdown')
-                                                ul#modal_dropdown.dropdown-menu
-                                                    li
-                                                        a#drop0(href='#')
-                                                    li
-                                                        a#drop1(href='#')
-                                                    li
-                                                        a#drop2(href='#')
-                                                    li.bad
-                                                        a#drop3(href='#')
-                                                    li.bad
-                                                        a#drop4(href='#')
-                                                    li.bad
-                                                        a#drop5(href='#')
-                                                    li.bad
-                                                        a#drop6(href='#')
-                                    tr
-                                        td
-                                            p 구역
-                                        td
-                                            input#modal_section(type='text', placeholder='구역')
-
-                                    tr
-                                        td
-                                            p 내용
-                                        td
-                                            input#modal_content(type='text', placeholder='내용')
-                        .modal-footer
-                            button#add.btn.btn-danger(type='button') 추가
-                            button#modify.btn.btn-warning(type='button') 수정
-                            button#delete.btn.btn-danger(type='button') 삭제
-                            button#cancel.btn(type='button') 취소
+                            tr
+                                td 내용
+                                td
+                                    input#modal_content(type='text', placeholder='내용')
+                .modal-footer
+                    button#add.btn(type='button') 추가
+                    button#modify.btn(type='button') 수정
+                    button#delete.btn(type='button') 삭제
+                    button#cancel.btn(type='button') 닫기
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

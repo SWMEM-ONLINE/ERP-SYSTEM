@@ -17,27 +17,30 @@ block content
             .content
                 p#date
                 table.table
-                    tr
-                        th 구분
-                        th
-                            .btn-group
-                                a#mode-button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 구분
-                                ul#mode-dropdown.dropdown-menu
-                                    li
-                                        a(href='#') 상당직
-                                    li
-                                        a(href='#') 벌당직
-                                    li
-                                        a(href='#') 운영실 벌당직
-                        th 일수
-                        th
-                            input#point(type='number', min='0', value ='0')
-                        th 사유
-                        th
-                            input(type='text',maxlength="50", placeholder="100자 이내")#reason
+                    thead
+                        tr
+                            th 구분
+                            th 일수
+                            th 사유
+                    tbody
+                        tr
+                            td
+                                .btn-group
+                                    button#mode-button.btn.dropdown-toggle(data-toggle='dropdown') 구분
+                                    ul#mode-dropdown.dropdown-menu
+                                        li
+                                            a(href='#') 상당직
+                                        li
+                                            a(href='#') 벌당직
+                                        li
+                                            a(href='#') 운영실 벌당직
+                            td
+                                input#point(type='number', min='0', value ='0')
+                            td
+                                input#reason(type='text',maxlength="50", placeholder="100자 이내")
                 h5 회원 목록
                 table#memberList.table.table-bordered
-                button#send(type='button') 추가
+                button#send.btn(type='button') 추가
                 p#result
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
