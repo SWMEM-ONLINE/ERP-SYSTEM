@@ -8,22 +8,22 @@ append head
     link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/hardware_manage_history.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
-    link(rel='stylesheet', type='text/css', href='../../stylesheets/hardware_myhardware.css')
-
 block content
-    .container.contents
-        h3 하드웨어 대여 기록
-        hr
-        .content
-            ul.nav.nav-pills.nav-justified
-                li.active
-                    a(href="#") 현재 대여중
-                li
-                    a(href="#") 과거 히스토리
+    .wrapper
+        article.container
+            h3 하드웨어 대여 기록
             hr
-            table#nowhistoryTable.table.table-striped.table-hover
-            table#pasthistoryTable.table.table-striped.table-hover.hidden
+            .content
+                ul.nav.nav-pills.nav-justified
+                    li.active
+                        a(href="#") 현재 대여중
+                    li
+                        a(href="#") 과거 히스토리
+                hr
+                table#nowhistoryTable.table.table-striped.table-hover
+                table#pasthistoryTable.table.table-striped.table-hover.hidden
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../../javascripts/hardware_manage_history.js')

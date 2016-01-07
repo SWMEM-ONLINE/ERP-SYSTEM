@@ -8,25 +8,26 @@ append head
     link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/hardware_manage_request.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
-    link(rel='stylesheet', type='text/css', href='../../stylesheets/hardware_myhardware.css')
-
 block content
-    .container.contents
-        h3 하드웨어 신청 관리
-        hr
-        .content
-            ul.nav.nav-pills.nav-justified
-                li.active
-                    a(href="#") 대여
-                li
-                    a(href="#") 연장
-                li
-                    a(href="#") 반납
-                li
-                    a(href="#") 구매
+    .wrapper
+        article.container
+            h3 하드웨어 신청 관리
             hr
-            table#requestTable.table.table-striped.table-hover
+            .content
+                ul.nav.nav-pills.nav-justified
+                    li.active
+                        a(href="#") 대여
+                    li
+                        a(href="#") 연장
+                    li
+                        a(href="#") 반납
+                    li
+                        a(href="#") 구매
+                hr
+                table#requestTable.table.table-striped.table-hover
+
     .modal.fade
         .modal-dialog
             .modal-content

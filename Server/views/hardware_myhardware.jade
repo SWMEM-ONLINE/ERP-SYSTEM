@@ -11,21 +11,22 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/hardware_myhardware.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .container.contents
-        h3 나의 하드웨어
-        hr
-        .content
-            ul.nav.nav-pills.nav-justified
-                li.active
-                    a(href="#") 대여한 하드웨어
-                li
-                    a(href="#") 요청 처리
-                li
-                    a(href="#") 신청한 하드웨어
+    .wrapper
+        article.container
+            h3 나의 하드웨어
             hr
-            table#myHardware.table.table-hover.table-condensed.table-stripe
-            table#myrequestedHardware.table.table-hover.table-condensed.table-striped.hidden
-            table#myappliedHardware.table.table-hover.table-condensed.table-striped.hidden
+            .content
+                ul.nav.nav-pills.nav-justified
+                    li.active
+                        a(href="#") 대여한 하드웨어
+                    li
+                        a(href="#") 요청 처리
+                    li
+                        a(href="#") 신청한 하드웨어
+                hr
+                table#myHardware.table.table-hover.table-condensed.table-stripe
+                table#myrequestedHardware.table.table-hover.table-condensed.table-striped.hidden
+                table#myappliedHardware.table.table-hover.table-condensed.table-striped.hidden
     .modal.fade
         .modal-dialog
             .modal-content
@@ -33,7 +34,7 @@ block content
                     h4.modal-title
                 .modal-body
                 .modal-footer
-                    button#cancelmyappliedHardware.btn.btn-danger(type='button') 신청취소
+                    button#cancelmyappliedHardware.btn(type='button') 취소
                     button.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

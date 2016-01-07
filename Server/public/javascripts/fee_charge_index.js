@@ -79,7 +79,7 @@ function addList() {
     var Allrows = document.getElementById('addlist').rows;
     Allrows[lastRow-1].deleteCell(5);
     var changedRow = Allrows[lastRow-1].insertCell(5);
-    changedRow.innerHTML = '<button id="minus" class="btn minus" type="button" onclick="deleteRow(this)">-</button>';
+    changedRow.innerHTML = '<button id="minus" class="btn cancel" type="button" onclick="deleteRow(this)">-</button>';
 
     rowCount = rowCount + 1;
 }

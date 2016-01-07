@@ -7,6 +7,10 @@ header{
     background-color: #122359;
 }
 
+.cancel{
+    background-color: #ff000d;
+}
+
 header div.container{
     padding-left: 0;
     padding-right: 0;
@@ -126,6 +130,15 @@ button {
 
 .table>tbody>tr>td,.table>tbody>tr>th{
     vertical-align: middle;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+    background-color: #122359;
+}
+
+.nav-pills>li>a{
+    background-color: #dfdfdf;
+    color: black;
 }
 
 footer{

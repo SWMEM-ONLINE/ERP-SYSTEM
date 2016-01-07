@@ -28,6 +28,7 @@ block content
                      th 수량
                      th Maker
                      th Web Site
+                        br
                         | 참고자료
                      th 추가
                         br
@@ -53,7 +54,7 @@ block content
                      td
                         input#link_0(type='text', placeholder='Link')
                      td
-                        button#plus.plusminus(type='button', onclick='addList()') +
+                        button#plus.btn(type='button', onclick='addList()') +
             table.table#explainlist
                thead
                   tr
@@ -67,11 +68,11 @@ block content
                      td
                         input#explain_0(type='text', placeholder='설명')
                      td
-                        button#exAdd.plusminus(type='button', onclick='addExplain()') +
+                        button#exAdd.btn(type='button', onclick='addExplain()') +
             p 입력한 정보를 꼭 확인 후 등록하세오
-            button#submit.info(type='button') 등록
+            button#submit.btn.info(type='button') 등록
             a(href='https://docs.google.com/spreadsheets/d/1rTlfGXhMTVlOlflh_jwysXRg-HNSziLpJ5nlNjKE2do/edit?usp=sharing' target='_blank')
-               button.info(type='button') 예시
+               button.btn.info(type='button') 예시
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/apply_hardware_index.js')
