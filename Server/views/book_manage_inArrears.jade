@@ -12,19 +12,19 @@ append head
     link(rel='stylesheet', type='text/css', href='../../stylesheets/book_mybook.css')
 
 block content
-    .container.contents
-        h3 연체자 목록
-        hr
-        .content
+    .wrapper
+        article.container
+            h3 연체자 목록
             hr
-            table#inarrearsTable.table.table-condensed.table-hover
-                thead
-                    tr
-                        th 이름
-                        th 도서
-                        th 반납예정일
-                        th 연체일
-                tbody
+            .content
+                table#inarrearsTable.table.table-condensed.table-hover
+                    thead
+                        tr
+                            th 이름
+                            th 도서
+                            th 반납예정일
+                            th 연체일
+                    tbody
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../../javascripts/book_manage_inArrears.js')

@@ -12,17 +12,18 @@ append head
     link(rel='stylesheet', type='text/css', href='../../stylesheets/book_mybook.css')
 
 block content
-    .container.contents
-        h3 신청도서 관리
-        hr
-        .content
-            ul.nav.nav-pills.nav-justified
-                li.active
-                    a(href="#") 기술서적
-                li
-                    a(href="#") 인문서적
+    .wrapper
+        article.container
+            h3 신청도서 관리
             hr
-            table#applyTable.table.table-striped.table-hover
+            .content
+                ul.nav.nav-pills.nav-justified
+                    li.active
+                        a(href="#") 기술서적
+                    li
+                        a(href="#") 인문서적
+                hr
+                table#applyTable.table.table-striped.table-hover
     .modal.fade
         .modal-dialog
             .modal-content

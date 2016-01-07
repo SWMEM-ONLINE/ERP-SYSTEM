@@ -8,21 +8,22 @@ append head
     link(rel='stylesheet', type='text/css', href='../stylesheets/book_mybook.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .container.contents
-        h3 내 도서 현황
-        hr
-        .content
-            ul.nav.nav-pills.nav-justified
-                li.active
-                    a(href="#") 대여한 도서
-                li
-                    a(href="#") 예약한 도서
-                li
-                    a(href="#") 구매신청한 도서
+    .wrapper
+        article.container
+            h3 내 도서 현황
             hr
-            table#myBorrowedBook.table.table-hover.table-bordered.table-condensed.table-striped
-            table#myReservedBook.table.table-hover.table-bordered.table-condensed.table-striped.hidden
-            table#myAppliedBook.table.table-hover.table-bordered.table-condensed.table-striped.hidden
+            .content
+                ul.nav.nav-pills.nav-justified
+                    li.active
+                        a(href="#") 대여한 도서
+                    li
+                        a(href="#") 예약한 도서
+                    li
+                        a(href="#") 구매신청한 도서
+                hr
+                table#myBorrowedBook.table.table-hover.table-bordered.table-condensed.table-striped
+                table#myReservedBook.table.table-hover.table-bordered.table-condensed.table-striped.hidden
+                table#myAppliedBook.table.table-hover.table-bordered.table-condensed.table-striped.hidden
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../javascripts/book_mybook_index.js')
