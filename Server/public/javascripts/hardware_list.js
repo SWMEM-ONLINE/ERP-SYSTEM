@@ -73,7 +73,7 @@ function clickEvent(datalist){
         $.post('/hardware/lender', {hardware_id: datalist[index].h_id}, function(response){      // Call selected hardware's lenders list
             if(response.length > 0){            // If lenders exist, make list table
                 string += '<table class="table table-striped">';
-                string += '<tr class="warning"><th>대여자</th><th>대여일</th><th>반납일</th></tr><tbody>';
+                string += '<tr><th>대여자</th><th>대여일</th><th>반납일</th></tr><tbody>';
                 for(var i = 0; i < response.length; i++){
                     string += '<tr><td>' + response[i].u_name + '</td><td>' + response[i].hr_rental_date + '</td><td>' + response[i].hr_due_date + '</td></tr>';
                 }
