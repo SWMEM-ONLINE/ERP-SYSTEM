@@ -130,15 +130,19 @@ function loadapplylist(flag){
     var htmlString = '';
     $.post('/book/manage/loadapplylist', {flag : flag}, function(datalist){
         cnt = 0;
-        htmlString += '<tfoot><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn btn-default">전체선택</button><button type="button" id="buyCompleteButton" class="btn btn-warning">구매</button><button type="button" id="enrollButton" class="btn btn-primary">도서등록</button><button type="button" id="down2excel" class="btn btn-info">엑셀로 다운</button><span id="checkSum" class="pull-right">0 원</span></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="down2excel" class="btn">엑셀로 저장</button><span id="checkSum" class="pull-right">0 원</span></th></tr></tfoot>';
         htmlString += '<tbody id="applyTableData">';
         $.each(datalist, function(idx, data){
             cnt++;
             htmlString += '<tr><td><img class="bookImg" src="' + data.ba_photo_url + '"/</td>';
             htmlString += '<td><span class="label label-success">' + data.u_period + ' ' + data.u_name + '</span>';
             htmlString += '<p><h4 class="bookTitle">' + data.ba_name;
-            if(data.ba_state === 1) htmlString += ' <span class="label label-danger"> 주문완료 </span></h4>';
-            else    htmlString += '</h4>';
+            if(data.ba_state === 1){
+                htmlString += ' <span class="label label-danger"> 주문완료 </span></h4>';
+            }
+            else{
+                htmlString += '</h4>';
+            }
             htmlString += '<p>' + data.ba_author + ' | ' + data.ba_publisher + '</span></p></tr>';
         });
         htmlString += '</tbody>';
@@ -180,8 +184,12 @@ function buyCompleteButton(datalist, flag){
         }else{
             buyIdlist = buyIdlist.substring(0, buyIdlist.length -1);
             $.post('/book/manage/buyComplete', {type : type, buyIdlist : buyIdlist}, function(response){
-                if(response === 'success')  toastr['success']('주문완료');
-                else    toastr['error']('주문실패');
+                if(response === 'success'){
+                    toastr['success']('주문완료');
+                }
+                else{
+                    toastr['error']('주문실패');
+                }
             });
             $('div.modal').modal('hide');
             loadapplylist(flag);
@@ -244,7 +252,7 @@ function makelocationData(){
             temp = 0;
         }
         temp++;
-        modalString += '<td style="font-size:15px"><input type="radio" name="location" value="' + key + '">';
+        modalString += '<td><input type="radio" name="location" value="' + key + '">';
         if(divide % 2 === 0){
             modalString += '  ' + '<span class="label label-warning col-xs"> ' + key + '</span>' + '  ' + value + '</td>';
         }else{
@@ -269,8 +277,12 @@ function registerButton(datalist){
         });
         registerIdlist = registerIdlist.substring(0, registerIdlist.length -1);
         $.post('/book/manage/enrollBook', {location : $('input:radio[name="location"]:checked').val(), registerIdlist : registerIdlist},function(response){
-            if(response === 'success')   toastr['success']('도서등록 성공');
-            else    toastr['error']('도서등록 실패');
+            if(response === 'success'){
+                toastr['success']('도서등록 성공');
+            }
+            else{
+                toastr['error']('도서등록 실패');
+            }
         });
         $('div.modal').modal('hide');
         window.location.reload();

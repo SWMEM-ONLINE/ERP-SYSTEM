@@ -74,9 +74,15 @@ function loadBorrowedBooklist(){
         $('button#turnIn').each(function(index){                            // turnIn button function.
             $(this).unbind().click(function(event){
                 $.post('/book/mybook/turnIn', {reserved_cnt: datalist[index].b_reserved_cnt, rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, due_date: datalist[index].b_due_date}, function(response){
-                    if(response==='success')    toastr['success']('반납 성공');
-                    else if(response === 'failed')  toastr['error']('반납 실패');
-                    else    toastr['info']('반납성공\n벌당직' + response + '일 부여');
+                    if(response==='success'){
+                        toastr['success']('반납 성공');
+                    }
+                    else if(response === 'failed'){
+                        toastr['error']('반납 실패');
+                    }
+                    else{
+                        toastr['info']('반납성공\n벌당직' + response + '일 부여');
+                    }
                 });
                 loadBorrowedBooklist();
             });
@@ -85,8 +91,12 @@ function loadBorrowedBooklist(){
             if(datalist[index].br_extension_cnt === 0 && datalist[index].b_reserved_cnt === 0 && datalist[index].diff <= 0) {
                 $(this).unbind().click(function (event) {
                     $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id}, function (response) {
-                        if(response === 'success')  toastr['success']('연장 성공');
-                        else    toastr['error']('연장 실패');
+                        if(response === 'success'){
+                            toastr['success']('연장 성공');
+                        }
+                        else{
+                            toastr['error']('연장 실패');
+                        }
                     });
                     loadBorrowedBooklist();
                 });
@@ -95,8 +105,12 @@ function loadBorrowedBooklist(){
         $('button#missing').each(function(index){                           // missing button function
             $(this).unbind().click(function(event){
                 $.post('/book/mybook/missing', {book_id : datalist[index].b_id}, function(response){
-                    if(response === 'success')  toastr['success']('분실신고 성공');
-                    else    toastr['error']('분실등록 실패');
+                    if(response === 'success'){
+                        toastr['success']('분실신고 성공');
+                    }
+                    else{
+                        toastr['error']('분실등록 실패');
+                    }
                 });
                 loadBorrowedBooklist();
             });
@@ -126,8 +140,12 @@ function loadReservedBooklist(){
         $('button#cancelReservation').each(function(index){                 // cancelReservation button function
             $(this).unbind().click(function(event){
                 $.post('/book/mybook/cancelReservation', {reserve_id: datalist[index].bre_id, book_id: datalist[index].b_id, reserved_cnt: datalist[index].b_reserved_cnt}, function(response){
-                    if(response === 'success')  toastr['success']('예약취소 성공');
-                    else    toastr['error']('에약취소 실패');
+                    if(response === 'success'){
+                        toastr['success']('예약취소 성공');
+                    }
+                    else{
+                        toastr['error']('에약취소 실패');
+                    }
                 });
                 loadReservedBooklist();
             });
@@ -157,8 +175,12 @@ function loadAppliedBooklist(){
         $('button#cancelAppliedbook').each(function(index){
             $(this).unbind().click(function(event){
                 $.post('/book/mybook/cancelAppliedbook', {apply_id: datalist[index].ba_id}, function(response){
-                    if(response === 'success')  toastr['success']('도서신청 취소 성공');
-                    else    toastr['error']('도서신청 취소 실패');
+                    if(response === 'success'){
+                        toastr['success']('도서신청 취소 성공');
+                    }
+                    else{
+                        toastr['error']('도서신청 취소 실패');
+                    }
                 });
                 loadAppliedBooklist();
             });

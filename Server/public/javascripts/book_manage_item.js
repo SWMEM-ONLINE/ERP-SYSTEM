@@ -165,14 +165,18 @@ function loadbooklist(select){
 }
 
 function settingHTML(datalist){
-    var htmlString = '<tfoot><tr><th colspan="2"><button type="button" id="resetLocation" class="btn btn-primary">위치변경</button></th></tr></tfoot>';
+    var htmlString = '<tfoot><tr><th colspan="2"><button type="button" id="resetLocation" class="btn">위치변경</button></th></tr></tfoot>';
     htmlString += '<span class="pull-right"> </span></th></tr></tfoot>';
     htmlString += '<tbody id="booklistData">';
     $.each(datalist, function(idx, data){
         htmlString += '<tr><td><img class="bookImg" src="' + data.b_photo_url + '"</td>';
         htmlString += '<td><h4 class="bookTitle">' + data.b_name;
-        if(data.b_state === 1) htmlString += ' <span class="label label-warning">' + data.b_rental_username + '님이 대여중</span></h4>';
-        else    htmlString += '</h4>';
+        if(data.b_state === 1){
+            htmlString += ' <span class="label label-warning">' + data.b_rental_username + '님이 대여중</span></h4>';
+        }
+        else{
+            htmlString += '</h4>';
+        }
         htmlString += '<p>' + data.b_author + ' | ' + data.b_publisher + ' | ' + data.b_location + '</p></tr>';
     });
     htmlString += '</tbody>';
@@ -235,8 +239,12 @@ function resetButton(datalist){
         });
         resetIdlist = resetIdlist.substring(0, resetIdlist.length -1);
         $.post('/book/manage/resetbookLocation', {location : $('input:radio[name="location"]:checked').val(), resetIdlist : resetIdlist},function(response){
-            if(response === 'success')   toastr['success']('도서위치 변경성공');
-            else    toastr['error']('도서위치 변경실패');
+            if(response === 'success'){
+                toastr['success']('도서위치 변경성공');
+            }
+            else{
+                toastr['error']('도서위치 변경실패');
+            }
         });
         $('div.modal').modal('hide');
         loadbooklist(flag);
