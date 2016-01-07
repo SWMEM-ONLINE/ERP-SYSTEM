@@ -8,22 +8,22 @@ append head
     link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
-    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/user_lifeEvaluation.css')
-
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-    .container.contents
-        h3 생활 등급
-        hr
-        .content
+    .wrapper
+        article.container
+            h3 생활 등급
             hr
-            table#lifeEvaluationTable.table.table-condensed.table-hover
-            table#gradecutTable.table.table-condensed.table-bordered
-                thead
-                    tr.warning
-                        th 등급
-                        th 기준
-                tbody
+            .content
+                hr
+                table#lifeEvaluationTable.table.table-condensed.table-hover
+                table#gradecutTable.table.table-condensed.table-bordered
+                    thead
+                        tr
+                            th 등급
+                            th 기준
+                    tbody
     .modal.fade
         .modal-dialog
             .modal-content
