@@ -3,7 +3,6 @@
  */
 
 var fs = require('fs');
-var excel = require('node-excel-export');
 
 /*
     Load new tech or humanities booklist. Send one select query and return data.
