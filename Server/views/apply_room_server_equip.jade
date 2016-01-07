@@ -9,39 +9,41 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/apply_room_server_equip.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-   .container.contents
-      h3 #{title}
-      hr
-      .content
-         table.table
-            thead
-               tr
-                  th 날짜
-                  th 내용
-                  th 기한
-                  th Link
-                  th 신청하기
-            tbody
-               if lists.length === 0
+   .wrapper
+      article.container
+         h3 #{title}
+         hr
+         .content
+            table.table
+               thead
                   tr
-                     td(colspan=5)
-                        h4 신청서가 없습니다
-               else
-                  for list in lists
+                     th 기간
+                     th 링크
+                     th 신청하기
+               tbody
+                  if lists.length === 0
                      tr
-                        td= list.a_date
-                        td= list.a_title
-                        td= list.a_due_date
-                        td
-                           a(href=list.a_weblink,target='_blank') 바로가기
-                        td
-                           - type = list.a_apply_type
-                           if type == 1
-                              button.btn.push-room.push 신청하기
-                           else if type == 2
-                              button.btn.push-server.push 신청하기
-                           else if type == 3
-                              button.btn.push-equipment.push 신청하기
+                        td(colspan=5)
+                           h4 신청서가 없습니다
+                  else
+                     for list in lists
+                        tr
+                           td
+                              = list.a_date
+                              |  ~
+                              br
+                              = list.a_due_date
+                           td
+                              a(href=list.a_weblink,target='_blank')
+                                 = list.a_title
+                           td
+                              - type = list.a_apply_type
+                              if type == 1
+                                 button.btn.push-room.push 신청하기
+                              else if type == 2
+                                 button.btn.push-server.push 신청하기
+                              else if type == 3
+                                 button.btn.push-equipment.push 신청하기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/apply_room_server_equip.js')

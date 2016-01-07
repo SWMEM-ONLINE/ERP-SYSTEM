@@ -21,16 +21,16 @@ block content
                      th 날짜
                      th 구분
                      th 내용
-                     th 해당회원
+                     th 회원
                      th 금액
-                     th 추가/삭제
+                     th 추가
                tbody
                   tr
                      td
-                        input.datepicker#date_0(type='text', placeholder='날짜선택', onclick='calendar(this)', class="datepicker", readonly='readonly')
+                        input.datepicker#date_0(type='text', placeholder='날짜', onclick='calendar(this)', class="datepicker", readonly='readonly')
                      td
                         .btn-group
-                           button#type_0.type.dropdown-toggle(type='button', data-toggle='dropdown') 구분
+                           button#type_0.btn.dropdown-toggle(type='button', data-toggle='dropdown') 구분
                            ul.dropdown-menu
                               li#type1_0(onclick='typecheck(this.id)')
                                  a 회비
@@ -41,12 +41,12 @@ block content
                      td
                         input#content_0(type='text', placeholder='내용')
                      td
-                        input#members_0(type='text', placeholder='회원선택' readonly='readonly', onclick='memberSelect(this)')
+                        input#members_0(type='text', placeholder='회원' readonly='readonly', onclick='memberSelect(this)')
                      td
                         input#price_0(type='text', placeholder='금액만 입력',onkeydown='isNumberKey(this)')
                      td
-                        button#plus.plusminus(type='button', onclick='addList()') +
-            button#submit(type='button') 입력
+                        button#plus.btn(type='button', onclick='addList()') +
+            button#submit.btn(type='button') 입력
    .modal.fade
       .modal-dialog
          .modal-content
@@ -56,7 +56,7 @@ block content
             .modal-footer
                button#selectAll.btn(type='button') 전체
                button#select.btn(type='button') 선택
-               button.btn(type='button', data-dismiss='modal') 취소
+               button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='../javascripts/bootstrap-datepicker.js')
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

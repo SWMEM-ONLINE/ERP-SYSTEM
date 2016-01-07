@@ -8,38 +8,37 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
-   link(rel='stylesheet', type='text/css', href='../stylesheets/fee_unpaid.css')
 block content
-   .container.contents
-      h3 회비 미납내역
-      h5 3개월 회비 미납부터 매월 벌당직 3일씩 부과
-      hr
-      .content
-         table.table
-            thead
-               tr
-                  th 날짜
-                  th 구분
-                  th 내용
-                  th 금액
-            tbody
-               if result.length == 0
+   .wrapper
+      article.container
+         h3 회비 미납내역
+         h4 3개월 회비 미납시 매월 벌당직 3일 부과
+         hr
+         .content
+            table.table
+               thead
                   tr
-                     td(colspan=4)
-                        h4 미납내역이 없습니다
-               else
-                  for row in result
+                     th 날짜
+                     th 구분
+                     th 내용
+                     th 금액
+               tbody
+                  if result.length == 0
                      tr
-                        td= row.f_date
-                        td
-                           if row.f_type == 1
-                              span 회비
-                           else if row.f_type == 2
-                              span 삼과비
-                           else
-                              span 기타
-                        td= row.f_content
-                        td= row.f_price
-
+                        td(colspan=4)
+                           h4 미납내역이 없습니다
+                  else
+                     for row in result
+                        tr
+                           td= row.f_date
+                           td
+                              if row.f_type == 1
+                                 span 회비
+                              else if row.f_type == 2
+                                 span 삼과비
+                              else
+                                 span 기타
+                           td= row.f_content
+                           td= row.f_price
 append script
    script(src='../javascripts/bootstrap-datepicker.js')

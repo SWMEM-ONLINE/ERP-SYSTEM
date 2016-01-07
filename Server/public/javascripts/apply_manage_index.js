@@ -73,13 +73,13 @@ function addList() {
     link.innerHTML = str2;
     var str3 = '<input id="due_'+rowCount+'" type="text" placeholder="날짜선택" onclick="calendar_expire(this)" readonly="readonly" class="datepicker">';
     expire.innerHTML = str3;
-    var str4 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
+    var str4 = '<button id="plus" class="btn" type="button" onclick="addList()">+</button>';
     addBtn.innerHTML = str4;
 
     var Allrows = document.getElementById('addlist').rows;
     Allrows[lastRow-1].deleteCell(4);
     var changedRow = Allrows[lastRow-1].insertCell(4);
-    changedRow.innerHTML = '<button id="minus" type="button" onclick="deleteRow(this)" class="plusminus">－</button>';
+    changedRow.innerHTML = '<button id="minus" class="btn" type="button" onclick="deleteRow(this)">-</button>';
 
     rowCount = rowCount + 1;
 }

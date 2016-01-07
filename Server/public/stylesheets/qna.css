@@ -1,37 +1,7 @@
-article.container{
-    text-align: center;
-}
-
-div.content{
-    text-align: center;
-}
-
-div.content table,th,tr,td{
-    text-align: center;
-    transition: 0.5s all;
-}
-
-hr {
-    border:1px solid #dddddd;
-}
-
-button {
-    background-color: #122359;
-    border: none;
-    color: white;
-    height: 45px;
-    border-radius: 4px;
-    transition: 0.3s all;
-    margin:5px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
 input,textarea{
     text-indent: 2%;
     text-align: left;
     border:2px solid #cccccc;
-    height: 45px;
     width:100%;
     border-radius: 4px;
 }
@@ -46,7 +16,11 @@ textarea {
 
 table {
     table-layout: fixed;
-    margin:auto;
+    margin: auto;
+}
+
+table th{
+    text-align: center;
 }
 table#history td {
     width:100%;
@@ -59,28 +33,6 @@ table#history td {
     background-color: #dfdfdf;
 }
 
-@media(min-width:993px){
-    div.content{
-        width: 993px;
-        margin:auto;
-    }
-}
-
-@media(max-width:992px){
-    div.container{
-        padding:0;
-    }
-    table{
-        font-size: 14px;
-    }
-    button{
-        height: 36px;
-    }
-    input{
-        height: 36px;
-    }
-}
-
 #pagination a{
     color:#122359;
 }
@@ -90,7 +42,7 @@ table#history td {
 }
 
 .modal-body{
-    height: 500px;
+    height: 400px;
     overflow-y: auto;
 }
 
@@ -109,7 +61,11 @@ table#history td {
 }
 .commentDiv{
     width: 100%;
+    height: 42px;
 }
 #comment{
+    vertical-align: middle;
     width: 70%;
+    margin-right: 5px;
+    padding:3px;
 }

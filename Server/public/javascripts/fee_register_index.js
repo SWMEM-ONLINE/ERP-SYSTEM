@@ -62,22 +62,22 @@ function addList() {
     var price = newRow.insertCell(3);
     var addBtn = newRow.insertCell(4);
 
-    var str0 = '<input id="date_'+rowCount+'" type="text" placeholder="날짜선택" onclick="calendar(this)" class="datepicker" readonly="readonly">';
+    var str0 = '<input id="date_'+rowCount+'" type="text" placeholder="날짜" onclick="calendar(this)" class="datepicker" readonly="readonly">';
     date.innerHTML = str0;
 
-    var str1 ='<div class="btn-group"><button id="type_'+rowCount+'" type="button" data-toggle="dropdown" class="btndropdown-toggle">구분</button><ul class="dropdown-menu"><li id="expense_'+rowCount+'" onclick="expense(this.id)"><a href="#">지출</a></li><li id="income_'+rowCount+'" onclick="income(this.id)"><a href="#">수입</a></li></ul></div>';
+    var str1 ='<div class="btn-group"><button id="type_'+rowCount+'" type="button" data-toggle="dropdown" class="btn btndropdown-toggle">구분</button><ul class="dropdown-menu"><li id="expense_'+rowCount+'" onclick="expense(this.id)"><a href="#">지출</a></li><li id="income_'+rowCount+'" onclick="income(this.id)"><a href="#">수입</a></li></ul></div>';
     type.innerHTML = str1;
-    var str2 = '<input id="content_'+rowCount+'" type="text" placeholder="사용내역"/>';
+    var str2 = '<input id="content_'+rowCount+'" type="text" placeholder="내역"/>';
     content.innerHTML = str2;
     var str3 = '<input id="price_' + rowCount + '" type="text" placeholder="숫자만 입력", maxlength="8", onkeydown="isNumberKey(this)"/>';
     price.innerHTML = str3;
-    var str4 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
+    var str4 = '<button id="plus" class="btn" type="button" onclick="addList()">+</button>';
     addBtn.innerHTML = str4;
 
     var Allrows = document.getElementById('addlist').rows;
     Allrows[lastRow-1].deleteCell(4);
     var changedRow = Allrows[lastRow-1].insertCell(4);
-    changedRow.innerHTML = '<button id="minus" type="button" onclick="deleteRow(this)" class="plusminus">－</button>';
+    changedRow.innerHTML = '<button id="minus" class="btn" type="button" onclick="deleteRow(this)">-</button>';
 
     rowCount = rowCount + 1;
 }

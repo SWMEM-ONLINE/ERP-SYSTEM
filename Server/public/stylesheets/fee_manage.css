@@ -1,7 +1,3 @@
-article.container{
-    text-align: center;
-}
-
 div.content{
     text-align: right;
 }
@@ -10,36 +6,11 @@ div.content table#memberList{
     margin-top:10px;
 }
 
-div.content table,th,tr,td{
-    text-align: center;
-    transition: 0.5s all;
-}
-
-hr {
-    border:1px solid #dddddd;
-}
-
-button {
-    background-color: #122359;
-    border: none;
-    color: white;
-    height: 34px;
-    border-radius: 4px;
-    transition: 0.3s all;
-    margin:5px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-button.condition{
-    background-color: #122359;
-    border:none;
-    color: white;
-}
-
 input{
     text-align: center;
-    border:2px solid #cccccc;
-    width:150px;
+    width: 170px;
+    border:1px solid #cccccc;
+    height: 33px;
     border-radius: 4px;
 }
 
@@ -47,24 +18,6 @@ input{
     background-color: #dfdfdf;
 }
 
-@media(min-width:993px){
-    div.content{
-        width: 993px;
-        margin:auto;
-    }
-}
-
-@media(max-width:992px){
-    div.container{
-        padding:0;
-    }
-    div.content table{
-        font-size: 14px;
-    }
-    button{
-        height: 36px;
-    }
-    input{
-        height: 36px;
-    }
+button.dropdown-toggle,#search{
+    margin:5px;
 }

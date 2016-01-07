@@ -1,46 +1,7 @@
-article.container{
-    text-align: center;
-}
-
-div.content{
-    text-align: center;
-}
-
-hr {
-    border:1px solid #dddddd;
-}
-
-img.android{
-    width:300px;
-}
-
 @media(min-width:993px){
-    div.content{
-        width: 993px;
-        margin:auto;
-    }
     .modal-dialog{
         width: 400px;
     }
-}
-
-@media(max-width:992px){
-    div.container{
-        padding:0;
-    }
-    article.container h3{
-        font-size: 35px;
-    }
-    div.content table{
-        font-size: 14px;
-    }
-    button.type{
-        font-size:5px;
-    }
-}
-
-div.content table{
-    margin:auto;
 }
 
 .modal-body{
@@ -60,37 +21,6 @@ div.content table input{
     border-radius: 4px;
 }
 
-button{
-    text-align: center;
-    border:none;
-    height: 34px;
-    border-radius: 4px;
-    background-color: #122359;
-    color: white;
-}
-
-button.plusminus{
-    width: 34px;
-}
-
 button#minus{
     background-color: #ff000d;
-}
-
-.table>tbody>tr>td{
-    padding: 5px;
-}
-
-table,th,tr,td{
-    text-align: center;
-    transition: 0.5s all;
-}
-
-button#submit{
-    margin-top:10px;
-    margin-bottom:10px;
-}
-
-hr {
-    border:1px solid #dddddd;
 }

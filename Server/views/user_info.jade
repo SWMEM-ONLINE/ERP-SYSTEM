@@ -15,7 +15,7 @@ block content
          hr
          .card
             for row in result
-               h5 #{row.u_period} #{row.u_name}
+               h4 #{row.u_period} #{row.u_name}
                .profile-img
                   img(src='/image?name=#{row.u_photo_url}')
                .profile-content
@@ -46,7 +46,7 @@ block content
                            if row.u_device != ''
                               td#device #{row.u_device}
                               td
-                                 button#deleteDevice.delete 삭제
+                                 button#deleteDevice.btn.delete 삭제
                            else
                               td#device 등록된 디바이스 정보가 없습니다
          .card
@@ -80,7 +80,7 @@ block content
                            label#changeimg(for='newImg') 사진 선택
                      tr
                         td(colspan='2')
-                           button#save.edit-save(type='submit') Save
+                           button#save.btn.edit-save(type='submit') Save
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/user_info_index.js')

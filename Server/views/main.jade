@@ -11,36 +11,31 @@ append head
    link(rel='stylesheet', type='text/css', href='./stylesheets/main_layout.css')
    link(rel='stylesheet', type='text/css', href='./stylesheets/main.css')
 block content
-   .container.contents
-      .card.animated.bounceIn
-         .content
+   .wrapper
+      article.container
+         .card.animated.bounceIn
             .content-header
                h5#today
                h5 오늘의 당직
             hr
             #content-today_duty
 
-      .card.animated.bounceIn
-         .content
+         .card.animated.bounceIn
             .content-header
                h5 Mileage
             p
                label(style='text-overflow : ellipsis;') Mileage : 100
-      .card.animated.bounceIn
-         .content
+         .card.animated.bounceIn
             .content-header
                h5 나의 당직일
             hr
             .content-my_duty
-
-      .card.animated.bounceIn
-         .content
+         .card.animated.bounceIn
             .content-header
                h5 하드웨어 대여 현황
                hr
             .content-myhardware
-      .card.animated.bounceIn
-         .content
+         .card.animated.bounceIn
             .content-header
                h5 도서 대여 현황
                hr
