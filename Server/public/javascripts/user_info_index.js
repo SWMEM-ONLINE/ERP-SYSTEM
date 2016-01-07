@@ -30,9 +30,12 @@ $('#deleteDevice').click(function () {
         type:'post',
         url:'/user/info/deleteDevice',
         contentType:'application/json',
-        success: function(){
-            document.getElementById('device').innerHTML = '등록된 디바이스 정보가 없습니다';
-            $('table #deleteDevice').remove();
+        success: function(data){
+            if(data.status == '0'){
+                toastr['success']('디바이스 정보를 지웠습니다');
+                document.getElementById('device').innerHTML = '등록된 디바이스 정보가 없습니다';
+                $('table #deleteDevice').remove();
+            }
         }
     });
 });
