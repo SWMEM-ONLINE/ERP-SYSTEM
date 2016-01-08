@@ -1,0 +1,21 @@
+div.content input{
+    text-align: center;
+    border:1px solid #cccccc;
+    border-radius: 4px;
+    margin:5px;
+    width: 60%;
+}
+
+#booksearch button,input{
+    vertical-align: middle;
+}
+
+img.bookImg{
+    width: 50%;
+}
+
+@media(max-width:992px){
+    img.bookImg{
+        width: 100%;
+    }
+}

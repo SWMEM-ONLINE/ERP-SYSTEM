@@ -22,21 +22,19 @@ block content
                         a(href="#") 인문서적
                 hr
                 #booksearch
-                    .input-group
-                        button#bookSearchCategory(type='button') 도서명
-                            button.dropdown-toggle(type='button', data-toggle='dropdown')
-                                span.caret
-                            ul#categoryDropdown.dropdown-menu
-                                li
-                                    a(href='#') 도서명
-                                li
-                                    a(href='#') 저자
-                                li
-                                    a(href='#') 출판사
-                        input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
-                        button#bookSearchBtn(type='button') 검색
+                    .btn-group
+                        button#bookSearchCategory.btn.dropdown-toggle(type='button',data-toggle='dropdown') 도서명
+                        ul#categoryDropdown.dropdown-menu
+                            li
+                                a(href='#') 도서명
+                            li
+                                a(href='#') 저자
+                            li
+                                a(href='#') 출판사
+                    input#bookSearchWords(type='text', placeholder='검색어를 입력하세요')
+                    button#bookSearchBtn.btn(type='button') 검색
                 hr
-                table#booklist.table.table-hover.table-bordered.table-condensed
+                table#booklist.table.table-hover.table-bordered
     .modal.fade
         .modal-dialog
             .modal-content
