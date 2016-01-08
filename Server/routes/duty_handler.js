@@ -52,29 +52,6 @@ function Duty(date) {
     };
 }
 
-function test(con,req,res){
-
-
-    var userids = ["1111","2222","3333"];
-
-    util.sendList(userids,"123","123", function(err,data){
-        if(err){
-            console.log(err);
-        }else{
-            console.log(data);
-        }
-
-    });
-
-    util.send("1111","!23","123", function(err,data){
-        if(err){
-            console.log(err);
-        }else{
-            console.log(data);
-        }
-    });
-}
-
 
 function updateMemberPoint(con,req,res){
 
@@ -1787,4 +1764,3 @@ exports.loadAllDuty = loadAllDuty;
 exports.autoMakeDuty = autoMakeDuty;
 exports.updateMemberPoint = updateMemberPoint;
 exports.loadTodayDuty = loadTodayDuty;
-exports.test = test;

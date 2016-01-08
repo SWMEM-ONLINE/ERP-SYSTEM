@@ -27,11 +27,13 @@ var dateHtml = date.getFullYear() + "년 " + (date.getMonth()+1)  + "월 " + dat
 $("#date").html(dateHtml);
 
 
+var periods;
+var select_user_list;
+var select_mode;
+
+
 loadMemberList();
 
-var periods = [];
-var select_user_list = new Array();
-var select_mode = null;
 
 $('#mode-dropdown li a').click(function(){
     //$('#seriesDropdown').on("hide.bs.dropdown");
@@ -96,7 +98,9 @@ $("#send").click(function(){
 
 function loadMemberList(){
     $.post('/duty/getMemberList', function(res){
-
+        select_user_list = [];
+        select_mode = null;
+        periods = [];
         generateMemberTable(res);
         clickEvent(res);
     });
@@ -106,9 +110,7 @@ function loadMemberList(){
 
 function generateMemberTable(res){
     /*
-
          일단 기수별로 정렬
-
      */
     var period;
     var row;
@@ -181,9 +183,7 @@ function generateMemberTable(res){
 
 function clickEvent(response){
 
-    $("#memberList").on("click", "td", function() {
-
-
+    $("#memberList td").click(function(){
         var index = $(this).attr('id')
         $(this).toggleClass('warning');
 
@@ -205,8 +205,34 @@ function clickEvent(response){
             select_user_list.push(id);
         }
 
+
     });
 
-
+    //
+    //$("#memberList").on("click", "td", function() {
+    //
+    //
+    //    var index = $(this).attr('id')
+    //    $(this).toggleClass('warning');
+    //
+    //
+    //    var data  =  response[index];
+    //    var id = data.u_id;
+    //
+    //    var flag = 1;
+    //    for(var i=0;i<select_user_list.length;i++){
+    //        var user = select_user_list[i];
+    //        if(user == id){
+    //            flag = 0;
+    //            select_user_list.splice(i,1);
+    //        }
+    //    }
+    //
+    //    if(flag == 1 ){
+    //
+    //        select_user_list.push(id);
+    //    }
+    //
+    //});
 
 }

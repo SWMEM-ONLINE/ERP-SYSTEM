@@ -139,10 +139,6 @@ router.post('/updateMemberPoint', util.ensureAuthenticated, function(req, res){
     duty_handler.updateMemberPoint(con,req,res);
 });
 
-router.post('/test', util.ensureAuthenticated, function(req, res){
-    duty_handler.test(con,req,res);
-});
-
 router.post('/loadTodayDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.loadTodayDuty(con,req,res);
 });
