@@ -53,6 +53,7 @@ div.edit-content input{
 div.edit-content button.edit-save{
     width: 100%;
     background-color: #122359;
+    margin-bottom:10px;
 }
 
 div.edit-content table td:last-child{
