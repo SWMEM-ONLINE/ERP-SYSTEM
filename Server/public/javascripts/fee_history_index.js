@@ -67,7 +67,7 @@ function feeList(year,month){
                         }
                         tfoot += '<tr><td></td><td></td><th>월 수입</th><td class="text-primary">'+ deposit + '</td></tr>';
                         tfoot += '<tr><td></td><td></td><th>월 지출</th><td class="text-danger">' + withdraw + '</td></tr>';
-                        tfoot += '<tr><td colspan="4"><button id="excelSave" type="button">엑셀로 저장</button></td></tr>';
+                        tfoot += '<tr><td colspan="4"><button id="excelSave" class="btn" type="button">엑셀로 저장</button></td></tr>';
                 }
                 $('.table tbody').html(string);
                 $('.table tfoot').html(tfoot);

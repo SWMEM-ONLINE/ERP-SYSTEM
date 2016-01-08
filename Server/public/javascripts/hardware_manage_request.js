@@ -72,7 +72,7 @@ function setTable(datalist, flag){                //  html 테이블 만들기
     var htmlString;
     if(flag != 3){
         htmlString = '<thead><tr><th>신청자</th><th>하드웨어 이름</th><th>신청일</th><th>처리상태</th></tr></thead>';
-        htmlString += '<tfoot><tr><th colspan="4"><button type="button" id="selectAll" class="btn btn-success">전체선택</button><button type="button" id="approve" class="btn btn-primary">승인</button><button type="button" id="reject" class="btn btn-danger">미승인</button></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="4"><button type="button" id="selectAll" class="btn">전체선택</button><button type="button" id="approve" class="btn">승인</button><button type="button" id="reject" class="btn cancel">미승인</button></th></tr></tfoot>';
         htmlString += '<tbody id="tableData">';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>' + data.u_name + '</td><td>' + data.h_name + '</td><td>' + data.hw_request_date + '</td><td>';
@@ -90,7 +90,7 @@ function setTable(datalist, flag){                //  html 테이블 만들기
         htmlString += '</tbody>';
     }else{
         htmlString = '<thead><tr><th>신청자</th><th>프로젝트 이름</th><th>처리상태</th><th>자세히</th></tr></thead>';
-        htmlString += '<tfoot><tr><th colspan="4"><button type="button" id="selectAll" class="btn btn-success">전체선택</button><button type="button" id="approve" class="btn btn-primary">승인</button><button type="button" id="reject" class="btn btn-danger">미승인</button><button type="button" id="down2excel" class="btn btn-info">엑셀로 다운</button></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="4"><button type="button" id="selectAll" class="btn">전체선택</button><button type="button" id="approve" class="btn">승인</button><button type="button" id="reject" class="btn cancel">미승인</button><button type="button" id="down2excel" class="btn">엑셀로 저장</button></th></tr></tfoot>';
         htmlString += '<tbody id="tableData">';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>' + data.u_name + '</td><td>' + data.ha_project_title + '</td><td>';
@@ -172,8 +172,12 @@ function approveButton(datalist, flag){           // 승인 버튼
             approveIdlist = approveIdlist.substring(0, approveIdlist.length -1);
         }
         $.post('/hardware/manage/approveRequest', {type: flag, approveIdlist: approveIdlist, hardwareIdlist: hardwareIdlist, userIdlist: userIdlist, rentalIdlist: rentalIdlist}, function(response){
-            if(response === 'success')   toastr['success']('승인처리 완료');
-            else    toastr['error']('승인처리 실패');
+            if(response === 'success'){
+                toastr['success']('승인처리 완료');
+            }
+            else{
+                toastr['error']('승인처리 실패');
+            }
             loadRequest(temp);
         });
     });
@@ -194,8 +198,12 @@ function rejectButton(datalist, flag){            // 거절 버튼
         });
         rejectlist = rejectlist.substring(0, rejectlist.length-1);
         $.post('/hardware/manage/rejectRequest', {type: flag, rejectlist: rejectlist}, function(response){
-            if(response === 'success')   toastr['success']('미승인처리 완료');
-            else    toastr['error']('미승인처리 실패');
+            if(response === 'success'){
+                toastr['success']('미승인처리 완료');
+            }
+            else{
+                toastr['error']('미승인처리 실패');
+            }
             loadRequest(temp);
         });
     });

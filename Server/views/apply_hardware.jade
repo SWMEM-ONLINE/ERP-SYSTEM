@@ -9,67 +9,70 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/apply_hardware.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-   .container.contents
-      h3 하드웨어 신청
-      hr
-      .content
-         .noti
-            h4 PC에서 신청바랍니다
-         table.table#addlist
-            thead
-               tr
-                  th 프로젝트명
-                  th 용도
-                  th 분류
-                  th 품목
-                  th 부품명
-                  th 규격
-                  th 수량
-                  th Maker
-                  th Web Site
-                     | 참고자료
-                  th 추가
-                     br
-                     |삭제
-            tbody
-               tr
-                  td
-                     input#projectName_0(type='text', placeholder='프로젝트명')
-                  td
-                     input#use_0(type='text', placeholder='용도')
-                  td
-                     input#type_0(type='text', placeholder='분류')
-                  td
-                     input#label_0(type='text', placeholder='품목')
-                  td
-                     input#name_0(type='text', placeholder='부품명')
-                  td
-                     input#ea_0(type='text', placeholder='규격')
-                  td
-                     input#count_0(type='text', placeholder='수량')
-                  td
-                     input#maker_0(type='text', placeholder='Maker')
-                  td
-                     input#link_0(type='text', placeholder='Link')
-                  td
-                     button#plus.plusminus(type='button', onclick='addList()') +
-         table.table#explainlist
-            thead
-               tr
-                  th 분류(종류)
-                  th 설명
-                  th 추가삭제
-            tbody
-               tr
-                  td
-                     input#kind_0(type='text', placeholder='분류(종류)')
-                  td
-                     input#explain_0(type='text', placeholder='설명')
-                  td
-                     button#exAdd.plusminus(type='button', onclick='addExplain()') +
-         p 입력한 정보를 꼭 확인 후 등록하세오
-         button#submit.info(type='button') 등록
-         button(type='button' onclick="window.open('https://docs.google.com/spreadsheets/d/1rTlfGXhMTVlOlflh_jwysXRg-HNSziLpJ5nlNjKE2do/edit?usp=sharing')") 예시
+   .wrapper
+      article.container
+         h3 하드웨어 신청
+         hr
+         .content
+            .noti
+               h4 PC에서 신청바랍니다
+            table.table#addlist
+               thead
+                  tr
+                     th 프로젝트명
+                     th 용도
+                     th 분류
+                     th 품목
+                     th 부품명
+                     th 규격
+                     th 수량
+                     th Maker
+                     th Web Site
+                        br
+                        | 참고자료
+                     th 추가
+                        br
+                        |삭제
+               tbody
+                  tr
+                     td
+                        input#projectName_0(type='text', placeholder='프로젝트명')
+                     td
+                        input#use_0(type='text', placeholder='용도')
+                     td
+                        input#type_0(type='text', placeholder='분류')
+                     td
+                        input#label_0(type='text', placeholder='품목')
+                     td
+                        input#name_0(type='text', placeholder='부품명')
+                     td
+                        input#ea_0(type='text', placeholder='규격')
+                     td
+                        input#count_0(type='text', placeholder='수량')
+                     td
+                        input#maker_0(type='text', placeholder='Maker')
+                     td
+                        input#link_0(type='text', placeholder='Link')
+                     td
+                        button#plus.btn(type='button', onclick='addList()') +
+            table.table#explainlist
+               thead
+                  tr
+                     th 분류(종류)
+                     th 설명
+                     th 추가삭제
+               tbody
+                  tr
+                     td
+                        input#kind_0(type='text', placeholder='분류(종류)')
+                     td
+                        input#explain_0(type='text', placeholder='설명')
+                     td
+                        button#exAdd.btn(type='button', onclick='addExplain()') +
+            p 입력한 정보를 꼭 확인 후 등록하세오
+            button#submit.btn.info(type='button') 등록
+            a(href='https://docs.google.com/spreadsheets/d/1rTlfGXhMTVlOlflh_jwysXRg-HNSziLpJ5nlNjKE2do/edit?usp=sharing' target='_blank')
+               button.btn.info(type='button') 예시
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/apply_hardware_index.js')

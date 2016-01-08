@@ -105,8 +105,12 @@ function clickEvent(datalist){
         string += '<img class="bookLargeImg" src="' + datalist[index].b_photo_url + '"/>';
         string += '<h4 class="bookTitle">' + datalist[index].b_name + '&nbsp<span class="label label-info">' + datalist[index].b_location + '</span></h4>';
         string += '<p>' + '저자 : ' + datalist[index].b_author + '</p><p>출판사 : ' + datalist[index].b_publisher + '</p>';
-        if(datalist[index].b_state === 1)   string += '<p>반납예정일 : ' + datalist[index].b_due_date + '</p><p>대여자 : '+datalist[index].b_rental_username + '</p>';
-        if(datalist[index].b_reserved_cnt != 0) string += '<p>예약자 : ' + datalist[index].b_reserved_cnt + '명</p>';
+        if(datalist[index].b_state === 1){
+            string += '<p>반납예정일 : ' + datalist[index].b_due_date + '</p><p>대여자 : '+datalist[index].b_rental_username + '</p>';
+        }
+        if(datalist[index].b_reserved_cnt != 0){
+            string += '<p>예약자 : ' + datalist[index].b_reserved_cnt + '명</p>';
+        }
         if(datalist[index].b_state != 0){                               // Add disabled class to request button not in waiting state
             $('#request').addClass('disabled');
             $('#request').text('대여불가');
@@ -141,8 +145,12 @@ function clickEvent(datalist){
         });
         $('button#missing').unbind().click(function(){                  // Missing button to enroll missingbook list.
             $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (data) {
-                if(data === 'success')  toastr['info']('분실도서 등록 완료');
-                else    toastr['error']('분실도서 등록 실패');
+                if(data === 'success'){
+                    toastr['info']('분실도서 등록 완료');
+                }
+                else{
+                    toastr['error']('분실도서 등록 실패');
+                }
                 init();
             });
             $('div.modal').modal('hide');

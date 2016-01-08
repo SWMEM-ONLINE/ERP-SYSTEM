@@ -63,23 +63,23 @@ function addList() {
     var price = newRow.insertCell(4);
     var addBtn = newRow.insertCell(5);
 
-    var str0 = '<input id="date_'+rowCount+'" type="text" placeholder="날짜선택" onclick="calendar(this)" class="datepicker" readonly="readonly">';
+    var str0 = '<input id="date_'+rowCount+'" type="text" placeholder="날짜" onclick="calendar(this)" class="datepicker" readonly="readonly">';
     date.innerHTML = str0;
-    var str1 = '<div class="btn-group"><button id="type_'+rowCount+'" class="type" type="button" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">구분</button><ul class="dropdown-menu"><li id="type1_'+rowCount+'" onclick="typecheck(this.id)"><a>회비</a></li><li id="type2_'+rowCount+'" onclick="typecheck(this.id)"><a>삼과비</a></li><li id="type3_'+rowCount+'" onclick="typecheck(this.id)"><a>기타</a></li></ul></div>';
+    var str1 = '<div class="btn-group"><button id="type_'+rowCount+'" class="btn" type="button" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">구분</button><ul class="dropdown-menu"><li id="type1_'+rowCount+'" onclick="typecheck(this.id)"><a>회비</a></li><li id="type2_'+rowCount+'" onclick="typecheck(this.id)"><a>삼과비</a></li><li id="type3_'+rowCount+'" onclick="typecheck(this.id)"><a>기타</a></li></ul></div>';
     type.innerHTML = str1;
     var str2 ='<input id="content_'+rowCount+'" type="text" placeholder="내용">';
     content.innerHTML = str2;
-    var str3 = '<input id="members_'+rowCount+'" type="text" placeholder="회원선택" readonly="readonly"  onclick="memberSelect(this)">';
+    var str3 = '<input id="members_'+rowCount+'" type="text" placeholder="회원" readonly="readonly"  onclick="memberSelect(this)">';
     members.innerHTML = str3;
     var str4 = '<input id="price_' + rowCount + '" type="text" placeholder="금액만 입력", onkeydown="isNumberKey(this)"/>';
     price.innerHTML = str4;
-    var str5 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
+    var str5 = '<button id="plus" class="btn" type="button" onclick="addList()">+</button>';
     addBtn.innerHTML = str5;
 
     var Allrows = document.getElementById('addlist').rows;
     Allrows[lastRow-1].deleteCell(5);
     var changedRow = Allrows[lastRow-1].insertCell(5);
-    changedRow.innerHTML = '<button id="minus" type="button" onclick="deleteRow(this)" class="plusminus">－</button>';
+    changedRow.innerHTML = '<button id="minus" class="btn cancel" type="button" onclick="deleteRow(this)">-</button>';
 
     rowCount = rowCount + 1;
 }

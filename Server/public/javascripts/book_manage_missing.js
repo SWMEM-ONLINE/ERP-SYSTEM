@@ -24,7 +24,7 @@ loadmissingBook();
 
 function loadmissingBook(){
     var htmlString = '<thead><tr><th>신고자</th><th>도서</th><th>신고일</th></tr></thead>';
-    htmlString += '<tfoot><tr><td colspan="3"><button type="button" id="reenroll" class="btn btn-danger"> 복구하기 </button></td></tr></tfoot><tbody id="tData">';
+    htmlString += '<tfoot><tr><td colspan="3"><button type="button" id="reenroll" class="btn cancel">복구하기</button></td></tr></tfoot><tbody id="tData">';
 
     $.post('/book/manage/loadmissingBook', function(datalist){
         $.each(datalist, function(idx, data){
@@ -45,12 +45,12 @@ function reenrollButton(datalist){
         var cnt_notmissing = 0;
         var enrollList = '';
 
-        if ($('#tData tr.warning').length === 0) {
+        if ($('#tData tr.warning').length === 0){
             toastr['error']('항목이 선택되지 않았습니다');
             return;
         }
         $('#tData tr.warning').each(function (index) {
-            if (datalist[index].b_state != 3) {
+            if (datalist[index].b_state != 3){
                 cnt_notmissing++;
             }
             enrollList += datalist[index].brl_book_id + ',';
@@ -58,8 +58,12 @@ function reenrollButton(datalist){
 
         enrollList = enrollList.substring(0, enrollList.length -1);
         $.post('/book/manage/reenroll', {enrollList: enrollList}, function(response){
-            if(response=== 'success')   toastr['success']('재등록 성공');
-            else    toastr['error']('재등록 실패');
+            if(response=== 'success'){
+                toastr['success']('재등록 성공');
+            }
+            else{
+                toastr['error']('재등록 실패');
+            }
         });
         window.location.reload();
     });

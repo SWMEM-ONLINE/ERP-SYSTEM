@@ -15,8 +15,8 @@ block content
         article.container
             h3 당직 맞변경 신청
             hr
-            button#showresult(type='button') 맞변경 신청 결과 조회
             .content
+                button#showresult.btn(type='button') 맞변경 신청 결과 조회
                 .row
                     .col-xs-12.col-md-6
                         h4 나의 당직
@@ -38,11 +38,11 @@ block content
                                         td#user_3.hidden
                                     tr
                                         td#user_4.hidden
-        #memberinfo.hidden
-            h3#requestmember2.text-center
-            p.text-center 과 (와) 교환
-            button#request.btn.btn-lg(type='button') 신청
-            #result
+            #memberinfo.hidden
+                h3#requestmember2.text-center
+                p.text-center 과 (와) 교환
+                button#request.btn(type='button') 신청
+                #result
     .modal.fade
         .modal-dialog
             .modal-content
@@ -52,7 +52,7 @@ block content
                     table.table
                         tbody#resultlist
                 .modal-footer
-                    button(type='button', data-dismiss='modal') 닫기
+                    button.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

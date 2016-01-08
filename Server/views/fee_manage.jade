@@ -16,7 +16,7 @@ block content
          hr
          .content
             .btn-group
-               button#term.dropdown-toggle.condition(type='button', data-toggle='dropdown') 기간
+               button#term.btn.dropdown-toggle(type='button', data-toggle='dropdown') 기간
                ul.dropdown-menu
                   li#termAll(onclick='selectCondition(this.id)')
                      a 전체
@@ -27,7 +27,7 @@ block content
                   li#termThree(onclick='selectCondition(this.id)')
                      a 3개월
             .btn-group
-               button#type.dropdown-toggle.condition(type='button', data-toggle='dropdown') 회비 구분
+               button#type.btn.dropdown-toggle(type='button', data-toggle='dropdown') 회비 구분
                ul.dropdown-menu
                   li#typeAll(onclick='selectCondition(this.id)')
                      a 전체
@@ -38,7 +38,7 @@ block content
                   li#typeEtc(onclick='selectCondition(this.id)')
                      a 기타
             .btn-group
-               button#paid.dropdown-toggle.condition(type='button', data-toggle='dropdown') 납부 여부
+               button#paid.btn.dropdown-toggle(type='button', data-toggle='dropdown') 납부 여부
                ul.dropdown-menu
                   li#paidAll(onclick='selectCondition(this.id)')
                      a 전체
@@ -46,9 +46,9 @@ block content
                      a 미납
                   li#paidYes(onclick='selectCondition(this.id)')
                      a 납부
-            .btn-group
+            p
                input#searchName(type='text' placeholder='이름')
-               button#search(type='button') 조회
+               button#search.btn(type='button') 조회
             hr
             table.table#memberList
                thead
@@ -58,6 +58,9 @@ block content
                      th 이름
                      th 상태
                tbody
+                  tr.empty
+                     td(colspan=4)
+                        h4 전체검색시 조회를 누르세요
    .modal.fade
       .modal-dialog
          .modal-content

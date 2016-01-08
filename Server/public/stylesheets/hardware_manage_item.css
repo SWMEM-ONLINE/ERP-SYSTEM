@@ -1,7 +1,7 @@
-div.content table input{
+input{
     text-align: center;
     width: 100%;
-    border: 1px solid #cccccc;
+    border:1px solid #cccccc;
     height: 36px;
     border-radius: 4px;
 }

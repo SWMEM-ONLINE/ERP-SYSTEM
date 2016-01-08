@@ -15,7 +15,7 @@ block content
             h3 상벌당직 수정
             hr
             .content
-                table#table.table.tab-content
+                table#table.table
                     thead
                         tr
                             th 날짜
@@ -28,7 +28,6 @@ block content
         .modal-dialog
             .modal-content
                 .modal-header
-                    button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
                     h4.modal-title 상벌당직 수정
                 .modal-body
                     .row
@@ -43,7 +42,7 @@ block content
                     .row
                         h4 구분
                         .btn-group
-                            a#mode-button.btn.btn-default.btn-block.dropdown-toggle(data-toggle='dropdown') 구분
+                            button#mode-button.btn.dropdown-toggle(data-toggle='dropdown') 구분
                             ul#mode-dropdown.dropdown-menu(style='width:100%')
                                 li
                                     a(href='#') 상당직
@@ -60,9 +59,9 @@ block content
                         h4 사유
                         input#modal-reason.form-control
                 .modal-footer
-                    button#modify.btn.btn-primary(type='button') 적용
-                    button#cancel.btn.btn-danger(type='button') 삭제
-                    button.btn.btn-default(type='button', data-dismiss='modal') 취소
+                    button#modify.btn(type='button') 적용
+                    button#cancel.btn(type='button') 삭제
+                    button.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

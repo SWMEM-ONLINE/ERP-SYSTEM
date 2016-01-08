@@ -29,7 +29,7 @@ function loadHardwarelist(){
     $.post('/hardware/loadHardwarelist', function(datalist){
         var htmlString = settingHTML(datalist);
         $('table#hardwarelist').html(htmlString);
-        $('.modal-header').text('하드웨어 대여');
+        $('.modal-title').text('하드웨어 대여');
         clickEvent(datalist);
     });
 }
@@ -39,12 +39,12 @@ function settingHTML(datalist){
     $.each(datalist, function(idx, data){
         if(data.h_remaining === 0){             // #remaining Hardware is not exist
             htmlString += '<tr class="danger"><td>';
-            htmlString += '<h6 class="hardwareTitle">' + data.h_name;
-            htmlString += '<span class="label label-danger pull-right">' + '0개남음' + '</span></h6></td></tr>'
+            htmlString += '<h4 class="hardwareTitle">' + data.h_name;
+            htmlString += '<span class="label label-danger pull-right">' + '0개남음' + '</span></h4></td></tr>'
         }else{
             htmlString += '<tr><td>';
-            htmlString += '<h6 class="hardwareTitle">' + data.h_name;
-            htmlString += '<span class="label label-success pull-right">' + data.h_remaining + '개남음' + '</span></h6></td></tr>'
+            htmlString += '<h4 class="hardwareTitle">' + data.h_name;
+            htmlString += '<span class="label label-success pull-right">' + data.h_remaining + '개남음' + '</span></h4></td></tr>'
         }
     });
     htmlString += '</tbody>';
@@ -62,22 +62,18 @@ function clickEvent(datalist){
         var string = '';
         if(datalist[index].h_remaining === 0){      // #remaining Hardware is not exist
             $('#request').addClass('disabled');
-            $('#request').removeClass('btn-primary');
-            $('#request').addClass('btn-danger');
             $('#request').text('대여불가');
         }else{
             $('#request').removeClass('disabled');
-            $('#request').removeClass('btn-danger');
-            $('#request').addClass('btn-primary');
             $('#request').text('대여신청');
         }
-        string += '<h4 class="bookTitle">' + datalist[index].h_name + '</h4>';
+        string += '<h5 class="bookTitle">' + datalist[index].h_name + '</h5>';
         string += '<p>' + '총 수량 : ' + datalist[index].h_total + '</p><p>남은수량 : ' + datalist[index].h_remaining + '</p>';
         //if(datalist[index].h_serial != null)    string += '<p>시리얼넘버 : ' + datalist[index].h_serial + '</p>';
         $.post('/hardware/lender', {hardware_id: datalist[index].h_id}, function(response){      // Call selected hardware's lenders list
             if(response.length > 0){            // If lenders exist, make list table
                 string += '<table class="table table-striped">';
-                string += '<tr class="warning"><th>대여자</th><th>대여일</th><th>반납일</th></tr><tbody>';
+                string += '<tr><th>대여자</th><th>대여일</th><th>반납일</th></tr><tbody>';
                 for(var i = 0; i < response.length; i++){
                     string += '<tr><td>' + response[i].u_name + '</td><td>' + response[i].hr_rental_date + '</td><td>' + response[i].hr_due_date + '</td></tr>';
                 }

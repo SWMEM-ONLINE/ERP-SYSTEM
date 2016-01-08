@@ -52,7 +52,7 @@ function addList() {
     var str6 = '<input id="count_'+rowCount+'" type="text" placeholder="수량">';
     var str7 = '<input id="maker_'+rowCount+'" type="text" placeholder="Maker">';
     var str8 = '<input id="link_'+rowCount+'" type="text" placeholder="Link">';
-    var str9 = '<button id="plus" type="button" onclick="addList()" class="plusminus">+</button>';
+    var str9 = '<button id="plus" class="btn" type="button" onclick="addList()">+</button>';
 
     projectName.innerHTML = str0;
     use.innerHTML = str1;
@@ -68,7 +68,7 @@ function addList() {
     var Allrows = document.getElementById('addlist').rows;
     Allrows[lastRow-1].deleteCell(9);
     var changedRow = Allrows[lastRow-1].insertCell(9);
-    changedRow.innerHTML = '<button id="minus" type="button" onclick="deleteRow(this)" class="plusminus">－</button>';
+    changedRow.innerHTML = '<button id="minus" class="btn cancel" type="button" onclick="deleteRow(this)">-</button>';
 
     rowCount = rowCount + 1;
 }
@@ -97,7 +97,7 @@ function addExplain() {
 
     var str0 = '<input id="kind_'+rowCountExp+'" type="text" placeholder="분류(종류)">';
     var str1 = '<input id="explain_'+rowCountExp+'" type="text" placeholder="설명">';
-    var str2 = '<button id="plus" type="button" onclick="addExplain()" class="plusminus">+</button>';
+    var str2 = '<button id="plus" class="btn" type="button" onclick="addExplain()">+</button>';
 
     kind.innerHTML = str0;
     explain.innerHTML = str1;
@@ -106,7 +106,7 @@ function addExplain() {
     var Allrows = document.getElementById('explainlist').rows;
     Allrows[lastRow-1].deleteCell(2);
     var changedRow = Allrows[lastRow-1].insertCell(2);
-    changedRow.innerHTML = '<button id="minus" type="button" onclick="deleteRowExp(this)" class="plusminus">－</button>';
+    changedRow.innerHTML = '<button id="minus" class="btn cancel" type="button" onclick="deleteRowExp(this)">-</button>';
 
     rowCountExp = rowCountExp + 1;
 }

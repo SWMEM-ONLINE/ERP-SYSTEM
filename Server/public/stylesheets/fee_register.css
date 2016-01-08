@@ -1,76 +1,7 @@
-article.container{
-    text-align: center;
-}
-
-div.content{
-    text-align: center;
-}
-@media(min-width:993px){
-    div.content table{
-        width: 993px;
-    }
-}
-
-@media(max-width:992px){
-    div.container{
-        padding:0;
-    }
-    div.content table{
-        font-size: 14px;
-    }
-}
-
-div.content table{
-    margin:auto;
-}
-
 div.content table input{
     text-align: center;
     width: 100%;
     border:1px solid #cccccc;
     height: 36px;
     border-radius: 4px;
-}
-
-div.content button{
-    text-align: center;
-    border:none;
-    height: 34px;
-    border-radius: 4px;
-    background-color: #122359;
-    color: white;
-}
-
-div.content button.plusminus{
-    width: 34px;
-}
-
-div.content button#minus{
-    background-color: #ff000d;
-}
-
-div.content table #type{
-    width: 100%;
-}
-
-div.content .table>tbody>tr>td{
-    padding: 5px;
-}
-
-div.content table thead{
-    border-bottom: 2px solid #dddddd;
-}
-
-div.content table,th,tr,td{
-    text-align: center;
-    transition: 0.5s all;
-}
-
-div.content button#submit{
-    margin-top:10px;
-    margin-bottom:10px;
-}
-
-hr {
-    border:1px solid #dddddd;
 }
