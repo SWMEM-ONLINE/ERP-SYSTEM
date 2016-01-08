@@ -104,8 +104,8 @@ $('#submit_server').click(function(){
         content = $('#content_' + i).val();
         link = $('#link_' + i).val();
         due = $('#due_' + i).val();
-        var checkHttp = link.substring(0, 6);
-        if(checkHttp != 'http://'){
+        var checkHttp = link.substring(0, 4);
+        if(checkHttp != 'http'){
             link = 'http://' + link;
         }
         if(date != undefined) {

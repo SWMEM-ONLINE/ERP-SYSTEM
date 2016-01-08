@@ -139,8 +139,8 @@ $('#submit').click(function(){
         Maker = $('#maker_'+i).val();
 
         Link = $('#link_'+i).val();
-        var checkHttp = Link.substring(0, 6);
-        if(checkHttp != 'http://'){
+        var checkHttp = Link.substring(0, 4);
+        if(checkHttp != 'http'){
             Link = 'http://' + Link;
         }
 
