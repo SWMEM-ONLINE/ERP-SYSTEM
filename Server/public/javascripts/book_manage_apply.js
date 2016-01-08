@@ -20,6 +20,16 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
+$.ig.loader({
+    scriptPath: "http://cdn-na.infragistics.com/igniteui/2015.2/latest/js/",
+    cssPath: "http://cdn-na.infragistics.com/igniteui/2015.2/latest/css/",
+    resources: 'modules/infragistics.util.js,' +
+    'igGrid,' +
+    'modules/infragistics.documents.core.js,' +
+    'modules/infragistics.excel.js,' +
+    'modules/infragistics.gridexcelexporter.js'
+});
+
 var book_category = {
     'A-1' : 'Null',
     'A-2' : 'UML',
@@ -115,7 +125,6 @@ var book_category = {
     'J-4' : '문학'
 };
 
-var cnt = 0;
 
 $('ul.nav-pills li').click(function(){
     var index = $(this).index();
@@ -129,11 +138,9 @@ loadapplylist(0);
 function loadapplylist(flag){
     var htmlString = '';
     $.post('/book/manage/loadapplylist', {flag : flag}, function(datalist){
-        cnt = 0;
         htmlString += '<tfoot><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn btn-default">전체선택</button><button type="button" id="buyCompleteButton" class="btn btn-warning">구매</button><button type="button" id="enrollButton" class="btn btn-primary">도서등록</button><button type="button" id="down2excel" class="btn btn-info">엑셀로 다운</button><span id="checkSum" class="pull-right">0 원</span></th></tr></tfoot>';
         htmlString += '<tbody id="applyTableData">';
         $.each(datalist, function(idx, data){
-            cnt++;
             htmlString += '<tr><td><img class="bookImg" src="' + data.ba_photo_url + '"/</td>';
             htmlString += '<td><span class="label label-success">' + data.u_period + ' ' + data.u_name + '</span>';
             htmlString += '<p><h4 class="bookTitle">' + data.ba_name;
@@ -148,7 +155,7 @@ function loadapplylist(flag){
             $(this).toggleClass('warning');
             $('#checkSum').text(calSum(datalist) + '원');
         });
-        selectAllButton();
+        selectAllButton(datalist);
         buyCompleteButton(datalist, flag);
         enrollButton(datalist);
         down2excelButton(datalist);
@@ -157,9 +164,66 @@ function loadapplylist(flag){
 
 function down2excelButton(datalist){
     $('button#down2excel').click(function(){
+
+        var workbook = new $.ig.excel.Workbook($.ig.excel.WorkbookFormat.excel2007);
+        var sheet = workbook.worksheets().add('도서신청 목록');
+        sheet.columns(0).setWidth(60, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(1).setWidth(500, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(2).setWidth(150, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(3).setWidth(150, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(4).setWidth(120, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(5).setWidth(120, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+
+        sheet.getCell('A1').value('No');
+        sheet.getCell('A1').cellFormat().font().height(10*25);
+        sheet.getCell('B1').value('도서명');
+        sheet.getCell('B1').cellFormat().font().height(10*25);
+        sheet.getCell('C1').value('출판사');
+        sheet.getCell('C1').cellFormat().font().height(10*25);
+        sheet.getCell('D1').value('저자');
+        sheet.getCell('D1').cellFormat().font().height(10*25);
+        sheet.getCell('E1').value('가격');
+        sheet.getCell('E1').cellFormat().font().height(10*25);
+        sheet.getCell('F1').value('신청자');
+        sheet.getCell('F1').cellFormat().font().height(10*25);
+
+        var cnt = ($('table tbody#applyTableData tr.warning').length + 1);
+        var table = sheet.tables().add('A1:F' + cnt, true);
+
+        table.style(workbook.standardTableStyles('TableStyleMedium2'));
+
+        var i = 2;
+
         $('table tbody#applyTableData tr.warning').each(function(){
             var index = $(this).index();
+            sheet.getCell('A' + i).value(i - 1);
+            sheet.getCell('B' + i).value(datalist[index].ba_name);
+            sheet.getCell('C' + i).value(datalist[index].ba_publisher);
+            sheet.getCell('D' + i).value(datalist[index].ba_author);
+            sheet.getCell('E' + i).value(datalist[index].ba_price);
+            sheet.getCell('F' + i).value(datalist[index].u_period + ' ' + datalist[index].u_name);
+            i++;
         });
+
+        sheet.getCell('D'+ (i+2)).value('총액');
+        sheet.getCell('D'+ (i+2)).cellFormat().font().height(14 * 20);
+        sheet.getCell('D'+ (i+2)).cellFormat().font().bold(true);
+
+        sheet.getCell('E'+ (i+2)).applyFormula('=SUM(E2:E'+cnt+')');
+        sheet.getCell('E'+ (i+2)).cellFormat().font().height(14 * 20);
+        sheet.getCell('E'+ (i+2)).cellFormat().font().bold(true);
+
+        var today = new Date();
+        var m = (today.getMonth() + 1);
+        saveWorkbook(workbook, m + "월 신청도서.xlsx");
+    });
+}
+
+function saveWorkbook(workbook, name) {
+    workbook.save({ type: 'blob' }, function (data) {
+        saveAs(data, name);
+    }, function (error) {
+        alert('Error exporting: : ' + error);
     });
 }
 
@@ -189,9 +253,9 @@ function buyCompleteButton(datalist, flag){
     });
 }
 
-function selectAllButton(){
+function selectAllButton(datalist){
     $('button#selectAllButton').unbind().click(function(){
-        if($('table tbody#applyTableData tr.warning').length != cnt){
+        if($('table tbody#applyTableData tr.warning').length != $('table tbody#applyTableData tr').length){
             $('table tbody#applyTableData tr').each(function(){
                 $(this).addClass('warning');
             })
@@ -200,6 +264,7 @@ function selectAllButton(){
                 $(this).removeClass('warning');
             })
         }
+        $('#checkSum').text(calSum(datalist) + '원');
     });
 }
 
