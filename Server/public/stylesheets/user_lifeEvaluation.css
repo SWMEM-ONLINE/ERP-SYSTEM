@@ -1,38 +1,14 @@
 /**
  * Created by jung-inchul on 2015. 11. 24..
  */
-
-.btn-group-vertical{
-    vertical-align: middle;
-}
-
-.btn-group-vertical{
-    vertical-align: middle;
-}
-
-
-div.input-group{
-    margin:0 auto;
+input{
     text-align: center;
-}
-
-table#lifeEvaluationTable{
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-table#gradecutTable {
-    width: 40%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-table td {
-    text-align: center;
-}
-
-input {
     width: 100%;
-    text-align: center;
+    border: 1px solid #cccccc;
+    height: 36px;
+    border-radius: 4px;
+}
+
+table button.btn{
+    margin:5px;
 }

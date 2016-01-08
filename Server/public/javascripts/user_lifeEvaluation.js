@@ -25,13 +25,13 @@ var total = 0;
 
 function loadlifeEvaluation(){
     $.post('/user/load_curlifeEval', function(datalist){
-        var tableString = '<thead><tr class="warning"><th colspan="3">' + datalist[0][0].l_year + '년' + datalist[0][0].l_month + '월 생활등급' + '</th></tr></thead>';
-        tableString += '<tfoot><tr><th colspan="3"><button type="button" id="showhistoryButton" class="btn btn-info">과거등급 보기</button></th></tr>';
+        var tableString = '<thead><tr><th colspan="3">' + datalist[0][0].l_year + '년' + datalist[0][0].l_month + '월'+ '</th></tr></thead>';
+        tableString += '<tfoot><tr><th colspan="3"><button type="button" id="showhistoryButton" class="btn cancel">과거등급 보기</button></th></tr>';
 
 
         if(datalist[1][0].u_state === 2 || datalist[1][0].u_state === '2'){
-            tableString += '<tr><th colspan="3"><button type="button" id="addevalButton" class="btn btn-danger">생활등급 추가</button>';
-            tableString += '<button type="button" id="altercutButton" class="btn btn-success">등급컷 변경</button></th></tr>';
+            tableString += '<tr><th colspan="3"><button type="button" id="addevalButton" class="btn">생활등급 추가</button>';
+            tableString += '<button type="button" id="altercutButton" class="btn">등급컷 변경</button></th></tr>';
         }
 
 
@@ -40,9 +40,9 @@ function loadlifeEvaluation(){
         tableString += '<tr><td>' + datalist[0][0].l_second + '</td><td>' + datalist[0][0].l_second_point + '</td><td>' + datalist[0][0].l_second_cnt + '</td></tr>';
         tableString += '<tr><td>' + datalist[0][0].l_third + '</td><td>' + datalist[0][0].l_third_point + '</td><td>' + datalist[0][0].l_third_cnt + '</td></tr>';
         tableString += '<tr><td>' + datalist[0][0].l_fourth + '</td><td>' + datalist[0][0].l_fourth_point + '</td><td>' + datalist[0][0].l_fourth_cnt + '</td></tr>';
-        tableString += '<tr style="border-bottom: 2px solid black"><td>' + datalist[0][0].l_fifth + '</td><td>' + datalist[0][0].l_fifth_point + '</td><td>' + datalist[0][0].l_fifth_cnt + '</td></tr>';
-        tableString += '<tr class="info"><td>Total</td><td colspan="2">' + datalist[0][0].l_total + '</td></tr>';
-        tableString += '<tr class="info"><td>등급</td><td colspan="2">' + datalist[0][0].l_grade + '</td></tr></tbody>';
+        tableString += '<tr style="border-bottom: 2px solid #dfdfdf"><td>' + datalist[0][0].l_fifth + '</td><td>' + datalist[0][0].l_fifth_point + '</td><td>' + datalist[0][0].l_fifth_cnt + '</td></tr>';
+        tableString += '<tr><td>Total</td><td colspan="2">' + datalist[0][0].l_total + '</td></tr>';
+        tableString += '<tr><td>등급</td><td colspan="2">' + datalist[0][0].l_grade + '</td></tr></tbody>';
 
         $('table#lifeEvaluationTable').html(tableString);
 
@@ -85,11 +85,11 @@ function newlifeEvalButton(dataset, cut_A, cut_B){
         modalString += '<tr><td><input type="text" id="content_2" value="' + dataset.l_second + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="point_2" value="' + dataset.l_second_point + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="cnt_2" value="0"></td></tr>';
         modalString += '<tr><td><input type="text" id="content_3" value="' + dataset.l_third + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="point_3" value="' + dataset.l_third_point + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="cnt_3" value="0"></td></tr>';
         modalString += '<tr><td><input type="text" id="content_4" value="' + dataset.l_fourth + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="point_4" value="' + dataset.l_fourth_point + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="cnt_4" value="0"></td></tr>';
-        modalString += '<tr style="border-bottom: 2px solid black"><td><input type="text" id="content_5" value="' + dataset.l_fifth + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="point_5" value="' + dataset.l_fifth_point + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="cnt_5" value="0"></td></tr>';
-        modalString += '<tr class="info"><td>Total</td><td colspan="2"><span id="total">0</span></td></tr>';
-        modalString += '<tr class="info"><td>등급</td><td colspan="2"><span id="grade">A</span></td></tr>';
+        modalString += '<tr><td><input type="text" id="content_5" value="' + dataset.l_fifth + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="point_5" value="' + dataset.l_fifth_point + '"></td><td><input type="number" onchange="calResult(' + cut_A + ',' +cut_B + ')" id="cnt_5" value="0"></td></tr>';
+        modalString += '<tr><td>Total</td><td colspan="2"><span id="total">0</span></td></tr>';
+        modalString += '<tr><td>등급</td><td colspan="2"><span id="grade">A</span></td></tr>';
 
-        $('div.modal-footer').html('<button type="button" id="enrollLifeeval" class="btn btn-danger">등록</button><button type="button" id="return" class="btn" data-dismiss="modal"> 닫기 </button>');
+        $('div.modal-footer').html('<button type="button" id="enrollLifeeval" class="btn">등록</button><button type="button" id="return" class="btn" data-dismiss="modal"> 닫기 </button>');
         $('div.modal-body').html(modalString);
         $('div.modal').modal();
 
@@ -105,7 +105,7 @@ function altercutButton(cut_A, cut_B){
         modalString += '<tr><td>A ~ B</td><td><input type="number" id="Acut" value="' + cut_A + '"></td></tr>';
         modalString += '<tr><td>B ~ C</td><td><input type="number" id="Bcut" value="' + cut_B + '"></td></tr></table>';
 
-        $('div.modal-footer').html('<button type="button" id="alterCut" class="btn btn-danger">변경</button><button type="button" id="return" class="btn" data-dismiss="modal"> 닫기 </button>');
+        $('div.modal-footer').html('<button type="button" id="alterCut" class="btn">변경</button><button type="button" id="return" class="btn" data-dismiss="modal"> 닫기 </button>');
         $('div.modal-body').html(modalString);
         $('div.modal').modal();
 
