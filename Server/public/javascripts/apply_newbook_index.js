@@ -109,7 +109,7 @@ function clickEvent(datalist, pageIndex, totalResults, searchWords, searchCatego
         var index = $(this).index();
         var string = '';
         string += '<img class="bookLargeImg" src="' + datalist[index].coverLargeUrl + '"/>';
-        string += '<h4 class="bookTitle">' + datalist[index].title + '</h4>';
+        string += '<h5 class="bookTitle">' + datalist[index].title + '</h5>';
         string += '<p>' + '저자 : ' + datalist[index].author + '</p><p>출판사 : ' + datalist[index].publisher + '</p><p>정가 : ' + datalist[index].priceStandard + ' 원</p>';
 
         $('div.modal-body').html(string);

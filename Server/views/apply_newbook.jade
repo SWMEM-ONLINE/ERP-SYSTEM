@@ -14,19 +14,17 @@ block content
             hr
             .content
                 #interparkBooksearch
-                    .input-group
-                        button#bookSearchCategory(type='button') 도서명
-                            button.dropdown-toggle(type='button', data-toggle='dropdown')
-                                span.caret
-                            ul#categoryDropdown.dropdown-menu
-                                li
-                                    a(href='#') 도서명
-                                li
-                                    a(href='#') 저자
-                                li
-                                    a(href='#') 출판사
-                        input#newbookSearchWords(type='text', placeholder='검색어를 입력해주세요')
-                        button#newbookSearchBtn(type='button') 검색
+                    .btn-group
+                        button#bookSearchCategory.btn.dropdown-toggle(type='button', data-toggle='dropdown') 도서명
+                        ul#categoryDropdown.dropdown-menu
+                            li
+                                a(href='#') 도서명
+                            li
+                                a(href='#') 저자
+                            li
+                                a(href='#') 출판사
+                    input#newbookSearchWords(type='text', placeholder='검색어를 입력해주세요')
+                    button#newbookSearchBtn.btn(type='button') 검색
                 table#newbooklist.table.table-hover.table-condensed
                 .pageArea
                     ul.pagination
@@ -37,8 +35,8 @@ block content
                     h4.modal-title
                 .modal-body
                 .modal-footer
-                    button#request(type='button')
-                    button#return(type='button', data-dismiss='modal') 닫기
+                    button#request.btn(type='button')
+                    button#return.btn(type='button', data-dismiss='modal') 닫기
 append script
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../javascripts/apply_newbook_index.js')
