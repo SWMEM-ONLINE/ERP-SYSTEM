@@ -146,7 +146,7 @@ $('#bookSearchWords').keydown(function(){
 $('#bookSearchBtn').click(function() {
     var searchWords = $('#bookSearchWords').val();                  // Get typing data in textbox
     if (searchWords.length == 0) {                                  // type nothing situation
-        toastr['error']('검색어를 입력해주세요 ^^');
+        toastr['error']('검색어를 입력해주세요');
         return false;
     }else{
         $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : (flag === 0 ? 'tech' : 'humanities')}, function(datalist){
@@ -170,12 +170,9 @@ function settingHTML(datalist){
     htmlString += '<tbody id="booklistData">';
     $.each(datalist, function(idx, data){
         htmlString += '<tr><td><img class="bookImg" src="' + data.b_photo_url + '"</td>';
-        htmlString += '<td><h4 class="bookTitle">' + data.b_name;
+        htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4>';
         if(data.b_state === 1){
-            htmlString += ' <span class="label label-warning">' + data.b_rental_username + '님이 대여중</span></h4>';
-        }
-        else{
-            htmlString += '</h4>';
+            htmlString += '<span class="label label-warning">' + data.b_rental_username + '님이 대여중</span>';
         }
         htmlString += '<p>' + data.b_author + ' | ' + data.b_publisher + ' | ' + data.b_location + '</p></tr>';
     });

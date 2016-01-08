@@ -59,14 +59,14 @@ function loadBorrowedBooklist(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><p><span class="label label-info">반납일 : ' + data.b_due_date + '</span>&nbsp&nbsp<span class="label label-warning">연장횟수 : ' + data.br_extension_cnt + '</span>&nbsp&nbsp<span class="label label-primary">예약자 : ' + data.b_reserved_cnt + '명</span></p>';
+            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><p><span class="label label-info">반납일 : ' + data.b_due_date + '</span><span class="label label-warning">연장횟수 : ' + data.br_extension_cnt + '</span><span class="label label-primary">예약자 : ' + data.b_reserved_cnt + '명</span></p>';
             htmlString += makeProgressbar(data.br_rental_date, data.b_due_date);
             htmlString += '</td><td width="5%">';
-            htmlString += '<div class="btn-group-vertical">';
-            htmlString += '<button id="turnIn" type="button" class="btn btn-primary btn-sm"> 도서반납 </button>';
-            if(data.br_extension_cnt === 0 && data.b_reserved_cnt === 0 && data.diff <= 0)   htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm"> 대여연장 </button>';
-            else    htmlString += '<button id="postpone" type="button" class="btn btn-success btn-sm disabled"> 대여연장 </button>';
-            htmlString += '<button id="missing" type="button" class="btn btn-danger btn-sm"> 분실신고 </button></div>';
+            htmlString += '<div>';
+            htmlString += '<button id="turnIn" type="button" class="btn">도서반납</button>';
+            if(data.br_extension_cnt === 0 && data.b_reserved_cnt === 0 && data.diff <= 0)   htmlString += '<button id="postpone" type="button" class="btn">대여연장</button>';
+            else    htmlString += '<button id="postpone" type="button" class="btn disabled">대여연장</button>';
+            htmlString += '<button id="missing" type="button" class="btn cancel">분실신고</button></div>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
@@ -165,7 +165,7 @@ function loadAppliedBooklist(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.ba_name + '</h4><div><span class="label label-info"> 저자 : ' + data.ba_author + '</span>&nbsp&nbsp&nbsp<span class="label label-warning">출판사 : ' + data.ba_publisher + '</span>';
+            htmlString += '<td><h4 class="bookTitle">' + data.ba_name + '</h4><div><span class="label label-info"> 저자 : ' + data.ba_author + '</span><span class="label label-warning">출판사 : ' + data.ba_publisher + '</span>';
             htmlString += '</td><td width="5%">';
             htmlString += '<button id="cancelAppliedbook" type="button" class="btn btn-danger btn-sm"> 신청취소 </button></div>';
             htmlString += '</td></tr>';
