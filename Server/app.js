@@ -26,6 +26,8 @@ var user = require('./routes/user');
 var qna = require('./routes/qna');
 var duty = require('./routes/duty');
 var system = require('./routes/system');
+var vote = require('./routes/vote');
+var schedule = require('./routes/schedule');
 /* routing pages@ */
 
 var util = require('./routes/util');
@@ -149,6 +151,8 @@ app.use('/user',user);
 app.use('/qna',qna);
 app.use('/duty',duty);
 app.use('/sys',system);
+app.use('/vote',vote);
+app.use('/schedule',schedule);
 app.get('/',
     function(req, res) {
       if (req.isAuthenticated()) {

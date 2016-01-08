@@ -94,8 +94,15 @@ body
                               a(href='/duty/changeSetting') 당직 맞변경 관리
                            li
                               a(href='/duty/checkListSetting') CheckList설정
-                  li
-                     a(href='#') 스케쥴
+                  li.dropdown
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') 스케쥴
+                     ul.dropdown-menu
+                        li
+                           a(href='/schedule') 보기
+                        if grade < 100
+                           li.divider
+                           li
+                              a(href='/schedule/manage') 관리
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 자재신청
                      ul.dropdown-menu
@@ -132,7 +139,14 @@ body
                                  li
                                     a(href='/apply/server/manage') 서버신청관리
                   li
-                     a(href='#') 설문
+                     a.dropdown-toggle(href='#', data-toggle='dropdown') 설문
+                     ul.dropdown-menu
+                        li
+                           a(href='/vote') 조사
+                        if grade < 100
+                           li.divider
+                           li
+                              a(href='/vote/manage') 관리
                   li.dropdown
                      a.dropdown-toggle(href='#', data-toggle='dropdown') 문의
                      ul.dropdown-menu
