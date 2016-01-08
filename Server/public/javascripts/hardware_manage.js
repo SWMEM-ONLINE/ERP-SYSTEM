@@ -127,7 +127,7 @@ function addHardware(){
 
 function alterHardware(){
     $.post('/hardware/loadHardwarelist', function(datalist){
-        var htmlString = '<thead><tr class="empty"><th>이름</th><th>총 갯수</th><th>남은 갯수</th><th>시리얼넘버</th></tr></thead><tbody>';
+        var htmlString = '<thead><tr class="empty"><th>이름</th><th>총갯수</th><th>대여</th><th>시리얼넘버</th></tr></thead><tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>' + data.h_name + '</td>';
             htmlString += '<td>' + data.h_total + '</td>';
