@@ -85,11 +85,11 @@ function settingHTML(datalist){
                 htmlString += '<tr>';
             }
             htmlString += '<td><img class="bookSmallImg" src="' + data.b_photo_url + '"></td>';
-            htmlString += '<td><div class="bookInfo"><h5 class="bookTitle">' + data.b_name;
+            htmlString += '<td><div class="bookInfo"><h4 class="bookTitle">' + data.b_name;
             if(data.b_state === 1)  htmlString += '<span class="label label-primary">대여중</span>';
             else if(data.b_state === 3) htmlString += '<span class="label label-danger">분실도서</span>';
             if(data.b_reserved_cnt > 0) htmlString += '<span class="label label-warning">예약중</span>';
-            htmlString += '</h5><p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
+            htmlString += '</h4><p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
             htmlString += '</tr>';
         });
         $('#booklist tbody').empty();

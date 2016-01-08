@@ -13,3 +13,7 @@ div.content input{
 img.bookSmallImg{
     width: 50%;
 }
+
+#booklist{
+    margin-top:15px;
+}
