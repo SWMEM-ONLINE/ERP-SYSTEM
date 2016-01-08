@@ -82,7 +82,7 @@ function settingHTML(datalist){
                 htmlString += '<tr>';
             }
             htmlString += '<td><img class="bookSmallImg" src="' + data.b_photo_url + '"></td>';
-            htmlString += '<td><div class="bookInfo"><h4 class="bookTitle">' + data.b_name;
+            htmlString += '<td><div class="bookInfo"><h4 class="bookTitle">' + data.b_name +'</h4>';
             if(data.b_state === 1){
                 htmlString += '<span class="label label-primary">대여중</span>';
             }
@@ -92,7 +92,7 @@ function settingHTML(datalist){
             if(data.b_reserved_cnt > 0){
                 htmlString += '<span class="label label-warning">예약중</span>';
             }
-            htmlString += '</h4><p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
+            htmlString += '<p>' + ' 저자 : ' + data.b_author + '</p><p>' + " 출판사 : " + data.b_publisher + '</p></div></td>';
             htmlString += '</tr>';
         });
         $('#booklist tbody').empty();
@@ -106,7 +106,7 @@ function clickEvent(datalist){
         var index = $(this).index();
         var string = '';
         string += '<img class="bookLargeImg" src="' + datalist[index].b_photo_url + '"/>';
-        string += '<h5 class="bookTitle">' + datalist[index].b_name + '&nbsp<span class="label label-info">' + datalist[index].b_location + '</span></h5>';
+        string += '<h5 class="bookTitle">' + datalist[index].b_name + '<span class="label label-info">' + datalist[index].b_location + '</span></h5>';
         string += '<p>' + '저자 : ' + datalist[index].b_author + '</p><p>출판사 : ' + datalist[index].b_publisher + '</p>';
         if(datalist[index].b_state === 1){
             string += '<p>반납예정일 : ' + datalist[index].b_due_date + '</p><p>대여자 : '+datalist[index].b_rental_username + '</p>';
