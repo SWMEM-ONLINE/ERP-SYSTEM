@@ -52,8 +52,14 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
-    //gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
-    res.json({status:'success'});
+    var query = 'select u_id from t_user where u_state = 6';
+    con.query(query,function(err,response){
+        console.log(response);
+        if(response.length == 1){
+            util.send(response.u_id,title,content);
+            res.json({status:'success'});
+        }
+    });
 });
 /* room@ */
 
