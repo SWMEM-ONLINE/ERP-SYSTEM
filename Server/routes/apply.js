@@ -56,6 +56,8 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     con.query(query,function(err,rows){
         var data = JSON.stringify(rows);
         console.log(data);
+        var who = JSON.parse(data);
+        console.log(who);
         if(data.length == 1){
             console.log(data.u_id);
             //util.send(data.u_id,title,content);
