@@ -53,10 +53,12 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 6';
-    con.query(query,function(err,response){
+    con.query(query,function(err,rows){
         console.log(response);
-        if(response.length == 1){
-            util.send(response.u_id,title,content);
+        var data = JSON.stringify(rows);
+        if(data.length == 1){
+            console.log(data.u_id);
+            util.send(data.u_id,title,content);
             res.json({status:'success'});
         }
     });
