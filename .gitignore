@@ -1,2 +1,4 @@
 Server/.idea/*
 .idea/*
+Server/bin/uploads/*
+Server/uploads/*
