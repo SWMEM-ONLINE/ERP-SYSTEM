@@ -59,7 +59,7 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
         var who = JSON.parse(data);
         console.log(who);
         if(who.length == 1){
-            console.log(data[0].u_id);
+            console.log(who[0].u_id);
             //util.send(data.u_id,title,content);
             res.json({status:'success'});
         }
