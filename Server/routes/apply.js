@@ -56,11 +56,27 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     con.query(query,function(err,rows){
         var Seminar = JSON.parse(JSON.stringify(rows));
         if(Seminar.length == 1){
-            util.send(Seminar[0].u_id,title,content);
-            res.json({status:'success'});
+            util.send(Seminar[0].u_id,title,content, function(err,data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.json({status:'success'});
+                }
+            });
         }
         else{
-
+            var Seminars = [];
+            for(var i=0;i<Seminar.length;i++){
+                Seminars.push(Seminar[i].u_id);
+            }
+            console.log(Seminars);
+            util.sendList(Seminars,title,content, function(err,data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.json({status:'success'});
+                }
+            });
         }
     });
 });
