@@ -38,7 +38,7 @@ router.post('/newbook/checkDuplication', function(req, res){
 /* apply push */
 /* @room */
 
-function ApplyPush(rows,title,content){
+function ApplyPush(rows,title,content,res){
     var Seminar = JSON.parse(JSON.stringify(rows));
     if(Seminar.length == 1){
         util.send(Seminar[0].u_id,title,content, function(err,data) {
