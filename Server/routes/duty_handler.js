@@ -2,14 +2,14 @@
  * Created by HyunJae on 2015. 12. 20..
  */
 
+var util = require('./util');
+
 /**
  *  Duty객체를 생성하는 생성자이다
  *
  * @param date
  * @constructor
  */
-var util = require('./util');
-
 function Duty(date) {
     this.date = date;
     this.user1 = null;
