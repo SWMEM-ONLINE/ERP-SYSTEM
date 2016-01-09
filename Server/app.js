@@ -9,7 +9,7 @@ var flash = require('connect-flash');
 var crypto = require('crypto');
 
 var fs = require('fs');
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
 /* @routing pages */
@@ -33,7 +33,6 @@ var schedule = require('./routes/schedule');
 var util = require('./routes/util');
 var app = express();
 var multer  = require('multer');
-var upload = multer({ dest: './uploads/'});
 var done=false;
 
 
@@ -47,7 +46,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(multer({ dest: './uploads/',
+app.use(multer({ dest: '../uploads/',
   rename: function (fieldname, filename) {
 
     return 'image'+Date.now();

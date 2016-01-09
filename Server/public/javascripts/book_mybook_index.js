@@ -59,7 +59,7 @@ function loadBorrowedBooklist(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><p><span class="label label-info">반납일 : ' + data.b_due_date + '</span><span class="label label-warning">연장횟수 : ' + data.br_extension_cnt + '</span><span class="label label-primary">예약자 : ' + data.b_reserved_cnt + '명</span></p>';
+            htmlString += '<td><h4 class="bookTitle">' + data.b_name + '</h4><p><span class="label label-info">반납일 : ' + data.b_due_date + '</span></p><p><span class="label label-warning">연장횟수 : ' + data.br_extension_cnt + '</span></p><p><span class="label label-primary">예약자 : ' + data.b_reserved_cnt + '명</span></p>';
             htmlString += makeProgressbar(data.br_rental_date, data.b_due_date);
             htmlString += '</td><td width="5%">';
             htmlString += '<div>';
@@ -165,9 +165,9 @@ function loadAppliedBooklist(){
         var htmlString = '<tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr>';
-            htmlString += '<td><h4 class="bookTitle">' + data.ba_name + '</h4><div><span class="label label-info"> 저자 : ' + data.ba_author + '</span><span class="label label-warning">출판사 : ' + data.ba_publisher + '</span>';
+            htmlString += '<td><h4 class="bookTitle">' + data.ba_name + '</h4><div><p><span class="label label-info"> 저자 : ' + data.ba_author + '</span></p><p><span class="label label-warning">출판사 : ' + data.ba_publisher + '</span></p>';
             htmlString += '</td><td width="5%">';
-            htmlString += '<button id="cancelAppliedbook" type="button" class="btn btn-danger btn-sm"> 신청취소 </button></div>';
+            htmlString += '<button id="cancelAppliedbook" type="button" class="btn cancel">신청취소</button></div>';
             htmlString += '</td></tr>';
         });
         htmlString += '</tbody>';
