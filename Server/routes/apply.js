@@ -54,14 +54,13 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 6';
     con.query(query,function(err,rows){
-        var data = JSON.stringify(rows);
-        console.log(data);
-        var who = JSON.parse(data);
-        console.log(who);
-        if(who.length == 1){
-            console.log(who[0].u_id);
-            //util.send(data.u_id,title,content);
+        var Seminar = JSON.parse(JSON.stringify(rows));
+        if(Seminar.length == 1){
+            util.send(Seminar[0].u_id,title,content);
             res.json({status:'success'});
+        }
+        else{
+
         }
     });
 });
