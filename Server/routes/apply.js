@@ -58,7 +58,7 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
         var data = JSON.stringify(rows);
         if(data.length == 1){
             console.log(data.u_id);
-            util.send(data.u_id,title,content);
+            //util.send(data.u_id,title,content);
             res.json({status:'success'});
         }
     });
