@@ -8,7 +8,6 @@ var apply_newbook_handler = require('./apply_newbook_handler');
 var con = DB_handler.connectDB();
 var router = express.Router();
 var util = require('./util');
-var gcm = require('./../libs/gcm');
 
 var APPLY_TYPE_ROOM = 1;
 var APPLY_TYPE_SERVER = 2;
@@ -53,7 +52,7 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
-    gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
+    //gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
     res.json({status:'success'});
 });
 /* room@ */
@@ -75,7 +74,7 @@ router.post('/server', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 서버신청을 하였습니다.';
-    gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
+    //gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
     res.json({status:'success'});
 });
 /* server@ */
@@ -96,7 +95,7 @@ router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 비품신청을 하였습니다.';
-    gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
+    //gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
     res.json({status:'success'});
 });
 /* equipment@ */
@@ -115,7 +114,7 @@ router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
-            throw err
+            throw err;
         }
         res.send('success');
     })
