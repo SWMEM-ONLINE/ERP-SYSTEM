@@ -91,7 +91,7 @@ function deleteRow(obj){
     table.deleteRow(index);
 }
 
-$('#submit_server').click(function(){
+$('#submit_data').click(function(){
     var date;
     var content;
     var link;

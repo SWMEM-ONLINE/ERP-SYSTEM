@@ -44,6 +44,7 @@ function ApplyPush(rows,title,content,res){
         util.send(Seminar[0].u_id,title,content, function(err,data) {
             if (err) {
                 console.log(err);
+                res.json({status:'fail'});
             } else {
                 res.json({status:'success'});
             }
@@ -58,6 +59,7 @@ function ApplyPush(rows,title,content,res){
         util.sendList(Seminars,title,content, function(err,data) {
             if (err) {
                 console.log(err);
+                res.json({status:'fail'});
             } else {
                 res.json({status:'success'});
             }
