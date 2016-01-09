@@ -52,7 +52,14 @@ function Duty(date) {
     };
 }
 
-
+/**
+ *
+ * 회원들의 상벌당직을 합산시킨다.
+ *
+ * @param con
+ * @param req
+ * @param res
+ */
 function updateMemberPoint(con,req,res){
 
     var memberList = [];
@@ -60,7 +67,6 @@ function updateMemberPoint(con,req,res){
     var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user;";
 
     console.log(query);
-
 
     con.query(query, function(err, response){
 
@@ -71,6 +77,7 @@ function updateMemberPoint(con,req,res){
 
             for(var i =0;i<response.length;i++){
                 var data = response[i];
+
                 var Member ={};
                 Member.id = data.u_id;
                 Member.name = data.u_name;
@@ -79,12 +86,12 @@ function updateMemberPoint(con,req,res){
                 Member.manage_bad_point = data.u_manager_bad_duty_point;
                 Member.last_month = data.u_last_duty;
 
+
                 var result = pointSort(Member);
                 Member.good_point = result.good_point;
                 Member.bad_point = result.bad_point;
                 Member.manage_bad_point = result.manage_bad_point;
                 memberList.push(Member);
-
 
             }
 
@@ -106,6 +113,15 @@ function updateMemberPoint(con,req,res){
 
 }
 
+
+
+
+/**
+ * 실질적으로 멤버들을 업그레이드 시키는 부분
+ * @param con
+ * @param memberList
+ * @param callback
+ */
 function updateMembers( con, memberList , callback){
     var query = '';
     for ( var i  in memberList)
@@ -157,17 +173,22 @@ function pointSort(data){
     return result;
 }
 
+
+
 function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_count){
 
 
     var bad_duty_list = [];
-    /*
-        memberlist2를 활용해 bad_duty_list를 만든다
+    /**
+     memberList2를 활용해 bad_duty_list를 만든다
      */
+    var i;
+    var member;
+    var duty;
     while (true) {
         var count = 0;
-        for (var i = 0; i < memberList2.length; i++) {
-            var member = memberList2[i];
+        for (i = 0; i < memberList2.length; i++) {
+            member = memberList2[i];
 
             if (member.bad_point > 0) {
                 bad_duty_list.push(member);
@@ -191,10 +212,10 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
      */
     while(bad_duty_count>0 && bad_duty_list.length !=0){
 
-        for(var i =0 ; i < dutyList.length; i++){
-            var duty = dutyList[i];
+        for(i =0 ; i < dutyList.length; i++){
+            duty = dutyList[i];
             if(bad_duty_list.length >0){
-                var member = bad_duty_list.shift();
+                member = bad_duty_list.shift();
 
                 if(duty.addUser(member.id , 1))
                 {
@@ -218,10 +239,10 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
 
         for(var i =0 ; i < dutyList.length; i++){
 
-            var duty = dutyList[i];
+            duty = dutyList[i];
 
             if(duty.count != duty_count){
-                var member = memberList.shift();
+                member = memberList.shift();
                 duty.addUser(member.id,0);
                 memberList.push(member);
             }
@@ -237,34 +258,46 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
 }
 
 function isCompelte(dutyList , duty_count){
+
     var flag = 1;
+
     for(var i = 0 ; i < dutyList.length; i++){
         var duty = dutyList[i];
         if(duty.count != duty_count){
             flag = 0;
         }
     }
-    if(flag==1){
+
+    if(flag==1)
         return true;
-    }else{
+    else
         return false;
-    }
 
 }
 
+
+/**
+ *
+ * 당직을 자동으로 설정하는 부분!
+ *
+ * @param con
+ * @param req
+ * @param res
+ */
 function autoMakeDuty(con,req,res){
 
     console.log(req.body);
-    console.log(req.body['selected_days[]']);
 
 
     var selected_days;
 
     if( req.body['selected_days[]']!= "undefined"){
-        selected_days  = new Array();
-    }else{
-        selected_days =req.body['selected_days[]'];
+        selected_days  = [];
     }
+    else{
+        selected_days = req.body['selected_days[]'];
+    }
+
 
     var duty_count =req.body.duty_count;
     var bad_duty_count = req.body.bad_duty_count;
@@ -324,38 +357,65 @@ function autoMakeDuty(con,req,res){
                 Member.manage_bad_point = data.u_manager_bad_duty_point;
                 Member.last_month = data.u_last_duty;
                 memberList.push(Member);
-                var Member2 = clone(Member);
-                memberList2.push(Member2);
             }
 
-            /*
-                멤버리스트는 저번달에 적은순으로 멤버리스트에 들어간다
-                멤버리스트 2는 저번달에 많은순으로 벌당직 리스트에 들어가게 된다.
-             */
-            memberList.sort(compare);
-            memberList2.sort(compare);
-            memberList2.reverse();
-            //console.log(memberList);
 
-            dutyList = generateDuty(memberList,memberList2,dutyList,duty_count,bad_duty_count);
 
-            console.log(dutyList);
+            var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state <= 100 and u_state > 1);";
 
-            var len = dutyList.length;
+            con.query(query, function(err, response){
+                if(err){
+                    console.log(err);
+                    res.send("fail");
+                }else {
 
-            console.log("len : " + len);
-            var result_data = 0;
-            insertDutyList(con,req,res,dutyList , function(data){
-                result_data+= data;
+                    for (var i = 0; i < response.length; i++) {
+                        var data = response[i];
+                        var Member = {};
+                        Member.id = data.u_id;
+                        Member.name = data.u_name;
+                        Member.good_point = data.u_good_duty_point;
+                        Member.bad_point = data.u_bad_duty_point;
+                        Member.manage_bad_point = data.u_manager_bad_duty_point;
+                        Member.last_month = data.u_last_duty;
+                        memberList2.push(Member);
 
-                console.log("current result : " +result_data);
-                if(len == result_data){
-                    res.send("success");
+                    }
+
+
+                    /*
+                     멤버리스트는 저번달에 적은순으로 멤버리스트에 들어간다
+                     멤버리스트 2는 저번달에 많은순으로 벌당직 리스트에 들어가게 된다.
+                     */
+                    memberList.sort(compare);
+                    memberList2.sort(compare);
+                    memberList2.reverse();
+                    //console.log(memberList);
+
+                    dutyList = generateDuty(memberList,memberList2,dutyList,duty_count,bad_duty_count);
+
+                    console.log(dutyList);
+
+                    var len = dutyList.length;
+
+                    console.log("len : " + len);
+                    var result_data = 0;
+                    insertDutyList(con,req,res,dutyList , function(data){
+                        result_data+= data;
+
+                        console.log("current result : " +result_data);
+                        if(len == result_data){
+                            res.send("success");
+                        }
+                    });
+
+                    //console.log("send all memberList to browser");
+                    //res.send(response);
                 }
+
             });
 
-            //console.log("send all memberList to browser");
-            //res.send(response);
+
         }
 
     });
