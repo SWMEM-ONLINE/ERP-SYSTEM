@@ -82,7 +82,7 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 6';
     con.query(query,function(err,rows){
-        ApplyPush(rows,title,content);
+        ApplyPush(rows,title,content,res);
     });
 });
 /* room@ */
@@ -106,7 +106,7 @@ router.post('/server', util.ensureAuthenticated, function(req, res, next) {
     var content = '[알림]'+userName+'님이 서버신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 8';
     con.query(query,function(err,rows){
-        ApplyPush(rows,title,content);
+        ApplyPush(rows,title,content,res);
     });
 });
 /* server@ */
@@ -129,7 +129,7 @@ router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
     var content = '[알림]'+userName+'님이 비품신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 5';
     con.query(query,function(err,rows){
-        ApplyPush(rows,title,content);
+        ApplyPush(rows,title,content,res);
     });
 });
 /* equipment@ */
