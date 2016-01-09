@@ -37,6 +37,34 @@ router.post('/newbook/checkDuplication', function(req, res){
 
 /* apply push */
 /* @room */
+
+function ApplyPush(rows,title,content){
+    var Seminar = JSON.parse(JSON.stringify(rows));
+    if(Seminar.length == 1){
+        util.send(Seminar[0].u_id,title,content, function(err,data) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({status:'success'});
+            }
+        });
+    }
+    else{
+        var Seminars = [];
+        for(var i=0;i<Seminar.length;i++){
+            Seminars.push(Seminar[i].u_id);
+        }
+        console.log(Seminars);
+        util.sendList(Seminars,title,content, function(err,data) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({status:'success'});
+            }
+        });
+    }
+}
+
 router.get('/room', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_ROOM+' and a_due_date > "'+ util.getCurDate() +'" Order by a_write_date';
     con.query(query, function(err,rows){
@@ -54,30 +82,7 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 6';
     con.query(query,function(err,rows){
-        var Seminar = JSON.parse(JSON.stringify(rows));
-        if(Seminar.length == 1){
-            util.send(Seminar[0].u_id,title,content, function(err,data) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.json({status:'success'});
-                }
-            });
-        }
-        else{
-            var Seminars = [];
-            for(var i=0;i<Seminar.length;i++){
-                Seminars.push(Seminar[i].u_id);
-            }
-            console.log(Seminars);
-            util.sendList(Seminars,title,content, function(err,data) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.json({status:'success'});
-                }
-            });
-        }
+        ApplyPush(rows,title,content);
     });
 });
 /* room@ */
@@ -99,8 +104,10 @@ router.post('/server', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 서버신청을 하였습니다.';
-    //gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
-    res.json({status:'success'});
+    var query = 'select u_id from t_user where u_state = 8';
+    con.query(query,function(err,rows){
+        ApplyPush(rows,title,content);
+    });
 });
 /* server@ */
 
@@ -120,8 +127,10 @@ router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
     var title ='SWSSM NOTICE';
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 비품신청을 하였습니다.';
-    //gcm.send(title,content,'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY','eh-qMqapWQY:APA91bGWXSmHuA3RwIC7XPIs2R2MrrvaLX3Er7BGqCSr3sRR_hrlOoIyCJKl1vD1-ZJKUDgvWL82z_OGmH1DlYufh9twsvmYgIS0DJs8pphVruLnURHkQPJ9E5UmFurfr1EaguaFrLAq');
-    res.json({status:'success'});
+    var query = 'select u_id from t_user where u_state = 5';
+    con.query(query,function(err,rows){
+        ApplyPush(rows,title,content);
+    });
 });
 /* equipment@ */
 
