@@ -17,7 +17,8 @@ block content
             for row in result
                h4 #{row.u_period} #{row.u_name}
                .profile-img
-                  img(src='/image?name=#{row.u_photo_url}')
+                  img(src='http://211.189.127.124:3000/image?name=#{row.u_photo_url}')
+                  //img(src='http://www.swmem.org/image?name=#{row.u_photo_url}')
                .profile-content
                   table
                      tbody
