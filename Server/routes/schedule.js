@@ -8,11 +8,11 @@ var router = express.Router();
 var util = require('./util');
 
 router.get('/', util.ensureAuthenticated, function(req, res, next) {
-    res.render('schedule', {title: '스케쥴'});
+    res.render('schedule', {title: '스케줄', grade: util.getUserGrade(req)});
 });
 
 router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
-    res.render('schedule_manage', {title: '스케쥴 관리'});
+    res.render('schedule_manage', {title: '스케줄 관리', grade: util.getUserGrade(req)});
 });
 
 module.exports = router;
