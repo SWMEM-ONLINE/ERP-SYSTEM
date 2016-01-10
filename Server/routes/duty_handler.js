@@ -398,7 +398,7 @@ function autoMakeDuty(con,req,res){
         dutyList.push(duty);
     }
 
-    var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state = 100);";
+    var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state = 100) order by u_last_duty;";
 
     console.log(query);
     con.query(query, function(err, response){
@@ -420,8 +420,7 @@ function autoMakeDuty(con,req,res){
             }
 
 
-
-            var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state <= 100 and u_state > 1);";
+            var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state <= 100 and u_state > 1) order by u_last_duty;";
 
             con.query(query, function(err, response){
                 if(err){
@@ -449,8 +448,6 @@ function autoMakeDuty(con,req,res){
                      */
                     memberList.sort(compare);
                     memberList2.sort(compare);
-                    memberList2.reverse();
-                    //console.log(memberList);
 
                     dutyList = generateDuty(memberList,memberList2,dutyList,duty_count,bad_duty_count);
 
