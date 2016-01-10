@@ -30,6 +30,9 @@ var vote = require('./routes/vote');
 var schedule = require('./routes/schedule');
 /* routing pages@ */
 
+
+
+
 var util = require('./routes/util');
 var app = express();
 var multer  = require('multer');
