@@ -49,7 +49,7 @@ function loadBadCheckList(){
     $.post('/duty/inquireBadCheckList', { day : getDay() } , function(res){
 
         badGenarateHtml(res);
-        addClickEvent(res);
+        addClickEvent();
         console.log(res);
         console.log(flag);
 
@@ -68,11 +68,10 @@ function loadNormalCheckList(){
             toastr['error']('전달 생활등급 로딩 실패');
         }
         else {
-            var grade = res;
-            $.post('/duty/inquireCheckList',{grade :grade} , function(res){
+            $.post('/duty/inquireCheckList',{grade :res} , function(res){
 
                 normalGenarateHtml(res);
-                addClickEvent(res);
+                addClickEvent();
                 console.log(res);
                 console.log(flag);
 
@@ -88,7 +87,7 @@ function loadNormalCheckList(){
 
 
 
-function addClickEvent(res){
+function addClickEvent(){
 
     $('tbody tr').click(function(){
 
@@ -170,7 +169,7 @@ function normalGenarateHtml(res){
         grade = data.grade;
         index = data.index;
 
-        if(section == "탕비실" || section == "라커룸" || section == "샤워실" || section == "수면실")
+        if(section == "탕비실" || section == "라커룸" || section == "샤워실" || section == "수면실" || section == "완료보고")
             continue;
 
         if(prev != section){
@@ -193,6 +192,38 @@ function normalGenarateHtml(res){
         htmlString+="</td>";
         htmlString+="</tr>";
     }
+
+    for(var i = 0 ; i< res.length; i++){
+
+        data = res[i];
+        content = data.content;
+        section = data.section;
+        grade = data.grade;
+        index = data.index;
+
+        if(section ==  "완료보고"){
+            if(prev != section){
+                prev = section;
+                htmlString+="<tr id = normal" + index +" class='solidtd'>";
+            }
+            else{
+                htmlString+="<tr id = normal" + index +">";
+            }
+
+
+            htmlString+="<td>";
+            htmlString+=grade;
+            htmlString+="</td>";
+            htmlString+="<td>";
+            htmlString+=section;
+            htmlString+="</td>";
+            htmlString+="<td>";
+            htmlString+=content;
+            htmlString+="</td>";
+            htmlString+="</tr>";
+        }
+    }
+
     htmlString+="</tfoot>";
 
 
