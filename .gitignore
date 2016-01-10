@@ -1,5 +1,5 @@
 Server/.idea/*
-.idea/*
+.idea/workspace.xml
 Server/bin/uploads/*
 Server/uploads/*
 Android/.idea
