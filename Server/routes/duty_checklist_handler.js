@@ -148,7 +148,7 @@ function deleteCheckList(con,req,res){
 
 function inquireALLBadCheckList(con,req,res){
 
-    var query = "SELECT * FROM swmem.t_duty_bad_checklist order by section;";
+    var query = "SELECT * FROM swmem.t_duty_bad_checklist;";
 
     var sendData = [];
 

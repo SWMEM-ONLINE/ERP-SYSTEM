@@ -1,5 +1,11 @@
 /**
  * Created by HyunJae on 2015. 12. 20..
+ *
+ *
+ *
+ * duty에서 상벌당직, 당직에 관한 함수를 처리해주는 핸들러 역할을 한다.
+ *
+ *
  */
 
 var util = require('./util');
@@ -117,21 +123,25 @@ function updateMemberPoint(con,req,res){
 
 
 /**
- * 실질적으로 멤버들을 업그레이드 시키는 부분
+ * 실질적으로 멤버들의 상벌당직을 업그레이드 시키는 부분
  * @param con
  * @param memberList
  * @param callback
  */
 function updateMembers( con, memberList , callback){
+    var member;
     var query = '';
     for ( var i  in memberList)
     {
-        var member = memberList[i];
-        query += "UPDATE `swmem`.`t_user` " +
-            "SET `u_good_duty_point`='" + member.good_point + "', " +
-            "`u_bad_duty_point`='" + member.bad_point + "'," +
-            " `u_manager_bad_duty_point`='" + member.manage_bad_point +  "' " +
-            "WHERE `u_id`='" +member.id +  "';";
+        if(memberList.hasOwnProperty(i)){
+            member = memberList[i];
+            query += "UPDATE `swmem`.`t_user` " +
+                "SET `u_good_duty_point`='" + member.good_point + "', " +
+                "`u_bad_duty_point`='" + member.bad_point + "'," +
+                " `u_manager_bad_duty_point`='" + member.manage_bad_point +  "' " +
+                "WHERE `u_id`='" +member.id +  "';";
+        }
+
     }
 
     console.log(query);
@@ -150,6 +160,13 @@ function updateMembers( con, memberList , callback){
     });
 }
 
+
+/**
+ * 맴버에 있는 데이터들을 소팅하구 결과를 result라는 객체로 보낸다.
+ *
+ * @param data
+ * @returns {{}}
+ */
 function pointSort(data){
 
     var goodDuty = parseInt(data.good_point);
@@ -174,17 +191,29 @@ function pointSort(data){
 }
 
 
-
+/**
+ *
+ *
+ *
+ *
+ * @param memberList    정회원리스트
+ * @param memberList2   정회원 + 자치회의 벌당직회원리스트
+ * @param dutyList      생성된 날짜별로 존재하는 당직객체
+ * @param duty_count
+ * @param bad_duty_count
+ * @returns {*}
+ */
 function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_count){
 
-
-    var bad_duty_list = [];
-    /**
-     memberList2를 활용해 bad_duty_list를 만든다
-     */
     var i;
     var member;
     var duty;
+    var bad_duty_list = [];
+
+
+    /*
+     memberList2를 활용해 bad_duty_list를 만든다
+     */
     while (true) {
         var count = 0;
         for (i = 0; i < memberList2.length; i++) {
@@ -237,7 +266,7 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
      */
     while(true){
 
-        for(var i =0 ; i < dutyList.length; i++){
+        for(i =0 ; i < dutyList.length; i++){
 
             duty = dutyList[i];
 
@@ -253,10 +282,20 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
         }
     }
     console.log("duty List is genearated");
+
     return dutyList;
 
 }
 
+
+/**
+ *
+ * 모든 듀티가 설정되었는지 확인하는 부분이다.
+ *
+ * @param dutyList
+ * @param duty_count
+ * @returns {boolean}
+ */
 function isCompelte(dutyList , duty_count){
 
     var flag = 1;
@@ -287,17 +326,21 @@ function isCompelte(dutyList , duty_count){
 function autoMakeDuty(con,req,res){
 
     console.log(req.body);
-
+    console.log(req.body['selected_days[]']);
 
     var selected_days;
 
-    if( req.body['selected_days[]']!= "undefined"){
+    if(typeof req.body['selected_days[]'] == "undefined"){
         selected_days  = [];
+    }else if(typeof req.body['selected_days[]'] == "string"){
+        selected_days =[];
+        selected_days.push(req.body['selected_days[]']);
     }
     else{
         selected_days = req.body['selected_days[]'];
     }
 
+    console.log(selected_days);
 
     var duty_count =req.body.duty_count;
     var bad_duty_count = req.body.bad_duty_count;
@@ -317,6 +360,7 @@ function autoMakeDuty(con,req,res){
         var date = new Date(year,month-1,i);
         var flag = 1 ;
         for(var j=0; j< selected_days.length; j++){
+
             var date2 = new Date(selected_days[j]);
 
             if(date.getDate() == date2.getDate())
@@ -326,14 +370,13 @@ function autoMakeDuty(con,req,res){
 
             if(flag==0)
             {
-                continue;
+                break;
             }
 
         }
         if(flag==0){
             continue;
         }
-
         var duty = new Duty(date);
         dutyList.push(duty);
     }
@@ -438,7 +481,7 @@ function updateUserPoint(con,req,res,user_id,mode){
             else{
                 mode = 2;
             }
-            var query = minusPointQuery(user_id,mode,1)
+            var query = minusPointQuery(user_id,mode,1);
 
             console.log(query);
             con.query(query, function (err, response){
@@ -457,7 +500,7 @@ function updateUserPoint(con,req,res,user_id,mode){
 
 function isBadorManage( con, user_id , callback){
     var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user" +
-        " where (u_id = " + user_id + ");";
+        " where (u_id = '" + user_id + "');";
 
     console.log(query);
     con.query(query, function( err , response ){
@@ -1193,7 +1236,7 @@ function loadAllDuty(con,req,res){
         }else{
 
             if(response.length==0){
-                console.log("error");
+                console.log("no data in duty where " +year + "-" + month);
                 res.send("no data");
             }else{
                 res.send(response);
@@ -1303,14 +1346,9 @@ function modifyPointHistoty(con,req,res){
 function removePointHistory(con,req,res){
 
     var receiveId = req.body['receive_id[]'];
-    var receiveName  = req.body["receive_name[]"];
-    var year = req.body.year;
-    var month = req.body.month;
-    var date = req.body.date;
     var addTime = req.body.addTime;
     var mode = req.body.mode;
     var point = req.body.point;
-    var reason = req.body.reason;
 
     for(var i=0;i<receiveId.length;i++){
         var id = receiveId[i];
@@ -1508,7 +1546,7 @@ function addPoint(con,req,res){
 
         var recieveUser = recieveUserList[i];
         var updatePointHistory = "INSERT INTO t_duty_point_history (`date`, `receive_user`, `send_user`, `mode`, `point`, `reason`) " +
-            "VALUES ('"+ year  +"-" + month+ "-" + date + "', '" + recieveUser + "', '" + send_id +"', '" + mode +"', '" + point + "', '" +reason + "');"
+            "VALUES ('"+ year  +"-" + month+ "-" + date + "', '" + recieveUser + "', '" + send_id +"', '" + mode +"', '" + point + "', '" +reason + "');";
 
         console.log(updatePointHistory);
         con.query(updatePointHistory, function(err, response){
@@ -1574,7 +1612,7 @@ function loadMyPointHistory(con,req,res){
         'on t_duty_point_history.receive_user = "' + id +'" '+
         "and month(t_duty_point_history.date) = " + month  +
         " and year(t_duty_point_history.date) = " + year +
-        " and t_user.u_id = t_duty_point_history.receive_user"
+        " and t_user.u_id = t_duty_point_history.receive_user"+
         "  ;";
     console.log(query);
     con.query(query, function(err, response){
@@ -1667,8 +1705,8 @@ function getUser(con, req, res){
     con.query(query, function(err, response){
 
         if(err){
-            throw err;
             console.log(err);
+            throw err;
         }
         else{
 
@@ -1790,14 +1828,17 @@ function compare(a,b) {
     return 0;
 }
 
-function clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    }
-    return copy;
-}
+
+
+//
+//function clone(obj) {
+//    if (null == obj || "object" != typeof obj) return obj;
+//    var copy = obj.constructor();
+//    for (var attr in obj) {
+//        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+//    }
+//    return copy;
+//}
 
 
 
