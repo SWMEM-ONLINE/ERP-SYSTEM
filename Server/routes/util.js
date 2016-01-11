@@ -240,8 +240,7 @@ function checkAuth(req) {
             if(grade <= 2) //운영자, 회장
                 result = true;
             break;
-        case '/sManage':                                             //스케줄 관리
-        case '/vManage':                                             //설문 관리
+        case '/sManage':                                            //스케줄 관리
         case '/finished':                                           //수료회원 목록
         case '/add':                                                //상벌당직 추가
         case '/modify':                                             //상벌당직 수정
@@ -250,6 +249,9 @@ function checkAuth(req) {
         case '/getAddPoint':
         case '/modifyPointHistoty':
         case '/removePointHistory':
+        case '/vManage':                                            //설문 관리
+        case '/createNewVote':                                      //설문 추가
+        case '/deleteVote':                                         //설문 삭제
             if(grade < 10) //운영자, 자치회
                 result = true;
             break;
