@@ -11,7 +11,7 @@ router.get('/', util.ensureAuthenticated, function(req, res, next) {
     res.render('vote', {title: '설문조사', grade: util.getUserGrade(req)});
 });
 
-router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
+router.get('/vManage', util.ensureAuthenticated, function(req, res, next) {
     res.render('vote_manage', {title: '설문조사 관리', grade: util.getUserGrade(req)});
 });
 

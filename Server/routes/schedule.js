@@ -11,7 +11,7 @@ router.get('/', util.ensureAuthenticated, function(req, res, next) {
     res.render('schedule', {title: '스케줄', grade: util.getUserGrade(req)});
 });
 
-router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
+router.get('/sManage', util.ensureAuthenticated, function(req, res, next) {
     res.render('schedule_manage', {title: '스케줄 관리', grade: util.getUserGrade(req)});
 });
 
