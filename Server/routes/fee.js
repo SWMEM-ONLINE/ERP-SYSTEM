@@ -213,14 +213,26 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
             res.json({status:'101'});
         }
         else{
-            util.sendList(chargee,'SWSSM NOTICE',util.pushContents[4],function(err,data){
-                if (err) {
-                    console.log(err);
-                    res.json({status:'101'});
-                } else {
-                    res.json({status:'0'});
-                }
-            });
+            if(chargee.length == 1){
+                util.send(chargee[0],'SWSSM NOTICE','회비가 청구되었습니다',function(err,data){
+                    if (err) {
+                        console.log(err);
+                        res.json({status:'101'});
+                    } else {
+                        res.json({status:'0'});
+                    }
+                });
+            }
+            else{
+                util.sendList(chargee,'SWSSM NOTICE','회비가 청구되었습니다',function(err,data){
+                    if (err) {
+                        console.log(err);
+                        res.json({status:'101'});
+                    } else {
+                        res.json({status:'0'});
+                    }
+                });
+            }
         }
         db_handler.disconnectDB(connection);
     });

@@ -45,7 +45,6 @@ var pushContents = {
     'h_requestBorrow' : '하드웨어 대여 신청이 들어왔습니다',
     'h_requestPostpone' : '하드웨어 연장 신청이 들어왔습니다',
     'h_requestTurnin' : '하드웨어 반납 신청이 들어왔습니다',
-    'f_charge' : '회비가 청구되었습니다'
 };
 
 function send(id, title, content , callback){
