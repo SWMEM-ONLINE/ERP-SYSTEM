@@ -88,11 +88,6 @@ $('table').on('click','#excelSave',function(){
         var workbook = new $.ig.excel.Workbook($.ig.excel.WorkbookFormat.excel2007);
         var sheet = workbook.worksheets().add('하드웨어 신청');
 
-        sheet.columns(0).setWidth(100, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(1).setWidth(100, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(2).setWidth(300, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(3).setWidth(150, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-
         sheet.getCell('A1').value('날짜');
         sheet.getCell('A1').cellFormat().font().height(10*25);
         sheet.getCell('B1').value('구분');
@@ -101,24 +96,22 @@ $('table').on('click','#excelSave',function(){
         sheet.getCell('C1').cellFormat().font().height(10*25);
         sheet.getCell('D1').value('금액');
 
-        var count = ($('table tbody').length + 2);
         var i = 2;
         $('table tbody tr').each(function(){
                 var arr = new Array();
                 $(this).children('td').map(function () {
                         arr.push($(this).text());
                 });
-                console.log(arr);
                 sheet.getCell('A'+i).value(arr[0]);
                 sheet.getCell('B'+i).value(arr[1]);
                 sheet.getCell('C'+i).value(arr[2]);
-                sheet.getCell('D'+i).value(arr[3]);
+                sheet.getCell('D'+i).value(parseInt(arr[3]));
                 i++;
         });
         sheet.getCell('C'+i).value('월 수입');
-        sheet.getCell('D'+i).value($('table tfoot tr td.text-primary').html());
+        sheet.getCell('D'+i).value(parseInt($('table tfoot tr td.text-primary').html()));
         sheet.getCell('C'+(i+1)).value('월 지출');
-        sheet.getCell('D'+(i+1)).value($('table tfoot tr td.text-danger').html());
+        sheet.getCell('D'+(i+1)).value(parseInt($('table tfoot tr td.text-danger').html()));
 
         var today = new Date();
         var y = today.getFullYear();

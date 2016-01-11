@@ -39,9 +39,9 @@ router.post('/newbook/checkDuplication', function(req, res){
 /* @room */
 
 function ApplyPush(rows,title,content,res){
-    var Seminar = JSON.parse(JSON.stringify(rows));
-    if(Seminar.length == 1){
-        util.send(Seminar[0].u_id,title,content, function(err,data) {
+    var manager = JSON.parse(JSON.stringify(rows));
+    if(manager.length == 1){
+        util.send(manager[0].u_id,title,content, function(err,data) {
             if (err) {
                 console.log(err);
                 res.json({status:'fail'});
@@ -51,12 +51,12 @@ function ApplyPush(rows,title,content,res){
         });
     }
     else{
-        var Seminars = [];
+        var Managers = [];
         for(var i=0;i<Seminar.length;i++){
-            Seminars.push(Seminar[i].u_id);
+            Managers.push(Seminar[i].u_id);
         }
-        console.log(Seminars);
-        util.sendList(Seminars,title,content, function(err,data) {
+        console.log(Managers);
+        util.sendList(Managers,title,content, function(err,data) {
             if (err) {
                 console.log(err);
                 res.json({status:'fail'});

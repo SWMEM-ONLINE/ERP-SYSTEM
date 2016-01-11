@@ -51,7 +51,7 @@ router.post('/unpaidList', util.ensureAuthenticated, function(req, res, next) {
 router.post('/category', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = db_handler.connectDB();
-    var query = connection.query('select * from t_fee_type' , function(err,rows){
+    connection.query('select * from t_fee_type' , function(err,rows){
 
         if (err) {
             console.error(err);
@@ -70,18 +70,15 @@ router.post('/category', util.ensureAuthenticated, function(req, res, next) {
 router.post('/userList', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = db_handler.connectDB();
-    var query = connection.query('select u_id, u_name from t_user where u_state != 1 AND u_state != 103 AND u_state != 104 AND u_state != 105 ORDER BY u_name' , function(err,rows){
+    connection.query('select u_id, u_name from t_user where u_state != 1 AND u_state != 103 AND u_state != 104 AND u_state != 105 ORDER BY u_name' , function(err,rows){
 //var query = connection.query('select u_id, u_name from t_user where u_state = 2 OR u_state = 3 ORDER BY u_name' , function(err,rows){
-
             if (err) {
                 console.error(err);
                 res.json({status:'101'});
                 throw err;
             }
-
             var send = JSON.stringify(rows);
             res.json({result:JSON.parse(send)});
-
         });
 });
 
@@ -95,7 +92,7 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = db_handler.connectDB();
 
-    var query = connection.query(query, function(err,rows){
+    connection.query(query, function(err,rows){
         if (err) {
             console.error(err);
             throw err;
@@ -105,7 +102,6 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
         var withdraw = getTotalWithdraw(rows);
         res.render('fee_history', { title: '회비내역', grade: util.getUserGrade(req), result:JSON.parse(send), deposit:deposit,withdraw:withdraw});
     });
-
 });
 
 router.post('/history', util.ensureAuthenticated, function(req, res, next) {
@@ -115,7 +111,7 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
     console.log(query);
     var connection = db_handler.connectDB();
 
-    var query = connection.query(query, function(err,rows){
+    connection.query(query, function(err,rows){
         if (err) {
             console.error(err);
             throw err;
@@ -164,7 +160,7 @@ router.post('/register/add', util.ensureAuthenticated, function(req, res, next) 
 
     var connection = db_handler.connectDB();
 
-    var query = connection.query('insert into t_fee_manage(fm_id, fm_money_type, fm_money_content,fm_price,fm_monthly_deposit,fm_monthly_withdraw,fm_remain_money,fm_writer,fm_date,fm_write_date) values ?', [values], function(err,result){
+    connection.query('insert into t_fee_manage(fm_id, fm_money_type, fm_money_content,fm_price,fm_monthly_deposit,fm_monthly_withdraw,fm_remain_money,fm_writer,fm_date,fm_write_date) values ?', [values], function(err,result){
         if (err) {
             console.error(err);
             throw err;
@@ -187,6 +183,7 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
     var values = new Array();
     var payerRow = 0;
     var j = 0;
+    var chargee = [];
 
     for(var i=0; i<arrLength; i++){
         var obj = arr[i];
@@ -201,6 +198,7 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
         var payerIndex = 0;
         for(;j<payerRow+payerCnt; j++) {
             var payer = obj.Payer[payerIndex++];
+            chargee.push(payer);
             values[j] = [id, payer, content, type, price, state, date, write_date];
         }
         payerRow += payerCnt;
@@ -208,15 +206,23 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
     }
     var connection = db_handler.connectDB();
 
-    var query = connection.query('insert into t_fee(f_id, f_payer,f_content,f_type,f_price,f_state,f_date,f_write_date) values ?', [values], function(err,result){
+    connection.query('insert into t_fee(f_id, f_payer,f_content,f_type,f_price,f_state,f_date,f_write_date) values ?', [values], function(err,result){
         if (err) {
             console.error(err);
             throw err;
             res.json({status:'101'});
         }
+        else{
+            util.sendList(chargee,'SWSSM NOTICE',util.pushContents[4],function(err,data){
+                if (err) {
+                    console.log(err);
+                    res.json({status:'101'});
+                } else {
+                    res.json({status:'0'});
+                }
+            });
+        }
         db_handler.disconnectDB(connection);
-
-        res.json({status:'0'});
     });
 
 
