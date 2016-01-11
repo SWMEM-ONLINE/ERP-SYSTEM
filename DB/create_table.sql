@@ -331,5 +331,29 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
       lc_b int
     );
 
+  CREATE TABLE t_vote (
+    v_id int NOT NULL auto_increment primary key,
+    v_title VARCHAR(200),
+    v_content VARCHAR(1000),
+    v_state int,
+    v_type int,
+    v_writer VARCHAR(20),
+    v_write_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(v_writer) REFERENCES t_user(u_id));
+
+CREATE TABLE t_vote_item (
+    vi_id int NOT NULL auto_increment primary key,
+    vi_pid int,
+    vi_title VARCHAR(200),
+    vi_cnt int,
+    FOREIGN KEY(vi_pid) REFERENCES t_vote(v_id));
+
+CREATE TABLE t_vote_user (
+    vu_id int NOT NULL auto_increment primary key,
+    vu_pid int,
+    vu_voter VARCHAR(20),
+    FOREIGN KEY(vu_pid) REFERENCES t_vote_item(vi_id),
+    FOREIGN KEY(vu_voter) REFERENCES t_user(u_id));
+
 
 
