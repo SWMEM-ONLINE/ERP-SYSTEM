@@ -3,7 +3,6 @@
  */
 
 var rowCount = 1;
-var rowCountExp = 1;
 
 toastr.options = {
     'closeButton': false,
@@ -75,37 +74,6 @@ function deleteRow(obj){
     table.deleteRow(index);
 }
 
-function deleteRowExp(obj){
-    var tr = obj.parentNode.parentNode;
-    var index = tr.rowIndex;
-    var table = document.getElementById('explainlist');
-    table.deleteRow(index);
-}
-
-function addExplain() {
-    var table = document.getElementById('explainlist');
-    var lastRow = table.rows.length;
-    var newRow = table.insertRow(lastRow);
-    var kind = newRow.insertCell(0);
-    var explain = newRow.insertCell(1);
-    var btn = newRow.insertCell(2);
-
-    var str0 = '<input id="kind_'+rowCountExp+'" type="text" placeholder="분류(종류)">';
-    var str1 = '<input id="explain_'+rowCountExp+'" type="text" placeholder="설명">';
-    var str2 = '<button id="plus" class="btn" type="button" onclick="addExplain()">+</button>';
-
-    kind.innerHTML = str0;
-    explain.innerHTML = str1;
-    btn.innerHTML = str2;
-
-    var Allrows = document.getElementById('explainlist').rows;
-    Allrows[lastRow-1].deleteCell(2);
-    var changedRow = Allrows[lastRow-1].insertCell(2);
-    changedRow.innerHTML = '<button id="minus" class="btn cancel" type="button" onclick="deleteRowExp(this)">-</button>';
-
-    rowCountExp = rowCountExp + 1;
-}
-
 $('#submit').click(function(){
     var Projectname;
     var Use;
@@ -167,7 +135,19 @@ $('#submit').click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data === 'success'){
-                    toastr['success']('하드웨어 등록 성공')
+                    toastr['success']('하드웨어 등록 성공');
+                    for(var i=1;i<rowCount;i++){
+                        document.getElementById('addlist').deleteRow(1);
+                    }
+                    $('#projectName_'+(rowCount-1)).val('');
+                    $('#type_'+(rowCount-1)).val('');
+                    $('#label_'+(rowCount-1)).val('');
+                    $('#name_'+(rowCount-1)).val('');
+                    $('#use_'+(rowCount-1)).val('');
+                    $('#ea_'+(rowCount-1)).val('');
+                    $('#count_'+(rowCount-1)).val('');
+                    $('#maker_'+(rowCount-1)).val('');
+                    $('#link_'+(rowCount-1)).val('');
                 }else{
                     toastr['error']('하드웨어 신청 실패');
                 }
