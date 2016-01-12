@@ -330,6 +330,3 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
       lc_a int,
       lc_b int
     );
-
-
-

@@ -7,6 +7,141 @@ var DB_handler = require('./DB_handler');
 var nodemailer = require('nodemailer');
 var con = DB_handler.connectDB();
 
+var server_api_key = 'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY';
+
+// 여러명의 리스트로 보낼때
+// var id_lists = ["id1","id2"];
+// util.sendList(id_lists,"title","content", function(err,data){
+//        if(err){
+//            console.log(err);
+//        }else{
+//            console.log(data);
+//        }
+//
+//    });
+//
+// 한명의 아이디를 보낼때
+// util.send("id","title","content", function(err,data){
+//        if(err){
+//            console.log(err);
+//        }else{
+//            console.log(data);
+//        }
+//    });
+/**
+ *
+ * GCMPUSH하는 함수
+ *
+ * 하나의 유저만을 보내준다
+ *
+ * @param id            user id 를 보내준다
+ * @param title 타이틀을 넣어준다
+ * @param content 내용을 넣어준다
+ * @param callback  err, result 를 반환한다
+ */
+function send(id, title, content , callback){
+    sendMail(id, title, content);
+    var message = new gcm.Message({
+        collapseKey: 'swm',
+        delayWhileIdle: true,
+        timeToLive: 20,
+        data: {
+            title: title,
+            message: content
+        }
+    });
+
+    var query = "select * from t_user " +
+        "where u_id = '" + id+"'; " ;
+
+    var tokenLists = [];
+    con.query(query, function(err,response){
+        if(err){
+            console.log(err);
+        }
+        else{
+
+            if(response.length ==1){
+                var data = response[0];
+                var token = data.u_token;
+                var flag = data.u_push_flag;
+                if(token !== null && flag == 1){
+                    tokenLists.push(token);
+                }
+
+            }
+            var sender = new gcm.Sender(server_api_key);
+
+            // 메세지 객체 , 토큰리스트 , 시도 횟수 , 시도 완료후 콘솔로 찍어줌
+            sender.send(message, tokenLists, 5, function (err, result) {
+                callback(err, result);
+            });
+        }
+    });
+}
+
+/**
+ *
+ * @param user_ids user id 배열을 넣어준다
+ * @param title 타이틀을 넣어준다
+ * @param content 내용을 넣어준다
+ * @param callback  err, result 를 반환한다
+ */
+function sendList(user_ids, title, content , callback){
+    sendMail(user_ids, title, content);
+    var message = new gcm.Message({
+        collapseKey: 'swm',
+        delayWhileIdle: true,
+        timeToLive: 20,
+        data: {
+            title: title,
+            message: content
+        }
+    });
+
+    if(user_ids.length === 0 ){
+        callback("User List is empty!","User List is empty!" );
+        return;
+    }
+
+    var query = "";
+
+    for(var i=0 ; i < user_ids.length;i++){
+        var user = user_ids[i];
+        query += "select * from t_user " +
+            "where u_id = '" + user+"'; ";
+    }
+
+    var tokenLists = [] ;
+
+    con.query(query, function(err,response){
+        if(err){
+            console.log(err);
+        }
+        else{
+
+            for( var i = 0 ; i < response.length; i++){
+                var data = response[i];
+                for (var j = 0 ; j < data.length; j++){
+                    var rawData = data[j];
+                    var token = rawData.u_token;
+                    var flag = rawData.u_push_flag;
+                    if(token !== null && flag == 1){
+                        tokenLists.push(token);
+                    }
+                }
+
+            }
+
+            var sender = new gcm.Sender(server_api_key);
+
+            // 메세지 객체 , 토큰리스트 , 시도 횟수 , 시도 완료후 콘솔로 찍어줌
+            sender.send(message, tokenLists, 5, function (err, result) {
+                callback(err, result);
+            });
+        }
+    });
+}
 
 /**
  *
@@ -19,15 +154,14 @@ var con = DB_handler.connectDB();
  * @param subject
  * @param content
  */
-function sendMail(con ,ids, subject, content){
+function sendMail(ids, subject, content){
 
     console.log("sendMail function");
 
     var transporter = nodemailer.createTransport('smtps://swmem1516%40gmail.com:tndnjsthapa456@smtp.gmail.com');
-    var query;
+    var query = "";
     var i;
     var receivers = [];
-
 
     if( typeof ids == 'string'){
         query = " SELECT * FROM swmem.t_user WHERE (u_id = '" + ids +"');";
@@ -43,16 +177,15 @@ function sendMail(con ,ids, subject, content){
                 var data;
                 for(i=0;i<response.length;i++){
                     data = response[i];
-                    if(data.u_mail_flag == true){
+                    if(data.u_mail_flag == 1){
                         receivers.push(data.u_email);
 
                     }
                 }
-
                 // setup e-mail data with unicode symbols
                 var mailOptions = {
                     from: '수원멤버십 <swmem1516@gmail.com>', // sender address
-                    to: receive, // list of receivers
+                    to: receivers, // list of receivers
                     text: content, // plaintext body
                     subject: subject, // Subject line
                     html: content // html body
@@ -64,26 +197,26 @@ function sendMail(con ,ids, subject, content){
                         return console.log(error);
                     }
                     console.log('Message sent: ' + info.response);
+                    console.log(info);
                 });
             }
         });
 
     }
     else{
+
         query = "";
         for(i=0 ; i < ids.length;i++){
             var user = ids[i];
-            query += "select u_token from t_user " +
-                "where u_id = '" + user+ "'; "
+            query += "select * from t_user " +
+                "where u_id = '" + user+ "'; ";
         }
 
 
         con.query(query,function(err,response){
-
             if(err){
                 console.log(err);
             }else{
-
                 for( var i = 0 ; i < response.length; i++){
                     var data = response[i];
                     for (var j = 0 ; j < data.length; j++){
@@ -91,187 +224,30 @@ function sendMail(con ,ids, subject, content){
 
                         var email = rawData.u_email;
                         var flag  = rawData.u_mail_flag;
-                        if(flag == true){
+                        if(flag == 1){
                             receivers.push(rawData.u_email);
                         }
                     }
-
                 }
 
-                // setup e-mail data with unicode symbols
                 var mailOptions = {
                     from: '수원멤버십 <swmem1516@gmail.com>', // sender address
-                    to: receive, // list of receivers
+                    to: receivers, // list of receivers
                     text: content, // plaintext body
                     subject: subject, // Subject line
                     html: content // html body
                 };
 
-                // send mail with defined transport object
                 transporter.sendMail(mailOptions, function(error, info){
                     if(error){
                         return console.log(error);
                     }
                     console.log('Message sent: ' + info.response);
+                    console.log(info);
                 });
             }
         });
     }
-}
-
-
-
-
-
-
-
-//
-// 배열로 보낼때
-// GCM.sendList(id_lists,"title","content", function(err,data){
-//        if(err){
-//            console.log(err);
-//        }else{
-//            console.log(data);
-//        }
-//
-//    });
-//
-// 한명의 아이디를 보낼때
-// GCM.send("id","title","content", function(err,data){
-//        if(err){
-//            console.log(err);
-//        }else{
-//            console.log(data);
-//        }
-//    });
-
-/**
- *
- * GCMPUSH하는 함수
- *
- * 하나의 유저만을 보내준다
- *
- * @param id            user id 를 보내준다
- * @param title 타이틀을 넣어준다
- * @param content 내용을 넣어준다
- * @param callback  err, result 를 반환한다
- */
-function send(id, title, content , callback){
-    var message = new gcm.Message({
-        collapseKey: 'swm',
-        delayWhileIdle: true,
-        timeToLive: 20,
-        data: {
-            title: title,
-            message: content
-        }
-    });
-
-    var query = "select u_token from t_user " +
-        "where u_id = '" + id+"'; " ;
-
-    var tokenLists = [];
-
-    con.query(query, function(err,response){
-        if(err){
-            console.log(err);
-        }
-        else{
-
-            if(response.length ==1){
-                var data = response[0];
-                var token = data.u_token;
-
-                if(token !== null){
-                    tokenLists.push(token);
-                }
-
-            }
-
-            console.log(response);
-            console.log(tokenLists);
-
-
-            var server_api_key = 'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY';
-            var sender = new gcm.Sender(server_api_key);
-
-
-            // 메세지 객체 , 토큰리스트 , 시도 횟수 , 시도 완료후 콘솔로 찍어줌
-            sender.send(message, tokenLists, 5, function (err, result) {
-                callback(err, result);
-            });
-
-
-        }
-    });
-}
-
-/**
- *
- * @param user_ids user id 배열을 넣어준다
- * @param title 타이틀을 넣어준다
- * @param content 내용을 넣어준다
- * @param callback  err, result 를 반환한다
- */
-function sendList(user_ids, title, content , callback){
-
-    var message = new gcm.Message({
-        collapseKey: 'swm',
-        delayWhileIdle: true,
-        timeToLive: 20,
-        data: {
-            title: title,
-            message: content
-        }
-    });
-
-    if(user_ids.length == 0 ){
-        callback("User List is empty!","User List is empty!" );
-        return;
-    }
-
-    var query = "";
-
-    for(var i=0 ; i < user_ids.length;i++){
-        var user = user_ids[i];
-        query += "select u_token from t_user " +
-            "where u_id = '" + user+"'; "
-    }
-
-    var tokenLists = [] ;
-
-    con.query(query, function(err,response){
-        if(err){
-            console.log(err);
-        }
-        else{
-
-            for( var i = 0 ; i < response.length; i++){
-                var data = response[i];
-                for (var j = 0 ; j < data.length; j++){
-                    var rawData = data[j];
-
-                    var token = rawData.u_token;
-
-                    if(token !== null){
-                        tokenLists.push(rawData.u_token);
-                    }
-                }
-
-            }
-            console.log(response);
-            console.log(tokenLists);
-
-            var server_api_key = 'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY';
-            var sender = new gcm.Sender(server_api_key);
-
-            // 메세지 객체 , 토큰리스트 , 시도 횟수 , 시도 완료후 콘솔로 찍어줌
-            sender.send(message, tokenLists, 5, function (err, result) {
-                callback(err, result);
-            });
-
-        }
-    });
 }
 
 
