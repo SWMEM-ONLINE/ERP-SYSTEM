@@ -1,20 +1,22 @@
 //
-   Created by KIMDONGWON on 2016-01-08.
+    by jung-inchul on 2015. 12. 7..
 
 extends main_layout
+
 append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
-   link(rel='stylesheet', type='text/css', href='../stylesheets/schedule_manage.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/hardware_list.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
    .wrapper
       article.container
          h3 스케줄 관리
-         hr
          .content
+            table#schedule.table
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-   script(src='../javascripts/schedule_manage.js')
+   script(src='../javascripts/schedule.js')
+      
