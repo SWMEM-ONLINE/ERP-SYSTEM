@@ -86,7 +86,7 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = DB_handler.connectDB();
 
-    var query = 'select * from t_vote';
+    var query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id';
 
     if(type == 1){
         query += ' where v_state = 1';
@@ -103,6 +103,7 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
         }
         else{
             var rows = JSON.stringify(row);
+            console.log(rows);
             return res.json(JSON.parse(rows));
         }
         DB_handler.disconnectDB(connection);
