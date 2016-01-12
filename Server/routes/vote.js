@@ -182,7 +182,7 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
     var itemCnt = iIds.length;
     var voteItems = new Array(iIds.length);
 
-    for( int i=0 ; i<itemCnt ; i++ ){
+    for( var i=0 ; i<itemCnt ; i++ ){
         voteItems[i] = [0, iIds, uId];
     }
 
@@ -197,7 +197,7 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
 
         var query;
 
-        for( int j=0 ; j<itemCnt ; j++ ){
+        for( var j=0 ; j<itemCnt ; j++ ){
             query = 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = '+iIds[i]+';';
         }
 
