@@ -152,18 +152,66 @@ router.post('/deleteVote', util.ensureAuthenticated, function(req, res, next) {
 
     var id = req.body.id;
 
-    var connection = db_handler.connectDB();
+    var connection = DB_handler.connectDB();
 
     var query = 'update t_vote set v_state = 0 where v_id = '+id;
 
     connection.query(query, function(err,data){
         if (err) {
             console.error(err);
-            db_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(connection);
             return res.json({status:'101'});
         }
 
         return res.json({status:'0'});
+    });
+});
+
+
+/**
+ * selectVote
+ * 투표 메소드
+ * @param itemIds
+ * @return result
+ */
+
+router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
+
+    //var vId = req.body.voteId;
+    var iIds = req.body.itemIds;
+    var uId = util.getUserId(req);
+
+    var itemCnt = iIds.length;
+    var voteItems = new Array(iIds.length);
+
+    for( var i=0 ; i<itemCnt ; i++ ){
+        voteItems[i] = [0, iIds, uId];
+    }
+
+    var connection = DB_handler.connectDB();
+
+    connection.query('insert into t_vote_user(vu_id, vu_pid, vu_voter) values ?', voteItems, function(err,data){
+        if (err) {
+            console.error(err);
+            DB_handler.disconnectDB(connection);
+            return res.json({status:'101'});
+        }
+
+        var query;
+
+        for( var j=0 ; j<itemCnt ; j++ ){
+            query = 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = '+iIds[i]+';';
+        }
+
+        connection.query(query, function(err,data2){
+            if (err) {
+                console.error(err);
+                DB_handler.disconnectDB(connection);
+                return res.json({status:'101'});
+            }
+
+            return res.json({status:'0'});
+        });
     });
 });
 
