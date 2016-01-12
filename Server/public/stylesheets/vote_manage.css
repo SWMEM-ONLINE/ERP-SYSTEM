@@ -1,0 +1,19 @@
+input[type='text']{
+    width: 100%;
+    text-align: center;
+    border:1px solid #cccccc;
+    border-radius: 4px;
+    margin-bottom:10px;
+}
+
+.addVote{
+    width:100%;
+}
+
+#voteList>tbody>tr:hover{
+    background-color: #dfdfdf;
+}
+
+#multi{
+    text-align: center;
+}
