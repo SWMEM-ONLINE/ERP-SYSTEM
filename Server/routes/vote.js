@@ -51,15 +51,13 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
             DB_handler.disconnectDB(connection);
             return res.json({status:'101'});
         }
-
-        var pid = query.values.v_id;
+        var pid = row.insertId;
         var voteItems = new Array(itemCnt);
 
         for(var i=0; i<itemCnt; i++){
-            var vi_title = itemsArr[i].title;
+            var vi_title = itemsArr[i];
             var vi_cnt = 0;
-
-            voteItems[i] = [0, pid, vi_title, vi_state, vi_cnt];
+            voteItems[i] = [0, pid, vi_title, vi_cnt];
         }
 
         connection.query('insert into t_vote_item(vi_id, vi_pid, vi_title, vi_cnt) values ?', [voteItems], function(err,row){
