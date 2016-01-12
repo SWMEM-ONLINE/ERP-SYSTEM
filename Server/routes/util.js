@@ -21,41 +21,102 @@ var con = DB_handler.connectDB();
  */
 function sendMail(con ,ids, subject, content){
 
+    console.log("sendMail function");
+
     var transporter = nodemailer.createTransport('smtps://swmem1516%40gmail.com:tndnjsthapa456@smtp.gmail.com');
-
-
-
-
-    var query = "SELECT * FROM swmem.t_user WHERE (u_id = '1111');";
-
-
-
-
-
-
-
-
+    var query;
+    var i;
     var receivers = [];
-    receivers.push("kimhun456@gmail.com");
 
-    var receive = "kimhun456@gmail.com";
 
-    // setup e-mail data with unicode symbols
-    var mailOptions = {
-        from: '수원멤버십 <swmem1516@gmail.com>', // sender address
-        to: receive, // list of receivers
-        text: content, // plaintext body
-        subject: subject, // Subject line
-        html: content // html body
-    };
+    if( typeof ids == 'string'){
+        query = " SELECT * FROM swmem.t_user WHERE (u_id = '" + ids +"');";
 
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            return console.log(error);
+        con.query(query,function(err,response){
+
+            if(err)
+            {
+                console.log(err);
+            }
+            else
+            {
+                var data;
+                for(i=0;i<response.length;i++){
+                    data = response[i];
+                    if(data.u_mail_flag == true){
+                        receivers.push(data.u_email);
+
+                    }
+                }
+
+                // setup e-mail data with unicode symbols
+                var mailOptions = {
+                    from: '수원멤버십 <swmem1516@gmail.com>', // sender address
+                    to: receive, // list of receivers
+                    text: content, // plaintext body
+                    subject: subject, // Subject line
+                    html: content // html body
+                };
+
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, function(error, info){
+                    if(error){
+                        return console.log(error);
+                    }
+                    console.log('Message sent: ' + info.response);
+                });
+            }
+        });
+
+    }
+    else{
+        query = "";
+        for(i=0 ; i < ids.length;i++){
+            var user = ids[i];
+            query += "select u_token from t_user " +
+                "where u_id = '" + user+ "'; "
         }
-        console.log('Message sent: ' + info.response);
-    });
+
+
+        con.query(query,function(err,response){
+
+            if(err){
+                console.log(err);
+            }else{
+
+                for( var i = 0 ; i < response.length; i++){
+                    var data = response[i];
+                    for (var j = 0 ; j < data.length; j++){
+                        var rawData = data[j];
+
+                        var email = rawData.u_email;
+                        var flag  = rawData.u_mail_flag;
+                        if(flag == true){
+                            receivers.push(rawData.u_email);
+                        }
+                    }
+
+                }
+
+                // setup e-mail data with unicode symbols
+                var mailOptions = {
+                    from: '수원멤버십 <swmem1516@gmail.com>', // sender address
+                    to: receive, // list of receivers
+                    text: content, // plaintext body
+                    subject: subject, // Subject line
+                    html: content // html body
+                };
+
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, function(error, info){
+                    if(error){
+                        return console.log(error);
+                    }
+                    console.log('Message sent: ' + info.response);
+                });
+            }
+        });
+    }
 }
 
 
