@@ -25,7 +25,6 @@ router.get('/vManage', util.ensureAuthenticated, function(req, res, next) {
  */
 
 router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next) {
-    console.log(req.body);
     var title = req.body.vTitle;
     var content = req.body.vContent;
     var state = 1;                      //0: 삭제, 1: 투표중 2: 투표완료
@@ -76,7 +75,7 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
 /**
  * getVoteList
  * 투표 리스트 가져오기 메소드
- * @param type  (투표완료:0, 투표중:1)
+ * @param type  (투표완료:0, 투표중:1 투표삭제:2)
  * @return vList
  */
 
@@ -86,7 +85,7 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = DB_handler.connectDB();
 
-    var query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id';
+    var query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id where v_state not in (2)';
 
     if(type == 1){
         query += ' where v_state = 1';
@@ -95,7 +94,6 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
     }
 
     query += ' ORDER BY v_write_date';
-    console.log(query);
     connection.query(query, function(err,row){
         if (err) {
             console.error(err);
@@ -103,7 +101,6 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
         }
         else{
             var rows = JSON.stringify(row);
-            console.log(rows);
             return res.json(JSON.parse(rows));
         }
         DB_handler.disconnectDB(connection);
@@ -119,7 +116,6 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
  */
 
 router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
-
     var id = req.body.id;
 
     var connection = DB_handler.connectDB();
@@ -150,10 +146,9 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
 router.post('/deleteVote', util.ensureAuthenticated, function(req, res, next) {
 
     var id = req.body.id;
-
+    console.log(id);
     var connection = DB_handler.connectDB();
-
-    var query = 'update t_vote set v_state = 0 where v_id = '+id;
+    var query = 'update t_vote set v_state = 2 where v_id = "'+id+'"';
 
     connection.query(query, function(err,data){
         if (err) {
