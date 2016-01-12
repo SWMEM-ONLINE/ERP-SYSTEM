@@ -44,7 +44,7 @@ var pushContents = {
     'b_borrow' : '예약하신 책이 반납되어 자동으로 대여처리 되었습니다. 자세한 사항은 확인하세요',
     'h_requestBorrow' : '하드웨어 대여 신청이 들어왔습니다',
     'h_requestPostpone' : '하드웨어 연장 신청이 들어왔습니다',
-    'h_requestTurnin' : '하드웨어 반납 신청이 들어왔습니다'
+    'h_requestTurnin' : '하드웨어 반납 신청이 들어왔습니다',
 };
 
 function send(id, title, content , callback){
