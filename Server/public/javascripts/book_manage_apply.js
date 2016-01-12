@@ -179,16 +179,22 @@ function down2excelButton(datalist){
 
         sheet.getCell('A1').value('No');
         sheet.getCell('A1').cellFormat().font().height(10*25);
+        sheet.getCell('A1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('B1').value('도서명');
         sheet.getCell('B1').cellFormat().font().height(10*25);
+        sheet.getCell('B1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('C1').value('출판사');
         sheet.getCell('C1').cellFormat().font().height(10*25);
+        sheet.getCell('C1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('D1').value('저자');
         sheet.getCell('D1').cellFormat().font().height(10*25);
+        sheet.getCell('D1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('E1').value('가격');
         sheet.getCell('E1').cellFormat().font().height(10*25);
+        sheet.getCell('E1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('F1').value('신청자');
         sheet.getCell('F1').cellFormat().font().height(10*25);
+        sheet.getCell('F1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
 
         var cnt = ($('table tbody#applyTableData tr.warning').length + 1);
         var table = sheet.tables().add('A1:F' + cnt, true);
@@ -200,11 +206,17 @@ function down2excelButton(datalist){
         $('table tbody#applyTableData tr.warning').each(function(){
             var index = $(this).index();
             sheet.getCell('A' + i).value(i - 1);
+            sheet.getCell('A' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
             sheet.getCell('B' + i).value(datalist[index].ba_name);
+            sheet.getCell('B' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
             sheet.getCell('C' + i).value(datalist[index].ba_publisher);
+            sheet.getCell('C' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
             sheet.getCell('D' + i).value(datalist[index].ba_author);
+            sheet.getCell('D' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
             sheet.getCell('E' + i).value(datalist[index].ba_price);
+            sheet.getCell('E' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
             sheet.getCell('F' + i).value(datalist[index].u_period + ' ' + datalist[index].u_name);
+            sheet.getCell('F' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
             i++;
         });
 

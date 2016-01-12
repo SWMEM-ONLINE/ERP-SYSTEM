@@ -113,12 +113,14 @@ function addHardware(){
             success: function(data){
                 if(data === 'success') {
                     toastr['success']('성공');
-                    for(var i=1;i<rowCount;i++){
-                        document.getElementById('addhardwareTable').deleteRow(1);
-                    }
-                    $('#add_hardwareName'+(rowCount-1)).val('');
-                    $('#add_hardwareAmount'+(rowCount-1)).val('1');
-                    $('#add_hardwareSerial'+(rowCount-1)).val('');
+                    window.location.reload();
+                    //for(var i=1;i<rowCount;i++){
+                    //    document.getElementById('addhardwareTable').deleteRow(1);
+                    //}
+                    //$('#add_hardwareName'+(rowCount-1)).val('');
+                    //$('#add_hardwareAmount'+(rowCount-1)).val('1');
+                    //$('#add_hardwareSerial'+(rowCount-1)).val('');
+                    //rowCount = 2;
                 }
             }
         });
