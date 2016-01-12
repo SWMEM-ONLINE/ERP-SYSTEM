@@ -2,10 +2,30 @@
  * Created by KIMDONGWON on 2016-01-08.
  */
 
+toastr.options = {
+    'closeButton': false,
+    'debug': false,
+    'newestOnTop': false,
+    'progressBar': false,
+    'positionClass': 'toast-top-right',
+    'preventDuplicates': false,
+    'onclick': null,
+    'showDuration': '300',
+    'hideDuration': '1000',
+    'timeOut': '5000',
+    'extendedTimeOut': '1000',
+    'showEasing': 'swing',
+    'hideEasing': 'linear',
+    'showMethod': 'fadeIn',
+    'hideMethod': 'fadeOut'
+};
+
 getVoteList();
 
+var itemCount = 0;
+
 function getVoteList(){
-    $.post('/vote//getVoteList',function(response){
+    $.post('/vote/getVoteList',function(response){
         if(response.length == 0){
             var tbodyString = '<tr class="empty"><td colspan="4"><h4>투표가 없습니다</h4></td></tr>';
             $('#voteList tbody').empty();
@@ -29,24 +49,73 @@ function getVoteList(){
 }
 
 $('#add').click(function(){
-    var tbodyString = '<div class="modal-body"><input id="title" type="text" placeholder="무엇을 물어볼까요?"><div id="multi"><input id="Multiple" type="checkbox" name="multiple" value="multiple"><label for="Multiple">복수선택 허용</label></div><div id="content"><input id="content0" type="text" placeholder="항목 입력"></div><button id="addContent" type="button" class="btn addVote">항목 추가</button></div>';
+    itemCount = 0;
+    var tbodyString = '<div class="modal-body"><input id="title" type="text" placeholder="무엇을 물어볼까요?"><input id="content" type="text" placeholder="내용"><div id="multi"><input id="Multiple" type="checkbox" name="multiple" value="multiple"><label for="Multiple">복수선택 허용</label></div><div id="items"><input id="item0" type="text" placeholder="항목 입력"></div><button id="addItem" type="button" class="btn addVote">항목 추가</button></div>';
     $('#addVote .modal-body').empty();
     $('#addVote .modal-body').append(tbodyString);
     $('#addVote div.modal').modal();
 });
 
-$('#addVote').on('click','#addContent',function(){
+$('.modal-body').on('click','#addItem',function(){
     var childContent = document.createElement('input');
-    var lastContent = document.getElementById('content').lastChild.getAttribute('id');
-    var lastContentId = parseInt(lastContent.substr(7));
-
-    childContent.id = 'content' + (lastContentId + 1);
+    itemCount++;
+    childContent.id = 'item' + itemCount;
     childContent.type = 'text';
     childContent.placeholder = '항목 입력';
-    document.getElementById('content').appendChild(childContent);
+    document.getElementById('items').appendChild(childContent);
 });
 
+$('#voteAdd').click(function(){
+    var title = $('#title').val();
+    var content = $('#content').val();
+    var items = new Array();
+    var flag = true;
+    var multiple;
 
+    if($('#Multiple').is(':checked')){
+        multiple = 1;
+    }
+    else{
+        multiple = 0;
+    }
+
+    for(var i=0;i<=itemCount;i++){
+        var itemValue = $('#item'+i).val();
+        if(itemValue != undefined){
+            if(itemValue == '' || itemValue == null || itemValue == 'null'){
+                toastr['info']('입력을 확인하세요');
+                flag = false;
+                break;
+            }
+            else{
+                items.push(itemValue);
+            }
+        }
+    }
+    var send = {
+        vTitle:title,
+        vContent:content,
+        vType:multiple,
+        vItems:items
+    };
+
+    if(flag){
+        $.ajax({
+            type:'post',
+            url:'/vote/createNewVote',
+            data:JSON.stringify(send),
+            contentType:'application/json',
+            success:function(response) {
+                if (response.status == '0') {
+                    toastr['success']('투표 등록');
+                }
+                else {
+                    toastr['success']('투표 실패');
+                }
+            }
+        });
+    }
+});
 
 $('#voteList tbody tr').click(function(){
     $('#editVote div.modal').modal();

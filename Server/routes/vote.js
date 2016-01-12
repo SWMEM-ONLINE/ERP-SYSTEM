@@ -25,7 +25,7 @@ router.get('/vManage', util.ensureAuthenticated, function(req, res, next) {
  */
 
 router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next) {
-
+    console.log(req.body);
     var title = req.body.vTitle;
     var content = req.body.vContent;
     var state = 1;                      //0: 삭제, 1: 투표중 2: 투표완료
@@ -34,12 +34,14 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
     var itemsArr = req.body.vItems;
     var itemCnt = itemsArr.length;
 
-    var vote = {    'v_id':0,
+    var vote = {
+        'v_id':0,
         'v_title':title,
         'v_content':content,
         'v_state':state,
         'v_type':type,
-        'v_writer':writter};
+        'v_writer':writter
+    };
 
     var connection = DB_handler.connectDB();
 
