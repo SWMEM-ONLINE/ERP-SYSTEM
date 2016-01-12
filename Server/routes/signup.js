@@ -33,7 +33,6 @@ router.post('/', function(req, res, next) {
     var uBadPoint = 0;
     var uManagerBadPoint = 0;
     var uPhotoUrl = req.files.sign_up_img.name;
-    var uManagerBadPoint = 0;
     var uLastDuty = 0;
     var uFee = false;
     var uHardware = false;
@@ -62,6 +61,7 @@ router.post('/', function(req, res, next) {
                     'u_good_duty_point':uGoodPoint,
                     'u_bad_duty_point':uBadPoint,
                     'u_manager_bad_duty_point':uManagerBadPoint,
+                    'u_photo_url':uPhotoUrl,
                     'u_last_duty':uLastDuty,
                     'u_fee':uFee,
                     'u_hardware':uHardware,
