@@ -4,10 +4,66 @@
 
 var gcm = require('node-gcm');
 var DB_handler = require('./DB_handler');
+var nodemailer = require('nodemailer');
 var con = DB_handler.connectDB();
 
 
-//var userids = ['1111','2222','3333'];
+/**
+ *
+ * 메일 보내는 함수
+ *
+ * ids에 사용자의 id들을 넣어주면 된다.
+ *
+ * @param con
+ * @param ids
+ * @param subject
+ * @param content
+ */
+function sendMail(con ,ids, subject, content){
+
+    var transporter = nodemailer.createTransport('smtps://swmem1516%40gmail.com:tndnjsthapa456@smtp.gmail.com');
+
+
+
+
+    var query = "SELECT * FROM swmem.t_user WHERE (u_id = '1111');";
+
+
+
+
+
+
+
+
+    var receivers = [];
+    receivers.push("kimhun456@gmail.com");
+
+    var receive = "kimhun456@gmail.com";
+
+    // setup e-mail data with unicode symbols
+    var mailOptions = {
+        from: '수원멤버십 <swmem1516@gmail.com>', // sender address
+        to: receive, // list of receivers
+        text: content, // plaintext body
+        subject: subject, // Subject line
+        html: content // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
+    });
+}
+
+
+
+
+
+
+
 //
 // 배열로 보낼때
 // GCM.sendList(id_lists,"title","content", function(err,data){
@@ -39,14 +95,6 @@ var con = DB_handler.connectDB();
  * @param content 내용을 넣어준다
  * @param callback  err, result 를 반환한다
  */
-
-var pushContents = {
-    'b_borrow' : '예약하신 책이 반납되어 자동으로 대여처리 되었습니다. 자세한 사항은 확인하세요',
-    'h_requestBorrow' : '하드웨어 대여 신청이 들어왔습니다',
-    'h_requestPostpone' : '하드웨어 연장 신청이 들어왔습니다',
-    'h_requestTurnin' : '하드웨어 반납 신청이 들어왔습니다'
-};
-
 function send(id, title, content , callback){
     var message = new gcm.Message({
         collapseKey: 'swm',
@@ -164,6 +212,14 @@ function sendList(user_ids, title, content , callback){
         }
     });
 }
+
+
+var pushContents = {
+    'b_borrow' : '예약하신 책이 반납되어 자동으로 대여처리 되었습니다. 자세한 사항은 확인하세요',
+    'h_requestBorrow' : '하드웨어 대여 신청이 들어왔습니다',
+    'h_requestPostpone' : '하드웨어 연장 신청이 들어왔습니다',
+    'h_requestTurnin' : '하드웨어 반납 신청이 들어왔습니다'
+};
 
 
 function ensureAuthenticated(req, res, next) {
@@ -381,3 +437,4 @@ exports.getUserGrade = getUserGrade;
 exports.getUserName = getUserName;
 exports.send = send;
 exports.sendList = sendList;
+exports.sendMail = sendMail;

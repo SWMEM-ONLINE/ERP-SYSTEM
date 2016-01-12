@@ -158,3 +158,15 @@ function clickEvent(datalist){
         $('div.modal').modal();
     });
 }
+
+
+
+/**
+ *
+ * @param token
+ * ssmis-bookrent-ISBN-BOOKNUMBER
+ */
+function rentBookByQR(token){
+
+
+}
