@@ -41,12 +41,12 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
         'v_type':type,
         'v_writer':writter};
 
-    var connection = db_handler.connectDB();
+    var connection = DB_handler.connectDB();
 
-    var query = connection.query('insert into t_vote set ?',vote,function(err,row){
+    connection.query('insert into t_vote set ?',vote,function(err,row){
         if (err) {
             console.error(err);
-            db_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(connection);
             return res.json({status:'101'});
         }
 
@@ -63,14 +63,13 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
         connection.query('insert into t_vote_item(vi_id, vi_pid, vi_title, vi_cnt) values ?', [voteItems], function(err,row){
             if (err) {
                 console.error(err);
-                db_handler.disconnectDB(connection);
+                DB_handler.disconnectDB(connection);
                 return res.json({status:'101'});
             }
 
-            db_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(connection);
             return res.json({status:'0'});
         });
-
     });
 });
 
@@ -85,26 +84,28 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
 
     var type = req.body.Type;
 
-    var connection = db_handler.connectDB();
+    var connection = DB_handler.connectDB();
 
     var query = 'select * from t_vote';
 
     if(type == 1){
-        query += 'where v_state = 1';
+        query += ' where v_state = 1';
     }else if(type == 0){
-        query += 'where v_state = 0';
+        query += ' where v_state = 0';
     }
 
-    query += 'ORDER BY v_write_date';
-
+    query += ' ORDER BY v_write_date';
+    console.log(query);
     connection.query(query, function(err,row){
         if (err) {
             console.error(err);
-            db_handler.disconnectDB(connection);
             return res.json({status:'101'});
         }
-
-
+        else{
+            var rows = JSON.stringify(row);
+            return res.json(JSON.parse(rows));
+        }
+        DB_handler.disconnectDB(connection);
     });
 });
 
@@ -120,19 +121,20 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
 
     var id = req.body.id;
 
-    var connection = db_handler.connectDB();
+    var connection = DB_handler.connectDB();
 
     var query = 'select * from t_vote_item where vi_pid = '+id+' ORDER BY vi_id DESC';
 
     connection.query(query, function(err,data){
         if (err) {
             console.error(err);
-            db_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(connection);
             return res.json({status:'101'});
         }
-
-        var rows = JSON.stringify(data);
-        return res.json(JSON.parse(rows));
+        else{
+            var rows = JSON.stringify(data);
+            return res.json(JSON.parse(rows));
+        }
     });
 });
 
