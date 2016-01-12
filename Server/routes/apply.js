@@ -145,8 +145,9 @@ router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
     var query = '';
     var datalist = req.body;
     for(var i = 0; i < datalist.length; i++){
-        query += 'insert into t_hardware_apply set ha_project_title="' + datalist[i].projectName + '", ha_requester="' + req.session.passport.user.id + '", ha_role="' + datalist[i].use + '", ha_upper_category="' + datalist[i].type + '", ha_lower_category="' + datalist[i].label + '", ha_item_name="' + datalist[i].name + '", ha_size="' + datalist[i].ea + '", ha_amount="' + datalist[i].count + '", ha_maker="' + datalist[i].maker + '", ha_link="' + datalist[i].link + '", ha_explain="' + datalist[i].explain + '";';
+        query += 'insert into t_hardware_apply set ha_project_title="' + datalist[i].projectName + '", ha_requester="' + req.session.passport.user.id + '", ha_role="' + datalist[i].use + '", ha_upper_category="' + datalist[i].type + '", ha_lower_category="' + datalist[i].label + '", ha_item_name="' + datalist[i].name + '", ha_size="' + datalist[i].ea + '", ha_amount="' + datalist[i].count + '", ha_maker="' + datalist[i].maker + '", ha_link="' + datalist[i].link + '";';
     }
+    console.log(query);
     con.query(query, function(err, response){
         if(err){
             res.send('failed');

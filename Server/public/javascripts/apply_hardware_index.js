@@ -23,11 +23,6 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
-$('button#example').click(function(){
-    var modalString = '<table id='
-
-});
-
 function addList() {
     var table = document.getElementById('addlist');
     var lastRow = table.rows.length;
@@ -121,13 +116,9 @@ $('#submit').click(function(){
     var Count;
     var Maker;
     var Link;
-
-    var Category;
-    var Explain;
-
     var arr = new Array();
 
-    var message = '성공';
+    var message = 'true';
     for ( var i = 0; i < rowCount; i++) {
         Projectname = $('#projectName_'+i).val();
         Use = $('#use_'+ i).val();
@@ -143,46 +134,25 @@ $('#submit').click(function(){
         if(checkHttp != 'http'){
             Link = 'http://' + Link;
         }
-
-        /* check value */
-
-        for(var j = 0; j < rowCountExp; j++){
-            Category = $('#kind_' + j).val();
-            Explain = $('#explain_' + j).val();
-
-            if(Category === "" || Explain === ""){
-                message = '빈 칸이 있습니다';
-                break;
-            }
-
-            if(Category === Type) {
-                message = 'true';
-                var sData = {
-                    projectName: Projectname,
-                    use:Use,
-                    type:Type,
-                    label:Label,
-                    name:Name,
-                    ea:Ea,
-                    count:Count,
-                    maker:Maker,
-                    link:Link,
-                    explain:Explain
-                };
-                arr.push(sData);
-                break;
-            }else{
-                message = '분류를 확인하세요';
-            }
-        }
+        if(!($.isNumeric(Count)))   message = '수량은 숫자를 입력하세요';
 
         if(Use === "" || Type === "" || Label === "" || Name === "" || Ea === "" || Count === "" || Maker === "" || Link === ""){
             message = '빈 칸이 있습니다';
         }
 
-        if(!($.isNumeric(Count)))   message = '수량은 숫자를 입력하세요';
-
         if(message != 'true')  break;
+        var sData = {
+            projectName: Projectname,
+            use:Use,
+            type:Type,
+            label:Label,
+            name:Name,
+            ea:Ea,
+            count:Count,
+            maker:Maker,
+            link:Link
+        };
+        arr.push(sData);
     }
 
     if(message != 'true'){

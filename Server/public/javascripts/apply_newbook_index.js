@@ -63,13 +63,25 @@ function settingHTML(datalist, pageIndex, totalResults, searchWords, searchCateg
                 }
                 htmlString += '<td><img class="bookSmallImg" src="' + data.coverLargeUrl + '"></td>';
                 htmlString += '<td><div class="bookInfo">';
-                htmlString += '<h4 class="bookTitle">' + data.title +'</h4>';
-                for(var i = 0; i < response.length; i++){
-                    if(response[i].b_isbn === data.isbn){
-                        htmlString += '<p><span class="label label-danger">' + response[i].cnt + '권 존재</span></p>';
-                    }else if(response[i].cnt === data.isbn){
-                        htmlString += '<p><span class="label label-primary">신청중</span></p>';
-                        break;
+                htmlString += '<h4 class="bookTitle">' + data.title + '</h4>';
+                if(data.saleStatus != '판매중'){
+                    htmlString += '<p><span class="label label-danger">' + data.saleStatus + '</span>';
+                    for(var i = 0; i < response.length; i++){
+                        if(response[i].b_isbn === data.isbn){
+                            htmlString += ' ' + '<span class="label label-primary">' + response[i].cnt + '권 존재</span></p>';
+                        }else if(response[i].cnt === data.isbn){
+                            htmlString += ' ' + '<p><span class="label label-success">신청중</span></p>';
+                            break;
+                        }
+                    }
+                }else{
+                    for(var i = 0; i < response.length; i++){
+                        if(response[i].b_isbn === data.isbn){
+                            htmlString += '<p><span class="label label-primary">' + response[i].cnt + '권 존재</span></p>';
+                        }else if(response[i].cnt === data.isbn){
+                            htmlString += '<p><span class="label label-success">신청중</span></p>';
+                            break;
+                        }
                     }
                 }
                 htmlString += '<p>' + ' 저자 : ' + data.author + '</p><p>' + " 출판사 : " + data.publisher + '</p><p>' + "정가 : " + data.priceStandard + '원</p></div></td>';

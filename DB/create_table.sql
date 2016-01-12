@@ -58,6 +58,8 @@ CREATE TABLE t_book_apply (
   ba_apply_date VARCHAR(20),
   ba_price int,
   ba_state int DEFAULT 0,
+  ba_saleStatus VARCHAR(10),
+
   FOREIGN KEY(ba_user) REFERENCES t_user(u_id));
 
 DROP TABLE IF EXISTS `t_book_return`;
@@ -163,7 +165,6 @@ CREATE TABLE t_hardware_apply (
   ha_maker VARCHAR(50),
   ha_link VARCHAR(500),
   ha_result int default 0,
-  ha_explain VARCHAR(200),
   FOREIGN KEY(ha_requester) REFERENCES t_user(u_id)
   );
 

@@ -33,7 +33,8 @@ function request(con, req, res){
                 ba_publisher : req.body.publisher,
                 ba_photo_url : req.body.coverLargeUrl,
                 ba_apply_date : date.getFullYear()+ '-'+(date.getMonth()+1)+'-'+date.getDate(),
-                ba_price : req.body.priceStandard
+                ba_price : req.body.priceStandard,
+                ba_saleStatus : req.body.saleStatus
             };
             con.query(query, data, function(err, response){
                 res.send('success');

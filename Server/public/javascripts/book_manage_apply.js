@@ -147,7 +147,9 @@ function loadapplylist(flag){
             if(data.ba_state === 1){
                 htmlString += ' <span class="label label-danger">주문완료</span>';
             }
-            htmlString += '<p>' + data.ba_author + ' | ' + data.ba_publisher + '</span></p></tr>';
+            htmlString += '<p>' + data.ba_author + ' | ' + data.ba_publisher + '</span>';
+            if(data.ba_saleStatus === '판매중')    htmlString += '  ' + '<span class="label label-primary"> 판매중 </span></p></tr>';
+            else    htmlString += '  ' + '<span class="label label-danger">' + data.ba_saleStatus + '</span></p></tr>';
         });
         htmlString += '</tbody>';
         $('table#applyTable').html(htmlString);
