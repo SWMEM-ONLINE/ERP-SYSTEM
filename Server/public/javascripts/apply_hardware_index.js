@@ -85,7 +85,7 @@ $('#submit').click(function(){
     var Maker;
     var Link;
     var arr = new Array();
-
+    var count = 0;
     var message = 'true';
     for ( var i = 0; i < rowCount; i++) {
         Projectname = $('#projectName_'+i).val();
@@ -96,31 +96,33 @@ $('#submit').click(function(){
         Ea = $('#ea_'+i).val();
         Count = $('#count_'+i).val();
         Maker = $('#maker_'+i).val();
-
         Link = $('#link_'+i).val();
-        var checkHttp = Link.substring(0, 4);
-        if(checkHttp != 'http'){
-            Link = 'http://' + Link;
-        }
-        if(!($.isNumeric(Count)))   message = '수량은 숫자를 입력하세요';
+        if(Name != undefined) {
+            count++;
+            var checkHttp = Link.substring(0, 4);
+            if (checkHttp != 'http') {
+                Link = 'http://' + Link;
+            }
+            if (!($.isNumeric(Count)))   message = '수량은 숫자를 입력하세요';
 
-        if(Use === "" || Type === "" || Label === "" || Name === "" || Ea === "" || Count === "" || Maker === "" || Link === ""){
-            message = '빈 칸이 있습니다';
-        }
+            if (Use === "" || Type === "" || Label === "" || Name === "" || Ea === "" || Count === "" || Maker === "" || Link === "") {
+                message = '빈 칸이 있습니다';
+            }
 
-        if(message != 'true')  break;
-        var sData = {
-            projectName: Projectname,
-            use:Use,
-            type:Type,
-            label:Label,
-            name:Name,
-            ea:Ea,
-            count:Count,
-            maker:Maker,
-            link:Link
-        };
-        arr.push(sData);
+            if (message != 'true')  break;
+            var sData = {
+                projectName: Projectname,
+                use: Use,
+                type: Type,
+                label: Label,
+                name: Name,
+                ea: Ea,
+                count: Count,
+                maker: Maker,
+                link: Link
+            };
+            arr.push(sData);
+        }
     }
 
     if(message != 'true'){
@@ -136,7 +138,7 @@ $('#submit').click(function(){
             success: function(data){
                 if(data === 'success'){
                     toastr['success']('하드웨어 등록 성공');
-                    for(var i=1;i<rowCount;i++){
+                    for(var i=1;i<count;i++){
                         document.getElementById('addlist').deleteRow(1);
                     }
                     $('#projectName_'+(rowCount-1)).val('');
