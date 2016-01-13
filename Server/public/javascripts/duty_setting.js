@@ -73,6 +73,7 @@ $("#setting").click(function (){
     sendData.month = month;
     console.log(sendData);
 
+    toastr['warning']('잠시 기다려주십시오.');
 
     $.post("/duty/loadAllDuty",sendData, function(res){
         if(res=="no data"){

@@ -272,7 +272,7 @@ function ensureAuthenticated(req, res, next) {
         return next();
     }
     return res.redirect('/');
-};
+}
 
 function checkAuth(req) {
 
