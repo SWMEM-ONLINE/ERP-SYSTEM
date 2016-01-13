@@ -34,13 +34,17 @@ function getVoteList(){
         else{
             var tbodyString = '';
             for(var i=0;i<response.length;i++){
-                tbodyString += '<tr id="'+response[i].v_id+'"><td>'+response[i].v_title+'</td><td>'+response[i].u_name+'</td><td></td>';
-                if(response[i].v_state == 0){
-                    tbodyString += '<th>투표완료</th></tr>';
+                tbodyString += '<tr id="'+response[i].v_id+'"><td>'+response[i].v_title+'</td><td>'+response[i].u_name+'</td>';
+                tbodyString += '<td>'+response[i].v_join_cnt+'</td>';
+                tbodyString += '<td>'+response[i].v_voted_cnt+'</td>';
+                tbodyString += '<td></td>';
+                if(response[i].v_state == 1){
+                    tbodyString += '<td><strong>진행중</strong></td>';
                 }
-                else if(response[i].v_state == 1){
-                    tbodyString += '<th>투표중</th></tr>';
+                else if(response[i].v_state == 2){
+                    tbodyString += '<td><strong>완료</strong></td>';
                 }
+                tbodyString += '</tr>';
             }
             $('#voteList tbody').empty();
             $('#voteList tbody').append(tbodyString);
@@ -109,11 +113,11 @@ $('#voteAdd').click(function(){
                 if (response.status == '0') {
                     $('#addVote div.modal').modal('hide');
                     toastr['success']('투표 등록');
-                    getVoteList();
                 }
                 else {
-                    toastr['success']('투표 실패');
+                    toastr['error']('투표 등록 실패');
                 }
+                getVoteList();
             }
         });
     }
@@ -124,19 +128,32 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
     var send = {
         id:vid
     };
-    var tbodyString = '';
+    var arr = new Array();
 
+    $(this).children('td').map(function () {
+        arr.push($(this).text());
+    });
+
+    $('#editVote .modal-title').text(arr[0] + '('+arr[1]+')');
+    var tbodyString = '';
+    console.log(arr);
     $.ajax({
         type:'post',
         url:'/vote/getVoteInfo',
         data:JSON.stringify(send),
         contentType:'application/json',
         success:function(response) {
-            console.log(response);
-            tbodyString = '<div class="modal-body"><input id="title" type="text" placeholder="무엇을 물어볼까요?"><input id="content" type="text" placeholder="내용"><div id="multi"><input id="Multiple" type="checkbox" name="multiple" value="multiple"><label for="Multiple">복수선택 허용</label></div><div id="items"><input id="item0" type="text" placeholder="항목 입력"></div><button id="addItem" type="button" class="btn addVote">항목 추가</button></div>';
+
+            for(var i=0;i<response.length;i++){
+                tbodyString += '<p>';
+                tbodyString += response[i].vi_title;
+                tbodyString += ' <span class="label label-default">'+response[i].vi_cnt + '명 선택</span>';
+                var persentage =response[i].vi_cnt / arr[2];
+                tbodyString += '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;width: '+persentage+'%">'+persentage+'%</div></div>';
+                tbodyString += '</p>';
+            }
             $('#editVote .modal-body').empty();
             $('#editVote .modal-body').append(tbodyString);
-            document.getElementById('edit').setAttribute('number',vid);
             document.getElementById('delete').setAttribute('number',vid);
             $('#editVote div.modal').modal();
         }

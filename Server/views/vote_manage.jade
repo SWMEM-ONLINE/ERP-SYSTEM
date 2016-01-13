@@ -21,6 +21,8 @@ block content
                   tr
                      th 제목
                      th 작성자
+                     th 총인원
+                     th 참여
                      th 마감일
                      th 상태
                tbody
@@ -39,10 +41,9 @@ block content
          .modal-dialog
             .modal-content
                .modal-header
-                  h4.modal-title 투표 수정
+                  h4.modal-title
                .modal-body
                .modal-footer
-                  button#edit.btn(type='button') 수정
                   button#delete.btn(type='button') 삭제
                   button.btn(type='button', data-dismiss='modal') 닫기
 append script

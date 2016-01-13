@@ -134,7 +134,7 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = DB_handler.connectDB();
 
-    var query = 'select * from t_vote_item where vi_pid = '+id+' ORDER BY vi_id';
+    var query = 'select * from t_vote_item where vi_pid = '+id+' and  ORDER BY vi_id';
 
     connection.query(query, function(err,data){
         if (err) {
