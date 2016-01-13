@@ -18,7 +18,7 @@ var year = currentDate.getFullYear();
 var month = currentDate.getMonth()+1;
 var prevEvent = null;
 loadSchedule(year,month);
-
+$('.datepicker').val(year+"년 "+ month+"월");
 $('#calendar').fullCalendar({
     header: {
         left :'',
@@ -28,7 +28,6 @@ $('#calendar').fullCalendar({
     editable: false,
     eventLimit: true
 });
-
 
 $('.datepicker').datepicker({
     format: "yyyy년 m월",
