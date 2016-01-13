@@ -10,13 +10,22 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/hardware_list.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
 block content
    .wrapper
       article.container
          h3 스케줄 관리
          .content
-            table#schedule.table
+            input.datepicker(type='text', placeholder='월 선택' readonly='readonly')
+            table.table
+               thead
+                  tr
+                     th(style="text-align:center") 시작일
+                     th(style="text-align:center") 종료일
+                     th(style="text-align:center") 일정명
+                     th(style="text-align:center") 등록자
+               tbody#scheduleList
 append script
+   script(src='../javascripts/bootstrap-datepicker.js')
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-   script(src='../javascripts/schedule.js')
-      
+   script(src='../javascripts/schedule_manage.js')
