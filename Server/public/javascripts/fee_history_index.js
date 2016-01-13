@@ -9,6 +9,16 @@ $('.datepicker').datepicker({
         autoclose: true
 });
 
+$.ig.loader({
+        scriptPath: "http://cdn-na.infragistics.com/igniteui/2015.2/latest/js/",
+        cssPath: "http://cdn-na.infragistics.com/igniteui/2015.2/latest/css/",
+        resources: 'modules/infragistics.util.js,' +
+        'igGrid,' +
+        'modules/infragistics.documents.core.js,' +
+        'modules/infragistics.excel.js,' +
+        'modules/infragistics.gridexcelexporter.js'
+});
+
 getFeeList();
 
 function getFeeList(){
@@ -71,5 +81,55 @@ function feeList(year,month){
                 }
                 $('.table tbody').html(string);
                 $('.table tfoot').html(tfoot);
+        });
+}
+
+$('table').on('click','#excelSave',function(){
+        var workbook = new $.ig.excel.Workbook($.ig.excel.WorkbookFormat.excel2007);
+        var sheet = workbook.worksheets().add('하드웨어 신청');
+
+        sheet.columns(0).setWidth(100, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(1).setWidth(100, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(2).setWidth(300, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(3).setWidth(150, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+
+        sheet.getCell('A1').value('날짜');
+        sheet.getCell('A1').cellFormat().font().height(10*25);
+        sheet.getCell('B1').value('구분');
+        sheet.getCell('B1').cellFormat().font().height(10*25);
+        sheet.getCell('C1').value('내용');
+        sheet.getCell('C1').cellFormat().font().height(10*25);
+        sheet.getCell('D1').value('금액');
+
+        var count = ($('table tbody').length + 2);
+        var i = 2;
+        $('table tbody tr').each(function(){
+                var arr = new Array();
+                $(this).children('td').map(function () {
+                        arr.push($(this).text());
+                });
+                console.log(arr);
+                sheet.getCell('A'+i).value(arr[0]);
+                sheet.getCell('B'+i).value(arr[1]);
+                sheet.getCell('C'+i).value(arr[2]);
+                sheet.getCell('D'+i).value(arr[3]);
+                i++;
+        });
+        sheet.getCell('C'+i).value('월 수입');
+        sheet.getCell('D'+i).value($('table tfoot tr td.text-primary').html());
+        sheet.getCell('C'+(i+1)).value('월 지출');
+        sheet.getCell('D'+(i+1)).value($('table tfoot tr td.text-danger').html());
+
+        var today = new Date();
+        var y = today.getFullYear();
+        var m = (today.getMonth() + 1);
+        saveWorkbook(workbook, y+"년 "+ m + "월 회비입출내역.xlsx");
+});
+
+function saveWorkbook(workbook, name) {
+        workbook.save({ type: 'blob' }, function (data) {
+                saveAs(data, name);
+        }, function (error) {
+                alert('Error exporting: : ' + error);
         });
 }

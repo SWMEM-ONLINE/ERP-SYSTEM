@@ -10,6 +10,29 @@
 
 var util = require('./util');
 
+
+
+function initLastDuty(con,req,res){
+
+    var query = "UPDATE `swmem`.`t_user` SET `u_last_duty`= 0 WHERE `u_last_duty` > 0;";
+
+    console.log(query);
+    con.query(query,function(err, response){
+
+        if(err){
+            console.log(err);
+            res.send("error");
+            throw err;
+        }
+        else{
+            console.log(response);
+            res.send("success");
+        }
+
+
+    });
+}
+
 /**
  *  Duty객체를 생성하는 생성자이다
  *
@@ -193,9 +216,6 @@ function pointSort(data){
 
 /**
  *
- *
- *
- *
  * @param memberList    정회원리스트
  * @param memberList2   정회원 + 자치회의 벌당직회원리스트
  * @param dutyList      생성된 날짜별로 존재하는 당직객체
@@ -214,6 +234,7 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
     /*
      memberList2를 활용해 bad_duty_list를 만든다
      */
+
     while (true) {
         var count = 0;
         for (i = 0; i < memberList2.length; i++) {
@@ -235,6 +256,7 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
             break;
         }
     }
+    console.log("make bad_duty_list");
 
     /*
         벌당직을 생성하는 부분
@@ -260,12 +282,13 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
 
         bad_duty_count--;
     }
+    console.log("벌당직 리스트 생성");
 
     /*
         일반당직을 생성하는 부분
      */
     while(true){
-
+       // console.log("와일문안");
         for(i =0 ; i < dutyList.length; i++){
 
             duty = dutyList[i];
@@ -307,10 +330,7 @@ function isCompelte(dutyList , duty_count){
         }
     }
 
-    if(flag==1)
-        return true;
-    else
-        return false;
+    return flag == 1;
 
 }
 
@@ -381,7 +401,7 @@ function autoMakeDuty(con,req,res){
         dutyList.push(duty);
     }
 
-    var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state = 100);";
+    var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state = 100) order by u_last_duty;";
 
     console.log(query);
     con.query(query, function(err, response){
@@ -403,8 +423,7 @@ function autoMakeDuty(con,req,res){
             }
 
 
-
-            var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state <= 100 and u_state > 1);";
+            var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user where (u_state <= 100 and u_state > 1) order by u_last_duty;";
 
             con.query(query, function(err, response){
                 if(err){
@@ -432,8 +451,10 @@ function autoMakeDuty(con,req,res){
                      */
                     memberList.sort(compare);
                     memberList2.sort(compare);
-                    memberList2.reverse();
-                    //console.log(memberList);
+
+
+                    console.log(memberList);
+                    console.log(memberList2);
 
                     dutyList = generateDuty(memberList,memberList2,dutyList,duty_count,bad_duty_count);
 
@@ -530,7 +551,36 @@ function isBadorManage( con, user_id , callback){
     });
 }
 
+function updateLastDuty(con,duty){
 
+    var query ="";
+
+    if(duty.mode1 == 0){
+        query+="UPDATE `swmem`.`t_user` SET `u_last_duty`=`u_last_duty` + 1  WHERE `u_id` = '" + duty.user1 +"';";
+    }
+    if(duty.mode2 == 0){
+
+        query+="UPDATE `swmem`.`t_user` SET `u_last_duty`=`u_last_duty` + 1  WHERE `u_id` = '" + duty.user2 +"';";
+    }
+    if(duty.mode3 == 0){
+
+        query+="UPDATE `swmem`.`t_user` SET `u_last_duty`=`u_last_duty` + 1  WHERE `u_id` = '" + duty.user3 +"';";
+    }
+    if(duty.mode4 == 0){
+
+        query+="UPDATE `swmem`.`t_user` SET `u_last_duty`=`u_last_duty` + 1  WHERE `u_id` = '" + duty.user4 +"';";
+    }
+    con.query(query,function(err,response){
+
+        if(err){
+            console.log(err);
+
+        }else{
+            console.log(response);
+
+        }
+    });
+}
 
 function insertDutyList(con,req,res, dutyList, callback){
 
@@ -544,6 +594,10 @@ function insertDutyList(con,req,res, dutyList, callback){
             updateUserPoint(con,req,res,user_id,mode);
         }
         var query;
+
+
+        updateLastDuty(con, duty);
+
 
         if(count==1){
             query = "INSERT INTO `swmem`.`t_duty` " +
@@ -1585,12 +1639,12 @@ function addPoint(con,req,res){
             }
         });
     }
-
+    var data;
     if(success_flag == 1) {
-        var data = "success";
+        data = "success";
     }
     else{
-        var data = "fail";
+        data = "fail";
     }
 
     res.send(data);
@@ -1829,7 +1883,6 @@ function compare(a,b) {
 }
 
 
-
 //
 //function clone(obj) {
 //    if (null == obj || "object" != typeof obj) return obj;
@@ -1865,3 +1918,4 @@ exports.loadAllDuty = loadAllDuty;
 exports.autoMakeDuty = autoMakeDuty;
 exports.updateMemberPoint = updateMemberPoint;
 exports.loadTodayDuty = loadTodayDuty;
+exports.initLastDuty = initLastDuty;

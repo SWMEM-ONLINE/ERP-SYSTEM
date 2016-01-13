@@ -332,15 +332,12 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     );
 
     CREATE TABLE t_schedule (
-          s_id int NOT NULL auto_increment primary key,
-          s_title VARCHAR(50) NOT NULL,
-          s_enroll_user VARCHAR(20),
-          s_start_date date NOT NULL,
-          s_end_date date NOT NULL,
-
-          FOREIGN KEY(s_enroll_user) REFERENCES t_user(u_id)
-        );
-
-
-
+        s_id int NOT NULL auto_increment primary key,
+        s_title VARCHAR(50) NOT NULL,
+        s_enroll_user VARCHAR(20),
+        s_start_date date NOT NULL,
+        s_end_date date NOT NULL,
+        s_flag int NOT NULL,
+        FOREIGN KEY(s_enroll_user) REFERENCES t_user(u_id)
+    );
 

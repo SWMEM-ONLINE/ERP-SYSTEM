@@ -62,7 +62,6 @@ $('.datepicker').on('changeDate',function(event){
 
 $("#setting").click(function (){
 
-    var flag = 1;
     $("#setting").addClass("hidden");
 
     var sendData = {};
@@ -74,22 +73,30 @@ $("#setting").click(function (){
     sendData.month = month;
     console.log(sendData);
 
+    toastr['warning']('잠시 기다려주십시오.');
 
     $.post("/duty/loadAllDuty",sendData, function(res){
         if(res=="no data"){
-            $.post("/duty/updateMemberPoint", function(res){
-                if(res != 'success'){
-                    toastr['error']('멤버 정렬에 실패하였습니다.');
-                }
-                $.post("/duty/autoMakeDuty", sendData, function(res){
+            $.post("/duty/initLastDuty", function(res){
+                if(res =="success"){
+                    $.post("/duty/updateMemberPoint", function(res){
+                        if(res != 'success'){
+                            toastr['error']('멤버 정렬에 실패하였습니다.');
+                        }
+                        $.post("/duty/autoMakeDuty", sendData, function(res){
 
-                    if(res == "success"){
-                        toastr['success']('당직 설정 완료');
-                    }
-                    else{
-                        toastr['error']('당직 설정 에러');
-                    }
-                });
+                            if(res == "success"){
+                                toastr['success']('당직 설정 완료');
+                            }
+                            else{
+                                toastr['error']('당직 설정 에러');
+                            }
+                        });
+                    });
+                }
+                else{
+                    toastr['error']('last_duty초기화가 실패하였습니다.');
+                }
             });
         }
 

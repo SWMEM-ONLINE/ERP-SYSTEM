@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var DB_handler = require('./DB_handler');
+var schedule_handler = require('./schedule_handler')
 //var con = DB_handler.connectDB();
 var router = express.Router();
 var util = require('./util');

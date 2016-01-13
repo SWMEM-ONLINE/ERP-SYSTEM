@@ -143,6 +143,10 @@ router.post('/loadTodayDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.loadTodayDuty(con,req,res);
 });
 
+router.post('/initLastDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.initLastDuty(con,req,res);
+});
+
 
 /**
  *  checkList handle

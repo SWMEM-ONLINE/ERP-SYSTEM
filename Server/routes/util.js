@@ -4,13 +4,14 @@
 
 var gcm = require('node-gcm');
 var DB_handler = require('./DB_handler');
+var nodemailer = require('nodemailer');
 var con = DB_handler.connectDB();
 
+var server_api_key = 'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY';
 
-//var userids = ['1111','2222','3333'];
-//
-// 배열로 보낼때
-// GCM.sendList(id_lists,"title","content", function(err,data){
+// 여러명의 리스트로 보낼때
+// var id_lists = ["id1","id2"];
+// util.sendList(id_lists,"title","content", function(err,data){
 //        if(err){
 //            console.log(err);
 //        }else{
@@ -20,14 +21,13 @@ var con = DB_handler.connectDB();
 //    });
 //
 // 한명의 아이디를 보낼때
-// GCM.send("id","title","content", function(err,data){
+// util.send("id","title","content", function(err,data){
 //        if(err){
 //            console.log(err);
 //        }else{
 //            console.log(data);
 //        }
 //    });
-
 /**
  *
  * GCMPUSH하는 함수
@@ -39,15 +39,8 @@ var con = DB_handler.connectDB();
  * @param content 내용을 넣어준다
  * @param callback  err, result 를 반환한다
  */
-
-var pushContents = {
-    'b_borrow' : '예약하신 책이 반납되어 자동으로 대여처리 되었습니다. 자세한 사항은 확인하세요',
-    'h_requestBorrow' : '하드웨어 대여 신청이 들어왔습니다',
-    'h_requestPostpone' : '하드웨어 연장 신청이 들어왔습니다',
-    'h_requestTurnin' : '하드웨어 반납 신청이 들어왔습니다'
-};
-
 function send(id, title, content , callback){
+    sendMail(id, title, content);
     var message = new gcm.Message({
         collapseKey: 'swm',
         delayWhileIdle: true,
@@ -58,11 +51,10 @@ function send(id, title, content , callback){
         }
     });
 
-    var query = "select u_token from t_user " +
+    var query = "select * from t_user " +
         "where u_id = '" + id+"'; " ;
 
     var tokenLists = [];
-
     con.query(query, function(err,response){
         if(err){
             console.log(err);
@@ -72,27 +64,18 @@ function send(id, title, content , callback){
             if(response.length ==1){
                 var data = response[0];
                 var token = data.u_token;
-
-                if(token !== null){
+                var flag = data.u_push_flag;
+                if(token !== null && flag == 1){
                     tokenLists.push(token);
                 }
 
             }
-
-            console.log(response);
-            console.log(tokenLists);
-
-
-            var server_api_key = 'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY';
             var sender = new gcm.Sender(server_api_key);
-
 
             // 메세지 객체 , 토큰리스트 , 시도 횟수 , 시도 완료후 콘솔로 찍어줌
             sender.send(message, tokenLists, 5, function (err, result) {
                 callback(err, result);
             });
-
-
         }
     });
 }
@@ -105,7 +88,7 @@ function send(id, title, content , callback){
  * @param callback  err, result 를 반환한다
  */
 function sendList(user_ids, title, content , callback){
-
+    sendMail(user_ids, title, content);
     var message = new gcm.Message({
         collapseKey: 'swm',
         delayWhileIdle: true,
@@ -116,7 +99,7 @@ function sendList(user_ids, title, content , callback){
         }
     });
 
-    if(user_ids.length == 0 ){
+    if(user_ids.length === 0 ){
         callback("User List is empty!","User List is empty!" );
         return;
     }
@@ -125,8 +108,8 @@ function sendList(user_ids, title, content , callback){
 
     for(var i=0 ; i < user_ids.length;i++){
         var user = user_ids[i];
-        query += "select u_token from t_user " +
-            "where u_id = '" + user+"'; "
+        query += "select * from t_user " +
+            "where u_id = '" + user+"'; ";
     }
 
     var tokenLists = [] ;
@@ -141,29 +124,139 @@ function sendList(user_ids, title, content , callback){
                 var data = response[i];
                 for (var j = 0 ; j < data.length; j++){
                     var rawData = data[j];
-
                     var token = rawData.u_token;
-
-                    if(token !== null){
-                        tokenLists.push(rawData.u_token);
+                    var flag = rawData.u_push_flag;
+                    if(token !== null && flag == 1){
+                        tokenLists.push(token);
                     }
                 }
 
             }
-            console.log(response);
-            console.log(tokenLists);
 
-            var server_api_key = 'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY';
             var sender = new gcm.Sender(server_api_key);
 
             // 메세지 객체 , 토큰리스트 , 시도 횟수 , 시도 완료후 콘솔로 찍어줌
             sender.send(message, tokenLists, 5, function (err, result) {
                 callback(err, result);
             });
-
         }
     });
 }
+
+/**
+ *
+ * 메일 보내는 함수
+ *
+ * ids에 사용자의 id들을 넣어주면 된다.
+ *
+ * @param con
+ * @param ids
+ * @param subject
+ * @param content
+ */
+function sendMail(ids, subject, content){
+
+    console.log("sendMail function");
+
+    var transporter = nodemailer.createTransport('smtps://swmem1516%40gmail.com:tndnjsthapa456@smtp.gmail.com');
+    var query = "";
+    var i;
+    var receivers = [];
+
+    if( typeof ids == 'string'){
+        query = " SELECT * FROM swmem.t_user WHERE (u_id = '" + ids +"');";
+
+        con.query(query,function(err,response){
+
+            if(err)
+            {
+                console.log(err);
+            }
+            else
+            {
+                var data;
+                for(i=0;i<response.length;i++){
+                    data = response[i];
+                    if(data.u_mail_flag == 1){
+                        receivers.push(data.u_email);
+
+                    }
+                }
+                // setup e-mail data with unicode symbols
+                var mailOptions = {
+                    from: '수원멤버십 <swmem1516@gmail.com>', // sender address
+                    to: receivers, // list of receivers
+                    text: content, // plaintext body
+                    subject: subject, // Subject line
+                    html: content // html body
+                };
+
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, function(error, info){
+                    if(error){
+                        return console.log(error);
+                    }
+                    console.log('Message sent: ' + info.response);
+                    console.log(info);
+                });
+            }
+        });
+
+    }
+    else{
+
+        query = "";
+        for(i=0 ; i < ids.length;i++){
+            var user = ids[i];
+            query += "select * from t_user " +
+                "where u_id = '" + user+ "'; ";
+        }
+
+
+        con.query(query,function(err,response){
+            if(err){
+                console.log(err);
+            }else{
+                for( var i = 0 ; i < response.length; i++){
+                    var data = response[i];
+                    for (var j = 0 ; j < data.length; j++){
+                        var rawData = data[j];
+
+                        var email = rawData.u_email;
+                        var flag  = rawData.u_mail_flag;
+                        if(flag == 1){
+                            receivers.push(rawData.u_email);
+                        }
+                    }
+                }
+
+                var mailOptions = {
+                    from: '수원멤버십 <swmem1516@gmail.com>', // sender address
+                    to: receivers, // list of receivers
+                    text: content, // plaintext body
+                    subject: subject, // Subject line
+                    html: content // html body
+                };
+
+                transporter.sendMail(mailOptions, function(error, info){
+                    if(error){
+                        return console.log(error);
+                    }
+                    console.log('Message sent: ' + info.response);
+                    console.log(info);
+                });
+            }
+        });
+    }
+}
+
+
+var pushContents = {
+    'b_borrow' : '예약하신 책이 반납되어 자동으로 대여처리 되었습니다. 자세한 사항은 확인하세요',
+    'h_requestBorrow' : '하드웨어 대여 신청이 들어왔습니다',
+    'h_requestPostpone' : '하드웨어 연장 신청이 들어왔습니다',
+    'h_requestTurnin' : '하드웨어 반납 신청이 들어왔습니다'
+};
 
 
 function ensureAuthenticated(req, res, next) {
@@ -179,7 +272,7 @@ function ensureAuthenticated(req, res, next) {
         return next();
     }
     return res.redirect('/');
-};
+}
 
 function checkAuth(req) {
 
@@ -381,3 +474,4 @@ exports.getUserGrade = getUserGrade;
 exports.getUserName = getUserName;
 exports.send = send;
 exports.sendList = sendList;
+exports.sendMail = sendMail;
