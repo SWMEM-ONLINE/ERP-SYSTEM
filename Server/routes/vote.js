@@ -230,17 +230,17 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
 /**
  * getVoteUserList
  * 투표 항목별 유저 리스트 가져오기 메소드
- * @param itemId
+ * @param vItemId
  * @return voteUserList
  */
 
 router.post('/getVoteUserList', util.ensureAuthenticated, function(req, res, next) {
 
-    var id = req.body.itemId;
+    var id = req.body.vItemId;
 
     var connection = DB_handler.connectDB();
 
-    var query = 'select a.*, b.u_name from t_vote_user a INNER JOIN t_user b ON a.vu_voter = b.u_id where vu_pid = '+id+' ORDER BY b.u_name';
+    var query = 'select a.vu_voter, b.u_name from t_vote_user a INNER JOIN t_user b ON a.vu_voter = b.u_id where vu_pid = '+id+' ORDER BY b.u_name';
 
     connection.query(query, function(err,row){
         if (err) {
