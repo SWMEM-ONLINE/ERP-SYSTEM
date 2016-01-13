@@ -89,7 +89,7 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
 /**
  * getVoteList
  * 투표 리스트 가져오기 메소드
- * @param type  (투표완료:0, 투표중:1 투표삭제:2)
+ * @param type  (투표삭제:0, 투표중:1, 투표완료:2, 전체:null)
  * @return vList
  */
 
@@ -101,10 +101,12 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
 
     var query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id';
 
-    if(type == 1){
-        query += ' where v_state = 1';
-    }else if(type == 0){
+    if(type == 0){
         query += ' where v_state = 0';
+    }else if(type == 1){
+        query += ' where v_state = 1';
+    }else if(type == 2){
+        query += ' where v_state = 2';
     }
 
     query += ' ORDER BY v_write_date';
