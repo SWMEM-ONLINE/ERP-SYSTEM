@@ -12,18 +12,7 @@ router.get('/', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.get('/vManage', util.ensureAuthenticated, function(req, res, next) {
-
-    var connection = DB_handler.connectDB();
-    var query = 'select * from t_user WHERE u_state <= 101';
-
-    connection.query(query,function(err,rows){
-        if (err) {
-            console.error(err);
-        }
-        var cnt = rows.length;
-        res.render('vote_manage', {title: '설문조사 관리', grade: util.getUserGrade(req), joinUserCnt:cnt});
-    });
-
+    res.render('vote_manage', {title: '설문조사 관리', grade: util.getUserGrade(req)});
 });
 
 /**
@@ -32,7 +21,6 @@ router.get('/vManage', util.ensureAuthenticated, function(req, res, next) {
  * @param vTitle
  * @param vContent
  * @param vType
- * @param vJoinCnt
  * @param vItems
  */
 
@@ -41,49 +29,59 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
     var content = req.body.vContent;
     var state = 1;                      //0: 삭제, 1: 투표중 2: 투표완료
     var type = req.body.vType;
-    var joinCnt = req.body.vJoinCnt;
+    var joinCnt = 0;
     var votedCnt = 0;
     var writter = util.getUserId(req);
     var itemsArr = req.body.vItems;
     var itemCnt = itemsArr.length;
 
-    var vote = {
-        'v_id':0,
-        'v_title':title,
-        'v_content':content,
-        'v_state':state,
-        'v_type':type,
-        'v_join_cnt':joinCnt,
-        'v_voted_cnt':votedCnt,
-        'v_writer':writter
-    };
-
     var connection = DB_handler.connectDB();
 
-    connection.query('insert into t_vote set ?',vote,function(err,row){
+    connection.query('select * from t_user WHERE u_state <= 101',function(err,rows){
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(connection);
             return res.json({status:'101'});
         }
-        var pid = row.insertId;
-        var voteItems = new Array(itemCnt);
 
-        for(var i=0; i<itemCnt; i++){
-            var vi_title = itemsArr[i];
-            var vi_cnt = 0;
-            voteItems[i] = [0, pid, vi_title, vi_cnt];
-        }
+        joinCnt = rows.length;
 
-        connection.query('insert into t_vote_item(vi_id, vi_pid, vi_title, vi_cnt) values ?', [voteItems], function(err,row){
+        var vote = {
+            'v_id':0,
+            'v_title':title,
+            'v_content':content,
+            'v_state':state,
+            'v_type':type,
+            'v_join_cnt':joinCnt,
+            'v_voted_cnt':votedCnt,
+            'v_writer':writter
+        };
+
+        connection.query('insert into t_vote set ?',vote,function(err,row){
             if (err) {
                 console.error(err);
                 DB_handler.disconnectDB(connection);
                 return res.json({status:'101'});
             }
+            var pid = row.insertId;
+            var voteItems = new Array(itemCnt);
 
-            DB_handler.disconnectDB(connection);
-            return res.json({status:'0'});
+            for(var i=0; i<itemCnt; i++){
+                var vi_title = itemsArr[i];
+                var vi_cnt = 0;
+                voteItems[i] = [0, pid, vi_title, vi_cnt];
+            }
+
+            connection.query('insert into t_vote_item(vi_id, vi_pid, vi_title, vi_cnt) values ?', [voteItems], function(err,row){
+                if (err) {
+                    console.error(err);
+                    DB_handler.disconnectDB(connection);
+                    return res.json({status:'101'});
+                }
+
+                DB_handler.disconnectDB(connection);
+                return res.json({status:'0'});
+            });
         });
     });
 });
