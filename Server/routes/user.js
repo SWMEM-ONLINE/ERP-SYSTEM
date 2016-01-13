@@ -214,9 +214,9 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
  * refreshFinishedUser
  * 수료예정회원 데이터 갱신 메소드
  * @param id
- * @return uBook
- * @return uHardware
- * @return uFee
+ * @return uBook            (0:미납없음, 1:미납있음)
+ * @return uHardware        (0:미납없음, 1:미납있음)
+ * @return uFee             (0:미납없음, 1:미납있음)
  */
 
 router.post('/refreshFinishedUser', util.ensureAuthenticated, function(req, res, next) {
