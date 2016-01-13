@@ -268,7 +268,7 @@ router.post('/refreshFinishedUser', util.ensureAuthenticated, function(req, res,
                         console.error(err);
                         res.json({status:'101'});
                     }
-                    res.json({status:'0', uBook:u_book, uHardware:u_hardware uFee:u_fee});
+                    res.json({status:'0', uBook:u_book, uHardware:u_hardware, uFee:u_fee});
                 });
             });
         });
