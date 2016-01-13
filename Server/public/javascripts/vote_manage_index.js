@@ -20,30 +20,34 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
-getVoteList();
+getVoteList(0);
 
 var itemCount = 0;
 
-function getVoteList(){
-    $.post('/vote/getVoteList',function(response){
+function getVoteList(type){
+    $.post('/vote/getVoteList',{Type:type},function(response){
         if(response.length == 0){
-            var tbodyString = '<tr class="empty"><td colspan="4"><h4>투표가 없습니다</h4></td></tr>';
+            var tbodyString = '<tr class="empty"><td colspan="5"><h4>투표가 없습니다</h4></td></tr>';
             $('#voteList tbody').empty();
             $('#voteList tbody').append(tbodyString);
         }
         else{
             var tbodyString = '';
             for(var i=0;i<response.length;i++){
-                tbodyString += '<tr id="'+response[i].v_id+'"><td>'+response[i].v_title+'</td><td>'+response[i].u_name+'</td>';
-                tbodyString += '<td>'+response[i].v_join_cnt+'</td>';
-                tbodyString += '<td>'+response[i].v_voted_cnt+'</td>';
-                tbodyString += '<td></td>';
+                tbodyString += '<tr id="'+response[i].v_id+'">';
+                tbodyString += '<td class="ellipsis"><nobr>';
                 if(response[i].v_state == 1){
-                    tbodyString += '<td><strong>진행중</strong></td>';
+                    tbodyString += '<strong>'+response[i].v_title+'</strong>';
                 }
                 else if(response[i].v_state == 2){
-                    tbodyString += '<td><strong>완료</strong></td>';
+                    tbodyString += response[i].v_title;
                 }
+                tbodyString += '</nobr></td>';
+                tbodyString += '<td>'+response[i].u_name+'</td>';
+                tbodyString += '<td>'+response[i].v_join_cnt+'</td>';
+                tbodyString += '<td>'+response[i].v_voted_cnt+'</td>';
+
+                tbodyString += '<td>'+'</td>';
                 tbodyString += '</tr>';
             }
             $('#voteList tbody').empty();
@@ -117,7 +121,7 @@ $('#voteAdd').click(function(){
                 else {
                     toastr['error']('투표 등록 실패');
                 }
-                getVoteList();
+                getVoteList(0);
             }
         });
     }
@@ -134,7 +138,7 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
         arr.push($(this).text());
     });
 
-    $('#editVote .modal-title').text(arr[0] + '('+arr[1]+')');
+    $('#editVote .modal-title').text(arr[0]);
     var tbodyString = '';
     console.log(arr);
     $.ajax({
@@ -145,12 +149,10 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
         success:function(response) {
 
             for(var i=0;i<response.length;i++){
-                tbodyString += '<p>';
-                tbodyString += response[i].vi_title;
-                tbodyString += ' <span class="label label-default">'+response[i].vi_cnt + '명 선택</span>';
-                var persentage =response[i].vi_cnt / arr[2];
-                tbodyString += '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;width: '+persentage+'%">'+persentage+'%</div></div>';
-                tbodyString += '</p>';
+                var persentage =Math.round((response[i].vi_cnt / arr[2])*100)/100 * 100;
+
+                tbodyString += '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%;"></div><span class="contentTitle">'+response[i].vi_title+'</span><i class="glyphicon glyphicon-user">'+response[i].vi_cnt+'</i></div>';
+
             }
             $('#editVote .modal-body').empty();
             $('#editVote .modal-body').append(tbodyString);
@@ -174,7 +176,7 @@ $('#delete').click(function(){
             if(response.status == '0'){
                 $('#editVote div.modal').modal('hide');
                 toastr['success']('투표 삭제');
-                getVoteList();
+                getVoteList(0);
             }
             else{
                 $('#editVote div.modal').modal('hide');

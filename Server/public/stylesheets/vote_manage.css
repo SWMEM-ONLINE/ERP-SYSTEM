@@ -18,6 +18,48 @@ input[type='text']{
     text-align: center;
 }
 
+.progress{
+    height: 35px;
+    background-color: #dfdfdf;
+}
+
+.progress span{
+    float:left;
+    z-index: 3;
+}
 .progress-bar{
-    background:#122359;
+    background: #5cabfa;
+    height:inherit;
+    line-height: inherit;
+    color: black;
+    font-size: inherit;
+    text-align: inherit;
+    position: relative;
+    z-index: 2;
+}
+
+.contentTitle{
+
+    margin-left:10px;
+}
+
+div.content table{
+    table-layout:fixed;
+}
+
+div.content table td.ellipsis{
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+div.content table th.count{
+    width:70px;
+}
+
+div.content table th.name{
+    width:100px;
+}
+
+div.content table th.expire{
+    width:120px;
 }

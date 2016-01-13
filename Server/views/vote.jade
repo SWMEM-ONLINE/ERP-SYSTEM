@@ -12,9 +12,29 @@ append head
 block content
    .wrapper
       article.container
-         h3 설문조사
+         h3 투표하자
          hr
          .content
+            table#voteList.table.table-clickable
+               thead
+                  tr
+                     th 제목
+                     th.name 작성자
+                     th.count 인원
+                     th.count 참여
+                     th.expire 마감일
+               tbody
+   #voteModal
+      .modal.fade
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  h4.modal-title
+               .modal-body
+               .modal-footer
+                  button#save.btn.hidden(type='button') 저장
+                  button#vote.btn(type='button') 투표하기
+                  button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-   script(src='./javascripts/vote.js')
+   script(src='./javascripts/vote_index.js')

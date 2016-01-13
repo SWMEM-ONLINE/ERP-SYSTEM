@@ -102,7 +102,7 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id';
 
     if(type == 0){
-        query += ' where v_state = 0';
+        query += ' where v_state != 0';
     }else if(type == 1){
         query += ' where v_state = 1';
     }else if(type == 2){
@@ -136,7 +136,7 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = DB_handler.connectDB();
 
-    var query = 'select * from t_vote_item where vi_pid = '+id+' and  ORDER BY vi_id';
+    var query = 'select * from t_vote_item where vi_pid = '+id+' ORDER BY vi_id';
 
     connection.query(query, function(err,data){
         if (err) {

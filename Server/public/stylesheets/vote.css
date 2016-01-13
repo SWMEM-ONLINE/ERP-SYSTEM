@@ -1,0 +1,35 @@
+#voteList>tbody>tr:hover{
+    background-color: #dfdfdf;
+}
+
+.progress-bar{
+    background:#122359;
+}
+
+.glyphicon {
+    float: right;
+    top:2px;
+    line-height: inherit;
+}
+
+
+div.content table{
+    table-layout:fixed;
+}
+
+div.content table td.ellipsis{
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+div.content table th.count{
+    width:70px;
+}
+
+div.content table th.name{
+    width:100px;
+}
+
+div.content table th.expire{
+    width:120px;
+}
