@@ -162,7 +162,7 @@ router.post('/deleteVote', util.ensureAuthenticated, function(req, res, next) {
     var id = req.body.id;
     console.log(id);
     var connection = DB_handler.connectDB();
-    var query = 'update t_vote set v_state = 2 where v_id = "'+id+'"';
+    var query = 'update t_vote set v_state = 0 where v_id = "'+id+'"';
 
     connection.query(query, function(err,data){
         if (err) {
