@@ -210,6 +210,71 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
 
 });
 
+/**
+ * refreshFinishedUser
+ * 수료예정회원 데이터 갱신 메소드
+ * @param id
+ * @return uBook
+ * @return uHardware
+ * @return uFee
+ */
+
+router.post('/refreshFinishedUser', util.ensureAuthenticated, function(req, res, next) {
+
+    /*회비미납 내역 체크*/
+    var u_id = req.body.id;
+    var u_fee = 0;
+    var u_book = 0;
+    var u_hardware = 0;
+
+    var query = 'select * from t_fee where f_payer = "' + u_id + '" AND f_state = 0';
+
+    con.query(query,function(err,rows1){
+        if (err) {
+            console.error(err);
+            res.json({status:'101'});
+        }
+        if(0<rows1.length)
+            u_fee = 1;
+
+        /*도서미납 내역 체크*/
+        query = 'select b.b_name name, DATEDIFF(CURDATE(), b.b_due_date) diff from t_book_rental a inner join t_book b on a.br_book_id=b.b_id where br_user="' + u_id + '"';
+
+        con.query(query,function(err,rows2){
+            if (err) {
+                console.error(err);
+                res.json({status:'101'});
+            }
+            console.log(rows2);
+            if(0<rows2.length){
+                u_book = 1;
+                console.log("미반납 도서 있음");
+            }
+            /*하드웨어미납 내역 체크*/
+            query = 'select b.h_name name, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id where a.hr_user="' + u_id + '"';
+
+            con.query(query,function(err,rows3){
+                if (err) {
+                    console.error(err);
+                    res.json({status:'101'});
+                }
+                if(0<rows3.length)
+                    u_hardware = 1;
+
+                query = 'update t_user set u_state = '+state+', u_fee = '+u_fee+', u_book = '+u_book+', u_hardware = '+u_hardware+' where u_id = "'+u_id + '"';
+                console.log(query);
+                con.query(query,function(err,rows4){
+                    if (err) {
+                        console.error(err);
+                        res.json({status:'101'});
+                    }
+                    res.json({status:'0', uBook:u_book, uHardware:u_hardware uFee:u_fee});
+                });
+            });
+        });
+    });
+});
+
 router.post('/reset', util.ensureAuthenticated, function(req, res, next) {
     var id = req.body.u_id;
     var encPW = crypto.createHash('sha256').update('0000').digest('base64');
