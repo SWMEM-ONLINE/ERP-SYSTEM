@@ -12,7 +12,18 @@ router.get('/', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.get('/vManage', util.ensureAuthenticated, function(req, res, next) {
-    res.render('vote_manage', {title: '설문조사 관리', grade: util.getUserGrade(req)});
+
+    var connection = DB_handler.connectDB();
+    var query = 'select * from t_user WHERE u_state <= 101';
+
+    connection.query(query,function(err,rows){
+        if (err) {
+            console.error(err);
+        }
+        var cnt = rows.length;
+        res.render('vote_manage', {title: '설문조사 관리', grade: util.getUserGrade(req), joinUserCnt:cnt});
+    });
+
 });
 
 /**
@@ -21,6 +32,7 @@ router.get('/vManage', util.ensureAuthenticated, function(req, res, next) {
  * @param vTitle
  * @param vContent
  * @param vType
+ * @param vJoinCnt
  * @param vItems
  */
 
@@ -29,6 +41,8 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
     var content = req.body.vContent;
     var state = 1;                      //0: 삭제, 1: 투표중 2: 투표완료
     var type = req.body.vType;
+    var joinCnt = req.body.vJoinCnt;
+    var votedCnt = 0;
     var writter = util.getUserId(req);
     var itemsArr = req.body.vItems;
     var itemCnt = itemsArr.length;
@@ -39,6 +53,8 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
         'v_content':content,
         'v_state':state,
         'v_type':type,
+        'v_join_cnt':joinCnt,
+        'v_voted_cnt':votedCnt,
         'v_writer':writter
     };
 
@@ -85,7 +101,7 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
 
     var connection = DB_handler.connectDB();
 
-    var query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id where v_state not in (2)';
+    var query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id';
 
     if(type == 1){
         query += ' where v_state = 1';
@@ -165,13 +181,14 @@ router.post('/deleteVote', util.ensureAuthenticated, function(req, res, next) {
 /**
  * selectVote
  * 투표 메소드
+ * @param voteId
  * @param itemIds
  * @return result
  */
 
 router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
 
-    //var vId = req.body.voteId;
+    var vId = req.body.voteId;
     var iIds = req.body.itemIds;
     var uId = util.getUserId(req);
 
@@ -191,7 +208,7 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
             return res.json({status:'101'});
         }
 
-        var query;
+        var query = 'update t_vote set v_voted_cnt = v_voted_cnt+1 where v_id = '+vId+';';
 
         for( var j=0 ; j<itemCnt ; j++ ){
             query = 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = '+iIds[i]+';';
@@ -206,6 +223,34 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
 
             return res.json({status:'0'});
         });
+    });
+});
+
+
+/**
+ * getVoteUserList
+ * 투표 항목별 유저 리스트 가져오기 메소드
+ * @param itemId
+ * @return voteUserList
+ */
+
+router.post('/getVoteUserList', util.ensureAuthenticated, function(req, res, next) {
+
+    var id = req.body.itemId;
+
+    var connection = DB_handler.connectDB();
+
+    var query = 'select a.*, b.u_name from t_vote_user a INNER JOIN t_user b ON a.vu_voter = b.u_id where vu_pid = '+id+' ORDER BY b.u_name';
+
+    connection.query(query, function(err,row){
+        if (err) {
+            console.error(err);
+            return res.json({status:'101'});
+        }
+        else{
+            var rows = JSON.stringify(row);
+            return res.json(JSON.parse(rows));
+        }
     });
 });
 

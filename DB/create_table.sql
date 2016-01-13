@@ -339,6 +339,8 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     v_content VARCHAR(1000),
     v_state int,
     v_type int,
+    v_join_cnt int,
+    v_voted_cnt int,
     v_writer VARCHAR(20),
     v_write_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(v_writer) REFERENCES t_user(u_id));
