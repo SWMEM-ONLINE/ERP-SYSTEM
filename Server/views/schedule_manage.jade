@@ -10,14 +10,17 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/hardware_list.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datetimepicker.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
 block content
    .wrapper
       article.container
          h3 스케줄 관리
+         hr
          .content
-            input.datepicker(type='text', placeholder='월 선택' readonly='readonly')
-            table.table
+            input.datepicker#monthpicker(type='text', placeholder='월 선택' readonly='readonly' style="text-align:center")
+            hr
+            table.table.table-hover
                thead
                   tr
                      th(style="text-align:center") 시작일
@@ -25,7 +28,34 @@ block content
                      th(style="text-align:center") 일정명
                      th(style="text-align:center") 등록자
                tbody#scheduleList
+            button#addSchedule.btn(type='button') 스케줄 등록
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title(style="text-align:center")
+            .modal-body
+               table.table
+                  thead
+                     tr
+                        th(style="text-align:center; width:45%") 일정명
+                        th(style="text-align:center; width:55%") 기간
+                  tbody#scheduleContent
+                     tr
+                        td
+                           input.form-control#title(type='text', placeholder='일정명', style="text-align:center")
+                        td
+                           .input-group
+                              input.form-control.datetimepicker#startTime(type='text', placeholder="시작일 선택", style="text-align:center")
+                              p ~
+                              input.form-control.datetimepicker#endTime(type='text', placeholder="종료일 선택", style="text-align:center")
+            .modal-footer
+               button#enroll.btn(type='button') 등록
+               button#delete.btn.btn-danger(type='button') 삭제
+               button.btn(type='button', data-dismiss='modal') 닫기
 append script
+   script(src='../javascripts/moment.min.js')
+   script(src='../javascripts/bootstrap-datetimepicker.js')
    script(src='../javascripts/bootstrap-datepicker.js')
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/schedule_manage.js')
