@@ -3,7 +3,6 @@
  */
 
 var rowCount = 1;
-var rowCountExp = 1;
 
 toastr.options = {
     'closeButton': false,
@@ -22,11 +21,6 @@ toastr.options = {
     'showMethod': 'fadeIn',
     'hideMethod': 'fadeOut'
 };
-
-$('button#example').click(function(){
-    var modalString = '<table id='
-
-});
 
 function addList() {
     var table = document.getElementById('addlist');
@@ -80,37 +74,6 @@ function deleteRow(obj){
     table.deleteRow(index);
 }
 
-function deleteRowExp(obj){
-    var tr = obj.parentNode.parentNode;
-    var index = tr.rowIndex;
-    var table = document.getElementById('explainlist');
-    table.deleteRow(index);
-}
-
-function addExplain() {
-    var table = document.getElementById('explainlist');
-    var lastRow = table.rows.length;
-    var newRow = table.insertRow(lastRow);
-    var kind = newRow.insertCell(0);
-    var explain = newRow.insertCell(1);
-    var btn = newRow.insertCell(2);
-
-    var str0 = '<input id="kind_'+rowCountExp+'" type="text" placeholder="분류(종류)">';
-    var str1 = '<input id="explain_'+rowCountExp+'" type="text" placeholder="설명">';
-    var str2 = '<button id="plus" class="btn" type="button" onclick="addExplain()">+</button>';
-
-    kind.innerHTML = str0;
-    explain.innerHTML = str1;
-    btn.innerHTML = str2;
-
-    var Allrows = document.getElementById('explainlist').rows;
-    Allrows[lastRow-1].deleteCell(2);
-    var changedRow = Allrows[lastRow-1].insertCell(2);
-    changedRow.innerHTML = '<button id="minus" class="btn cancel" type="button" onclick="deleteRowExp(this)">-</button>';
-
-    rowCountExp = rowCountExp + 1;
-}
-
 $('#submit').click(function(){
     var Projectname;
     var Use;
@@ -121,13 +84,9 @@ $('#submit').click(function(){
     var Count;
     var Maker;
     var Link;
-
-    var Category;
-    var Explain;
-
     var arr = new Array();
-
-    var message = '성공';
+    var count = 0;
+    var message = 'true';
     for ( var i = 0; i < rowCount; i++) {
         Projectname = $('#projectName_'+i).val();
         Use = $('#use_'+ i).val();
@@ -137,52 +96,33 @@ $('#submit').click(function(){
         Ea = $('#ea_'+i).val();
         Count = $('#count_'+i).val();
         Maker = $('#maker_'+i).val();
-
         Link = $('#link_'+i).val();
-        var checkHttp = Link.substring(0, 4);
-        if(checkHttp != 'http'){
-            Link = 'http://' + Link;
-        }
+        if(Name != undefined) {
+            count++;
+            var checkHttp = Link.substring(0, 4);
+            if (checkHttp != 'http') {
+                Link = 'http://' + Link;
+            }
+            if (!($.isNumeric(Count)))   message = '수량은 숫자를 입력하세요';
 
-        /* check value */
-
-        for(var j = 0; j < rowCountExp; j++){
-            Category = $('#kind_' + j).val();
-            Explain = $('#explain_' + j).val();
-
-            if(Category === "" || Explain === ""){
+            if (Use === "" || Type === "" || Label === "" || Name === "" || Ea === "" || Count === "" || Maker === "" || Link === "") {
                 message = '빈 칸이 있습니다';
-                break;
             }
 
-            if(Category === Type) {
-                message = 'true';
-                var sData = {
-                    projectName: Projectname,
-                    use:Use,
-                    type:Type,
-                    label:Label,
-                    name:Name,
-                    ea:Ea,
-                    count:Count,
-                    maker:Maker,
-                    link:Link,
-                    explain:Explain
-                };
-                arr.push(sData);
-                break;
-            }else{
-                message = '분류를 확인하세요';
-            }
+            if (message != 'true')  break;
+            var sData = {
+                projectName: Projectname,
+                use: Use,
+                type: Type,
+                label: Label,
+                name: Name,
+                ea: Ea,
+                count: Count,
+                maker: Maker,
+                link: Link
+            };
+            arr.push(sData);
         }
-
-        if(Use === "" || Type === "" || Label === "" || Name === "" || Ea === "" || Count === "" || Maker === "" || Link === ""){
-            message = '빈 칸이 있습니다';
-        }
-
-        if(!($.isNumeric(Count)))   message = '수량은 숫자를 입력하세요';
-
-        if(message != 'true')  break;
     }
 
     if(message != 'true'){
@@ -197,7 +137,19 @@ $('#submit').click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data === 'success'){
-                    toastr['success']('하드웨어 등록 성공')
+                    toastr['success']('하드웨어 등록 성공');
+                    for(var i=1;i<count;i++){
+                        document.getElementById('addlist').deleteRow(1);
+                    }
+                    $('#projectName_'+(rowCount-1)).val('');
+                    $('#type_'+(rowCount-1)).val('');
+                    $('#label_'+(rowCount-1)).val('');
+                    $('#name_'+(rowCount-1)).val('');
+                    $('#use_'+(rowCount-1)).val('');
+                    $('#ea_'+(rowCount-1)).val('');
+                    $('#count_'+(rowCount-1)).val('');
+                    $('#maker_'+(rowCount-1)).val('');
+                    $('#link_'+(rowCount-1)).val('');
                 }else{
                     toastr['error']('하드웨어 신청 실패');
                 }

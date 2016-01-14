@@ -244,33 +244,37 @@ function down2excelButton(datalist){         // 엑셀로 저장 버튼
         sheet.columns(7).setWidth(50, $.ig.excel.WorksheetColumnWidthUnit.pixel);
         sheet.columns(8).setWidth(120, $.ig.excel.WorksheetColumnWidthUnit.pixel);
         sheet.columns(9).setWidth(120, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(10).setWidth(200, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-
 
         sheet.getCell('A1').value('No');
         sheet.getCell('A1').cellFormat().font().height(10*25);
+        sheet.getCell('A1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('B1').value('프로젝트명');
         sheet.getCell('B1').cellFormat().font().height(10*25);
+        sheet.getCell('B1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('C1').value('용도');
         sheet.getCell('C1').cellFormat().font().height(10*25);
+        sheet.getCell('C1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('D1').value('분류');
         sheet.getCell('D1').cellFormat().font().height(10*25);
+        sheet.getCell('D1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('E1').value('품목');
         sheet.getCell('E1').cellFormat().font().height(10*25);
+        sheet.getCell('E1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('F1').value('부품명');
         sheet.getCell('F1').cellFormat().font().height(10*25);
+        sheet.getCell('F1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('G1').value('규격');
         sheet.getCell('G1').cellFormat().font().height(10*25);
+        sheet.getCell('G1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('H1').value('수량');
         sheet.getCell('H1').cellFormat().font().height(10*25);
+        sheet.getCell('H1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('I1').value('Maker');
         sheet.getCell('I1').cellFormat().font().height(10*25);
+        sheet.getCell('I1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('J1').value('Link');
         sheet.getCell('J1').cellFormat().font().height(10*25);
-        sheet.getCell('K1').value('설명');
-        sheet.getCell('K1').cellFormat().font().height(10*25);
-
-        var cnt = ($('table tbody#tableData tr.warning').length + 1);
+        sheet.getCell('J1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
 
         var i = 2, j = 1;
         var pre = '';
@@ -278,27 +282,59 @@ function down2excelButton(datalist){         // 엑셀로 저장 버튼
         $('table tbody#tableData tr.warning').each(function(){
             var index = $(this).index();
 
-            if(pre != datalist[index].ha_project_title){
-                pre = datalist[index].ha_project_title;
-                i++;
-                j = 1;
+            if(i === 2){
+                sheet.getCell('A' + i).value(j++);
+                sheet.getCell('A' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('B' + i).value(datalist[index].ha_project_title);
+                sheet.getCell('B' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('C' + i).value(datalist[index].ha_role);
+                sheet.getCell('C' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('D' + i).value(datalist[index].ha_upper_category);
+                sheet.getCell('D' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('E' + i).value(datalist[index].ha_lower_category);
+                sheet.getCell('E' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('F' + i).value(datalist[index].ha_item_name);
+                sheet.getCell('F' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('G' + i).value(datalist[index].ha_size);
+                sheet.getCell('G' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('H' + i).value(datalist[index].ha_amount);
+                sheet.getCell('H' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('I' + i).value(datalist[index].ha_maker);
+                sheet.getCell('I' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('J' + i).value(datalist[index].ha_link);
+                sheet.getCell('J' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+            }else{
+                if(pre != datalist[index].ha_project_title){
+                    pre = datalist[index].ha_project_title;
+                    i++;
+                    j = 1;
+                }
+                sheet.getCell('A' + i).value(j++);
+                sheet.getCell('A' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('B' + i).value(datalist[index].ha_project_title);
+                sheet.getCell('B' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('C' + i).value(datalist[index].ha_role);
+                sheet.getCell('C' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('D' + i).value(datalist[index].ha_upper_category);
+                sheet.getCell('D' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('E' + i).value(datalist[index].ha_lower_category);
+                sheet.getCell('E' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('F' + i).value(datalist[index].ha_item_name);
+                sheet.getCell('F' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('G' + i).value(datalist[index].ha_size);
+                sheet.getCell('G' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('H' + i).value(datalist[index].ha_amount);
+                sheet.getCell('H' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('I' + i).value(datalist[index].ha_maker);
+                sheet.getCell('I' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+                sheet.getCell('J' + i).value(datalist[index].ha_link);
+                sheet.getCell('J' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
             }
-            sheet.getCell('A' + i).value(j++);
-            sheet.getCell('B' + i).value(datalist[index].ha_project_title);
-            sheet.getCell('C' + i).value(datalist[index].ha_role);
-            sheet.getCell('D' + i).value(datalist[index].ha_upper_category);
-            sheet.getCell('E' + i).value(datalist[index].ha_lower_catergory);
-            sheet.getCell('F' + i).value(datalist[index].ha_item_name);
-            sheet.getCell('G' + i).value(datalist[index].ha_size);
-            sheet.getCell('H' + i).value(datalist[index].ha_amount);
-            sheet.getCell('I' + i).value(datalist[index].ha_maker);
-            sheet.getCell('J' + i).value(datalist[index].ha_link);
-            sheet.getCell('K' + i).value(datalist[index].ha_explain);
             i++;
         });
 
-        var table = sheet.tables().add('A1:K' + (i-1), true);
-        table.style(workbook.standardTableStyles('TableStyleMedium1'));
+        var table = sheet.tables().add('A1:J' + (i-1), true);
+        table.style(workbook.standardTableStyles('TableStyleMedium2'));
 
         var today = new Date();
         var m = (today.getMonth() + 1);
