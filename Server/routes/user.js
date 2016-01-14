@@ -98,14 +98,11 @@ router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
     }
     query += ' order by u_period';
 
-    console.log('query');
-    console.log(query);
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
             throw err;
         }
-        console.log(rows);
         var send = JSON.stringify(rows);
         res.json(JSON.parse(send));
     });
@@ -138,6 +135,7 @@ router.post('/getUserInfo', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, next) {
 
+    var grade = req.body.origin_grade;
     var state = req.body.grade;
     var u_id = req.body.u_id;
 
@@ -196,8 +194,14 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
         });
 
     }else{
-        var query = 'update t_user set u_state = '+state+' where u_id = "'+u_id + '"';
 
+        var query = 'update t_user set u_state = '+state;
+        if(grade == '104'){
+            query += ', u_register_date = NOW()';
+        }
+        query += ' where u_id = "'+u_id + '"'
+
+        console.log(query);
         con.query(query,function(err,rows){
             if (err) {
                 console.error(err);

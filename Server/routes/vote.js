@@ -89,7 +89,7 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
 /**
  * getVoteList
  * 투표 리스트 가져오기 메소드
- * @param type  (투표삭제:0, 투표중:1, 투표완료:2, 전체:null)
+ * @param type  (전체:0, 투표중:1, 투표완료:2)
  * @return vList
  */
 
@@ -116,6 +116,10 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
             return res.json({status:'101'});
         }
         else{
+            for(var i=0 ; i<row.length ; i++){
+                row[i].v_due_date = getDate(row[i].v_write_date, 14);
+            }
+
             var rows = JSON.stringify(row);
             return res.json(JSON.parse(rows));
         }
@@ -253,5 +257,13 @@ router.post('/getVoteUserList', util.ensureAuthenticated, function(req, res, nex
         }
     });
 });
+
+
+function getDate(base, plusDate){
+    var tempDate = new Date(base);
+    tempDate.setDate(tempDate.getDate() + plusDate);
+    var date = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDate();
+    return date;
+}
 
 module.exports = router;
