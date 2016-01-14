@@ -27,7 +27,7 @@ var itemCount = 0;
 function getVoteList(type){
     $.post('/vote/getVoteList',{Type:type},function(response){
         if(response.length == 0){
-            var tbodyString = '<tr class="empty"><td colspan="5"><h4>투표가 없습니다</h4></td></tr>';
+            var tbodyString = '<tr class="empty"><td colspan="4"><h4>투표가 없습니다</h4></td></tr>';
             $('#voteList tbody').empty();
             $('#voteList tbody').append(tbodyString);
         }
@@ -44,8 +44,7 @@ function getVoteList(type){
                 }
                 tbodyString += '</nobr></td>';
                 tbodyString += '<td>'+response[i].u_name+'</td>';
-                tbodyString += '<td>'+response[i].v_join_cnt+'</td>';
-                tbodyString += '<td>'+response[i].v_voted_cnt+'</td>';
+                tbodyString += '<td>'+response[i].v_voted_cnt+'/'+response[i].v_join_cnt+'</td>';
 
                 tbodyString += '<td>'+response[i].v_due_date+'</td>';
                 tbodyString += '</tr>';
