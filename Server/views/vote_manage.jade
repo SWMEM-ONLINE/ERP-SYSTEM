@@ -45,6 +45,15 @@ block content
                .modal-footer
                   button#delete.btn(type='button') 삭제
                   button.btn(type='button', data-dismiss='modal') 닫기
+   #memberList
+      .modal.fade
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  h4.modal-title 선택한 회원
+               .modal-body
+               .modal-footer
+                  button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/vote_manage_index.js')

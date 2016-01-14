@@ -47,7 +47,7 @@ function getVoteList(type){
                 tbodyString += '<td>'+response[i].v_join_cnt+'</td>';
                 tbodyString += '<td>'+response[i].v_voted_cnt+'</td>';
 
-                tbodyString += '<td>'+'</td>';
+                tbodyString += '<td>'+response[i].v_due_date+'</td>';
                 tbodyString += '</tr>';
             }
             $('#voteList tbody').empty();
@@ -151,7 +151,7 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
             for(var i=0;i<response.length;i++){
                 var persentage =Math.round((response[i].vi_cnt / arr[2])*100)/100 * 100;
 
-                tbodyString += '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%;"></div><span class="contentTitle">'+response[i].vi_title+'</span><i class="glyphicon glyphicon-user">'+response[i].vi_cnt+'</i></div>';
+                tbodyString += '<div id="'+response[i].vi_id+'" class="progress"><div style="position: absolute; width:100%;"><div style="float:left; margin-left:10px;">'+response[i].vi_title+'</div><div style="float:right; margin-right:50px;"><i class="glyphicon glyphicon-user"></i><span>'+response[i].vi_cnt+'</span></div></div><div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%;"></div></div>';
 
             }
             $('#editVote .modal-body').empty();
@@ -182,6 +182,33 @@ $('#delete').click(function(){
                 $('#editVote div.modal').modal('hide');
                 toastr['success']('삭제 실패');
             }
+        }
+    });
+});
+
+$('#editVote').on('click','.progress',function(){
+    var id = $(this).attr('id');
+    var tbodyString = '';
+    var send = {
+        vItemId:id
+    };
+    $.ajax({
+        type:'post',
+        url:'/vote/getVoteUserList',
+        data:JSON.stringify(send),
+        contentType:'application/json',
+        success:function(response) {
+            if(response.length == 0){
+                tbodyString += '<h5>선택한 회원이 없습니다</h5>';
+            }
+            else{
+                for(var i=0;i<response.length;i++){
+                    tbodyString += '<p>'+response[i].u_name+'</p>';
+                }
+            }
+            $('#memberList .modal-body').empty();
+            $('#memberList .modal-body').append(tbodyString);
+            $('#memberList div.modal').modal();
         }
     });
 });

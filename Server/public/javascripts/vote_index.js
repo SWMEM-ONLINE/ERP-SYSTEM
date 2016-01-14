@@ -44,11 +44,13 @@ function getVoteList(type){
                 tbodyString += '<td>'+response[i].v_join_cnt+'</td>';
                 tbodyString += '<td>'+response[i].v_voted_cnt+'</td>';
 
-                tbodyString += '<td>'+'</td>';
+                tbodyString += '<td>'+response[i].v_due_date+'</td>';
+                tbodyString += '<td class="hidden">'+response[i].v_type+'</td>';
                 tbodyString += '</tr>';
             }
             $('#voteList tbody').empty();
             $('#voteList tbody').append(tbodyString);
+
         }
     });
 }
@@ -73,28 +75,64 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
         success:function(response) {
 
             for(var i=0;i<response.length;i++){
-                tbodyString += '<p>';
-                tbodyString += response[i].vi_title;
-                tbodyString += ' <span class="label label-success">'+response[i].vi_cnt + '명 선택</span>';
                 var persentage =Math.round((response[i].vi_cnt / arr[2])*100)/100 * 100;
-                if(persentage == 0){
-                    tbodyString += '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%;color:black;float:none;margin:auto;">'+persentage+'%</div></div>';
+                tbodyString += '<div>';
+                if(arr[5] == 0){ //radio
+                    tbodyString += '<input type="radio" name="check" class="checkbox" id="select_'+response[i].vi_id+'"><label for="select_'+response[i].vi_id+'" class="input-label radio" style="float:left;"></label>';
                 }
-                else{
-                    tbodyString += '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%">'+persentage+'%</div></div>';
+                else{  //checkbox
+                    tbodyString += '<input type="checkbox" name="check" class="checkbox" id="select_'+response[i].vi_id+'"><label for="select_'+response[i].vi_id+'" class="input-label checkbox" style="float:left;"></label>';
                 }
-                tbodyString += '</p>';
+                tbodyString += '<div id="'+response[i].vi_id+'" class="progress"><div style="position: absolute; width:100%;"><div style="float:left; margin-left:10px;">'+response[i].vi_title+'</div><div style="float:right; margin-right:100px;"><i class="glyphicon glyphicon-user"></i><span>'+response[i].vi_cnt+'</span></div></div><div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%;"></div></div><div>';
             }
             $('#voteModal .modal-body').empty();
             $('#voteModal .modal-body').append(tbodyString);
             document.getElementById('vote').setAttribute('number',vid);
             document.getElementById('save').setAttribute('number',vid);
+            $('#vote').removeClass('hidden');
+            $('#save').removeClass('hidden');
+            $('#save').addClass('hidden');
+            $('label.input-label').addClass('hidden');
             $('#voteModal div.modal').modal();
         }
     });
 });
 
+$('#save').click(function(){
+    $('label.input-label').addClass('hidden');
+    $('#vote').removeClass('hidden');
+    $('#save').addClass('hidden');
+});
+
 $('#vote').click(function(){
+    $('label.input-label').removeClass('hidden');
     $('#vote').addClass('hidden');
     $('#save').removeClass('hidden');
+});
+
+$('#voteModal').on('click','.progress',function(){
+    var id = $(this).attr('id');
+    var tbodyString = '';
+    var send = {
+        vItemId:id
+    };
+    $.ajax({
+        type:'post',
+        url:'/vote/getVoteUserList',
+        data:JSON.stringify(send),
+        contentType:'application/json',
+        success:function(response) {
+            if(response.length == 0){
+                tbodyString += '<h5>선택한 회원이 없습니다</h5>';
+            }
+            else{
+                for(var i=0;i<response.length;i++){
+                    tbodyString += '<p>'+response[i].u_name+'</p>';
+                }
+            }
+            $('#memberList .modal-body').empty();
+            $('#memberList .modal-body').append(tbodyString);
+            $('#memberList div.modal').modal();
+        }
+    });
 });

@@ -23,10 +23,6 @@ input[type='text']{
     background-color: #dfdfdf;
 }
 
-.progress span{
-    float:left;
-    z-index: 3;
-}
 .progress-bar{
     background: #5cabfa;
     height:inherit;
@@ -34,13 +30,22 @@ input[type='text']{
     color: black;
     font-size: inherit;
     text-align: inherit;
-    position: relative;
-    z-index: 2;
 }
 
-.contentTitle{
+.progress-content{
+    position:absolute;
+    width:100%;
+    z-index: 10000;
+}
 
+.progress-title{
+    float:left;
     margin-left:10px;
+}
+
+.progress-count{
+    float:right;
+    margin-right:10px;
 }
 
 div.content table{
