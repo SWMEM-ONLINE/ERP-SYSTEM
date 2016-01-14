@@ -23,7 +23,10 @@ $('#calendar').fullCalendar({
     header: false,
     editable: false,
     eventLimit: true,
-    height: 720
+    height: 720,
+    dayClick: function(date, jsEvent, view) {
+        getClickedEvents(date);
+    }
 });
 
 $('.datepicker').datepicker({
@@ -40,6 +43,50 @@ $('.datepicker').on('changeDate',function(event){
     var month = event.date.getMonth() + 1;
     loadSchedule(year, month);
 });
+
+
+function getClickedEvents(date){
+    var newdate = new Date(date).getTime();
+    var clickedTitle = [];
+    var i ;
+
+    for(i=0;i<prevEvent.length;i++){
+        var event = prevEvent[i];
+        if((new Date(event.start).getTime() <= newdate && new Date(event.end).getTime()>= newdate) ||
+            (new Date(event.start).getTime() < (newdate+ 24 * 60 * 60 * 1000) && new Date(event.start).getTime() >=newdate) ){
+
+            clickedTitle.push(event.title);
+        }
+    }
+
+    if(clickedTitle.length !=0){
+        makeModal(date,clickedTitle);
+    }
+
+}
+
+function makeModal(date,clickedTitle){
+
+    var i;
+    var htmlString = "";
+    $('.modal-title').html(date.format());
+
+    htmlString+="<tbody>";
+
+    for(i=0;i<clickedTitle.length;i++){
+        htmlString+="<tr>";
+        htmlString+="<td>";
+        htmlString+=clickedTitle[i]+"";
+        htmlString+="</td>";
+        htmlString+="</tr>";
+    }
+
+    htmlString+="</tbody>";
+    $('#modal-table').html(htmlString);
+    $('div.modal').modal();
+
+}
+
 
 function loadSchedule(year, month){
     var sendData = {};
