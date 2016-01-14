@@ -24,8 +24,13 @@ router.post('/manage/enrollSchedule', util.ensureAuthenticated, function(req, re
     schedule_handler.enrollSchedule(con, req, res);
 });
 
-router.post('/manage/deleteSchedule', util.ensureAuthenticated, function(req, res){
+router.post('/manage/deleteSchedule', util.ensureAuthenticated, function(req, res) {
     schedule_handler.deleteSchedule(con, req, res);
+});
+
+router.post('/getEvents', util.ensureAuthenticated, function(req, res){
+    console.log("getevnets");
+    schedule_handler.getEvents(con,req,res);
 });
 
 module.exports = router;
