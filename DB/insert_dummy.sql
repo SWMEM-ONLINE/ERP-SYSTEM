@@ -101,3 +101,11 @@ INSERT INTO `swmem`.`t_duty_bad_checklist` (`day`, `section`, `content`) VALUES 
 
 INSERT INTO `swmem`.`t_life` (`l_id`, `l_year`, `l_month`, `l_recent`, `l_first`, `l_first_cnt`, `l_first_point`, `l_second`, `l_second_cnt`, `l_second_point`, `l_third`, `l_third_cnt`, `l_third_point`, `l_fourth`, `l_fourth_cnt`, `l_fourth_point`, `l_fifth`, `l_fifth_cnt`, `l_fifth_point`, `l_total`, `l_grade`) VALUES ('1', '2015', '12', '1', '사진', '11', '3', '당직 미흡', '0', '6', '당직 굿', '31', '-1', '-', '0', '0', '-', '0', '0', '2', 'A');
 INSERT INTO `swmem`.`t_life_cut` (`lc_id`, `lc_a`, `lc_b`) VALUES ('1', '20', '30');
+
+
+INSERT INTO `swmem`.`t_schedule` (`s_id`, `s_title`, `s_enroll_user`, `s_start_date`, `s_end_date`, `s_flag`) VALUES ('1', 'MT', 'tempid', '2016/01/22 13', '2016/01/23 13', '2');
+INSERT INTO `swmem`.`t_schedule` (`s_id`, `s_title`, `s_enroll_user`, `s_start_date`, `s_end_date`, `s_flag`) VALUES ('2', '대청소의 날', 'tempid2', '2016/01/22 09', '2016/01/22 12', '3');
+INSERT INTO `swmem`.`t_schedule` (`s_id`, `s_title`, `s_enroll_user`, `s_start_date`, `s_end_date`, `s_flag`) VALUES ('3', '총회', 'tempid3', '2016/01/30 10', '2016/02/01 9', '1');
+INSERT INTO `swmem`.`t_schedule` (`s_id`, `s_title`, `s_enroll_user`, `s_start_date`, `s_end_date`, `s_flag`) VALUES ('4', '영화 Day', 'tempid', '2016/02/10 10', '2016/02/10 12', '1');
+INSERT INTO `swmem`.`t_schedule` (`s_id`, `s_title`, `s_enroll_user`, `s_start_date`, `s_end_date`, `s_flag`) VALUES ('5', '신입회원 면접', 'master', '2016/01/25 10', '2016/01/26 18', '1');
+
