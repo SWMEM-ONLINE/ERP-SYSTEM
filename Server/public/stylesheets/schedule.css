@@ -7,6 +7,14 @@
      color:  #122359;
  }
 
+.datepicker{
+    margin-bottom: 15px;
+}
+.fc-time{
+    color: #111a23;
+    font-size: 13px;
+}
+
 input{
     text-align: center;
     width: 170px;

@@ -20,11 +20,7 @@ var prevEvent = null;
 loadSchedule(year,month);
 $('.datepicker').val(year+"년 "+ month+"월");
 $('#calendar').fullCalendar({
-    header: {
-        left :'',
-        right: 'month,agendaWeek'
-    },
-    lang: 'ko',
+    header: false,
     editable: false,
     eventLimit: true
 });
@@ -51,6 +47,8 @@ function loadSchedule(year, month){
 
     $.post("/schedule/getEvents", sendData ,function(res){
 
+
+        console.log(res);
         var event = res;
         if(prevEvent ==null){
             prevEvent = event;
@@ -63,7 +61,7 @@ function loadSchedule(year, month){
         $("#calendar").fullCalendar( 'addEventSource', event );
         $("#calendar").fullCalendar( 'gotoDate' , new Date(year,month-1,1) );
 
-        console.log(res);
+
 
     });
 

@@ -114,7 +114,7 @@ function getEvents(con,req,res){
             for(i=0;i<response.length; i++){
                 data = response[i];
                 console.log(data);
-                var event = new Event(data.s_title,data.s_start_date, data.s_end_date, data.s_flag);
+                var event = new Event(data.s_title,new Date(data.s_start_date.getTime() + 9 * 60 * 60 * 1000), new Date(data.s_end_date.getTime() + 9 * 60 * 60 * 1000), data.s_flag);
                 eventLists.push(event);
             }
 
