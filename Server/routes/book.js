@@ -46,6 +46,10 @@ router.post('/missingBook', util.ensureAuthenticated, function(req, res){
     book_handler.missingBook(con, req, res);
 });
 
+router.post('/borrowBook_QR', util.ensureAuthenticated, function(req, res){
+    book_handler.borrowBook_QR(con, req, res);
+});
+
 router.post('/mybook/borrowed', util.ensureAuthenticated, function(req, res){
     book_my_handler.loadBorrowedBook(con, req, res);
 });
@@ -141,5 +145,6 @@ router.post('/manage/loadbooklist', util.ensureAuthenticated, function(req, res)
 router.post('/manage/resetbookLocation', util.ensureAuthenticated, function(req, res){
     book_handler.resetbookLocation(con, req, res);
 });
+
 
 module.exports = router;

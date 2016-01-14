@@ -28,6 +28,7 @@ toastr.options = {
 
 // Datepicker 관련
 
+$('.datepicker').val(select_year+"년 "+ select_month+"월");
 
 $('#monthpicker').datepicker({
     format: "yyyy년 m월",

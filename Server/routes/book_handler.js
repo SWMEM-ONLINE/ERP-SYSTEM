@@ -116,12 +116,7 @@ function reserveBook(con, req, res){
     var query1 = 'select br_user from t_book_rental where br_user="' + req.session.passport.user.id+'" and br_book_id="' + req.body.book_id + '"UNION select bre_user from t_book_reserve where bre_user="' + req.session.passport.user.id + '" and bre_book_id="' + req.body.book_id + '"';
     var query2 = 'update t_book set b_reserved_cnt=b_reserved_cnt+1 where b_id="' + req.body.book_id + '";';
     query2 += 'insert into t_book_reserve SET bre_user="' + req.session.passport.user.id + '", bre_book_id=' + req.body.book_id + ', bre_myturn=' + (parseInt(req.body.reserve_cnt)+1) + ', bre_reserve_date="' + today + '"';
-    //var queryData = {
-    //    bre_user : req.session.passport.user.id,
-    //    bre_book_id : req.body.book_id,
-    //    bre_myturn : parseInt(req.body.reserve_cnt) + 1,
-    //    bre_reserve_date : today
-    //};
+
     con.query(query, function(err, response){
         if(response.length != 0){
             con.query(query1, function(err2, response2){
@@ -139,6 +134,31 @@ function reserveBook(con, req, res){
             });
         }else{
             res.send('failed_1');
+        }
+    });
+}
+
+function borrowBook_QR(con, req, res){
+    var query = 'select * from t_book where b_isbn="' + req.body.isbn + '" where b_state=0';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+        }else{
+            if(response.length === 0){
+                res.send('noOne');
+            }else{
+                var book_id = response[0].b_id;
+                var due_date = getDate(new Date(), 14);
+                var query1 = 'update t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + req.session.passport.user.name + '" where b_id="' + book_id + '";';
+                query1 += 'insert into t_book_rental SET br_user="' + req.session.passport.user.id + '", br_book_id=' + book_id + ', br_rental_date="' + getDate(new Date(), 0) + '"';
+                con.query(query1, function(err2, response2){
+                    if(err2){
+                        res.send('failed');
+                    }else{
+                        res.send('success');
+                    }
+                });
+            }
         }
     });
 }
@@ -258,6 +278,8 @@ function getDate(base, plusDate){
     return date;
 }
 
+
+exports.borrowBook_QR = borrowBook_QR;
 exports.resetbookLocation = resetbookLocation;
 exports.loadbooklist = loadbooklist;
 exports.buyComplete = buyComplete;

@@ -165,3 +165,12 @@ function clickEvent(datalist){
         $('div.modal').modal();
     });
 }
+
+function rentBookByQR(token) {
+    var isbn = token.split('-');
+    $.post("/book/borrowBook_QR", {isbn: isbn[2]}, function (data) {
+        if (data === 'failed')   toastr['error']('책 대여 실패');
+        else if (data === 'noOne')   toastr['error']('책이 존재하지 않습니다');
+        else     toastr['info']('책 대여 성공');
+    });
+}
