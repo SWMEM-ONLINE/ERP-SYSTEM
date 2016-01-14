@@ -1,6 +1,10 @@
-extends layout
-
+extends main_layout
+append head
+    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+    .wrapper
+        article.container
+            h3 잘못된 접근입니다
