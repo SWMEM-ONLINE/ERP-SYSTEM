@@ -136,23 +136,50 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
  */
 
 router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
+
     var id = req.body.id;
+    var uId = util.getUserId(req);
 
     var connection = DB_handler.connectDB();
-
-    var query = 'select * from t_vote_item where vi_pid = '+id+' ORDER BY vi_id';
+    var query = 'select vu_pid from t_vote_user where vu_voter = "'+uId+'" ORDER BY vu_id';
 
     connection.query(query, function(err,data){
         if (err) {
+            console.error(query);
             console.error(err);
             DB_handler.disconnectDB(connection);
             return res.json({status:'101'});
         }
-        else{
-            var rows = JSON.stringify(data);
-            return res.json(JSON.parse(rows));
-        }
+
+        query = 'select * from t_vote_item where vi_pid = '+id+' ORDER BY vi_id';
+
+        connection.query(query, function(err,data2){
+            if (err) {
+                console.error(query);
+                console.error(err);
+                DB_handler.disconnectDB(connection);
+                return res.json({status:'101'});
+            }
+            else{
+                for( var i=0 ; i<data2.length ; i++ ) {
+                    data2[i].uSelectedItem = false;
+
+                    for (var j = 0; j < data.length; j++ ) {
+                        if( data[j].vu_pid == data2[i].vi_id ){
+                            data2[i].uSelectedItem = true;
+                            break;
+                        }
+                    }
+                }
+
+                var rows = JSON.stringify(data2);
+                console.log(rows);
+                return res.json(JSON.parse(rows));
+            }
+        });
     });
+
+
 });
 
 
@@ -230,6 +257,75 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
     });
 });
 
+
+/**
+ * updateVote
+ * 투표 메소드
+ * @param voteId
+ * @param originItemIds
+ * @param itemIds
+ * @return result
+ */
+
+router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
+
+    var vId = req.body.voteId;
+    var iIds = req.body.itemIds;
+    var oIds = req.body.originItemIds;
+    var uId = util.getUserId(req);
+
+    var itemCnt = iIds.length;
+    var voteItems = new Array(iIds.length);
+
+    for( var i=0 ; i<itemCnt ; i++ ){
+        voteItems[i] = [0, iIds, uId];
+    }
+
+    var query = '';
+
+    for(var i=0 ; i<oIds.length ; i++){
+        query += 'delete from t_vote_user where vu_id = '+oIds[i]+';';
+        query += 'update t_vote set v_voted_cnt = v_voted_cnt-1 where v_id = '+vId+';';
+        query += 'update t_vote_item set vi_cnt = vi_cnt-1 where vi_id = '+oIds[j]+';';
+    }
+
+
+    var connection = DB_handler.connectDB();
+    connection.query(query, function(err,data) {
+
+        if (err) {
+            console.error(err);
+            DB_handler.disconnectDB(connection);
+            return res.json({status:'101'});
+        }
+
+        connection.query('insert into t_vote_user(vu_id, vu_pid, vu_voter) values ?', voteItems, function(err,data){
+            if (err) {
+                console.error(err);
+                DB_handler.disconnectDB(connection);
+                return res.json({status:'101'});
+            }
+
+            query = 'update t_vote set v_voted_cnt = v_voted_cnt+1 where v_id = '+vId+';';
+
+            for( var j=0 ; j<itemCnt ; j++ ){
+                query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = '+iIds[j]+';';
+            }
+
+            connection.query(query, function(err,data2){
+                if (err) {
+                    console.error(err);
+                    DB_handler.disconnectDB(connection);
+                    return res.json({status:'101'});
+                }
+
+                return res.json({status:'0'});
+            });
+        });
+
+    });
+
+});
 
 /**
  * getVoteUserList
