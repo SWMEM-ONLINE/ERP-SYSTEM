@@ -22,7 +22,7 @@ toastr.options = {
     'showEasing': 'swing',
     'hideEasing': 'linear',
     'showMethod': 'fadeIn',
-    'hideMethod': 'fadeOut'
+    'hideMethod': 'fadeOut',
 };
 
 
@@ -87,7 +87,7 @@ deleteButton();
 function generateHtml(datalist){
     var htmlString = '';
     if(datalist.length === 0){
-        htmlString += '<tr><th>';
+        htmlString += '<tr><th colspan="4">';
         htmlString += '이 달의 일정이 없습니다';
         htmlString += '</th></tr>';
     }
