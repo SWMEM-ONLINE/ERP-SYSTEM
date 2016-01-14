@@ -1,0 +1,13 @@
+input{
+    text-align: center;
+    width: 100%;
+    border:1px solid #cccccc;
+    height: 36px;
+    border-radius: 4px;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+input.datepicker{
+    width: 170px;
+}

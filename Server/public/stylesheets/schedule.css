@@ -1,19 +1,16 @@
-
-body {
-    padding: 10px;
-    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-    font-size: 14px;
-}
-
 #calendar {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-h2{
-    font-size:25px;
+    width:100%;
+    margin-bottom:20px;
 }
 
 .fc-more{
-    color:  #122359;
+     color:  #122359;
+ }
+
+input{
+    text-align: center;
+    width: 170px;
+    border:1px solid #cccccc;
+    height: 33px;
+    border-radius: 4px;
 }

@@ -8,7 +8,7 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
-   link(rel='stylesheet', type='text/css', href='../stylesheets/hardware_list.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/schedule_manage.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datetimepicker.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
@@ -18,40 +18,30 @@ block content
          h3 스케줄 관리
          hr
          .content
-            input.datepicker#monthpicker(type='text', placeholder='월 선택' readonly='readonly' style="text-align:center")
+            input.datepicker#monthpicker(type='text', placeholder='월 선택' readonly='readonly')
             hr
             table.table.table-hover
                thead
                   tr
-                     th(style="text-align:center") 시작일
-                     th(style="text-align:center") 종료일
-                     th(style="text-align:center") 일정명
-                     th(style="text-align:center") 등록자
+                     th 시작일
+                     th 종료일
+                     th 일정명
+                     th 등록자
                tbody#scheduleList
             button#addSchedule.btn(type='button') 스케줄 등록
    .modal.fade
       .modal-dialog
          .modal-content
             .modal-header
-               h4.modal-title(style="text-align:center")
+               h4.modal-title
             .modal-body
-               table.table
-                  thead
-                     tr
-                        th(style="text-align:center; width:45%") 일정명
-                        th(style="text-align:center; width:55%") 기간
-                  tbody#scheduleContent
-                     tr
-                        td
-                           input.form-control#title(type='text', placeholder='일정명', style="text-align:center")
-                        td
-                           .input-group
-                              input.form-control.datetimepicker#startTime(type='text', placeholder="시작일 선택", style="text-align:center")
-                              p ~
-                              input.form-control.datetimepicker#endTime(type='text', placeholder="종료일 선택", style="text-align:center")
+               #scheduleContent
+                  input#title(type='text', placeholder='일정명')
+                  input.datetimepicker#startTime(type='text', placeholder="시작일 선택")
+                  input.datetimepicker#endTime(type='text', placeholder="종료일 선택")
             .modal-footer
                button#enroll.btn(type='button') 등록
-               button#delete.btn.btn-danger(type='button') 삭제
+               button#delete.btn(type='button') 삭제
                button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='../javascripts/moment.min.js')
