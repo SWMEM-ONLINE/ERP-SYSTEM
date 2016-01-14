@@ -32,7 +32,8 @@ $(document).ready(function() {
     $('#calendar').fullCalendar({
         dayClick: day_click,
         defaultDate : currentDate,
-        header: false
+        header: false,
+        height: 720
     })
 
     $('.datepicker').val(year+"년 "+ month+"월");

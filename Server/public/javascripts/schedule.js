@@ -22,7 +22,8 @@ $('.datepicker').val(year+"년 "+ month+"월");
 $('#calendar').fullCalendar({
     header: false,
     editable: false,
-    eventLimit: true
+    eventLimit: true,
+    height: 720
 });
 
 $('.datepicker').datepicker({
