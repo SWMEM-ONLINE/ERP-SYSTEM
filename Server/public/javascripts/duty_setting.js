@@ -24,7 +24,7 @@ var currentDate = new Date();
 
 var selected_days = [];
 var duty_count = null;
-var bad_duty_count = null;
+var bad_duty_count = 0;
 var year = currentDate.getFullYear();
 var month = currentDate.getMonth()+1;
 $(document).ready(function() {
@@ -34,6 +34,9 @@ $(document).ready(function() {
         defaultDate : currentDate,
         header: false
     })
+
+    $('.datepicker').val(year+"년 "+ month+"월");
+
 
 });
 
@@ -73,6 +76,7 @@ $("#setting").click(function (){
     sendData.month = month;
     console.log(sendData);
 
+    toastr['warning']('잠시 기다려주십시오.');
 
     $.post("/duty/loadAllDuty",sendData, function(res){
         if(res=="no data"){
@@ -116,7 +120,7 @@ $('#duty_count li a').click(function(){
 });
 
 $('#bad_duty_count li a').click(function(){
-    bad_duty_count = $(this).parent().index()+1;
+    bad_duty_count = $(this).parent().index();
     $('#bad_duty_button').html(bad_duty_count+"");
     isSelected();
 });

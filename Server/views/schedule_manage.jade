@@ -1,7 +1,8 @@
 //
-   Created by KIMDONGWON on 2016-01-08.
+    by jung-inchul on 2015. 12. 7..
 
 extends main_layout
+
 append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
@@ -9,12 +10,42 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/schedule_manage.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datetimepicker.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap-datepicker3.css')
 block content
    .wrapper
       article.container
          h3 스케줄 관리
          hr
          .content
+            input.datepicker#monthpicker(type='text', placeholder='월 선택' readonly='readonly')
+            hr
+            table.table.table-hover
+               thead
+                  tr
+                     th 시작일
+                     th 종료일
+                     th 일정명
+                     th 등록자
+               tbody#scheduleList
+            button#addSchedule.btn(type='button') 스케줄 등록
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title
+            .modal-body
+               #scheduleContent
+                  input#title(type='text', placeholder='일정명')
+                  input.datetimepicker#startTime(type='text', placeholder="시작일 선택")
+                  input.datetimepicker#endTime(type='text', placeholder="종료일 선택")
+            .modal-footer
+               button#enroll.btn(type='button') 등록
+               button#delete.btn(type='button') 삭제
+               button.btn(type='button', data-dismiss='modal') 닫기
 append script
+   script(src='../javascripts/moment.min.js')
+   script(src='../javascripts/bootstrap-datetimepicker.js')
+   script(src='../javascripts/bootstrap-datepicker.js')
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/schedule_manage.js')

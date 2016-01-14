@@ -130,6 +130,7 @@ function clickEvent(datalist){
                 $('div.modal').modal('hide');
             }
         });
+
         $('button#reserve').unbind().click(function(){                  // Reserve button to reserve book.
             $.post("/book/reserveBook", {book_id : datalist[index].b_id, reserve_cnt: datalist[index].b_reserved_cnt}, function (data) {
                 $('div.modal').modal('hide');
@@ -143,6 +144,7 @@ function clickEvent(datalist){
                 init();
             });
         });
+
         $('button#missing').unbind().click(function(){                  // Missing button to enroll missingbook list.
             $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (data) {
                 if(data === 'success'){
@@ -156,5 +158,21 @@ function clickEvent(datalist){
             $('div.modal').modal('hide');
         });
         $('div.modal').modal();
+    });
+}
+
+
+
+/**
+ *
+ * @param token
+ * ssmis-bookrent-ISBN-BOOKNUMBER
+ */
+function rentBookByQR(token){
+    var isbn = token.split('-');
+    $.post("/book/borrowBook_QR", {isbn : isbn[2]}, function (data) {
+        if(data === 'failed')   toastr['error']('책 대여 실패');
+        else if(data === 'noOne')   toastr['error']('책이 존재하지 않습니다');
+        else     toastr['info']('책 대여 성공');
     });
 }

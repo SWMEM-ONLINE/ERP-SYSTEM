@@ -159,18 +159,19 @@ function approveButton(datalist, flag){           // 승인 버튼
                     rentalIdlist += datalist[index].hw_rental_id + ',';
                 }
             });
-            approveIdlist = approveIdlist.substring(0, approveIdlist.length -1);
             hardwareIdlist = hardwareIdlist.substring(0, hardwareIdlist.length -1);
             rentalIdlist = rentalIdlist.substring(0, rentalIdlist.length -1);
-            userIdlist = userIdlist.substring(0, userIdlist.length -1);
         }else{
             $('#tableData tr').each(function(index){
                 if($(this).hasClass('warning')){
                     approveIdlist += datalist[index].ha_id + ',';
+                    userIdlist += datalist[index].hw_user + ',';
                 }
             });
-            approveIdlist = approveIdlist.substring(0, approveIdlist.length -1);
         }
+        approveIdlist = approveIdlist.substring(0, approveIdlist.length -1);
+        userIdlist = userIdlist.substring(0, userIdlist.length -1);
+
         $.post('/hardware/manage/approveRequest', {type: flag, approveIdlist: approveIdlist, hardwareIdlist: hardwareIdlist, userIdlist: userIdlist, rentalIdlist: rentalIdlist}, function(response){
             if(response === 'success'){
                 toastr['success']('승인처리 완료');
@@ -186,6 +187,7 @@ function approveButton(datalist, flag){           // 승인 버튼
 function rejectButton(datalist, flag){            // 거절 버튼
     $('button#reject').unbind().click(function(){
         var rejectlist = '';
+        var userIdlist = '';
 
         if($('#tableData tr.warning').length === 0){
             toastr['error']('항목이 선택되지 않았습니다');
@@ -194,10 +196,13 @@ function rejectButton(datalist, flag){            // 거절 버튼
         $('#tableData tr').each(function(index){
             if($(this).hasClass('warning')){
                 rejectlist += datalist[index].hw_id + ',';
+                userIdlist += datalist[index].hw_iser + ',';
             }
         });
         rejectlist = rejectlist.substring(0, rejectlist.length-1);
-        $.post('/hardware/manage/rejectRequest', {type: flag, rejectlist: rejectlist}, function(response){
+        userIdlist = userIdlist.substring(0, userIdlist.length-1);
+
+        $.post('/hardware/manage/rejectRequest', {type: flag, rejectlist: rejectlist, userIdlist: userIdlist}, function(response){
             if(response === 'success'){
                 toastr['success']('미승인처리 완료');
             }

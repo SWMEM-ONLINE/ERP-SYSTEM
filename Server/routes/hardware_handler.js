@@ -21,19 +21,24 @@ function borrowHardware(con, req, res){
                     res.send('failed');
                     throw err2
                 }
-                res.send('success');
+                var query2 = 'select u_id from t_user where u_state = 1';
+                con.query(query2, function(err2, response2){
+
+                    var manager_list = [];
+                    for(var i = 0; i < response2.length; i++){
+                        manager_list.push(response2[i].u_id);
+                    }
+
+                    util.sendList(manager_list, '하드웨어 대여신청', util.pushContents.h_requestBorrow, function(err_push, data){
+                        if(err_push){
+                            console.log(err_push);
+                        }else{
+                            console.log(data);
+                        }
+                    });
+                    res.send('success');
+                });
             });
-
-            console.log(util.pushContents.h_requestBorrow);
-            //util.send(response[0].u_id, '하드웨어 대여신청', util.pushContents.h_requestBorrow, function(err_push, data){
-            //    if(err_push){
-            //        console.log(err_push);
-            //    }else{
-            //        console.log(data);
-            //    }
-            //});
-
-
         }else{                                          // nothing there.
             res.send('failed');
         }
@@ -64,15 +69,24 @@ function turnInHardware(con, req, res){
                     res.send('failed_2');
                     throw err2
                 }
-                console.log(util.pushContents.h_requestTurnin);
-                //util.send(response[0].u_id, '하드웨어 반납신청', util.pushContents.h_requestTurnin, function(err_push, data){
-                //    if(err_push){
-                //        console.log(err_push);
-                //    }else{
-                //        console.log(data);
-                //    }
-                //});
-                res.send('success');
+
+                var query2 = 'select u_id from t_user where u_state = 1';
+                con.query(query2, function(err3, response3){
+
+                    var manager_list = [];
+                    for(var i = 0; i < response3.length; i++){
+                        manager_list.push(response3[i].u_id);
+                    }
+
+                    util.sendList(manager_list, '하드웨어 반납신청', util.pushContents.h_requestTurnin, function(err_push, data){
+                        if(err_push){
+                            console.log(err_push);
+                        }else{
+                            console.log(data);
+                        }
+                    });
+                    res.send('success');
+                });
             });
         }else{
             res.send('failed_1');
@@ -97,15 +111,24 @@ function postponeHardware(con, req, res){
                     res.send('failed_2');
                     throw err
                 }
-                console.log(util.pushContents.h_requestPostpone);
-                //util.send(response[0].u_id, '하드웨어 연장신청', util.pushContents.h_requestPostpone, function(err_push, data){
-                //    if(err_push){
-                //        console.log(err_push);
-                //    }else{
-                //        console.log(data);
-                //    }
-                //});
-                res.send('success');
+
+                var query2 = 'select u_id from t_user where u_state = 1';
+                con.query(query2, function(err3, response3){
+
+                    var manager_list = [];
+                    for(var i = 0; i < response3.length; i++){
+                        manager_list.push(response3[i].u_id);
+                    }
+
+                    util.sendList(manager_list, '하드웨어 연장신청', util.pushContents.h_requestPostpone, function(err_push, data){
+                        if(err_push){
+                            console.log(err_push);
+                        }else{
+                            console.log(data);
+                        }
+                    });
+                    res.send('success');
+                });
             });
         }else{
             res.send('failed_1');
@@ -231,7 +254,6 @@ function loadApply(con, req, res){
 }
 
 function approveRequest(con, req, res){
-    console.log('Approve');
     if(req.body.type != 3){
         var today = getDate(new Date(), 0);
         var due_date = getDate(new Date(), 30);
@@ -259,6 +281,13 @@ function approveRequest(con, req, res){
                         res.send('failed');
                         throw err
                     }
+                    util.sendList(userIdlist, '하드웨어 대여승인', util.pushContents.h_approveBorrow, function(err_push, data){
+                        if(err_push){
+                            console.log(err_push);
+                        }else{
+                            console.log(data);
+                        }
+                    });
                     res.send('success');
                 });
                 break;
@@ -273,6 +302,13 @@ function approveRequest(con, req, res){
                         res.send('failed');
                         throw err
                     }
+                    util.sendList(userIdlist, '하드웨어 연장승인', util.pushContents.h_approvePostpone, function(err_push, data){
+                        if(err_push){
+                            console.log(err_push);
+                        }else{
+                            console.log(data);
+                        }
+                    });
                     res.send('success');
                 });
                 break;
@@ -287,6 +323,14 @@ function approveRequest(con, req, res){
                         if(diff > 0) {
                             query_turnin2 = 'update t_user set u_bad_duty_point=u_bad_duty_point+' + diff + ' where u_id="' + req.session.passport.user.id + '";';
                             query_turnin2 += 'insert into t_duty_point_history SET date="' + today + '", receive_user="' + response[0][i].hr_user + '", send_user="' + response[1][0].u_id + '", mode=2, point=' + diff + ', reason="하드웨어 반납일 미준수";';
+
+                            util.send(response[0][i].hr_user, '하드웨어 반납일 미준수', util.pushContents.h_turnin, function(err_push, data){
+                                if(err_push){
+                                    console.log(err_push);
+                                }else{
+                                    console.log(data);
+                                }
+                            });
                         }
                         query_turnin2 += 'insert into t_hardware_return set ht_user="' + response[0][i].hr_user + '", ht_hardware_id="' + response[0][i].hr_hardware_id + '", ht_return_date="' + today + '", ht_rental_date="' + response[0][i].hr_rental_date + '";';
                     }
@@ -298,6 +342,13 @@ function approveRequest(con, req, res){
                             res.send('failed');
                             throw err2
                         }
+                        util.sendList(userIdlist, '하드웨어 반납승인', util.pushContents.h_approveTurnin, function(err_push, data){
+                            if(err_push){
+                                console.log(err_push);
+                            }else{
+                                console.log(data);
+                            }
+                        });
                         res.send('success');
                     });
                 });
@@ -305,19 +356,30 @@ function approveRequest(con, req, res){
             default:        // # 새로 신청
         }
     }else{
+        var userIdlist = (req.body.userIdlist).split(',');
         var query_improveApply = 'update t_hardware_apply set ha_result=1 where ha_id IN (' + req.body.approveIdlist + ')';
         con.query(query_improveApply, function(err, response){
             if(err){
                 res.send('failed');
                 throw err
             }
+            util.sendList(userIdlist, '하드웨어 구매승인', util.pushContents.h_approveApply, function(err_push, data){
+                if(err_push){
+                    console.log(err_push);
+                }else{
+                    console.log(data);
+                }
+            });
             res.send('success');
         });
     }
 }
 
 function rejectRequest(con, req, res){
-    console.log('Reject');
+    var temp = req.body.userIdlist;
+    var userIdlist = temp.split(',');
+
+
     if(req.body.type != 3){
         var query = 'update t_hardware_waiting set hw_result=2 where hw_id IN (';
         query += req.body.rejectlist + ')';
@@ -326,6 +388,30 @@ function rejectRequest(con, req, res){
                 res.send('failed');
                 throw err;
             }
+
+            var title = '';
+            var content = '';
+
+            switch(parseInt(req.body.type)){
+                case 0:         // 대여
+                    title = '하드웨어 대여 거절';
+                    content = util.pushContents.h_rejectBorrow;
+                    break;
+                case 1:         // 연장
+                    title = '하드웨어 연장 거절';
+                    content = util.pushContents.h_rejectPostpone;
+                    break;
+                default :       // 반납
+                    title = '하드웨어 반납 거절';
+                    content = util.pushContents.h_rejectTurnin;
+            }
+            util.sendList(userIdlist, title, content, function(err_push, data){
+                if(err_push){
+                    console.log(err_push);
+                }else{
+                    console.log(data);
+                }
+            });
             res.send('success');
         });
     }else{
@@ -335,6 +421,13 @@ function rejectRequest(con, req, res){
                 res.send('failed');
                 throw err
             }
+            util.sendList(userIdlist, '하드웨어 구매거절', util.pushContents.h_rejectApply, function(err_push, data){
+                if(err_push){
+                    console.log(err_push);
+                }else{
+                    console.log(data);
+                }
+            });
             res.send('success');
         });
     }

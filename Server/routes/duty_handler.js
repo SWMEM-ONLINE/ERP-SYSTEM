@@ -234,6 +234,7 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
     /*
      memberList2를 활용해 bad_duty_list를 만든다
      */
+
     while (true) {
         var count = 0;
         for (i = 0; i < memberList2.length; i++) {
@@ -255,6 +256,7 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
             break;
         }
     }
+    console.log("make bad_duty_list");
 
     /*
         벌당직을 생성하는 부분
@@ -280,12 +282,13 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
 
         bad_duty_count--;
     }
+    console.log("벌당직 리스트 생성");
 
     /*
         일반당직을 생성하는 부분
      */
     while(true){
-
+       // console.log("와일문안");
         for(i =0 ; i < dutyList.length; i++){
 
             duty = dutyList[i];
@@ -448,6 +451,10 @@ function autoMakeDuty(con,req,res){
                      */
                     memberList.sort(compare);
                     memberList2.sort(compare);
+
+
+                    console.log(memberList);
+                    console.log(memberList2);
 
                     dutyList = generateDuty(memberList,memberList2,dutyList,duty_count,bad_duty_count);
 
@@ -1439,7 +1446,7 @@ function getMemberList(con,req,res){
 
     var query = "select u_id, u_name, u_sex, u_birth, u_phone, u_email, u_state, u_period," +
         " u_branch, u_device , u_token, u_mileage, u_good_duty_point, u_bad_duty_point," +
-        " u_manager_bad_duty_point, u_photo_url, u_register_date from t_user";
+        " u_manager_bad_duty_point, u_photo_url, u_register_date from t_user where u_state > 1";
 
     console.log(query);
     con.query(query, function(err, response){

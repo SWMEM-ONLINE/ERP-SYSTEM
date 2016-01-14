@@ -1,0 +1,16 @@
+#calendar {
+    width:100%;
+    margin-bottom:20px;
+}
+
+.fc-more{
+     color:  #122359;
+ }
+
+input{
+    text-align: center;
+    width: 170px;
+    border:1px solid #cccccc;
+    height: 33px;
+    border-radius: 4px;
+}

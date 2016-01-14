@@ -82,6 +82,7 @@ function personDuty(year, month){
 
     $.post('/duty/loadMyDuty', sendData , function(res){
         generateHtml(res);
+        $('.datepicker').val(year+"년 "+ month+"월");
     });
 }
 
@@ -99,6 +100,8 @@ function allDuty(year, month){
         }
 
         $("#calendar").fullCalendar( 'addEventSource', event );
+
+        $('.datepicker').val(year+"년 "+ month+"월");
 
     });
 

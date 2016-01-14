@@ -25,6 +25,8 @@ CREATE TABLE t_user ( u_id VARCHAR(20) NOT NULL primary key,
   u_fee boolean,
   u_hardware boolean,
   u_book boolean,
+  u_push_flag int default 1,
+  u_mail_flag int default 1,
   u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
 DROP TABLE IF EXISTS `t_book`;
@@ -332,5 +334,13 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
       lc_b int
     );
 
-
+    CREATE TABLE t_schedule (
+        s_id int NOT NULL auto_increment primary key,
+        s_title VARCHAR(50) NOT NULL,
+        s_enroll_user VARCHAR(20),
+        s_start_date datetime NOT NULL,
+        s_end_date datetime NOT NULL,
+        s_flag int NOT NULL,
+        FOREIGN KEY(s_enroll_user) REFERENCES t_user(u_id)
+    );
 

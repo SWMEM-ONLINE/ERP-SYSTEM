@@ -1,20 +1,26 @@
-//
-   Created by KIMDONGWON on 2016-01-08.
-
 extends main_layout
 append head
-   link(rel='stylesheet', type='text/css', href='./stylesheets/bootstrap.min.css')
-   link(rel='stylesheet', type='text/css', href='./stylesheets/flat-ui.css')
-   link(rel='stylesheet', type='text/css', href='./stylesheets/animate.css')
-   link(rel='stylesheet', type='text/css', href='./stylesheets/main_layout.css')
-   link(rel='stylesheet', type='text/css', href='./stylesheets/schedule.css')
-   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+    link(rel='stylesheet', type='text/css', href='./stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='./stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='./stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='./stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='./stylesheets/fullcalendar.css')
+    link(rel='stylesheet', type='text/css', href='./stylesheets/schedule.css')
+    link(rel='stylesheet', type='text/css', href='./stylesheets/bootstrap-datepicker3.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
-   .wrapper
-      article.container
-         h3 스케줄
-         hr
-         .content
+    .wrapper
+        article.container
+            h3 스케줄
+            hr
+            .content
+                input.datepicker(type='text', placeholder='월 선택' readonly='readonly')
+                #calendar
+
 append script
-   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-   script(src='./javascripts/schedule.js')
+    script(src='../javascripts/bootstrap-datepicker.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../javascripts/moment.min.js')
+    script(src='../javascripts/fullcalendar.js')
+    script(src='../javascripts/lang/ko.js')
+    script(src='./javascripts/schedule.js')

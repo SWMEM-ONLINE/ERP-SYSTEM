@@ -26,6 +26,8 @@ $('.datepicker').on('changeDate',function(event){
 
     $.post('/duty/loadMyPointHistory', sendData , function(res){
         generateHtml(res);
+        $('.datepicker').val(year+"년 "+ month+"월");
+
     });
 
 });
@@ -45,6 +47,7 @@ $.post('/duty/getUser', function(res){
     $('#foot').html(htmlString);
     $('#foot2').html(htmlString);
 
+
 });
 
 var goodDutyPoint = 0;
@@ -59,6 +62,8 @@ var sendData ={
 
 $.post('/duty/loadMyPointHistory', sendData , function(res){
      generateHtml(res);
+    $('.datepicker').val(sendData.year+"년 "+ sendData.month+"월");
+
 });
 
 
@@ -123,5 +128,6 @@ function generateHtml(response){
 
 
     $('#history').html(htmlString);
+
 
 }
