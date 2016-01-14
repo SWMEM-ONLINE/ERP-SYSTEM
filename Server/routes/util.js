@@ -71,6 +71,7 @@ function send(id, title, content , callback){
 
             }
             var sender = new gcm.Sender(server_api_key);
+            console.log(token);
 
             // 메세지 객체 , 토큰리스트 , 시도 횟수 , 시도 완료후 콘솔로 찍어줌
             sender.send(message, tokenLists, 5, function (err, result) {
@@ -252,10 +253,27 @@ function sendMail(ids, subject, content){
 
 
 var pushContents = {
-    'b_borrow' : '예약하신 책이 반납되어 자동으로 대여처리 되었습니다. 자세한 사항은 확인하세요',
-    'h_requestBorrow' : '하드웨어 대여 신청이 들어왔습니다',
-    'h_requestPostpone' : '하드웨어 연장 신청이 들어왔습니다',
-    'h_requestTurnin' : '하드웨어 반납 신청이 들어왔습니다'
+    b_borrow : '예약하신 책이 반납되어 자동으로 대여처리 되었습니다. 자세한 사항은 확인하세요',
+    b_turnin : '책 반납일을 미준수하여 벌당직이 부여됩니다',
+
+
+    h_requestBorrow : '하드웨어 대여 신청이 들어왔습니다',
+    h_requestPostpone : '하드웨어 연장 신청이 들어왔습니다',
+    h_requestTurnin : '하드웨어 반납 신청이 들어왔습니다',
+
+
+    h_approveBorrow : '하드웨어 대여신청이 승인되었습니다',
+    h_approvePostpone : '하드웨어 연장신청이 승인되었습니다',
+    h_approveTurnin : '하드웨어 반납신청이 승인되었습니다',
+    h_approveApply : '하드웨어 구매신청이 승인되었습니다',
+
+
+    h_rejectBorrow : '하드웨어 대여신청이 거절되었습니다',
+    h_rejectPostpone : '하드웨어 연장신청이 거절되었습니다',
+    h_rejectTurnin : '하드웨어 반납신청이 거절되었습니다',
+    h_rejectApply : '하드웨어 구매신청이 거절되었습니다',
+
+    h_turnin : '하드웨어 반납일을 미준수하여 벌당직이 부여됩니다'
 };
 
 

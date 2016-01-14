@@ -88,7 +88,6 @@ function clickEvent(datalist){
                         loadHardwarelist();
                     });        // borrow hardware
                     $('div.modal').modal('hide');
-                    //window.location.reload();
                 }
             });
             $('div.modal').modal();

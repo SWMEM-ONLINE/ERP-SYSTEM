@@ -25,6 +25,8 @@ CREATE TABLE t_user ( u_id VARCHAR(20) NOT NULL primary key,
   u_fee boolean,
   u_hardware boolean,
   u_book boolean,
+  u_push_flag int default 1,
+  u_mail_flag int default 1,
   u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
 DROP TABLE IF EXISTS `t_book`;

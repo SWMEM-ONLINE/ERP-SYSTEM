@@ -39,7 +39,15 @@ function turninBook(con, req, res){
         var due_date = new Date(req.body.due_date);
         var t = new Date(today);
         var diff = (t.getTime() - due_date.getTime()) / (1000 * 60 * 60 * 24);
+
         if(diff > 0){
+            util.send(req.session.passport.user.id, '책 반납일 미준수', util.pushContents.b_turnin, function(err, data){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log(data);
+                }
+            });
             var query_imposeDuty = 'update t_user set u_bad_duty_point=u_bad_duty_point+' + diff + ' where u_id="' + req.session.passport.user.id + '";';
             query_imposeDuty += 'insert into t_duty_point_history SET date="' + today + '", receive_user="' + req.session.passport.user.id + '", send_user="' + response[3][0].u_id + '", mode=1, point=' + diff + ', reason="책 반납일 미준수"';
             con.query(query_imposeDuty, function(err2, response2){
@@ -127,16 +135,13 @@ function push2Subscriber(con, userId, book_id){
     var due_date = getDate(new Date(), 14);
     var query1 = 'select * FROM t_user a INNER JOIN t_book_reserve b ON a.u_id=b.bre_user where b.bre_book_id="' + book_id + '" and b.bre_myturn=1';
     con.query(query1, function(err, response){
-
-        console.log(util.pushContents.b_borrow);
-        //util.send(response[0].u_id, '대여 알림', util.pushContents.book_borrow, function(err_push, data){
-        //    if(err_push){
-        //        console.log(err_push);
-        //    }else{
-        //        console.log(data);
-        //    }
-        //});
-
+        util.send(response[0].u_id, '대여 알림', util.pushContents.b_borrow, function(err_push, data){
+            if(err_push){
+                console.log(err_push);
+            }else{
+                console.log(data);
+            }
+        });
         var query2 = 'update t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + response[0].u_name + '", b_reserved_cnt=b_reserved_cnt-1 where b_id="' + book_id + '"';
         con.query(query2);
         var query3 = 'insert into t_book_rental SET ?';
