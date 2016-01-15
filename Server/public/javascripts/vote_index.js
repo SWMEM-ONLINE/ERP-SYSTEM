@@ -231,31 +231,36 @@ $('#resave').click(function(){
     $('input:checked').map(function(){
         checkedCnt++;
     });
-    var type = document.getElementById('voteModal').getAttribute('type');
-    var send = {
-        voteId:id,
-        itemIds:itemid,
-        originItemIds:origin,
-        itemCnt:itemCnt,
-        checkedCnt:checkedCnt,
-        voteType:type
-    };
-    console.log(origin);
-    $.ajax({
-        type:'post',
-        url:'/vote/updateVote',
-        data:JSON.stringify(send),
-        contentType:'application/json',
-        success:function(response) {
-            var type = document.getElementById('voteModal').getAttribute('type');
-            var total = document.getElementById('voteModal').getAttribute('total');
-            $('label.input-label').addClass('hidden');
-            $('#revote').removeClass('hidden');
-            $('#resave').addClass('hidden');
-            refresh(id,total,type);
-            toastr['success']('처리완료');
-        }
-    });
+    if(checkedCnt > 0) {
+        var type = document.getElementById('voteModal').getAttribute('type');
+        var send = {
+            voteId: id,
+            itemIds: itemid,
+            originItemIds: origin,
+            itemCnt: itemCnt,
+            checkedCnt: checkedCnt,
+            voteType: type
+        };
+        console.log(origin);
+        $.ajax({
+            type: 'post',
+            url: '/vote/updateVote',
+            data: JSON.stringify(send),
+            contentType: 'application/json',
+            success: function (response) {
+                var type = document.getElementById('voteModal').getAttribute('type');
+                var total = document.getElementById('voteModal').getAttribute('total');
+                $('label.input-label').addClass('hidden');
+                $('#revote').removeClass('hidden');
+                $('#resave').addClass('hidden');
+                refresh(id, total, type);
+                toastr['success']('처리완료');
+            }
+        });
+    }
+    else{
+        toastr['info']('선택하세요');
+    }
 });
 
 $('#vote').click(function(){
