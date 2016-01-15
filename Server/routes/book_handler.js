@@ -139,7 +139,7 @@ function reserveBook(con, req, res){
 }
 
 function borrowBook_QR(con, req, res){
-    var query = 'select * from t_book where b_isbn="' + req.body.isbn + '" where b_state=0';
+    var query = 'select * from t_book where b_isbn="' + req.body.isbn + '" and b_state=0';
     console.log(query);
     con.query(query, function(err, response){
         console.log(response);
