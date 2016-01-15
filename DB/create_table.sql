@@ -25,8 +25,8 @@ CREATE TABLE t_user ( u_id VARCHAR(20) NOT NULL primary key,
   u_fee boolean,
   u_hardware boolean,
   u_book boolean,
-  u_push_flag int default 1,
-  u_mail_flag int default 1,
+  u_push_flag boolean,
+  u_mail_flag boolean,
   u_register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
 DROP TABLE IF EXISTS `t_book`;
@@ -344,3 +344,28 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
         FOREIGN KEY(s_enroll_user) REFERENCES t_user(u_id)
     );
 
+  CREATE TABLE t_vote (
+    v_id int NOT NULL auto_increment primary key,
+    v_title VARCHAR(200),
+    v_content VARCHAR(1000),
+    v_state int,
+    v_type int,
+    v_join_cnt int,
+    v_voted_cnt int,
+    v_writer VARCHAR(20),
+    v_write_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(v_writer) REFERENCES t_user(u_id));
+
+CREATE TABLE t_vote_item (
+    vi_id int NOT NULL auto_increment primary key,
+    vi_pid int,
+    vi_title VARCHAR(200),
+    vi_cnt int,
+    FOREIGN KEY(vi_pid) REFERENCES t_vote(v_id));
+
+CREATE TABLE t_vote_user (
+    vu_id int NOT NULL auto_increment primary key,
+    vu_pid int,
+    vu_voter VARCHAR(20),
+    FOREIGN KEY(vu_pid) REFERENCES t_vote_item(vi_id),
+    FOREIGN KEY(vu_voter) REFERENCES t_user(u_id));

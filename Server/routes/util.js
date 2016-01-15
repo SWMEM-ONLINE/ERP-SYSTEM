@@ -307,9 +307,6 @@ function checkAuth(req) {
         case '/manage/loadnowHistory':
         case '/manage/loadinArrears':
         case '/manage/loadmissingBook':                                  //도서 관리
-            if(grade <= 2 || grade == 4) //운영자, 회장, 자재부장
-                result = true;
-            break;
         case '/manage/item':
         case '/manage/loadapplylist':
         case '/manage/loadnowHistory':                                   //하드웨어 관리
@@ -321,34 +318,19 @@ function checkAuth(req) {
         case '/manage':                                             //회비 관리
             if(grade <= 3) //운영자, 회장, 총무
                 result = true;
-            break;
+            break
+        case '/server/manage':                                     //서버신청 관리
         case '/getApplyList/2':                                     //서버신청 관리
             if(grade <= 2 || grade == 8) //운영자, 회장, 네트워크장
                 result = true;
             break;
+        case '/room/manage':                                     //프로젝트실신청 관리
         case '/getApplyList/1':                                     //프로젝트실신청 관리
             if(grade <= 2 || grade == 6) //운영자, 회장, 세미나장
                 result = true;
             break;
+        case '/equipment/manage':                                     //비품신청 관리
         case '/getApplyList/3':                                     //비품신청 관리
-            if(grade <= 2 || grade == 5) //운영자, 회장, 생활장
-                result = true;
-            break;
-        case '/qnalist':                                            //문의 관리
-            if(grade <= 2) //운영자, 회장
-                result = true;
-            break;
-        case '/finished':                                           //수료회원 목록
-        case '/add':                                                //상벌당직 추가
-        case '/modify':                                             //상벌당직 수정
-        case '/getMemberList':
-        case '/addPoint':
-        case '/getAddPoint':
-        case '/modifyPointHistoty':
-        case '/removePointHistory':
-            if(grade < 10) //운영자, 자치회
-                result = true;
-            break;
         case '/setting':                                             //당직 관리
         case '/changeSetting':
         case '/checkListSetting':
@@ -363,6 +345,25 @@ function checkAuth(req) {
         case '/autoMakeDuty':
         case '/showChangeDutyHistroryAll':
             if(grade <= 2 || grade == 5) //운영자, 회장, 생활장
+                result = true;
+            break;
+        case '/qnalist':                                            //문의 관리
+            if(grade <= 2) //운영자, 회장
+                result = true;
+            break;
+        case '/sManage':                                            //스케줄 관리
+        case '/finished':                                           //수료회원 목록
+        case '/add':                                                //상벌당직 추가
+        case '/modify':                                             //상벌당직 수정
+        case '/getMemberList':
+        case '/addPoint':
+        case '/getAddPoint':
+        case '/modifyPointHistoty':
+        case '/removePointHistory':
+        case '/vManage':                                            //설문 관리
+        case '/createNewVote':                                      //설문 추가
+        case '/deleteVote':                                         //설문 삭제
+            if(grade < 10) //운영자, 자치회
                 result = true;
             break;
         default:
@@ -432,6 +433,26 @@ function getCurDate(){
     return datetime;
 }
 
+function convertDate(inputDate){
+
+    var now = new Date(inputDate);
+    var datetime = now.getFullYear();
+    var month = (now.getMonth()+1);
+    var date = now.getDate();
+
+    if(month < 10)
+        datetime += '/0'+month;
+    else
+        datetime += '/'+month;
+
+    if(date < 10)
+        datetime += '/0'+date;
+    else
+        datetime += '/'+date;
+
+    return datetime;
+}
+
 function getYear(date){
     if(10<date.length){
         return date.substring(0,4);
@@ -481,6 +502,7 @@ function getUserName(req){
 exports.pushContents = pushContents;
 exports.ensureAuthenticated = ensureAuthenticated;
 exports.getCurDateWithTime = getCurDateWithTime;
+exports.convertDate = convertDate;
 exports.getCurDate = getCurDate;
 exports.getYear = getYear;
 exports.getMonth = getMonth;

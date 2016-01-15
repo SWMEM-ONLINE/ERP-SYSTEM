@@ -12,9 +12,47 @@ append head
 block content
    .wrapper
       article.container
-         h3 설문조사 관리
+         h3 투표 관리
          hr
          .content
+            button#add.btn.addVote(type='button') 투표 추가
+            table#voteList.table.table-clickable
+               thead
+                  tr
+                     th 제목
+                     th.name 작성자
+                     th.count 참여율
+                     th.expire 마감일
+               tbody
+   #addVote
+      .modal.fade
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  h4.modal-title 투표 추가
+               .modal-body
+               .modal-footer
+                  button#voteAdd.btn(type='button') 추가
+                  button.btn(type='button', data-dismiss='modal') 닫기
+   #editVote
+      .modal.fade
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  h4.modal-title
+               .modal-body
+               .modal-footer
+                  button#delete.btn(type='button') 삭제
+                  button.btn(type='button', data-dismiss='modal') 닫기
+   #memberList
+      .modal.fade
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  h4.modal-title 선택한 회원
+               .modal-body
+               .modal-footer
+                  button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-   script(src='../javascripts/vote_manage.js')
+   script(src='../javascripts/vote_manage_index.js')

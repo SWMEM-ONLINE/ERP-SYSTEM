@@ -1,0 +1,70 @@
+input[type='text']{
+    width: 100%;
+    text-align: center;
+    border:1px solid #cccccc;
+    border-radius: 4px;
+    margin-bottom:10px;
+}
+
+.addVote{
+    width:100%;
+}
+
+#voteList>tbody>tr:hover{
+    background-color: #dfdfdf;
+}
+
+#multi{
+    text-align: center;
+}
+
+.progress{
+    height: 35px;
+    background-color: #dfdfdf;
+}
+
+.progress-bar{
+    background: #5cabfa;
+    height:inherit;
+    line-height: inherit;
+    color: black;
+    font-size: inherit;
+    text-align: inherit;
+}
+
+.progress-content{
+    position:absolute;
+    width:100%;
+    z-index: 10000;
+}
+
+.progress-title{
+    float:left;
+    margin-left:10px;
+}
+
+.progress-count{
+    float:right;
+    margin-right:10px;
+}
+
+div.content table{
+    table-layout:fixed;
+}
+
+div.content table td.ellipsis{
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+div.content table th.count{
+    width:70px;
+}
+
+div.content table th.name{
+    width:100px;
+}
+
+div.content table th.expire{
+    width:120px;
+}

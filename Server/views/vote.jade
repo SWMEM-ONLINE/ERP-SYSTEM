@@ -8,13 +8,43 @@ append head
    link(rel='stylesheet', type='text/css', href='./stylesheets/animate.css')
    link(rel='stylesheet', type='text/css', href='./stylesheets/main_layout.css')
    link(rel='stylesheet', type='text/css', href='./stylesheets/vote.css')
+   link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
 block content
    .wrapper
       article.container
-         h3 설문조사
+         h3 투표하자
          hr
          .content
+            table#voteList.table.table-clickable
+               thead
+                  tr
+                     th 제목
+                     th.count 참여율
+                     th.expire 마감일
+               tbody
+   #voteModal
+      .modal.fade
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  h4.modal-title
+               .modal-body
+               .modal-footer
+                  button#save.btn.hidden(type='button') 완료
+                  button#resave.btn.hidden(type='button') 완료
+                  button#vote.btn.hidden(type='button') 투표하기
+                  button#revote.btn.hidden(type='button') 투표하기
+                  button.btn(type='button', data-dismiss='modal') 닫기
+   #memberList
+      .modal.fade
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  h4.modal-title 선택한 회원
+               .modal-body
+               .modal-footer
+                  button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
-   script(src='./javascripts/vote.js')
+   script(src='./javascripts/vote_index.js')

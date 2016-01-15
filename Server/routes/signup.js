@@ -33,7 +33,12 @@ router.post('/', function(req, res, next) {
     var uBadPoint = 0;
     var uManagerBadPoint = 0;
     var uPhotoUrl = req.files.sign_up_img.name;
-
+    var uLastDuty = 0;
+    var uFee = false;
+    var uHardware = false;
+    var uBook = false;
+    var uPush = true;
+    var uMail = true;
 
     console.log('u_name:'+userName); // form files
     console.log('uPhotoUrl:'+uPhotoUrl); // form files
@@ -56,7 +61,13 @@ router.post('/', function(req, res, next) {
                     'u_good_duty_point':uGoodPoint,
                     'u_bad_duty_point':uBadPoint,
                     'u_manager_bad_duty_point':uManagerBadPoint,
-                    'u_photo_url':uPhotoUrl};
+                    'u_photo_url':uPhotoUrl,
+                    'u_last_duty':uLastDuty,
+                    'u_fee':uFee,
+                    'u_hardware':uHardware,
+                    'u_book':uBook,
+                    'u_push_flag':uPush,
+                    'u_mail_flag':uMail};
 
     var query = connection.query('insert into t_user set ?',user,function(err,result){
         if (err) {
