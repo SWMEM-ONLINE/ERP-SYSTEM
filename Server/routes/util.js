@@ -322,7 +322,7 @@ function getCurDate(){
     return datetime;
 }
 
-function convertDateWithTime(inputDate){
+function convertDate(inputDate){
 
     var now = new Date(inputDate);
     var datetime = now.getFullYear();
@@ -391,7 +391,7 @@ function getUserName(req){
 exports.pushContents = pushContents;
 exports.ensureAuthenticated = ensureAuthenticated;
 exports.getCurDateWithTime = getCurDateWithTime;
-exports.convertDateWithTime = convertDateWithTime;
+exports.convertDate = convertDate;
 exports.getCurDate = getCurDate;
 exports.getYear = getYear;
 exports.getMonth = getMonth;
