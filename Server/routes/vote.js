@@ -117,7 +117,7 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
         }
         else{
             for(var i=0 ; i<row.length ; i++){
-                row[i].v_due_date = util.convertDateWithTime(getDate(row[i].v_write_date, 14));
+                row[i].v_due_date = util.convertDate(getDate(row[i].v_write_date, 14));
             }
 
             var rows = JSON.stringify(row);
