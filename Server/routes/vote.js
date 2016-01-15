@@ -173,7 +173,6 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
                 }
 
                 var rows = JSON.stringify(data2);
-                console.log(rows);
                 return res.json(JSON.parse(rows));
             }
         });
@@ -243,7 +242,6 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
         for( var i=0 ; i<itemCnt ; i++ ){
             query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = '+iIds[i]+';';
         }
-        console.log(query);
 
         connection.query(query, function(err,data2){
             if (err) {
@@ -261,7 +259,6 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
 /**
  * updateVote
  * 투표 메소드
- * @param voteId
  * @param originItemIds
  * @param itemIds
  * @return result
@@ -269,35 +266,24 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
 
-    var vId = req.body.voteId;
     var iIds = req.body.itemIds;
     var oIds = req.body.originItemIds;
-    var itemCount = req.body.itemCnt;
-    var checkedCnt = req.body.checkedCnt;
-    var voteType = req.body.voteType;
     var uId = util.getUserId(req);
 
     var itemCnt = iIds.length;
     var voteItems = new Array(iIds.length);
 
     for( var i=0 ; i<itemCnt ; i++ ){
-        voteItems[i] = [0, iIds, uId];
+        voteItems[i] = [0, iIds[i], uId];
     }
 
     var query = '';
-    console.log(oIds);
-    console.log(iIds);
     var connection = DB_handler.connectDB();
     if(oIds.length > 0) {
-        console.log(oIds.length);
+
+        query = 'delete from t_vote_user where vu_voter = "' + uId + '";';
         for (var i = 0; i < oIds.length; i++) {
-            query += 'delete from t_vote_user where vu_pid = ' + oIds[i] + ';';
             query += 'update t_vote_item set vi_cnt = vi_cnt - 1 where vi_id = ' + oIds[i] + ';';
-        }
-        console.log(query);
-        if(itemCount == (itemCount-checkedCnt)){
-            query += 'update t_vote set v_voted_cnt = v_voted_cnt-1 where v_id = ' + vId + ';';
-            console.log(query);
         }
 
         connection.query(query, function (err, data) {
@@ -313,9 +299,8 @@ router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
                         DB_handler.disconnectDB(connection);
                         return res.json({status: '101'});
                     }
-                    if(voteType == 1){
-                        query = 'update t_vote set v_voted_cnt = v_voted_cnt+1 where v_id = ' + vId + ';';
-                    }
+
+                    query = '';
 
                     for (var j = 0; j < itemCnt; j++) {
                         query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = ' + iIds[j] + ';';
