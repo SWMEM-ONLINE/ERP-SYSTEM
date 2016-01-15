@@ -109,7 +109,7 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
         query += ' where v_state = 2';
     }
 
-    query += ' ORDER BY v_write_date';
+    query += ' ORDER BY v_write_date DESC';
     connection.query(query, function(err,row){
         if (err) {
             console.error(err);
@@ -269,7 +269,10 @@ router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
     var iIds = req.body.itemIds;
     var oIds = req.body.originItemIds;
     var uId = util.getUserId(req);
-
+    console.log('iIds');
+    console.log(iIds);
+    console.log('oIds');
+    console.log(oIds);
     var itemCnt = iIds.length;
     var voteItems = new Array(iIds.length);
 
@@ -286,6 +289,8 @@ router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
             query += 'update t_vote_item set vi_cnt = vi_cnt - 1 where vi_id = ' + oIds[i] + ';';
         }
 
+        console.log('query');
+        console.log(query);
         connection.query(query, function (err, data) {
             if (err) {
                 console.error(err);
