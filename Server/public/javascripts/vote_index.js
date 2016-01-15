@@ -44,6 +44,7 @@ function getVoteList(type){
                 tbodyString += '<td>'+response[i].v_due_date+'</td>';
                 tbodyString += '<td class="hidden">'+response[i].v_type+'</td>';
                 tbodyString += '<td class="hidden">'+response[i].v_join_cnt+'</td>';
+                tbodyString += '<td class="hidden">'+response[i].v_state+'</td>';
                 tbodyString += '</tr>';
             }
             $('#voteList tbody').empty();
@@ -133,6 +134,15 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
             document.getElementById('resave').setAttribute('number',vid);
             document.getElementById('revote').setAttribute('number',vid);
             $('label.input-label').addClass('hidden');
+            if(arr[5] == 2){
+                $('#save').addClass('hidden');
+                $('#resave').addClass('hidden');
+                $('#vote').addClass('hidden');
+                $('#revote').addClass('hidden');
+                $('#save').addClass('hidden');
+                $('#resave').addClass('hidden');
+                $('#vote').addClass('hidden');
+            }
             $('#voteModal div.modal').modal();
         }
     });
