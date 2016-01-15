@@ -142,6 +142,10 @@ button.prohibit,button.prohibit:hover,button.prohibit:active,button.prohibit:foc
 }
 
 @media(max-width:992px){
+    .btn{
+        font-size: 13px;
+    }
+
     div.card{
         width: 100%;
         margin-top:0;
