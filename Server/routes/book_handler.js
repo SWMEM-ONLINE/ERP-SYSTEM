@@ -140,18 +140,22 @@ function reserveBook(con, req, res){
 
 function borrowBook_QR(con, req, res){
     var query = 'select * from t_book where b_isbn="' + req.body.isbn + '" where b_state=0';
+    console.log(query);
     con.query(query, function(err, response){
+        console.log(response);
         if(err){
             res.send('failed');
         }else{
             if(response.length === 0){
                 res.send('noOne');
             }else{
+                console.log('here');
                 var book_id = response[0].b_id;
                 var due_date = getDate(new Date(), 14);
                 var query1 = 'update t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + req.session.passport.user.name + '" where b_id="' + book_id + '";';
                 query1 += 'insert into t_book_rental SET br_user="' + req.session.passport.user.id + '", br_book_id=' + book_id + ', br_rental_date="' + getDate(new Date(), 0) + '"';
                 con.query(query1, function(err2, response2){
+
                     if(err2){
                         res.send('failed');
                     }else{
