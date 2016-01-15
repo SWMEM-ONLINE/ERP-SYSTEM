@@ -322,6 +322,26 @@ function getCurDate(){
     return datetime;
 }
 
+function convertDateWithTime(inputDate){
+
+    var now = new Date(inputDate);
+    var datetime = now.getFullYear();
+    var month = (now.getMonth()+1);
+    var date = now.getDate();
+
+    if(month < 10)
+        datetime += '/0'+month;
+    else
+        datetime += '/'+month;
+
+    if(date < 10)
+        datetime += '/0'+date;
+    else
+        datetime += '/'+date;
+
+    return datetime;
+}
+
 function getYear(date){
     if(10<date.length){
         return date.substring(0,4);
@@ -371,6 +391,7 @@ function getUserName(req){
 exports.pushContents = pushContents;
 exports.ensureAuthenticated = ensureAuthenticated;
 exports.getCurDateWithTime = getCurDateWithTime;
+exports.convertDateWithTime = convertDateWithTime;
 exports.getCurDate = getCurDate;
 exports.getYear = getYear;
 exports.getMonth = getMonth;
