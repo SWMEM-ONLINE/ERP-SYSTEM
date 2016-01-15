@@ -2,7 +2,7 @@
  * Created by HyunJae on 2016. 1. 13..
  */
 
-var handelr = require('./job_schedule_handler');
+var handler = require('./job_schedule_handler');
 var CronJob = require('cron').CronJob;
 
 /**
@@ -20,8 +20,7 @@ var CronJob = require('cron').CronJob;
 // "0 30 20 * * *" 매일 8시 30분마다 실행되는 부분
 new CronJob('0 0 0 * * *', function() {
     console.log('매일 08시 30분 00초');
-    handelr.nextDayDuty();
-
+    handler.nextDayDuty();
 }, null, true, 'Asia/Seoul');
 
 
@@ -29,7 +28,8 @@ new CronJob('0 0 0 * * *', function() {
 // "0 0 0 * * *" 매일 열두시마다 실행되는 부분
 new CronJob('0 0 0 * * *', function() {
     console.log('매일 00시 00분 00초');
-
+    handler.hardware_remaining();
+    handler.book_remaining();
 }, null, true, 'Asia/Seoul');
 
 
