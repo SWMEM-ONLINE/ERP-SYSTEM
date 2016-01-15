@@ -25,6 +25,24 @@ var confirmPW = $('#confirmPW');
 var newPhone = $('#newPhone');
 var newMail = $('#newMail');
 
+$('#mail').click(function(){
+    if($('#mail').hasClass('prohibit')){
+        $('#mail').removeClass('prohibit');
+    }
+    else{
+        $('#mail').addClass('prohibit');
+    }
+});
+
+$('#device').click(function(){
+    if($('#device').hasClass('prohibit')){
+        $('#device').removeClass('prohibit');
+    }
+    else{
+        $('#device').addClass('prohibit');
+    }
+});
+
 $('#deleteDevice').click(function () {
     $.ajax({
         type:'post',

@@ -40,12 +40,14 @@ block content
                            td
                         tr
                            td E-mail
-                           td#mail #{row.u_email}
+                           td
+                              button.btn#mail #{row.u_email}
                            td
                         tr
                            td 디바이스 정보
                            if row.u_device != ''
-                              td#device #{row.u_device}
+                              td
+                                 button.btn#device #{row.u_device}
                               td
                                  button#deleteDevice.btn.delete 삭제
                            else
