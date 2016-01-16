@@ -438,7 +438,7 @@ router.post('/setAlarmInfo', util.ensureAuthenticated, function(req, res){
     }else if(alarmType == 2){
         query += 'u_mail_flag = '+alarmFlag;
     }
-    query += ' where t_user = "'+util.getUserId(req)+'"';
+    query += ' where u_id = "'+util.getUserId(req)+'"';
 
     var connection = DB_handler.connectDB();
 
