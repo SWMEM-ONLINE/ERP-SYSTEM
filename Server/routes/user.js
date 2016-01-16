@@ -376,4 +376,82 @@ router.post('/alter_gradeCut', util.ensureAuthenticated, function(req, res){
     })
 });
 
+/**
+ * getAlarmInfo
+ * 알람 가져오기 메소드
+ * @param type (1:푸시, 2:메일)
+ * @return u_push_flag or u_mail_flag
+ */
+
+router.post('/getAlarmInfo', util.ensureAuthenticated, function(req, res){
+
+    var alarmType = req.body.type;
+    if(alarmType == null){
+        return res.json({status:'101'});
+    }
+
+    var query = 'select ';
+    if(alarmType == 1){
+        query += 'u_push_flag';
+    }else if(alarmType == 2){
+        query += 'u_mail_flag';
+    }
+
+    query += ' from t_user where t_user = "'+util.getUserId(req)+'"';
+
+    var connection = DB_handler.connectDB();
+
+    connection.query(query, function(err, row){
+
+        if (err) {
+            console.error(err);
+            DB_handler.disconnectDB(connection);
+            return res.json({status:'101'});
+        }
+
+        var rows = JSON.stringify(row);
+        return res.json(JSON.parse(rows));
+    });
+});
+
+/**
+ * setAlarmInfo
+ * 알람 저장하기 메소드
+ * @param type (1:푸시, 2:메일)
+ * @param flag (true:on, false:off)
+ * @return result
+ */
+
+router.post('/setAlarmInfo', util.ensureAuthenticated, function(req, res){
+
+    var alarmType = req.body.type;
+    var alarmFlag = req.body.flag;
+
+    if(alarmType == null || alarmFlag == null){
+        return res.json({status:'101'});
+    }
+
+    var query = 'update t_user set ';
+
+    if(alarmType == 1){
+        query += 'u_push_flag = '+alarmFlag;
+    }else if(alarmType == 2){
+        query += 'u_mail_flag = '+alarmFlag;
+    }
+    query += ' where t_user = "'+util.getUserId(req)+'"';
+
+    var connection = DB_handler.connectDB();
+
+    connection.query(query, function(err, row){
+
+        if (err) {
+            console.error(err);
+            DB_handler.disconnectDB(connection);
+            return res.json({status:'101'});
+        }
+
+        return res.json({status:'0'});
+    });
+});
+
 module.exports = router;
