@@ -27,19 +27,75 @@ var newMail = $('#newMail');
 
 $('#mail').click(function(){
     if($('#mail').hasClass('prohibit')){
-        $('#mail').removeClass('prohibit');
+        var send = {
+            type:2,
+            flag:true
+        };
+        $.ajax({
+            type:'post',
+            url:'/user/setAlarmInfo',
+            data:JSON.stringify(send),
+            contentType:'application/json',
+            success: function(data){
+                if(data.status == '0'){
+                    $('#mail').removeClass('prohibit');
+                }
+            }
+        });
     }
     else{
-        $('#mail').addClass('prohibit');
+        var send = {
+            type:2,
+            flag:false
+        };
+        $.ajax({
+            type:'post',
+            url:'/user/setAlarmInfo',
+            data:JSON.stringify(send),
+            contentType:'application/json',
+            success: function(data){
+                if(data.status == '0'){
+                    $('#mail').addClass('prohibit');
+                }
+            }
+        });
     }
 });
 
 $('#device').click(function(){
     if($('#device').hasClass('prohibit')){
-        $('#device').removeClass('prohibit');
+        var send = {
+            type:1,
+            flag:true
+        };
+        $.ajax({
+            type:'post',
+            url:'/user/setAlarmInfo',
+            data:JSON.stringify(send),
+            contentType:'application/json',
+            success: function(data){
+                if(data.status == '0'){
+                    $('#device').removeClass('prohibit');
+                }
+            }
+        });
     }
     else{
-        $('#device').addClass('prohibit');
+        var send = {
+            type:1,
+            flag:false
+        };
+        $.ajax({
+            type:'post',
+            url:'/user/setAlarmInfo',
+            data:JSON.stringify(send),
+            contentType:'application/json',
+            success: function(data){
+                if(data.status == '0'){
+                    $('#device').addClass('prohibit');
+                }
+            }
+        });
     }
 });
 
