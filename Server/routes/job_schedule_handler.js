@@ -127,6 +127,33 @@ function book_remaining(){
     });
 }
 
+/**
+ * fee_carry
+ * 회비 이월 메소드
+ */
+
+function fee_carry() {
+
+}
+
+/**
+ * vote_complete
+ * 마감 투표 갱신 메소드
+ */
+
+function vote_complete() {
+
+    var query = 'update t_vote set v_state = 2 where v_state = 1 AND date(DATE_ADD(v_write_date, INTERVAL 14 DAY)) <= date(NOW())';
+
+    con.query(query, function(err, res){
+        if(err){
+            console.log("err");
+        }
+    });
+}
+
 exports.hardware_remaining = hardware_remaining;
 exports.book_remaining = book_remaining;
 exports.nextDayDuty = nextDayDuty;
+exports.fee_carry = fee_carry;
+exports.vote_complete = vote_complete;
