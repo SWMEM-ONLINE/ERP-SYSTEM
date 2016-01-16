@@ -10,7 +10,7 @@ var crypto = require('crypto');
 //var user_handler = require('./user_handler');
 
 router.get('/info', util.ensureAuthenticated, function(req, res, next) {
-    var query = 'select u_id,u_name,u_sex,u_period,u_device,u_birth,u_email,u_phone,u_photo_url from t_user where u_id="' + req.session.passport.user.id + '"';
+    var query = 'select u_id,u_name,u_sex,u_period,u_device,u_birth,u_email,u_phone,u_photo_url,u_push_flag,u_mail_flag from t_user where u_id="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         console.log(response);
         var send = JSON.stringify(response);
