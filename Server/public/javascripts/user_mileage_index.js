@@ -22,7 +22,7 @@ toastr.options = {
 
 var sort_flag = 'period';
 
-$('ul.nav-pills li').click(function(){
+$('ul.nav-pills li').unbind().click(function(){
     var index = $(this).index();
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');
@@ -42,7 +42,7 @@ sort_period();
 sort_mileage();
 
 
-$('#plusMinus').click(function(){
+$('#plusMinus').unbind().click(function(){
     if($(this).val() == 'PLUS'){
         $(this).val('MINUS');
         $(this).html('MINUS');
@@ -55,7 +55,7 @@ $('#plusMinus').click(function(){
 function getUserlist(){
     $.post('/user/getUserlist', {sort_flag: sort_flag}, function(datalist){
         userlistView(datalist);
-        $('#m_userTable_body tr').click(function(){
+        $('#m_userTable_body tr').unbind().click(function(){
             $(this).toggleClass('warning');
         });
         enrollButton(datalist);
@@ -96,21 +96,21 @@ function checkValid(){
 }
 
 function sort_period(){
-    $('button#sort_period').click(function(){
+    $('button#sort_period').unbind().click(function(){
         sort_flag = 'period';
         getUserlist();
     });
 }
 
 function sort_mileage(){
-    $('button#sort_mileage').click(function(){
+    $('button#sort_mileage').unbind().click(function(){
         sort_flag = 'mileage';
         getUserlist();
     });
 }
 
 function enrollButton(datalist){
-    $('button#enroll').click(function(){
+    $('button#enroll').unbind().click(function(){
 
         var userIdlist = '';
 
@@ -157,10 +157,10 @@ function getmileageHistory(){
 
 function historyView(datalist){
     var htmlString = '';
-    $.each(datalist, function(idx, data){
+    $.each(datalist[0], function(idx, data){
         htmlString += '<tr><td>' + data.m_date + '</td>';
-        htmlString += '<td>' + data.m_giver + '</td>';
-        htmlString += '<td>' + data.m_receiver + '</td>';
+        htmlString += '<td>' + data.u_name + '</td>';
+        htmlString += '<td>' + datalist[1][idx].u_name + '</td>';
         if(data.m_type === 'PLUS')  htmlString += '<td style="color:blue">' + data.m_type + '</td>';
         else    htmlString += '<td style="color:red">' + data.m_type + '</td>';
         htmlString += '<td>' + data.m_point + '</td></tr>';
@@ -176,7 +176,7 @@ function deleteButton(datalist){
             var deletelist = '';
             $('#m_historyTable tr').each(function(index){
                 if($(this).hasClass('warning')){
-                    deletelist += datalist[index].m_id + ',';
+                    deletelist += datalist[0][index].m_id + ',';
                 }
             });
             deletelist = deletelist.substring(0, deletelist.length -1);

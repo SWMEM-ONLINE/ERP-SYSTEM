@@ -466,7 +466,8 @@ router.post('/mileage_enroll', util.ensureAuthenticated, function(req, res, next
 });
 
 router.post('/mileage_history', util.ensureAuthenticated, function(req, res, next){
-    var query = 'select * from t_mileage';
+    var query = 'select b.u_name,a.* from t_mileage a inner join t_user b on a.m_giver=b.u_id;';
+    query += 'select b.u_name from t_mileage a inner join t_user b on a.m_receiver=b.u_id';
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "user.js -> /mileage_history"');
