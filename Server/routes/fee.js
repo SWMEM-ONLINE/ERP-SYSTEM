@@ -87,7 +87,7 @@ router.post('/userList', util.ensureAuthenticated, function(req, res, next) {
 
 router.get('/history', util.ensureAuthenticated, function(req, res, next) {
 
-    var date = '\''+util.getCurDate().substring(0,7)+'%\'';
+    var date = '"'+util.getCurDate().substring(0,7)+'%"';
     var query = 'select * from t_fee_manage where fm_date like '+date+' Order by fm_date DESC';
 
     var connection = db_handler.connectDB();
@@ -98,15 +98,15 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
             throw err;
         }
         var send = JSON.stringify(rows);
-        var deposit = getTotalDeposit(rows);
-        var withdraw = getTotalWithdraw(rows);
+        var deposit = util.getTotalDeposit(rows);
+        var withdraw = util.getTotalWithdraw(rows);
         res.render('fee_history', { title: '회비내역', grade: util.getUserGrade(req), result:JSON.parse(send), deposit:deposit,withdraw:withdraw});
     });
 });
 
 router.post('/history', util.ensureAuthenticated, function(req, res, next) {
 
-    var date = '\''+req.body.date+'%\'';
+    var date = '"'+req.body.date+'%"';
     var query = 'select * from t_fee_manage where fm_date like '+date+' Order by fm_date DESC';
     console.log(query);
     var connection = db_handler.connectDB();
@@ -117,8 +117,8 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
             throw err;
         }
         var send = JSON.stringify(rows);
-        var deposit = getTotalDeposit(rows);
-        var withdraw = getTotalWithdraw(rows);
+        var deposit = util.getTotalDeposit(rows);
+        var withdraw = util.getTotalWithdraw(rows);
         res.json({result:JSON.parse(send), deposit:deposit,withdraw:withdraw});
     });
 
@@ -239,31 +239,6 @@ router.post('/charge', util.ensureAuthenticated, function(req, res, next) {
 
 
 });
-
-
-function getTotalDeposit(arr){
-    var price = 0;
-    var length = arr.length;
-    for(var i=0; i<length; i++){
-        var obj = arr[i];
-        if(obj.fm_money_type == 0){
-            price += obj.fm_price;
-        }
-    }
-    return price;
-}
-
-function getTotalWithdraw(arr){
-    var price = 0;
-    var length = arr.length;
-    for(var i=0; i<length; i++){
-        var obj = arr[i];
-        if(obj.fm_money_type == 1){
-            price += obj.fm_price;
-        }
-    }
-    return price;
-}
 
 router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
     res.render('fee_manage',{title:'회비 관리', grade: util.getUserGrade(req)});
