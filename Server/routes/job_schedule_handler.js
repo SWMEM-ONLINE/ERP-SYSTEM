@@ -153,7 +153,7 @@ function fee_carry() {
         if(price < 0){
             money_type = true;
         }
-        var money_content = "지난달 이월 회비";
+        var money_content = "회비 이월";
         var monthly_deposit = 0;
         var monthly_withdraw = 0;
         var remain_money = 0;
