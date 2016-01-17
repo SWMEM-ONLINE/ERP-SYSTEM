@@ -369,3 +369,14 @@ CREATE TABLE t_vote_user (
     vu_voter VARCHAR(20),
     FOREIGN KEY(vu_pid) REFERENCES t_vote_item(vi_id),
     FOREIGN KEY(vu_voter) REFERENCES t_user(u_id));
+
+CREATE TABLE t_mileage (
+    m_id int NOT NULL auto_increment primary key,
+    m_point int,
+    m_date VARCHAR(20),
+    m_giver VARCHAR(20),
+    m_receiver VARCHAR(20),
+    m_reason VARCHAR(100),
+    m_type VARCHAR(10),
+    FOREIGN KEY(m_giver) REFERENCES t_user(u_id),
+    FOREIGN KEY(m_receiver) REFERENCES t_user(u_id));

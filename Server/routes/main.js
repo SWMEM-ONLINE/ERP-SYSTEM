@@ -12,8 +12,6 @@ var con = DB_handler.connectDB();
 /* GET users listing. */
 router.get('/', util.ensureAuthenticated, function(req, res, next) {
     res.render('main', { title: '메인', grade: util.getUserGrade(req) });
-    //main_handler.loadBookMain(con, req, res);
-    //main_handler.loadHardwareMain(con, req, res);
 });
 
 router.post('/', util.ensureAuthenticated, function(req, res, next) {
@@ -26,6 +24,10 @@ router.post('/loadmyBook', util.ensureAuthenticated, function(req, res, next){
 
 router.post('/loadmyHardware', util.ensureAuthenticated, function(req, res, next){
     main_handler.loadHardwareMain(con, req, res);
+});
+
+router.post('/loadmyMileage', util.ensureAuthenticated, function(req, res, next){
+    main_handler.loadmyMileage(con, req, res);
 });
 
 router.post('/getUserpermission', util.ensureAuthenticated, function(req, res, next){
