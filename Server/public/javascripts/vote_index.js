@@ -303,9 +303,14 @@ $('#voteModal').on('click','.progress',function(){
                 tbodyString += '<h5>선택한 회원이 없습니다</h5>';
             }
             else{
+                tbodyString += '<p>';
                 for(var i=0;i<response.length;i++){
-                    tbodyString += '<p>'+response[i].u_name+'</p>';
+                    tbodyString += response[i].u_name;
+                    if(response.length > 1){
+                        tbodyString += ', ';
+                    }
                 }
+                tbodyString += '<p>';
             }
             $('#memberList .modal-body').empty();
             $('#memberList .modal-body').append(tbodyString);

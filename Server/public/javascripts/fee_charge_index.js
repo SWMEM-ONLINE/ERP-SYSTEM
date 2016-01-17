@@ -113,7 +113,7 @@ function memberSelect(obj){
         for(var i=0;i<data.length;i++){
             var member = data[i];
             string += '<tr>';
-            string += '<td><input id="'+member.u_name+'" type="checkbox" name="memberCheck[]" value = "'+member.u_id+'"></td><td>'+ member.u_name +'('+member.u_id+')</td>';
+            string += '<td><input id="'+member.u_name+'" type="checkbox" name="memberCheck[]" value = "'+member.u_id+'"></td><td><label for = "'+member.u_name+'">'+ member.u_name +'('+member.u_id+')</label></td>';
             string += '</tr>';
         }
         string += '</tbody></table>';

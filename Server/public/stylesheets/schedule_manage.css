@@ -11,3 +11,7 @@ input{
 input.datepicker{
     width: 170px;
 }
+
+button#addSchedule{
+    margin:5px;
+}

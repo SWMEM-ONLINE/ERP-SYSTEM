@@ -68,3 +68,67 @@ div.content table th.name{
 div.content table th.expire{
     width:120px;
 }
+
+input[type=checkbox]{
+    display:none;
+}
+
+label.input-label {
+    display: inline-block;
+    cursor: pointer;
+}
+
+label.input-label::before {
+    display: inline-block;
+    padding:0; !important;
+    margin:0; !important;
+    font-family: FontAwesome;
+    font-size: 25px;
+    color: rgb(0 0 0);
+    transition: transform 0.2s ease-out, color 0.2s ease;
+    transform: scale3d(0.8,0.8,1);
+}
+
+label.input-label:active::before {
+    transform: scale3d(1.5,1.5,1);
+}
+
+label.input-label:hover::before {
+    transform: scale3d(1,1,1);
+}
+
+input.checkbox + label.input-label:hover::before {
+    transform: scale3d(1,1,1);
+}
+
+input.checkbox + label.input-label:active::before {
+    transform: scale3d(1.5,1.5,1);
+}
+
+input.checkbox:checked + label.input-label::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    color:#0478c1;
+    transform: scale3d(1,1,1);
+}
+
+label.input-label.checkbox::before {
+    content: "\f0c8";
+}
+
+input.checkbox:checked + label.input-label.checkbox::before {
+    content:"\f14a";
+}
+
+.radio+.radio{
+    margin:0;
+}
+
+.checkbox+.checkbox{
+    margin:0 15px 0 0;
+}
+
+.checkbox{
+    padding:0;
+    margin:0; !important;
+}

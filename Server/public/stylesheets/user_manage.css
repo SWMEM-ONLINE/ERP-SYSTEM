@@ -1,7 +1,9 @@
 #finished{
     width: 100%;
 }
-
+button.btn{
+    margin:5px;
+}
 input,textarea{
     text-indent: 2%;
     text-align: left;

@@ -138,7 +138,7 @@ loadapplylist(0);
 function loadapplylist(flag){
     var htmlString = '';
     $.post('/book/manage/loadapplylist', {flag : flag}, function(datalist){
-        htmlString += '<tfoot><tr><th colspan="2"><span id="checkSum" class="pull-right">0 원</span></th></tr><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="down2excel" class="btn">엑셀로 저장</button></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="2"><span id="checkSum" class="pull-right">0 원</span></th></tr><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="down2excel" class="btn">엑셀 저장</button></th></tr></tfoot>';
         htmlString += '<tbody id="applyTableData">';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td><img class="bookImg" src="' + data.ba_photo_url + '"</td>';
