@@ -130,7 +130,6 @@ DROP TABLE IF EXISTS `t_hardware_rental`;
 CREATE TABLE t_hardware_rental (
   hr_id int NOT NULL auto_increment primary key,
   hr_user VARCHAR(20),
-  hr_user_name VARCHAR(20),
   hr_hardware_id int,
   hr_rental_date VARCHAR(20),
   hr_due_date VARCHAR(20),
