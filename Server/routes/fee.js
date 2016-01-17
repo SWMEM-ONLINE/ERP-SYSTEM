@@ -353,4 +353,27 @@ router.post('/manage/paid', util.ensureAuthenticated, function(req, res, next) {
     });
 });
 
+/**
+ * deleteFeeManage
+ * 회비 삭제 메소드
+ * @param id
+ */
+
+router.post('/deleteFeeManage', util.ensureAuthenticated, function(req, res, next) {
+
+    var id = req.body.id;
+    var connection = db_handler.connectDB();
+
+    connection.query('delete from t_fee_manage where fm_id = '+id, function(err,result){
+        if (err) {
+            console.error(err);
+            res.json({status:'101'});
+            db_handler.disconnectDB(connection);
+        }
+
+        res.json({status:'0'});
+        db_handler.disconnectDB(connection);
+    });
+});
+
 module.exports = router;

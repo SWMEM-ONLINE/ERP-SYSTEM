@@ -184,6 +184,7 @@ $('#submit').click(function(){
                     $('#content_'+(rowCount-1)).val('');
                     $('#price_'+(rowCount-1)).val('');
                     $('#type_'+(rowCount-1)).html('구분');
+                    registerList();
                 }
             }
         });
@@ -232,7 +233,7 @@ $('#registerList').on('click','tr:not(.empty)',function(){
     $(this).children('td').map(function () {
         arr.push($(this).text());
     });
-    document.getElementById('deleteHistory').setAttribute('id',arr[0]);
+    document.getElementById('deleteHistory').setAttribute('id','row'+arr[0]);
     $('div.modal #date').html(arr[1]);
     $('div.modal #type').html(arr[2]);
     $('div.modal #content').html(arr[3]);
@@ -241,13 +242,12 @@ $('#registerList').on('click','tr:not(.empty)',function(){
 });
 
 $('#deleteHistory').click(function(){
-    var id = document.getElementById('deleteHistory').getAttribute('id');
-    /*
-    $.post('/fee/history',{date:date},function(response){
-        if(respone.status == '0'){
-            toastr['success']('기록 삭제');
+    var id = this.id.substr(3);
+    $.post('/fee/deleteFeeManage',{id:id},function(response){
+        if(response.status == '0'){
+            $('div.modal').modal('hide');
             registerList();
+            toastr['success']('기록 삭제');
         }
     });
-    */
 });
