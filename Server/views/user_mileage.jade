@@ -1,0 +1,65 @@
+//
+    by jung-inchul on 2015. 01. 16..
+
+extends main_layout
+
+append head
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/user_mileage.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+    .wrapper
+        article.container
+            h3 마일리지 관리
+            hr
+            .content
+                ul.nav.nav-pills.nav-justified
+                    li.active
+                        a(href="#") 추가
+                    li
+                        a(href="#") 히스토리
+                hr
+                #m_enroll
+                    table.table
+                        thead
+                            tr
+                                th.fix 구분
+                                th.fix 점수
+                                th 사유
+                        tbody
+                            tr
+                                td
+                                    button#plusMinus.btn(type='button' value='PLUS') PLUS
+                                td
+                                    input#point(type='number', min='0', value ='0')
+                                td
+                                    input#reason(type='text', maxlength='50', placeholder='100자 이내')
+                    hr
+                    h5 회원 목록
+                    table.table.table-hover
+                        thead
+                            tr
+                                th.fix 기수
+                                th.fix 이름
+                                th 보유 마일리지
+                        tbody#m_userTable_body
+                    button#sort_period.btn(type='button') 기수순
+                    button#sort_mileage.btn(type='button') 마일리지순
+                    button#enroll.btn(type='button') 등록하기
+                #m_history.hidden
+                    table.table.table-striped.table-hoaver
+                        thead
+                            tr
+                                th 날짜
+                                th 등록자
+                                th 대상
+                                th 구분
+                                th 점수
+                        tbody#m_historyTable
+                    button#delete.btn(type='button') 삭제
+append script
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+    script(src='../../javascripts/user_mileage_index.js')

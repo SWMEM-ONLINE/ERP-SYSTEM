@@ -15,16 +15,11 @@ function loadHardwareMain(con, req, res){
     });
 }
 
-function loadMileageMain(con, req, res){
-
-}
-
-function loadTodaydutyMain(con, req, res){
-
-}
-
-function loadMydutyMain(con, req, res){
-
+function loadmyMileage(con, req, res){
+    var query = 'select u_mileage from t_user where u_id="' + req.session.passport.user.id + '"';
+    con.query(query, function(err, response){
+        res.send(response);
+    });
 }
 
 function getUserpermission(con, req, res){
@@ -101,8 +96,6 @@ function getToken(con, req, res){
 exports.getUserpermission = getUserpermission;
 exports.loadHardwareMain = loadHardwareMain;
 exports.loadBookMain = loadBookMain;
-exports.loadMileageMain = loadMileageMain;
-exports.loadTodaydutyMain = loadTodaydutyMain;
-exports.loadMydutyMain = loadMydutyMain;
+exports.loadmyMileage = loadmyMileage;
 exports.hasToken = hasToken;
 exports.getToken = getToken;

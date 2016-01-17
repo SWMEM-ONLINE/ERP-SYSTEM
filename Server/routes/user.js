@@ -403,4 +403,90 @@ router.post('/setAlarmInfo', util.ensureAuthenticated, function(req, res){
     });
 });
 
+router.get('/mileage', util.ensureAuthenticated, function(req, res, next){
+    res.render('user_mileage', {title: '마일리지 관리', grade: util.getUserGrade(req)});
+});
+
+router.post('/getUserlist', util.ensureAuthenticated, function(req, res, next){
+    var sort_flag = req.body.sort_flag;
+    var query = 'select u_id, u_name, u_period, u_mileage from t_user order by ';
+    if(sort_flag === 'period'){
+        query += 'u_period asc';
+    }else{
+        query += 'u_mileage desc';
+    }
+    con.query(query, function(err, response){
+        if(err){
+            console.log('Load DB ERROR in "user.js -> /getUserlist"');
+        }
+        res.send(response);
+    });
+});
+
+router.post('/mileage_enroll', util.ensureAuthenticated, function(req, res, next){
+    var classify = req.body.classify;
+    var userIdlist = req.body.userIdlist;
+    var point = req.body.point;
+    var reason = req.body.reason;
+
+    var query_temp = 'update t_user set u_mileage=u_mileage';
+    if(classify === 'PLUS'){
+        query_temp += ('+' + req.body.point);
+    }else{
+        query_temp += ('-' + req.body.point);
+    }
+
+    var temp = new Date();
+    var date = temp.getFullYear() + '/' + (temp.getMonth()+1) + '/' + temp.getDay();
+    var user = userIdlist.split(',');
+
+    var query1 = '';
+    var query2 = '';
+    for(var i = 0; i < user.length; i++){
+        query1 += query_temp + ' where u_id="' + user[i] + '";';
+        query2 += 'insert into t_mileage set m_point=' + point + ', m_date="' + date + '", m_giver="' + req.session.passport.user.id + '", m_reason="' + reason + '", m_receiver="' + user[i] + '", m_type="' + classify + '";';
+    }
+
+
+    con.query(query1, function(err, response){
+        if(err){
+            console.log('DB update ERROR in "user.js -> /mileage_enroll');
+            res.send('failed');
+        }else{
+            con.query(query2, function(err2, response2){
+                if(err2){
+                    console.log('DB insert ERROR in "user.js -> /mileage_enroll');
+                    res.send('failed');
+                }else{
+                    res.send('success');
+                }
+            });
+        }
+    });
+});
+
+router.post('/mileage_history', util.ensureAuthenticated, function(req, res, next){
+    var query = 'select * from t_mileage';
+    con.query(query, function(err, response){
+        if(err){
+            console.log('DB select ERROR in "user.js -> /mileage_history"');
+            res.send('failed');
+        }else{
+            res.send(response);
+        }
+    });
+});
+
+router.post('/mileage_delete', util.ensureAuthenticated, function(req, res, next){
+    var query = 'delete from t_mileage where m_id IN (' + req.body.deletelist + ')';
+    con.query(query, function(err, response){
+        if(err){
+            console.log('DB delete ERROR in "user.js -> /mileage_delete"');
+            res.send('failed');
+        }else{
+            res.send('success');
+        }
+    })
+});
+
 module.exports = router;

@@ -24,6 +24,7 @@ loadmyHardware();
 loadmyBook();
 loadMyDuty();
 loadTodayDuty();
+loadmyMileage();
 hasToken();
 // 오늘의 당직자 부르고 - 현재파트
 
@@ -86,6 +87,14 @@ function loadTodayDuty(){
 
 
 // 나의 마일리지 부르고 - 보류
+
+function loadmyMileage(){
+    var mileageHTML = '';
+    $.post('/main/loadmyMileage', function(data){
+        mileageHTML = '<p><label style="text-overflow: ellipsis;"> Mileage : ' + data[0].u_mileage + '</label>';
+        $('.content-mileage').html(mileageHTML);
+    });
+}
 
 // 나의 당직일 부르고 - 현재파트
 

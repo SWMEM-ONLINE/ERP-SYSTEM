@@ -1,0 +1,19 @@
+input{
+    text-align: center;
+    width: 100%;
+    border:1px solid #cccccc;
+    height: 36px;
+    border-radius: 4px;
+}
+
+#m_enroll > button{
+    margin:5px;
+}
+
+#m_enroll > table{
+    table-layout:fixed;
+}
+
+th.fix{
+    width:100px;
+}
