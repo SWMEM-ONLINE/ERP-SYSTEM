@@ -169,7 +169,7 @@ function historyView(datalist){
 }
 
 function deleteButton(datalist){
-    $('button#delete').click(function(){
+    $('button#delete').unbind().click(function(){
         if($('#m_historyTable tr.warning').length === 0){
             toastr['error']('항목을 선택해주세요');
         }else{
