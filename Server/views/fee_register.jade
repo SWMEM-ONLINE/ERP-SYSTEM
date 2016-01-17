@@ -42,7 +42,36 @@ block content
                         input#price_0(type='text', placeholder='숫자만 입력', maxlength="8", onkeydown='isNumberKey(this)')
                      td
                         button#plus.btn.plusminus(type='button', onclick='addList()') +
-            button#submit.btn(type='button') 등록
+               tfoot
+                  tr
+                     td(colspan='5')
+                        button#submit.btn(type='button') 등록
+            #registerList
+               table.table.table-clickable.table-hover
+                  thead
+                     tr
+                        th 날짜
+                        th 입출
+                        th 내역
+                        th 금액
+                  tbody
+   .modal.fade
+      .modal-dialog
+         .modal-content
+            .modal-header
+               h4.modal-title 수입/지출정보
+            .modal-body
+               p 날짜
+               h5#date
+               p 입출
+               h5#type
+               p 내역
+               h5#content
+               p 금액
+               h5#price
+            .modal-footer
+               button#deleteHistory.btn(type='button') 삭제
+               button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='../javascripts/bootstrap-datepicker.js')
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

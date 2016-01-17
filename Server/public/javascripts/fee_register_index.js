@@ -189,3 +189,65 @@ $('#submit').click(function(){
         });
     }
 });
+
+registerList();
+
+function registerList(){
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    if(month < 10){
+        month = '0' + month;
+    }
+    var date = year +'/'+month;
+    var tbodyString = '';
+    $.post('/fee/history',{date:date},function(response){
+        var data = response.result;
+        if(data.length == 0){
+            tbodyString += '<tr class="empty"><td colspan = 4><h4>이번달 수입지출내역이 없습니다</h4></td></tr>';
+        }
+        else{
+            for(var i=0;i<data.length;i++){
+                tbodyString += '<tr>';
+                tbodyString += '<td class="hidden">'+data[i].fm_id+'</td>';
+                tbodyString += '<td>'+data[i].fm_date+'</td>';
+                if(data[i].fm_money_type === 1){
+                    tbodyString += '<td>지출</td>';
+                }
+                else{
+                    tbodyString += '<td>수입</td>';
+                }
+                tbodyString += '<td>'+data[i].fm_money_content+'</td>';
+                tbodyString += '<td>'+data[i].fm_price+'</td>';
+                tbodyString += '</tr>';
+            }
+        }
+        $('#registerList table tbody').empty();
+        $('#registerList table tbody').append(tbodyString);
+    });
+}
+
+$('#registerList').on('click','tr:not(.empty)',function(){
+    var arr = new Array();
+    $(this).children('td').map(function () {
+        arr.push($(this).text());
+    });
+    document.getElementById('deleteHistory').setAttribute('id',arr[0]);
+    $('div.modal #date').html(arr[1]);
+    $('div.modal #type').html(arr[2]);
+    $('div.modal #content').html(arr[3]);
+    $('div.modal #price').html(arr[4]);
+    $('div.modal').modal();
+});
+
+$('#deleteHistory').click(function(){
+    var id = document.getElementById('deleteHistory').getAttribute('id');
+    /*
+    $.post('/fee/history',{date:date},function(response){
+        if(respone.status == '0'){
+            toastr['success']('기록 삭제');
+            registerList();
+        }
+    });
+    */
+});
