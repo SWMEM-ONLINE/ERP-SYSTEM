@@ -22,14 +22,9 @@ toastr.options = {
 getMemberList();
 
 function getMemberList(){
-    var send = {
-        type:'finish'
-    };
-
     $.ajax({
         type:'post',
-        url:'/user/userlist',
-        data:JSON.stringify(send),
+        url:'/user/getFinishUserlist',
         contentType:'application/json',
         success: function(data) {
 

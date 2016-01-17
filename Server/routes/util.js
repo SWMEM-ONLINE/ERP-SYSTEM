@@ -433,6 +433,20 @@ function getCurDate(){
     return datetime;
 }
 
+function getLastMonth(){
+
+    var now = new Date();
+    now.setMonth(now.getMonth()-1);
+    var datetime = now.getFullYear();
+    var month = (now.getMonth()+1);
+
+    if(month < 10)
+        datetime += '/0'+month;
+    else
+        datetime += '/'+month;
+    return datetime;
+}
+
 function convertDate(inputDate){
 
     var now = new Date(inputDate);
@@ -499,11 +513,37 @@ function getUserName(req){
     return req.session.passport.user.name;
 }
 
+
+function getTotalDeposit(arr){
+    var price = 0;
+    var length = arr.length;
+    for(var i=0; i<length; i++){
+        var obj = arr[i];
+        if(obj.fm_money_type == 0){
+            price += obj.fm_price;
+        }
+    }
+    return price;
+}
+
+function getTotalWithdraw(arr){
+    var price = 0;
+    var length = arr.length;
+    for(var i=0; i<length; i++){
+        var obj = arr[i];
+        if(obj.fm_money_type == 1){
+            price += obj.fm_price;
+        }
+    }
+    return price;
+}
+
 exports.pushContents = pushContents;
 exports.ensureAuthenticated = ensureAuthenticated;
 exports.getCurDateWithTime = getCurDateWithTime;
 exports.convertDate = convertDate;
 exports.getCurDate = getCurDate;
+exports.getLastMonth = getLastMonth;
 exports.getYear = getYear;
 exports.getMonth = getMonth;
 exports.getDay = getDay;
@@ -515,3 +555,5 @@ exports.getUserName = getUserName;
 exports.send = send;
 exports.sendList = sendList;
 exports.sendMail = sendMail;
+exports.getTotalDeposit = getTotalDeposit;
+exports.getTotalWithdraw = getTotalWithdraw;

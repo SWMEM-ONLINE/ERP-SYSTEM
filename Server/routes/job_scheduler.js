@@ -30,6 +30,8 @@ new CronJob('0 0 0 * * *', function() {
     console.log('매일 00시 00분 00초');
     handler.hardware_remaining();
     handler.book_remaining();
+    handler.fee_carry();
+    handler.vote_complete();
 }, null, true, 'Asia/Seoul');
 
 

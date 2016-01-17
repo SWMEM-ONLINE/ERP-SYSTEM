@@ -127,6 +127,73 @@ function book_remaining(){
     });
 }
 
+/**
+ * fee_carry
+ * 회비 이월 메소드
+ */
+
+function fee_carry() {
+
+    var lastMonth = '"'+util.getCurDate().substring(0,7)+'%"';
+    var query = 'select * from t_fee_manage where fm_date like '+lastMonth;
+
+    con.query(query, function(err,rows){
+        if (err) {
+            console.error(err);
+        }
+
+        var deposit = util.getTotalDeposit(rows);
+        var withdraw = util.getTotalWithdraw(rows);
+
+
+        var values = new Array(1);
+        var id = 0;
+        var price = deposit - withdraw;
+        var money_type = false;
+        if(price < 0){
+            money_type = true;
+        }
+        var money_content = "회비 이월";
+        var monthly_deposit = 0;
+        var monthly_withdraw = 0;
+        var remain_money = 0;
+        var writer = 'master';
+        var date = util.getCurDate();
+
+        values[0] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, util.getCurDateWithTime()];
+
+
+        con.query('insert into t_fee_manage(fm_id, fm_money_type, fm_money_content,fm_price,fm_monthly_deposit,fm_monthly_withdraw,fm_remain_money,fm_writer,fm_date,fm_write_date) values ?', [values], function(err,result){
+
+            console.log(result);
+            if (err) {
+                console.log(err);
+            }
+            res.render('main', { title: '메인', grade: util.getUserGrade(req) });
+
+        });
+
+    });
+}
+
+/**
+ * vote_complete
+ * 마감 투표 갱신 메소드
+ */
+
+function vote_complete() {
+
+    var query = 'update t_vote set v_state = 2 where v_state = 1 AND date(DATE_ADD(v_write_date, INTERVAL 14 DAY)) <= date(NOW())';
+
+    con.query(query, function(err, res){
+        if(err){
+            console.log("err");
+        }
+    });
+}
+
 exports.hardware_remaining = hardware_remaining;
 exports.book_remaining = book_remaining;
 exports.nextDayDuty = nextDayDuty;
+exports.fee_carry = fee_carry;
+exports.vote_complete = vote_complete;

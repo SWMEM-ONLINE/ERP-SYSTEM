@@ -40,16 +40,24 @@ block content
                            td
                         tr
                            td E-mail
-                           td#mail #{row.u_email}
+                           td
+                              if row.u_mail_flag == true
+                                 button.btn#mail #{row.u_email}
+                              else
+                                 button.btn.prohibit#mail #{row.u_email}
                            td
                         tr
                            td 디바이스 정보
                            if row.u_device != ''
-                              td#device #{row.u_device}
+                              td
+                              if row.u_push_flag == true
+                                 button.btn#device #{row.u_device}
+                              else
+                                 button.btn.prohibit#device #{row.u_device}
                               td
                                  button#deleteDevice.btn.delete 삭제
                            else
-                              td#device 등록된 디바이스 정보가 없습니다
+                              td 등록된 디바이스 정보가 없습니다
          .card
             .edit-content
                form#form(method='post', enctype='multipart/form-data', action='/user/info/edit')

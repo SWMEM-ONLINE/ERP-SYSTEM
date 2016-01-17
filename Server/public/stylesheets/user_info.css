@@ -93,6 +93,11 @@ table th{
     text-align: left;
 }
 
+button.prohibit,button.prohibit:hover,button.prohibit:active,button.prohibit:focus{
+    background-color: #dfdfdf;
+    color: #122359;
+}
+
 @media(min-width:993px){
     div.card div.profile-img{
         float: left;
@@ -137,6 +142,10 @@ table th{
 }
 
 @media(max-width:992px){
+    .btn{
+        font-size: 13px;
+    }
+
     div.card{
         width: 100%;
         margin-top:0;
