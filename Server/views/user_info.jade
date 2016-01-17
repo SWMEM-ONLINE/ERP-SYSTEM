@@ -49,11 +49,12 @@ block content
                         tr
                            td 디바이스 정보
                            if row.u_device != ''
-                              td
                               if row.u_push_flag == true
-                                 button.btn#device #{row.u_device}
+                                 td
+                                    button.btn#device #{row.u_device}
                               else
-                                 button.btn.prohibit#device #{row.u_device}
+                                 td
+                                    button.btn.prohibit#device #{row.u_device}
                               td
                                  button#deleteDevice.btn.delete 삭제
                            else
