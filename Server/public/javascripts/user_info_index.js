@@ -108,7 +108,7 @@ $('#deleteDevice').unbind().click(function () {
             if(data.status == '0'){
                 toastr['success']('디바이스 정보를 지웠습니다');
                 $('#device_info').empty();
-                $('#device_info').innerHTML = '등록된 디바이스 정보가 없습니다';
+                $('#device_info').html('등록된 디바이스 정보가 없습니다');
                 $('table #deleteDevice').remove();
             }
         }
