@@ -126,7 +126,7 @@ var book_category = {
 };
 
 
-$('ul.nav-pills li').click(function(){
+$('ul.nav-pills li').unbind().click(function(){
     var index = $(this).index();
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');
@@ -154,7 +154,7 @@ function loadapplylist(flag){
         htmlString += '</tbody>';
         $('table#applyTable').html(htmlString);
 
-        $('table tbody#applyTableData tr').click(function(){
+        $('table tbody#applyTableData tr').unbind().click(function(){
             $(this).toggleClass('warning');
             $('#checkSum').text(calSum(datalist) + '원');
         });
@@ -166,7 +166,7 @@ function loadapplylist(flag){
 }
 
 function down2excelButton(datalist){
-    $('button#down2excel').click(function(){
+    $('button#down2excel').unbind().click(function(){
 
         var workbook = new $.ig.excel.Workbook($.ig.excel.WorkbookFormat.excel2007);
         var sheet = workbook.worksheets().add('도서신청 목록');

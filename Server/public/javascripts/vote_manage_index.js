@@ -55,7 +55,7 @@ function getVoteList(type){
     });
 }
 
-$('#add').click(function(){
+$('#add').unbind().click(function(){
     itemCount = 0;
     var tbodyString = '<div class="modal-body"><input id="title" type="text" placeholder="무엇을 물어볼까요?"><input id="content" type="text" placeholder="내용"><div id="multi">';
     tbodyString += '<input type="checkbox" id="Multiple" class="checkbox" name="multiple" value="multiple">';
@@ -75,7 +75,7 @@ $('.modal-body').on('click','#addItem',function(){
     document.getElementById('items').appendChild(childContent);
 });
 
-$('#voteAdd').click(function(){
+$('#voteAdd').unbind().click(function(){
     var title = $('#title').val();
     var content = $('#content').val();
     var items = new Array();
@@ -164,7 +164,7 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
     });
 });
 
-$('#delete').click(function(){
+$('#delete').unbind().click(function(){
     var vid = $(this).attr('number');
     var send = {
         id:vid

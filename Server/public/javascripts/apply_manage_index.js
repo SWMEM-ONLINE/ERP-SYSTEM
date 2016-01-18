@@ -91,7 +91,7 @@ function deleteRow(obj){
     table.deleteRow(index);
 }
 
-$('#submit_data').click(function(){
+$('#submit_data').unbind().click(function(){
     var date;
     var content;
     var link;
@@ -185,7 +185,7 @@ $('#history tbody').on('click','tr:not(.empty)',function () {
     $('div.modal').modal();
 });
 
-$('#delete').click(function(){
+$('#delete').unbind().click(function(){
     var id = $('.modal-body .hidden').html();
     var type = $('#edit').attr('number');
     $.post('/apply/delete/'+type,{delete_id:id}, function(data){
@@ -198,7 +198,7 @@ $('#delete').click(function(){
     });
 });
 
-$('#edit').click(function(){
+$('#edit').unbind().click(function(){
     var id = $('.modal-body .hidden').html();
     var edit_date = $('#edit_date').val();
     var edit_content = $('#edit_content').val();

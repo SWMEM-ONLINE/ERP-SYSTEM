@@ -118,7 +118,7 @@ var flag_category = 0;                                                  // This 
 var category = ['b_name', 'b_author', 'b_publisher'];                   // Dropdown contents
 var flag = 0;
 
-$('ul.nav-pills li').click(function(){
+$('ul.nav-pills li').unbind().click(function(){
     var index = $(this).index();
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');
@@ -129,7 +129,7 @@ $('ul.nav-pills li').click(function(){
 
 loadbooklist(0);
 
-$('#categoryDropdown li a').click(function(){
+$('#categoryDropdown li a').unbind().click(function(){
     $('#seriesDropdown').on("hide.bs.dropdown");
     $('#bookSearchCategory').html($(this).html());
     flag_category = $(this).parent().index();
@@ -143,7 +143,7 @@ $('#bookSearchWords').keydown(function(){
     }
 });
 
-$('#bookSearchBtn').click(function() {
+$('#bookSearchBtn').unbind().click(function() {
     var searchWords = $('#bookSearchWords').val();                  // Get typing data in textbox
     if (searchWords.length == 0) {                                  // type nothing situation
         toastr['error']('검색어를 입력해주세요');
@@ -178,7 +178,7 @@ function settingHTML(datalist){
     });
     htmlString += '</tbody>';
     $('table#booklist').html(htmlString);
-    $('table tbody#booklistData tr').click(function(){
+    $('table tbody#booklistData tr').unbind().click(function(){
         $(this).toggleClass('warning');
     });
 }

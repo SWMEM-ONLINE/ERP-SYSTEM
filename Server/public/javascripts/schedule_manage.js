@@ -107,7 +107,7 @@ function generateHtml(datalist){
 }
 
 function clickEvent(datalist){
-    $('table tbody#scheduleList tr').click(function(){
+    $('table tbody#scheduleList tr').unbind().click(function(){
         var idx = $(this).index();
         var s_date = makeDateformat(datalist[idx].s_start_date);
         var e_date = makeDateformat(datalist[idx].s_end_date);
@@ -132,7 +132,7 @@ function clickEvent(datalist){
 
 
 
-$('button#addSchedule').click(function(){
+$('button#addSchedule').unbind().click(function(){
     flag = 0;
 
     $('.modal-title').text('스케줄 등록');
@@ -146,7 +146,7 @@ $('button#addSchedule').click(function(){
 });
 
 function enrollButton(){
-    $('button#enroll').click(function(){
+    $('button#enroll').unbind().click(function(){
         var content = $('#title').val();
         var start = $('#startTime').val();
         var end = $('#endTime').val();
@@ -171,7 +171,7 @@ function enrollButton(){
 }
 
 function deleteButton(){
-    $('button#delete').click(function(){
+    $('button#delete').unbind().click(function(){
         var sendData = {
             schedule_id : s_id
         };

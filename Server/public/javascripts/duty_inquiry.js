@@ -38,7 +38,7 @@ $('.datepicker').on('changeDate',function(event){
 var flag = 0 ;
 var prevEvent = null;
 
-$('#toggle').click(function(){
+$('#toggle').unbind().click(function(){
 
     // ALL 보기
     if(flag==0){

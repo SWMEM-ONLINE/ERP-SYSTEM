@@ -123,13 +123,13 @@ function memberSelect(obj){
     $('div.modal').modal();
 }
 
-$('#selectAll').click(function(){
+$('#selectAll').unbind().click(function(){
     $("input[name='memberCheck[]']").each(function () {
         $(this).attr('checked',true);
     });
 });
 
-$('#select').click(function(){
+$('#select').unbind().click(function(){
     var mem = new Array();
     var name = new Array();
     $("input[name='memberCheck[]']").each( function () {
@@ -151,7 +151,7 @@ $('#select').click(function(){
     $('div.modal').modal('hide');
 });
 
-$('#submit').click(function(){
+$('#submit').unbind().click(function(){
     var date;
     var type;
     var content;

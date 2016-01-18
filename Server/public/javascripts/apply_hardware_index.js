@@ -74,7 +74,7 @@ function deleteRow(obj){
     table.deleteRow(index);
 }
 
-$('#submit').click(function(){
+$('#submit').unbind().click(function(){
     var Projectname;
     var Use;
     var Type;

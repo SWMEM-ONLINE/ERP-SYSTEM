@@ -23,7 +23,7 @@ toastr.options = {
     "hideMethod": "fadeOut"
 };
 
-$('#categoryDropdown li a').click(function(){               // Select Category to Search.
+$('#categoryDropdown li a').unbind().click(function(){               // Select Category to Search.
     $('#bookSearchCategory').html($(this).html());
     mode = $(this).parent().index();
 });
@@ -37,7 +37,7 @@ $('#newbookSearchWords').keydown(function(){
 });
 
 
-$('#newbookSearchBtn').click(function() {
+$('#newbookSearchBtn').unbind().click(function() {
     var s_searchWords = $('#newbookSearchWords').val();
     if (s_searchWords.length == 0) {
         toastr['info']('검색어를 입력해주세요');
@@ -103,7 +103,7 @@ function settingHTML(datalist, pageIndex, totalResults, searchWords, searchCateg
 
             $('.pagination li:nth-child(' + pageIndex + ')').addClass('active');
 
-            $('.pagination li').click(function(){
+            $('.pagination li').unbind().click(function(){
                 var index = $(this).index();
                 getInterparklist(index+1, searchWords, searchCategory);
             });
@@ -117,7 +117,7 @@ function settingHTML(datalist, pageIndex, totalResults, searchWords, searchCateg
 }
 
 function clickEvent(datalist, pageIndex, totalResults, searchWords, searchCategory){
-    $('tr').click(function() {
+    $('tr').unbind().click(function() {
         var index = $(this).index();
         var string = '';
         string += '<img class="bookLargeImg" src="' + datalist[index].coverLargeUrl + '"/>';

@@ -205,7 +205,7 @@ $("#showresult").click(function(){
 
 
 
-$("#request").click(function() {
+$("#request").unbind().click(function() {
 
     var sendData ={};
 
@@ -316,7 +316,7 @@ $('.datepicker').on('changeDate',function(event){
 
 
 
-$('#user_1').click(function(){
+$('#user_1').unbind().click(function(){
     $(this).toggleClass('warning');
     $('#user_2').removeClass('warning');
     $('#user_3').removeClass('warning');
@@ -327,7 +327,7 @@ $('#user_1').click(function(){
 });
 
 
-$('#user_2').click(function(){
+$('#user_2').unbind().click(function(){
     $(this).toggleClass('warning');
     $('#user_1').removeClass('warning');
     $('#user_3').removeClass('warning');
@@ -338,7 +338,7 @@ $('#user_2').click(function(){
 });
 
 
-$('#user_3').click(function(){
+$('#user_3').unbind().click(function(){
     $(this).toggleClass('warning');
     $('#user_1').removeClass('warning');
     $('#user_2').removeClass('warning');
@@ -349,7 +349,7 @@ $('#user_3').click(function(){
 });
 
 
-$('#user_4').click(function(){
+$('#user_4').unbind().click(function(){
     $(this).toggleClass('warning');
     $('#user_1').removeClass('warning');
     $('#user_2').removeClass('warning');
@@ -403,7 +403,7 @@ function generateMyDuty(response){
 
 function clickEvent(response){
 
-    $('#memberList tr').click(function(){
+    $('#memberList tr').unbind().click(function(){
         $('#memberList tr').removeClass('warning');
         $(this).toggleClass('warning');
         var index = $(this).index();

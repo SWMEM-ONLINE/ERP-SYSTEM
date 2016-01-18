@@ -234,7 +234,7 @@ function detailButton(datalist){            // 자세히 보기 버튼
 
 function down2excelButton(datalist){         // 엑셀로 저장 버튼
 
-    $('button#down2excel').click(function(){
+    $('button#down2excel').unbind().click(function(){
 
 
         var workbook = new $.ig.excel.Workbook($.ig.excel.WorkbookFormat.excel2007);

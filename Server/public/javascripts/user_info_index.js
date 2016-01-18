@@ -62,7 +62,7 @@ $('#mail').click(function(){
     }
 });
 
-$('#device').click(function(){
+$('#device').unbind().click(function(){
     if($('#device').hasClass('prohibit')){
         var send = {
             type:1,
@@ -99,7 +99,7 @@ $('#device').click(function(){
     }
 });
 
-$('#deleteDevice').click(function () {
+$('#deleteDevice').unbind().click(function () {
     $.ajax({
         type:'post',
         url:'/user/info/deleteDevice',

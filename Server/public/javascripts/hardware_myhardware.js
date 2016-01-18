@@ -20,7 +20,7 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
-$('ul.nav-pills li').click(function(){          // Divide Normal or Special Hardware
+$('ul.nav-pills li').unbind().click(function(){          // Divide Normal or Special Hardware
     var index = $(this).index();
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');

@@ -133,7 +133,7 @@ function reloadList(data){
     });
 }
 
-$('#search').click(function(){
+$('#search').unbind().click(function(){
     var arr = new Array();
     searchName = $('#searchName').val();
     arr.push(selectTerm);
@@ -207,7 +207,7 @@ $('#memberList tbody').on('click','tr:not(.empty)',function () {
     $('div.modal').modal();
 });
 
-$('#pay').click(function(){
+$('#pay').unbind().click(function(){
     if(!$('#pay').hasClass('disabled')) {
         var payId = $('.modal-body table').attr('id');
         var data = {id: payId};
@@ -233,7 +233,7 @@ $('#pay').click(function(){
     }
 });
 
-$('#delete').click(function(){
+$('#delete').unbind().click(function(){
     var deleteId = $('.modal-body table').attr('id');
     var data = {id:deleteId};
     $.ajax({

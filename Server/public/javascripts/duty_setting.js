@@ -64,7 +64,7 @@ $('.datepicker').on('changeDate',function(event){
 });
 
 
-$("#setting").click(function (){
+$("#setting").unbind().click(function (){
 
     $("#setting").addClass("hidden");
 
@@ -114,13 +114,13 @@ $("#setting").click(function (){
 });
 
 
-$('#duty_count li a').click(function(){
+$('#duty_count li a').unbind().click(function(){
     duty_count = $(this).parent().index()+1;
     $('#duty_button').html(duty_count +"");
     isSelected();
 });
 
-$('#bad_duty_count li a').click(function(){
+$('#bad_duty_count li a').unbind().click(function(){
     bad_duty_count = $(this).parent().index();
     $('#bad_duty_button').html(bad_duty_count+"");
     isSelected();

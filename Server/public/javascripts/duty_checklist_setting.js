@@ -26,7 +26,7 @@ var dayList = ["일","월","화","수","목","금","토"];
 
 loadNormalCheckList();
 
-$('ul.nav-pills li').click(function(){          // Divide Normal or Special Hardware
+$('ul.nav-pills li').unbind().click(function(){          // Divide Normal or Special Hardware
     var index = $(this).index();
     $('ul.nav-pills li').removeClass('active');
     $(this).addClass('active');
@@ -48,12 +48,12 @@ $('ul.nav-pills li').click(function(){          // Divide Normal or Special Hard
     }
 });
 
-$('#add_normal_duty').click(function(){
+$('#add_normal_duty').unbind().click(function(){
     addNormalDuty("normal");
 
 });
 
-$('#add_bad_duty').click(function(){
+$('#add_bad_duty').unbind().click(function(){
     addNormalDuty("bad");
 
 });
@@ -210,7 +210,7 @@ function badGenarateHtml(res){
 
 function addClickEvent(res,type){
 
-    $('.list tr').click(function(){
+    $('.list tr').unbind().click(function(){
 
         var index = $(this).index() - 1;
         var data = res[index];
@@ -259,7 +259,7 @@ function genarateModal(data, type){
     $("#modal_section").val(section);
     $("#modal_content").val(content);
 
-    $('#modal_dropdown li a').click(function(){
+    $('#modal_dropdown li a').unbind().click(function(){
         $('#modal_Button').html($(this).html());
         idx = $(this).parent().index();
         if(type == "normal"){
@@ -271,7 +271,7 @@ function genarateModal(data, type){
 
     });
 
-    $("#modify").click(function(){
+    $("#modify").unbind().click(function(){
 
 
 
@@ -318,7 +318,7 @@ function genarateModal(data, type){
     });
 
 
-    $("#delete").click(function(){
+    $("#delete").unbind().click(function(){
 
         sendData.index = index;
 
@@ -353,7 +353,7 @@ function genarateModal(data, type){
         $("#modify").unbind("click");
     });
 
-    $("#cancel").click(function(){
+    $("#cancel").unbind().click(function(){
 
         $(".modal").modal('hide');
         $("#add").unbind("click");
@@ -412,7 +412,7 @@ function addNormalDuty(type){
     $("#modal_content").val("");
 
 
-    $('#modal_dropdown li a').click(function(){
+    $('#modal_dropdown li a').unbind().click(function(){
         $('#modal_Button').html($(this).html());
         idx = $(this).parent().index();
         if(type == "normal"){
@@ -424,7 +424,7 @@ function addNormalDuty(type){
 
     });
 
-    $("#add").click(function(){
+    $("#add").unbind().click(function(){
 
         sendData.section = $("#modal_section").val();
         sendData.content = $("#modal_content").val();
@@ -476,7 +476,7 @@ function addNormalDuty(type){
     });
 
 
-    $("#cancel").click(function(){
+    $("#cancel").unbind().click(function(){
 
         $(".modal").modal('hide');
         $("#delete").unbind("click");

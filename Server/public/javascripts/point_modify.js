@@ -33,7 +33,7 @@ $.post('/duty/getAddPoint', function(res){
 
 var select_mode = 0;
 
-$('#mode-dropdown li a').click(function(){
+$('#mode-dropdown li a').unbind().click(function(){
     //$('#seriesDropdown').on("hide.bs.dropdown");
     $('#mode-button').html($(this).html());
     select_mode = $(this).parent().index();
@@ -96,7 +96,7 @@ function generateHtml(response){
 }
 
 function clickEvent(response){
-    $('tr').click(function() {
+    $('tr').unbind().click(function() {
 
         var index = $(this).index();        // catch 'index' which user clicked
         var htmlString = '';

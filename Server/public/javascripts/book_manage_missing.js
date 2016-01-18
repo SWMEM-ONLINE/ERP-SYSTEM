@@ -32,7 +32,7 @@ function loadmissingBook(){
         });
         htmlString += '</tbody>';
         $('#missingbookTable').html(htmlString);
-        $('#tData tr').click(function(){
+        $('#tData tr').unbind().click(function(){
             $(this).toggleClass('warning');
         });
 

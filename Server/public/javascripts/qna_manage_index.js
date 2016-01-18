@@ -156,7 +156,7 @@ $('#commentEnter').on('click',function(){
 });
 
 
-$('#solve').click(function(){
+$('#solve').unbind().click(function(){
     var data = {
         q_id:document.getElementById('solve').getAttribute('value'),
         state:1

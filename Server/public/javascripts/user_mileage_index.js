@@ -148,7 +148,7 @@ function enrollButton(datalist){
 function getmileageHistory(){
     $.post('/user/mileage_history', function(datalist){
         historyView(datalist);
-        $('#m_historyTable tr').click(function(){
+        $('#m_historyTable tr').unbind().click(function(){
             $(this).toggleClass('warning');
         });
         deleteButton(datalist);

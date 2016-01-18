@@ -192,7 +192,7 @@ function refresh(vid,total,type){
     });
 }
 
-$('#save').click(function(){
+$('#save').unbind().click(function(){
     var id = document.getElementById('save').getAttribute('number');
     var itemid = new Array();
     $('input:checked').map(function(){
@@ -219,7 +219,7 @@ $('#save').click(function(){
     });
 });
 
-$('#resave').click(function(){
+$('#resave').unbind().click(function(){
     var id = document.getElementById('resave').getAttribute('number');
     var itemid = new Array();
     var origin = new Array();
@@ -273,13 +273,13 @@ $('#resave').click(function(){
     }
 });
 
-$('#vote').click(function(){
+$('#vote').unbind().click(function(){
     $('label.input-label').removeClass('hidden');
     $('#vote').addClass('hidden');
     $('#save').removeClass('hidden');
 });
 
-$('#revote').click(function(){
+$('#revote').unbind().click(function(){
     $('label.input-label').removeClass('hidden');
     $('#revote').addClass('hidden');
     $('#resave').removeClass('hidden');

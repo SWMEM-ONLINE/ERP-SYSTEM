@@ -59,7 +59,7 @@ function loadlifeEvaluation(){
 }
 
 function loadhistoryButton(){
-    $('button#showhistoryButton').click(function(){
+    $('button#showhistoryButton').unbind().click(function(){
         $('.modal-title').text('과거등급 보기');
         $.post('/user/load_pastlifeEval', function(datalist){
             var modalString = '<table class="table table-striped table-condensed">';
@@ -76,7 +76,7 @@ function loadhistoryButton(){
 }
 
 function newlifeEvalButton(dataset, cut_A, cut_B){
-    $('button#addevalButton').click(function(){
+    $('button#addevalButton').unbind().click(function(){
         total = 0;
         $('.modal-title').text('생활등급 추가');
         var modalString = '<table id="temp" class="table table-striped table-condensed">';
@@ -98,7 +98,7 @@ function newlifeEvalButton(dataset, cut_A, cut_B){
 }
 
 function altercutButton(cut_A, cut_B){
-    $('button#altercutButton').click(function(){
+    $('button#altercutButton').unbind().click(function(){
         $('.modal-title').text('등급컷 변경하기');
         var modalString = '<table class="table table-striped table-condensed">';
         modalString += '<tr><th>등급</th><th>기준</th></tr>';
@@ -114,7 +114,7 @@ function altercutButton(cut_A, cut_B){
 }
 
 function enrollButton(){
-    $('button#enrollLifeeval').click(function(){
+    $('button#enrollLifeeval').unbind().click(function(){
 
         var datalist = new Array();
 
@@ -156,7 +156,7 @@ function enrollButton(){
 }
 
 function alterButton(alter_A, alter_B){
-    $('button#alterCut').click(function() {
+    $('button#alterCut').unbind().click(function() {
         var state = true;
 
         if(!$.isNumeric(alter_A) || !$.isNumeric(alter_B)){

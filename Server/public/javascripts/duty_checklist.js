@@ -22,7 +22,7 @@ var flag= 0;
 
 loadNormalCheckList();
 
-$("#toggleButton").click(function(){
+$("#toggleButton").unbind().click(function(){
 
     // 벌당직 소환
     if(flag ==0){
@@ -89,12 +89,12 @@ function loadNormalCheckList(){
 
 function addClickEvent(){
 
-    $('tbody tr').click(function(){
+    $('tbody tr').unbind().click(function(){
 
         $(this).toggleClass("warning");
     });
 
-    $('tfoot tr').click(function(){
+    $('tfoot tr').unbind().click(function(){
 
         $(this).toggleClass("warning");
     });

@@ -35,14 +35,14 @@ var select_mode;
 loadMemberList();
 
 
-$('#mode-dropdown li a').click(function(){
+$('#mode-dropdown li a').unbind().click(function(){
     //$('#seriesDropdown').on("hide.bs.dropdown");
     $('#mode-button').html($(this).html());
     select_mode = $(this).parent().index();
 });
 
 
-$("#send").click(function(){
+$("#send").unbind().click(function(){
 
     var currentDate = new Date();
     var point  = $("#point").val();
@@ -183,7 +183,7 @@ function generateMemberTable(res){
 
 function clickEvent(response){
 
-    $("#memberList td").click(function(){
+    $("#memberList td").unbind().click(function(){
         var index = $(this).attr('id')
         $(this).toggleClass('warning');
 

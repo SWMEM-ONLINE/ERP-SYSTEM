@@ -57,7 +57,7 @@ function settingHTML(datalist){
     Make modal html string named 'string' and show each hardware's lenders with table.
  */
 function clickEvent(datalist){
-    $('tr').click(function() {
+    $('tr').unbind().click(function() {
         var index = $(this).index();        // catch 'index' which user clicked
         var string = '';
         if(datalist[index].h_remaining === 0){      // #remaining Hardware is not exist

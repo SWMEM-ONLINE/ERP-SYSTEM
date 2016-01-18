@@ -103,7 +103,7 @@ function expense(string){
     $(type).html($(drop).children('a').html());
 }
 
-$('#submit').click(function(){
+$('#submit').unbind().click(function(){
     var date ;
     var content;
     var price;
@@ -241,7 +241,7 @@ $('#registerList').on('click','tr:not(.empty)',function(){
     $('div.modal').modal();
 });
 
-$('#deleteHistory').click(function(){
+$('#deleteHistory').unbind().click(function(){
     var id = this.id.substr(3);
     $.post('/fee/deleteFeeManage',{id:id},function(response){
         if(response.status == '0'){

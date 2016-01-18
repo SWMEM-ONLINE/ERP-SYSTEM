@@ -82,7 +82,7 @@ function commentList(q_id){
     });
 }
 
-$('#submit').click(function(){
+$('#submit').unbind().click(function(){
     var title = $('#title').val();
     var qna = $('#qna').val();
     if(title != '' && qna != '') {

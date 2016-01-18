@@ -104,7 +104,7 @@ $('#memberList').on('click','td',function(){
     });
 });
 
-$('#reset').click(function(){
+$('#reset').unbind().click(function(){
     var u_id = $('div.modal #id').html();
     var send = {
         u_id:u_id
@@ -122,14 +122,14 @@ $('#reset').click(function(){
     });
 });
 
-$('ul#toggleAdmin li').click(function(){
+$('ul#toggleAdmin li').unbind().click(function(){
     var index = $(this).attr('id');
     selectedadmin = index.substring(4);
     $('#selectAdmin').text(degree[selectedadmin] + '(으)로 전환');
     document.getElementById('selectAdmin').setAttribute('number',selectedadmin);
 });
 
-$('#save').click(function(){
+$('#save').unbind().click(function(){
     var setDegree =  document.getElementById('selectAdmin').getAttribute('number');
     if(setDegree == 0){
 
