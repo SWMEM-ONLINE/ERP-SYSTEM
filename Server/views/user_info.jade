@@ -50,15 +50,15 @@ block content
                            td 디바이스 정보
                            if row.u_device != ''
                               if row.u_push_flag == true
-                                 td
+                                 td#device_info
                                     button.btn#device #{row.u_device}
                               else
-                                 td
+                                 td#device_info
                                     button.btn.prohibit#device #{row.u_device}
                               td
                                  button#deleteDevice.btn.delete 삭제
                            else
-                              td 등록된 디바이스 정보가 없습니다
+                              td#device_info 등록된 디바이스 정보가 없습니다
          .card
             .edit-content
                form#form(method='post', enctype='multipart/form-data', action='/user/info/edit')
