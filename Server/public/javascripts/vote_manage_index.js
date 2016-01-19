@@ -143,6 +143,8 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
     $('#editVote .modal-title').text(arr[0]);
     var tbodyString = '';
     console.log(arr);
+    var total = parseInt(arr[2].substr(2));
+    console.log(total);
     $.ajax({
         type:'post',
         url:'/vote/getVoteInfo',
@@ -151,7 +153,7 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
         success:function(response) {
 
             for(var i=0;i<response.length;i++){
-                var persentage =Math.round((response[i].vi_cnt / arr[2])*100)/100 * 100;
+                var persentage =Math.round((response[i].vi_cnt / total)*100)/100 * 100;
 
                 tbodyString += '<div id="'+response[i].vi_id+'" class="progress"><div style="position: absolute; width:100%;"><div style="float:left; margin-left:10px;">'+response[i].vi_title+'</div><div style="float:right; margin-right:50px;"><i class="glyphicon glyphicon-user"></i><span>'+response[i].vi_cnt+'</span></div></div><div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%;"></div></div>';
 
