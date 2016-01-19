@@ -11,6 +11,7 @@ var crypto = require('crypto');
 var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var cronJob = require('./routes/job_scheduler');
 
 /* @routing pages */
 //var login = require('./routes/login');
@@ -208,5 +209,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+cronJob.startCronJob();
 
 module.exports = app;

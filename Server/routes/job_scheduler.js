@@ -17,32 +17,35 @@ var CronJob = require('cron').CronJob;
 
  */
 
-// "0 30 20 * * *" 매일 8시 30분마다 실행되는 부분
-new CronJob('0 0 0 * * *', function() {
-    console.log('매일 08시 30분 00초');
-    handler.nextDayDuty();
-}, null, true, 'Asia/Seoul');
 
+function startCronJob(){
+
+    console.log("cronJobStart");
+
+    // "0 30 20 * * *" 매일 8시 30분마다 실행되는 부분
+    new CronJob('0 30 20 * * *', function() {
+        console.log('매일 08시 30분 00초');
+        handler.nextDayDuty();
+    }, null, true, 'Asia/Seoul');
 
 
 // "0 0 0 * * *" 매일 열두시마다 실행되는 부분
-new CronJob('0 0 0 * * *', function() {
-    console.log('매일 00시 00분 00초');
-    handler.hardware_remaining();
-    handler.book_remaining();
-    handler.fee_carry();
-    handler.vote_complete();
-}, null, true, 'Asia/Seoul');
+    new CronJob('0 0 0 * * *', function() {
+        console.log('매일 00시 00분 00초');
+        handler.hardware_remaining();
+        handler.book_remaining();
+        handler.vote_complete();
+    }, null, true, 'Asia/Seoul');
 
 
 
 // "0 0 1 * *" 매달한번
-new CronJob('0 0 0 1 * *', function() {
-    console.log('매달 1일 00시 00분 00초');
+    new CronJob('0 0 0 1 * *', function() {
+        console.log('매달 1일 00시 00분 00초');
+        handler.fee_carry();
 
+    }, null, true, 'Asia/Seoul');
 
+}
 
-
-}, null, true, 'Asia/Seoul');
-
-
+exports.startCronJob = startCronJob;
