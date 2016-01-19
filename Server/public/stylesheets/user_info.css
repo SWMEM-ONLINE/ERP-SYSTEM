@@ -93,9 +93,12 @@ table th{
     text-align: left;
 }
 
-button.prohibit,button.prohibit:hover,button.prohibit:active,button.prohibit:focus{
-    background-color: #dfdfdf;
-    color: #122359;
+button.prohibit{
+    background-color: #ff000d; !important;
+}
+
+button.access{
+    background-color: #196d26;
 }
 
 @media(min-width:993px){

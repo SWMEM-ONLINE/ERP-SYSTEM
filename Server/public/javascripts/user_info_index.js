@@ -38,6 +38,8 @@ $('#mail').click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data.status == '0'){
+                    toastr['success']('E-mail 알림 설정');
+                    $('#mail').addClass('access');
                     $('#mail').removeClass('prohibit');
                 }
             }
@@ -55,6 +57,8 @@ $('#mail').click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data.status == '0'){
+                    toastr['success']('E-mail 알림 해제');
+                    $('#mail').removeClass('access');
                     $('#mail').addClass('prohibit');
                 }
             }
@@ -75,7 +79,9 @@ $('#device').unbind().click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data.status == '0'){
+                    toastr['success']('Push 알림 설정');
                     $('#device').removeClass('prohibit');
+                    $('#device').addClass('access');
                 }
             }
         });
@@ -92,7 +98,9 @@ $('#device').unbind().click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data.status == '0'){
+                    toastr['success']('Push 알림 해제');
                     $('#device').addClass('prohibit');
+                    $('#device').removeClass('access');
                 }
             }
         });

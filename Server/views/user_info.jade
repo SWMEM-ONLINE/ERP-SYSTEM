@@ -42,7 +42,7 @@ block content
                            td E-mail
                            td
                               if row.u_mail_flag == true
-                                 button.btn#mail #{row.u_email}
+                                 button.btn.access#mail #{row.u_email}
                               else
                                  button.btn.prohibit#mail #{row.u_email}
                            td
@@ -51,7 +51,7 @@ block content
                            if row.u_device != ''
                               if row.u_push_flag == true
                                  td#device_info
-                                    button.btn#device #{row.u_device}
+                                    button.btn.access#device #{row.u_device}
                               else
                                  td#device_info
                                     button.btn.prohibit#device #{row.u_device}
