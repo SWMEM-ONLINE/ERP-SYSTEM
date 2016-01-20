@@ -96,35 +96,47 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
 router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
 
     var type = req.body.Type;
+    var uId = util.getUserId(req);
 
     var connection = DB_handler.connectDB();
 
-    var query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id';
-
-    if(type == 0){
-        query += ' where v_state != 0';
-    }else if(type == 1){
-        query += ' where v_state = 1';
-    }else if(type == 2){
-        query += ' where v_state = 2';
-    }
-
-    query += ' ORDER BY v_write_date DESC';
-    connection.query(query, function(err,row){
+    var query = 'select u_register_date from t_user where u_id = "'+uId+'"';
+    connection.query(query, function(err,row1) {
         if (err) {
             console.error(err);
             return res.json({status:'101'});
         }
-        else{
-            for(var i=0 ; i<row.length ; i++){
-                row[i].v_due_date = util.convertDate(getDate(row[i].v_write_date, 14));
-            }
+        var userRegiDate = util.convertDate(row1[0].u_register_date);
 
-            var rows = JSON.stringify(row);
-            return res.json(JSON.parse(rows));
+        query = 'select a.*, b.u_name from t_vote a INNER JOIN t_user b ON a.v_writer = b.u_id where a.v_write_date >= "'+userRegiDate+'"';
+
+        if(type == 0){
+            query += ' AND v_state != 0';
+        }else if(type == 1){
+            query += ' AND v_state = 1';
+        }else if(type == 2){
+            query += ' AND v_state = 2';
         }
-        DB_handler.disconnectDB(connection);
+
+        query += ' ORDER BY v_write_date DESC';
+        console.log(query);
+        connection.query(query, function(err,row){
+            if (err) {
+                console.error(err);
+                return res.json({status:'101'});
+            }
+            else{
+                for(var i=0 ; i<row.length ; i++){
+                    row[i].v_due_date = util.convertDate(getDate(row[i].v_write_date, 14));
+                }
+
+                var rows = JSON.stringify(row);
+                return res.json(JSON.parse(rows));
+            }
+            DB_handler.disconnectDB(connection);
+        });
     });
+
 });
 
 
