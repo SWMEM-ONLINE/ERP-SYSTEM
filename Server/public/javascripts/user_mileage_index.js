@@ -63,6 +63,7 @@ function getUserlist(){
 }
 
 function userlistView(datalist){
+    console.log(datalist);
     var htmlString = '';
     $.each(datalist, function(idx, data){
         htmlString += '<tr><td>' + data.u_period + '</td>';
@@ -173,18 +174,36 @@ function deleteButton(datalist){
         if($('#m_historyTable tr.warning').length === 0){
             toastr['error']('항목을 선택해주세요');
         }else{
-            var deletelist = '';
+            var deletelist = new Array();
+
             $('#m_historyTable tr').each(function(index){
                 if($(this).hasClass('warning')){
-                    deletelist += datalist[0][index].m_id + ',';
+                    var data = {
+                        deleteId: datalist[0][index].m_id,
+                        receiver: datalist[0][index].m_receiver,
+                        point: datalist[0][index].m_point,
+                        type: datalist[0][index].m_type
+                    };
+                    deletelist.push(data);
                 }
             });
-            deletelist = deletelist.substring(0, deletelist.length -1);
 
-            $.post('/user/mileage_delete', {deletelist: deletelist}, function(response){
-                if(response === 'success')  toastr['success']('삭제 성공');
-                else toastr['error']('삭제 실패');
-                getmileageHistory();
+            var tempData = JSON.stringify(deletelist);
+            console.log(tempData);
+            $.ajax({
+                type:'post',
+                url:'/user/mileage_delete',
+                data: tempData,
+                contentType:'application/json',
+                success: function(data){
+                    if(data === 'success'){
+                        toastr['success']('마일리지 히스토리 삭제성공');
+                        getmileageHistory();
+                    }else{
+                        toastr['error']('하드웨어 신청 실패');
+                    }
+                }
+
             });
         }
     });

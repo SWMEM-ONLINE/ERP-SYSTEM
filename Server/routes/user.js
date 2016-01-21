@@ -424,6 +424,7 @@ router.post('/getUserlist', util.ensureAuthenticated, function(req, res, next){
 });
 
 router.post('/mileage_enroll', util.ensureAuthenticated, function(req, res, next){
+    console.log(req.body);
     var classify = req.body.classify;
     var userIdlist = req.body.userIdlist;
     var point = req.body.point;
@@ -466,8 +467,8 @@ router.post('/mileage_enroll', util.ensureAuthenticated, function(req, res, next
 });
 
 router.post('/mileage_history', util.ensureAuthenticated, function(req, res, next){
-    var query = 'select b.u_name,a.* from t_mileage a inner join t_user b on a.m_giver=b.u_id;';
-    query += 'select b.u_name from t_mileage a inner join t_user b on a.m_receiver=b.u_id';
+    var query = 'select b.u_name,a.* from t_mileage a inner join t_user b on a.m_giver=b.u_id order by a.m_id desc;';
+    query += 'select b.u_name from t_mileage a inner join t_user b on a.m_receiver=b.u_id order by a.m_id desc';
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "user.js -> /mileage_history"');
@@ -479,15 +480,31 @@ router.post('/mileage_history', util.ensureAuthenticated, function(req, res, nex
 });
 
 router.post('/mileage_delete', util.ensureAuthenticated, function(req, res, next){
-    var query = 'delete from t_mileage where m_id IN (' + req.body.deletelist + ')';
-    con.query(query, function(err, response){
-        if(err){
-            console.log('DB delete ERROR in "user.js -> /mileage_delete"');
+    var deletelist = req.body;
+    var pointQuery = '';
+    var deleteQuery = '';
+
+    console.log(deletelist);
+    for(var i = 0; i < deletelist.length; i++){
+        if(deletelist[i].type === 'PLUS')   pointQuery += 'update t_user set u_mileage=u_mileage-'+deletelist[i].point + ' where u_id="' + deletelist[i].receiver + '";';
+        else    pointQuery += 'update t_user set u_mileage=u_mileage+' + deletelist[i].point + ' where u_id="' + deletelist[i].receiver + '";';
+        deleteQuery += 'delete from t_mileage where m_id=' + deletelist[i].deleteId +';';
+    }
+    con.query(pointQuery, function(err1, response1){
+        if(err1){
+            console.log('DB update ERROR in "user.js -> /mileage_delete"');
             res.send('failed');
         }else{
-            res.send('success');
+            con.query(deleteQuery, function(err2, response2){
+                if(err2){
+                    console.log('DB delete ERROR in "user.js -> /mileage_delete"');
+                    res.send('failed');
+                }else{
+                    res.send('success');
+                }
+            })
         }
-    })
+    });
 });
 
 module.exports = router;
