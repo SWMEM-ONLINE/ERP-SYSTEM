@@ -63,7 +63,6 @@ function getUserlist(){
 }
 
 function userlistView(datalist){
-    console.log(datalist);
     var htmlString = '';
     $.each(datalist, function(idx, data){
         htmlString += '<tr><td>' + data.u_period + '</td>';

@@ -424,7 +424,6 @@ router.post('/getUserlist', util.ensureAuthenticated, function(req, res, next){
 });
 
 router.post('/mileage_enroll', util.ensureAuthenticated, function(req, res, next){
-    console.log(req.body);
     var classify = req.body.classify;
     var userIdlist = req.body.userIdlist;
     var point = req.body.point;
@@ -484,7 +483,6 @@ router.post('/mileage_delete', util.ensureAuthenticated, function(req, res, next
     var pointQuery = '';
     var deleteQuery = '';
 
-    console.log(deletelist);
     for(var i = 0; i < deletelist.length; i++){
         if(deletelist[i].type === 'PLUS')   pointQuery += 'update t_user set u_mileage=u_mileage-'+deletelist[i].point + ' where u_id="' + deletelist[i].receiver + '";';
         else    pointQuery += 'update t_user set u_mileage=u_mileage+' + deletelist[i].point + ' where u_id="' + deletelist[i].receiver + '";';
