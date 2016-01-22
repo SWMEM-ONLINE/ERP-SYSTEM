@@ -490,4 +490,8 @@ router.post('/mileage_delete', util.ensureAuthenticated, function(req, res, next
     })
 });
 
+router.get('/push', util.ensureAuthenticated, function(req, res, next){
+    res.render('user_push', {title: 'Push 전송', grade: util.getUserGrade(req)});
+});
+
 module.exports = router;
