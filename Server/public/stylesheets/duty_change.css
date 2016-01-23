@@ -5,3 +5,7 @@ div.content input{
     margin-top:10px;
     margin-bottom:10px;
 }
+
+button#change{
+    margin-bottom: 10px;
+}
