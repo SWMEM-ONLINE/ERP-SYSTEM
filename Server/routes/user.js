@@ -215,7 +215,7 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
     if(grade == '104'){
         query += ', u_register_date = NOW()';
     }
-    query += ' where u_id = "'+u_id + '"'
+    query += ' where u_id = "'+u_id + '"';
 
     con.query(query,function(err,rows){
         if (err) {
@@ -503,6 +503,36 @@ router.post('/mileage_delete', util.ensureAuthenticated, function(req, res, next
             })
         }
     });
+});
+
+router.get('/push', util.ensureAuthenticated, function(req, res, next){
+    res.render('user_push', {title: 'Push 전송', grade: util.getUserGrade(req)});
+});
+
+router.post('/push', util.ensureAuthenticated, function(req, res, next){
+    var pushList = req.body.list;
+    var message = req.body.message;
+    var pusher = util.getUserName(req);
+    if(pushList.length == 1){
+        util.send(pushList[0],pusher+'님 알림',message,function(err,data){
+            if (err) {
+                console.log(err);
+                res.json({status:'101'});
+            } else {
+                res.json({status:'0'});
+            }
+        });
+    }
+    else{
+        util.sendList(pushList,pusher+'님 알림',message,function(err,data){
+            if (err) {
+                console.log(err);
+                res.json({status:'101'});
+            } else {
+                res.json({status:'0'});
+            }
+        });
+    }
 });
 
 module.exports = router;

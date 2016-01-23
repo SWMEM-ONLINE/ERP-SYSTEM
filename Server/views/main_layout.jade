@@ -175,6 +175,9 @@ body
                               a(href='/user/finished') 수료 회원 관리
                            li
                               a(href='/user/mileage') 마일리지 관리
+                        if grade < 100
+                           li
+                              a(href='/user/push') Push 전송
                         li.divider
                         li
                            a(href='/logout') 로그아웃

@@ -1,0 +1,24 @@
+//
+   Created by KIMDONGWON on 2016-01-19.
+
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../../stylesheets/user_push.css')
+   link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+block content
+   .wrapper
+      article.container
+         h3 Push 전송
+         hr
+         .content
+            table.table#memberList
+               tbody
+            input#message(type='text' placeholder='메세지를 입력하세요' maxlength='50')
+            button.btn#push(type='button') 전송
+append script
+   script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
+   script(src='../../javascripts/user_push_index.js')

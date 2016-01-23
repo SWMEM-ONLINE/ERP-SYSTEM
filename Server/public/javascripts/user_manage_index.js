@@ -96,6 +96,7 @@ $('#memberList').on('click','td',function(){
             $('div.modal #mail').html(data[0].u_email);
             $('div.modal #type').html(degree[data[0].u_state]);
             $('div.modal #selectAdmin').html('계정 전환');
+            document.getElementById('type').setAttribute('origin',data[0].u_state);
             document.getElementById('profile').setAttribute('src','http://211.189.127.124:3000/image?name='+data[0].u_photo_url);
             //document.getElementById('profile').setAttribute('src','http://www.swmem.org/image?name='+data[0].u_photo_url);
             document.getElementById('selectAdmin').setAttribute('number',0);
@@ -131,6 +132,7 @@ $('ul#toggleAdmin li').unbind().click(function(){
 
 $('#save').unbind().click(function(){
     var setDegree =  document.getElementById('selectAdmin').getAttribute('number');
+    var originDegree = document.getElementById('type').getAttribute('origin');
     if(setDegree == 0){
 
     }
@@ -138,7 +140,8 @@ $('#save').unbind().click(function(){
         var u_id = $('div.modal #id').html();
         var send = {
             grade:setDegree,
-            u_id:u_id
+            u_id:u_id,
+            origin_grade:originDegree
         };
         $.ajax({
             type:'post',

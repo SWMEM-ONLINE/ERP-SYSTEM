@@ -1,0 +1,17 @@
+.table-clickable:hover {
+    background-color: #dddddd;
+    cursor: pointer;
+}
+
+input{
+    text-align: center;
+    width: 100%;
+    border:1px solid #cccccc;
+    height: 36px;
+    border-radius: 4px;
+    margin-bottom:10px;
+}
+
+button#push{
+    margin-bottom:10px;
+}
