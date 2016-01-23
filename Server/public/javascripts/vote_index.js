@@ -215,7 +215,6 @@ $('#save').unbind().click(function(){
             $('#revote').removeClass('hidden');
             $('#save').addClass('hidden');
             refresh(id,total,type);
-            getVoteList(0);
             toastr['success']('투표완료');
         }
     });
@@ -266,7 +265,6 @@ $('#resave').unbind().click(function(){
                 $('#revote').removeClass('hidden');
                 $('#resave').addClass('hidden');
                 refresh(id, total, type);
-                getVoteList(0);
                 toastr['success']('처리완료');
             }
         });
