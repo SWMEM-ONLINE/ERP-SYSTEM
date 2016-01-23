@@ -57,7 +57,7 @@ function getVoteList(type){
 
 $('#add').unbind().click(function(){
     itemCount = 0;
-    var tbodyString = '<div class="modal-body"><input id="title" type="text" placeholder="무엇을 물어볼까요?">';
+    var tbodyString = '<div class="modal-body"><input id="title" type="text" placeholder="무엇을 물어볼까요?" maxlength="20">';
     tbodyString += '<div id="multi">';
     tbodyString += '<input type="checkbox" id="Anonymous" class="checkbox" name="anonymous" value="anonymous">';
     tbodyString += '<label for="Anonymous" class="input-label checkbox"> 익명투표 </label>';
