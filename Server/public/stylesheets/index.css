@@ -73,7 +73,6 @@ div.contents div.content{
     width: 350px;
     background: #fff;
     margin: 0 auto;
-
     text-align: center;
 }
 
@@ -86,11 +85,7 @@ div.contents div.content-signup{
     text-align: center;
 }
 
-div.form-area div.forgot-container{
-    margin-top:0;
-}
-
-div.form-area form.index-form input.input-box{
+input.input-box{
     width: 300px;
     height: 44px;
     border:none;
@@ -101,14 +96,14 @@ div.form-area form.index-form input.input-box{
     transition: 0.5s all;
 }
 
-div.form-area form.index-form input.input-box:focus{
+input.input-box:focus{
     background-color: white;
 }
-div.form-area form.index-form input.input-box:after{
+input.input-box:after{
     background-color: #dfdfdf;
 }
 
-div.form-area button{
+button{
     width: 302px;
     height: 44px;
     border:none;
@@ -118,7 +113,7 @@ div.form-area button{
     margin-bottom:5px;
 }
 
-div.form-area button[type="button"]{
+button[type="button"]{
     margin-bottom: 10px;
 }
 
@@ -131,12 +126,12 @@ input[type=radio] {
     margin:10px;
 }
 
-div.form-area label{
+label{
     margin-bottom: 10px;
     padding-top:10px;
 }
 
-div.form-area label#sign_up_female{
+label#sign_up_female{
     font-size:15px;
     width:150px;
     height: 30px;
@@ -144,7 +139,7 @@ div.form-area label#sign_up_female{
     margin-right: 24px;
     border-left:none;
 }
-div.form-area label#sign_up_male{
+label#sign_up_male{
     font-size:15px;
     width: 152px;
     height: 30px;

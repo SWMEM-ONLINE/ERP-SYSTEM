@@ -20,11 +20,13 @@ toastr.options = {
     'hideMethod': 'fadeOut'
 };
 
-$('#form').submit(function(){
+$('#loginButton').click(function(){
+    var id = $('#login_id').val();
+    var password = $('#login_password').val();
     $.ajax({
-        url: $(this).attr('action'),
+        url: '/',
         type: 'post',
-        data : $(this).serialize(),
+        data : {id:id,password:password},
         success: function(response){
             if(response.state == 404){
                 toastr['error']('ID 혹은 PASSWORD 확인바랍니다');
@@ -35,7 +37,9 @@ $('#form').submit(function(){
             else if(response.state == 105){
                 toastr['info']('수료회원은 이용할수 없습니다');
             }
+            else{
+                location.reload();
+            }
         }
     });
-    return false;
 });

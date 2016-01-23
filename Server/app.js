@@ -174,19 +174,29 @@ app.post('/',
 */
 app.post('/', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-
     console.log('getUserInfo');
     console.log(user);
-    if(!user){
-      //아이디or비번 오류
-      res.send('no id/pw');
+    var send;
+    if(!user){ //id or password error
+      send = {
+        state:404
+      };
+      console.log('id or pw error');
+      res.json(send);
     }
-    console.log(user.grade);
-    if( user.grade < 103 )
-      res.redirect('/main');
-    else
-      res.send(user.grade);//103:비활성화 104:가입대기 105:수료
-
+    else{
+      if(user.grade < 104){
+        console.log('/main');
+        res.redirect('/main');
+      }
+      else{
+        send = {
+          state:user.grade
+        };
+        console.log('not enter');
+        res.json(send); //103:비활성화 104:가입대기 105:수료
+      }
+    }
   })(req, res, next);
 
 });
