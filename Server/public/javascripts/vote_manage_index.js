@@ -57,7 +57,10 @@ function getVoteList(type){
 
 $('#add').unbind().click(function(){
     itemCount = 0;
-    var tbodyString = '<div class="modal-body"><input id="title" type="text" placeholder="무엇을 물어볼까요?"><input id="content" type="text" placeholder="내용"><div id="multi">';
+    var tbodyString = '<div class="modal-body"><input id="title" type="text" placeholder="무엇을 물어볼까요?">';
+    tbodyString += '<div id="multi">';
+    tbodyString += '<input type="checkbox" id="Anonymous" class="checkbox" name="anonymous" value="anonymous">';
+    tbodyString += '<label for="Anonymous" class="input-label checkbox"> 익명투표 </label>';
     tbodyString += '<input type="checkbox" id="Multiple" class="checkbox" name="multiple" value="multiple">';
     tbodyString += '<label for="Multiple" class="input-label checkbox"> 복수선택 </label>';
     tbodyString += '</div><div id="items"><input id="item0" type="text" placeholder="항목 입력"></div><button id="addItem" type="button" class="btn addVote">항목 추가</button></div>';
@@ -77,16 +80,21 @@ $('.modal-body').on('click','#addItem',function(){
 
 $('#voteAdd').unbind().click(function(){
     var title = $('#title').val();
-    var content = $('#content').val();
     var items = new Array();
     var flag = true;
     var multiple;
-
+    var anonymous;
     if($('#Multiple').is(':checked')){
         multiple = 1;
     }
     else{
         multiple = 0;
+    }
+    if($('#Anonymous').is(':checked')){
+        anonymous = 1;
+    }
+    else{
+        anonymous = 0;
     }
 
     for(var i=0;i<=itemCount;i++){
@@ -104,7 +112,7 @@ $('#voteAdd').unbind().click(function(){
     }
     var send = {
         vTitle:title,
-        vContent:content,
+        vAnonymous:anonymous,
         vType:multiple,
         vItems:items
     };
@@ -118,10 +126,10 @@ $('#voteAdd').unbind().click(function(){
             success:function(response) {
                 if (response.status == '0') {
                     $('#addVote div.modal').modal('hide');
-                    toastr['success']('투표 등록');
+                    toastr['success']('투표 생성');
                 }
                 else {
-                    toastr['error']('투표 등록 실패');
+                    toastr['error']('투표 생성 실패');
                 }
                 getVoteList(0);
             }
