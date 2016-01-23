@@ -186,6 +186,7 @@ function refresh(vid,total,type){
                 }
                 tbodyString += '<div id="' + response[i].vi_id + '" class="progress"><div style="position: absolute; width:100%;"><div style="float:left; margin-left:10px;">' + response[i].vi_title + '</div><div style="float:right; margin-right:100px;"><i class="glyphicon glyphicon-user"></i><span>' + response[i].vi_cnt + '</span></div></div><div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: ' + persentage + '%;"></div></div><div>';
             }
+            getVoteList(0);
             $('#voteModal .modal-body').empty();
             $('#voteModal .modal-body').append(tbodyString);
         }
@@ -214,6 +215,7 @@ $('#save').unbind().click(function(){
             $('#revote').removeClass('hidden');
             $('#save').addClass('hidden');
             refresh(id,total,type);
+            getVoteList(0);
             toastr['success']('투표완료');
         }
     });
@@ -264,6 +266,7 @@ $('#resave').unbind().click(function(){
                 $('#revote').removeClass('hidden');
                 $('#resave').addClass('hidden');
                 refresh(id, total, type);
+                getVoteList(0);
                 toastr['success']('처리완료');
             }
         });
