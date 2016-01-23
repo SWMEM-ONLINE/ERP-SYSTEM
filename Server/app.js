@@ -85,8 +85,7 @@ passport.use(new LocalStrategy({
           //비번 체크
           console.log('pw check');
 
-          if(encPW == rows[0].u_password && rows[0].u_state < 104){
-            //성공
+          if(encPW == rows[0].u_password ){
 
             var user = { 'id':rows[0].u_id,
               'password':'',
@@ -100,12 +99,10 @@ passport.use(new LocalStrategy({
             });
 
           }else{
-            db_handler.disconnectDB(connection);
             return done(null,false);
           }
 
         }else{
-          db_handler.disconnectDB(connection);
           return done(null,false);
         }
 
@@ -165,14 +162,45 @@ app.get('/',
       console.log("/로그인");
       res.render('index_login', { title: '로그인' });
     });
-
+/*
 app.post('/',
-    passport.authenticate('local', { failureRedirect: '/', failureFlash: true  }),
+    passport.authenticate('local', { failureRedirect: '/', failureFlash: 'Invalid username or password.'  }),
     function(req, res) {
-
+      console.log('getUserInfo');
+      console.log(util.getUserInfo(req));
       res.redirect('/main');
 
     });
+*/
+app.post('/', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    console.log('getUserInfo');
+    console.log(user);
+    var send;
+    if(!user){ //id or password error
+      send = {
+        state:404
+      };
+      console.log('id or pw error');
+      res.json(send);
+    }
+    else{
+      if(user.grade < 104){
+        console.log('/main');
+        res.redirect('/main');
+      }
+      else{
+        send = {
+          state:user.grade
+        };
+        console.log('not enter');
+        res.json(send); //103:비활성화 104:가입대기 105:수료
+      }
+    }
+  })(req, res, next);
+
+});
+
 
 app.get('/logout', function(req, res){
   req.logout();
