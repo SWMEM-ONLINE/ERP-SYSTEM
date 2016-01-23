@@ -10,3 +10,7 @@ input{
 button#add_normal_duty,button#add_bad_duty{
     margin-bottom:10px;
 }
+
+button#change{
+    margin-bottom: 10px;
+}
