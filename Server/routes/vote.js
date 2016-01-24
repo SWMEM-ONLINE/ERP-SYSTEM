@@ -26,7 +26,6 @@ router.get('/vManage', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next) {
     var title = req.body.vTitle;
-    var content = req.body.vContent;
     var state = 1;                      //0: 삭제, 1: 투표중 2: 투표완료
     var isSecretMode = (req.body.vAnonymous == 1)?true:false;
     var type = req.body.vType;
@@ -51,7 +50,6 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
         var vote = {
             'v_id':0,
             'v_title':title,
-            'v_content':content,
             'v_state':state,
             'v_type':type,
             'v_secret':isSecretMode,
