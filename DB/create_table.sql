@@ -273,7 +273,7 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     PRIMARY KEY (`index`)
   );
 
-
+DROP TABLE IF EXISTS `t_qna`;
   CREATE TABLE t_qna (
     q_id int NOT NULL auto_increment primary key,
     q_title VARCHAR(200),
@@ -283,7 +283,7 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     q_write_date VARCHAR(20),
     FOREIGN KEY(q_writer) REFERENCES t_user(u_id));
 
-
+DROP TABLE IF EXISTS `t_qna_reply`;
     CREATE TABLE t_qna_reply (
     qr_id int,
     qr_content VARCHAR(200),
@@ -292,6 +292,7 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     FOREIGN KEY(qr_id) REFERENCES t_qna(q_id),
     FOREIGN KEY(qr_writer) REFERENCES t_user(u_id));
 
+DROP TABLE IF EXISTS `t_apply`;
     CREATE TABLE t_apply(
     	a_id int NOT NULL auto_increment primary key,
     	a_apply_type int,
@@ -303,6 +304,7 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     	a_writer VARCHAR(20),
       	FOREIGN KEY(a_writer) REFERENCES t_user(u_id));
 
+DROP TABLE IF EXISTS `t_life`;
     CREATE TABLE t_life (
       l_id int NOT NULL auto_increment primary key,
       l_year VARCHAR(5),
@@ -327,12 +329,14 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
       l_grade VARCHAR(5) default '-'
      );
 
+DROP TABLE IF EXISTS `t_life_cut`;
     CREATE TABLE t_life_cut (
       lc_id int NOT NULL auto_increment primary key,
       lc_a int,
       lc_b int
     );
 
+DROP TABLE IF EXISTS `t_schedule`;
     CREATE TABLE t_schedule (
         s_id int NOT NULL auto_increment primary key,
         s_title VARCHAR(50) NOT NULL,
@@ -343,6 +347,7 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
         FOREIGN KEY(s_enroll_user) REFERENCES t_user(u_id)
     );
 
+DROP TABLE IF EXISTS `t_vote`;
   CREATE TABLE t_vote (
     v_id int NOT NULL auto_increment primary key,
     v_title VARCHAR(200),
@@ -356,6 +361,8 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     v_write_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(v_writer) REFERENCES t_user(u_id));
 
+
+DROP TABLE IF EXISTS `t_vote_item`;
 CREATE TABLE t_vote_item (
     vi_id int NOT NULL auto_increment primary key,
     vi_pid int,
@@ -363,6 +370,7 @@ CREATE TABLE t_vote_item (
     vi_cnt int,
     FOREIGN KEY(vi_pid) REFERENCES t_vote(v_id));
 
+DROP TABLE IF EXISTS `t_vote_user`;
 CREATE TABLE t_vote_user (
     vu_id int NOT NULL auto_increment primary key,
     vu_pid int,
@@ -370,6 +378,7 @@ CREATE TABLE t_vote_user (
     FOREIGN KEY(vu_pid) REFERENCES t_vote_item(vi_id),
     FOREIGN KEY(vu_voter) REFERENCES t_user(u_id));
 
+DROP TABLE IF EXISTS `t_mileage`;
 CREATE TABLE t_mileage (
     m_id int NOT NULL auto_increment primary key,
     m_point int,
