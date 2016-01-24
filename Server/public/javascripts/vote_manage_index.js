@@ -150,24 +150,24 @@ $('#voteList tbody').on('click','tr:not(.empty)',function(){
 
     $('#editVote .modal-title').text(arr[0]);
     var tbodyString = '';
-    console.log(arr);
     var total = parseInt(arr[2].substr(2));
-    console.log(total);
     $.ajax({
         type:'post',
         url:'/vote/getVoteInfo',
         data:JSON.stringify(send),
         contentType:'application/json',
         success:function(response) {
+            var list = response.list;
+            var isSecret = response.secret;
+            for(var i=0;i<list.length;i++){
+                var persentage =Math.round((list[i].vi_cnt / total)*100)/100 * 100;
 
-            for(var i=0;i<response.length;i++){
-                var persentage =Math.round((response[i].vi_cnt / total)*100)/100 * 100;
-
-                tbodyString += '<div id="'+response[i].vi_id+'" class="progress"><div style="position: absolute; width:100%;"><div style="float:left; margin-left:10px;">'+response[i].vi_title+'</div><div style="float:right; margin-right:50px;"><i class="glyphicon glyphicon-user"></i><span>'+response[i].vi_cnt+'</span></div></div><div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%;"></div></div>';
+                tbodyString += '<div id="'+list[i].vi_id+'" class="progress"><div style="position: absolute; width:100%;"><div style="float:left; margin-left:10px;">'+list[i].vi_title+'</div><div style="float:right; margin-right:50px;"><i class="glyphicon glyphicon-user"></i><span>'+list[i].vi_cnt+'</span></div></div><div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+persentage+'%;"></div></div>';
 
             }
             $('#editVote .modal-body').empty();
             $('#editVote .modal-body').append(tbodyString);
+            document.getElementById('editVote').setAttribute('isSecret',isSecret);
             document.getElementById('delete').setAttribute('number',vid);
             $('#editVote div.modal').modal();
         }
@@ -200,27 +200,30 @@ $('#delete').unbind().click(function(){
 
 $('#editVote').on('click','.progress',function(){
     var id = $(this).attr('id');
+    var isSecret = document.getElementById('editVote').getAttribute('isSecret');
     var tbodyString = '';
     var send = {
         vItemId:id
     };
-    $.ajax({
-        type:'post',
-        url:'/vote/getVoteUserList',
-        data:JSON.stringify(send),
-        contentType:'application/json',
-        success:function(response) {
-            if(response.length == 0){
-                tbodyString += '<h5>선택한 회원이 없습니다</h5>';
-            }
-            else{
-                for(var i=0;i<response.length;i++){
-                    tbodyString += '<p>'+response[i].u_name+'</p>';
+    if(isSecret == '0') {
+        $.ajax({
+            type: 'post',
+            url: '/vote/getVoteUserList',
+            data: JSON.stringify(send),
+            contentType: 'application/json',
+            success: function (response) {
+                if (response.length == 0) {
+                    tbodyString += '<h5>선택한 회원이 없습니다</h5>';
                 }
+                else {
+                    for (var i = 0; i < response.length; i++) {
+                        tbodyString += '<p>' + response[i].u_name + '</p>';
+                    }
+                }
+                $('#memberList .modal-body').empty();
+                $('#memberList .modal-body').append(tbodyString);
+                $('#memberList div.modal').modal();
             }
-            $('#memberList .modal-body').empty();
-            $('#memberList .modal-body').append(tbodyString);
-            $('#memberList div.modal').modal();
-        }
-    });
+        });
+    }
 });
