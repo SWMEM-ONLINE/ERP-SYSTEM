@@ -6,7 +6,6 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    console.log("login index_login get");
     res.render('index_login', { title: '로그인' });
 });
 

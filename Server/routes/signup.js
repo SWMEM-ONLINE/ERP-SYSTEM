@@ -40,8 +40,6 @@ router.post('/', function(req, res, next) {
     var uPush = true;
     var uMail = true;
 
-    console.log('u_name:'+userName); // form files
-    console.log('uPhotoUrl:'+uPhotoUrl); // form files
 
     var connection = db_handler.connectDB();
 
@@ -74,7 +72,6 @@ router.post('/', function(req, res, next) {
             console.error(err);
             throw err;
         }
-        console.log(query);
         db_handler.disconnectDB(connection);
 
         res.redirect('/');

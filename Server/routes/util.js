@@ -71,7 +71,6 @@ function send(id, title, content , callback){
 
             }
             var sender = new gcm.Sender(server_api_key);
-            console.log(token);
 
             // 메세지 객체 , 토큰리스트 , 시도 횟수 , 시도 완료후 콘솔로 찍어줌
             sender.send(message, tokenLists, 5, function (err, result) {
@@ -295,8 +294,6 @@ function ensureAuthenticated(req, res, next) {
 function checkAuth(req) {
 
     var url = req.url;
-    console.log("url");
-    console.log(url);
     var grade = parseInt(getUserGrade(req));
 
     var result = false;

@@ -349,6 +349,7 @@ DROP TABLE IF EXISTS `t_duty_bad_checklist`;
     v_content VARCHAR(1000),
     v_state int,
     v_type int,
+    v_secret boolean,
     v_join_cnt int,
     v_voted_cnt int,
     v_writer VARCHAR(20),

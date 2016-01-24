@@ -108,7 +108,6 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
 
     var date = '"'+req.body.date+'%"';
     var query = 'select * from t_fee_manage where fm_date like '+date+' Order by fm_date DESC';
-    console.log(query);
     var connection = db_handler.connectDB();
 
     connection.query(query, function(err,rows){
@@ -294,7 +293,6 @@ router.post('/manage/search', util.ensureAuthenticated, function(req, res, next)
         query += ' u_name = "'+ name +'"';
     }
     query += ' order by f_write_date DESC';
-    console.log(query);
     con.query(query,function(err,data){
         var rows = JSON.stringify(data);
         res.json(JSON.parse(rows));

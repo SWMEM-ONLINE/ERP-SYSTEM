@@ -28,12 +28,14 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
     var title = req.body.vTitle;
     var content = req.body.vContent;
     var state = 1;                      //0: 삭제, 1: 투표중 2: 투표완료
+    var isSecretMode = (req.body.vAnonymous == 1)?true:false;
     var type = req.body.vType;
     var joinCnt = 0;
     var votedCnt = 0;
     var writter = util.getUserId(req);
     var itemsArr = req.body.vItems;
     var itemCnt = itemsArr.length;
+
 
     var connection = DB_handler.connectDB();
 
@@ -52,6 +54,7 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
             'v_content':content,
             'v_state':state,
             'v_type':type,
+            'v_secret':isSecretMode,
             'v_join_cnt':joinCnt,
             'v_voted_cnt':votedCnt,
             'v_writer':writter
@@ -119,7 +122,6 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
         }
 
         query += ' ORDER BY v_write_date DESC';
-        console.log(query);
         connection.query(query, function(err,row){
             if (err) {
                 console.error(err);
@@ -204,7 +206,6 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
 router.post('/deleteVote', util.ensureAuthenticated, function(req, res, next) {
 
     var id = req.body.id;
-    console.log(id);
     var connection = DB_handler.connectDB();
     var query = 'update t_vote set v_state = 0 where v_id = "'+id+'"';
 
@@ -224,7 +225,7 @@ router.post('/deleteVote', util.ensureAuthenticated, function(req, res, next) {
  * selectVote
  * 투표 메소드
  * @param voteId
- * @param itemIds
+ * @param itemIds'
  * @return result
  */
 
@@ -250,7 +251,6 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
             return res.json({status:'101'});
         }
         var query = 'update t_vote set v_voted_cnt = v_voted_cnt+1 where v_id = '+vId+';';
-        console.log(vId);
         for( var i=0 ; i<itemCnt ; i++ ){
             query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = '+iIds[i]+';';
         }
@@ -281,10 +281,6 @@ router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
     var iIds = req.body.itemIds;
     var oIds = req.body.originItemIds;
     var uId = util.getUserId(req);
-    console.log('iIds');
-    console.log(iIds);
-    console.log('oIds');
-    console.log(oIds);
     var itemCnt = iIds.length;
     var oItemCnt = oIds.length;
 
@@ -300,8 +296,6 @@ router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
             query += 'update t_vote_item set vi_cnt = vi_cnt - 1 where vi_id = ' + oIds[i] + ';';
         }
 
-        console.log('query');
-        console.log(query);
         connection.query(query, function (err, data) {
             if (err) {
                 console.error(err);

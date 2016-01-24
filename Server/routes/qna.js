@@ -26,7 +26,6 @@ router.post('/qnaAdd', util.ensureAuthenticated, function(req, res, next) {
     var date = util.getCurDateWithTime();
 
     var query = 'insert into t_qna(q_id, q_title, q_content, q_state, q_writer, q_write_date) values ("'+id+'","'+title+'","'+content+'","'+state+'","'+writer+'","'+date+'")';
-    console.log(query);
     var connection = db_handler.connectDB();
 
     connection.query(query, function(err,result){
@@ -70,7 +69,6 @@ router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
         var list = JSON.parse(JSON.stringify(rows))[0];
 
         var json = {"list":list, "totalPage":totalPaget, "curPage":page};
-        console.log(json);
         res.json(json);
     });
 
@@ -107,7 +105,7 @@ router.post('/getQnaReply', util.ensureAuthenticated, function(req, res, next) {
 
     var q_id = req.body.q_id;
     var query = 'select t_qna_reply.*, u_name from t_qna_reply left join t_user on t_qna_reply.qr_writer = t_user.u_id where t_qna_reply.qr_id = '+q_id+' order by t_qna_reply.qr_write_date DESC';
-    console.log(query);
+
 
     var connection = db_handler.connectDB();
 
@@ -118,7 +116,6 @@ router.post('/getQnaReply', util.ensureAuthenticated, function(req, res, next) {
         }
 
         var send = JSON.stringify(rows);
-        console.log(send);
         res.json(JSON.parse(send));
     });
 
@@ -153,7 +150,6 @@ router.post('/qnalist', util.ensureAuthenticated, function(req, res, next) {
         var list = JSON.parse(JSON.stringify(rows))[0];
 
         var json = {"list":list, "totalPage":totalPaget, "curPage":page};
-        console.log(json);
         res.json(json);
     });
 
@@ -167,7 +163,6 @@ router.post('/qnaModify', util.ensureAuthenticated, function(req, res, next) {
     var state = req.body.state;
     var connection = db_handler.connectDB();
     var query = 'update t_qna set q_state = '+state+' where q_id = '+id;
-    console.log(query);
     connection.query(query, function(err,result){
         if (err) {
             console.error(err);

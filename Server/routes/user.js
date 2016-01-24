@@ -12,9 +12,7 @@ var crypto = require('crypto');
 router.get('/info', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select u_id,u_name,u_sex,u_period,u_device,u_birth,u_email,u_phone,u_photo_url,u_push_flag,u_mail_flag from t_user where u_id="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
-        console.log(response);
         var send = JSON.stringify(response);
-        console.log(JSON.parse(send));
         res.render('user_info', {title: '사용자 정보', grade: util.getUserGrade(req), result:JSON.parse(send)});
     });
 });
@@ -70,7 +68,6 @@ router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
             }
 
             query += ' where u_id = "' + uId + '"';
-            console.log(query);
             con.query(query, function (err, result) {
                 res.redirect('/user/info');
             });
@@ -125,14 +122,12 @@ router.post('/getFinishUserlist', util.ensureAuthenticated, function(req, res, n
         var userCnt = userIds.length;
         for(var i=0 ; i<userCnt ; i++){
             var uId = userIds[i].u_id;
-            console.log(uId);
 
             query += 'select f_id from t_fee where f_payer = "' + uId + '" AND f_state = 0;';
             query += 'select b.b_name name, DATEDIFF(CURDATE(), b.b_due_date) diff from t_book_rental a inner join t_book b on a.br_book_id=b.b_id where br_user="' + uId + '";';
             query += 'select b.h_name name, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id where a.hr_user="' + uId + '";';
         }
 
-        console.log(query);
         connection.query(query,function(err,rows){
             if (err) {
                 console.error(err);
@@ -163,7 +158,6 @@ router.post('/getFinishUserlist', util.ensureAuthenticated, function(req, res, n
 
             }
 
-            console.log(query);
             connection.query(query,function(err,rows) {
                 if (err) {
                     console.error(err);
@@ -189,7 +183,6 @@ router.post('/memberinfo', util.ensureAuthenticated, function(req, res, next) {
             console.error(err);
             throw err;
         }
-        console.log(rows);
         var send = JSON.stringify(rows);
         res.json(JSON.parse(send));
     });
@@ -199,7 +192,6 @@ router.post('/getUserInfo', util.ensureAuthenticated, function(req, res, next) {
     var uid = req.body.uid;
     var query = 'select u_id,u_name,u_sex,u_period,u_device,u_birth,u_photo_url from t_user where u_id="' + uid + '"';
     con.query(query, function(err, response){
-        console.log(response);
         var send = JSON.stringify(response);
         res.json({status:'0', result:JSON.parse(send)});
     });
