@@ -153,43 +153,54 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
     var uId = util.getUserId(req);
 
     var connection = DB_handler.connectDB();
-    var query = 'select vu_pid from t_vote_user where vu_voter = "'+uId+'" ORDER BY vu_id';
 
-    connection.query(query, function(err,data){
+    var query = 'select v_secret from t_vote where v_id = '+id;
+
+    connection.query(query, function(err,row) {
         if (err) {
-            console.error(query);
             console.error(err);
-            DB_handler.disconnectDB(connection);
-            return res.json({status:'101'});
+            return res.json({status: '101'});
         }
+        var isSecret = row[0].v_secret;
 
-        query = 'select * from t_vote_item where vi_pid = '+id+' ORDER BY vi_id';
+        query = 'select vu_pid from t_vote_user where vu_voter = "'+uId+'" ORDER BY vu_id';
 
-        connection.query(query, function(err,data2){
+        connection.query(query, function(err,data){
             if (err) {
-                console.error(query);
                 console.error(err);
                 DB_handler.disconnectDB(connection);
                 return res.json({status:'101'});
             }
-            else{
-                for( var i=0 ; i<data2.length ; i++ ) {
-                    data2[i].uSelectedItem = false;
 
-                    for (var j = 0; j < data.length; j++ ) {
-                        if( data[j].vu_pid == data2[i].vi_id ){
-                            data2[i].uSelectedItem = true;
-                            break;
+            query = 'select * from t_vote_item where vi_pid = '+id+' ORDER BY vi_id';
+
+            connection.query(query, function(err,data2){
+                if (err) {
+                    console.error(err);
+                    DB_handler.disconnectDB(connection);
+                    return res.json({status:'101'});
+                }
+                else{
+                    for( var i=0 ; i<data2.length ; i++ ) {
+                        data2[i].uSelectedItem = false;
+
+                        for (var j = 0; j < data.length; j++ ) {
+                            if( data[j].vu_pid == data2[i].vi_id ){
+                                data2[i].uSelectedItem = true;
+                                break;
+                            }
                         }
                     }
+
+                    var items = {secret:isSecret, list:JSON.parse(JSON.stringify(data2))};
+                    console.log(items);
+                    var rows = JSON.stringify(items);
+                    return res.json(JSON.parse(rows));
                 }
-
-                var rows = JSON.stringify(data2);
-                return res.json(JSON.parse(rows));
-            }
+            });
         });
-    });
 
+    });
 
 });
 
