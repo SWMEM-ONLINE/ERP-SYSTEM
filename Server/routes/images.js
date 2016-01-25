@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
         if (err) {
             console.log(err);
             name = 'noImage.jpg';
-            fs.stat("../../uploads/"+name, function(err, stat) {
+            fs.stat("../Server/uploads/"+name, function(err, stat) {
                 if (err) {
                     console.log(err);
                     res.json({status:'1'});
@@ -27,7 +27,7 @@ router.get('/', function(req, res, next) {
                         'Content-Type' : 'image/' + ext,
                         'Content-Length' : stat.size
                     });
-                    rs = fs.createReadStream("../uploads/" + name); // public/img.jpg을 읽는다
+                    rs = fs.createReadStream("../Server/uploads/" + name); // public/img.jpg을 읽는다
                     util.pump(rs, res, function(err) {
                         if(err) {
                             console.log(err);
