@@ -12,11 +12,11 @@ var util = require('util');
 router.get('/', function(req, res, next) {
     console.log("name:"+req.query.name); // form fields
     var name = req.query.name;
-    fs.stat("../uploads/"+name, function(err, stat) {
+    fs.stat("./uploads/"+name, function(err, stat) {
         if (err) {
             console.log(err);
             name = 'noImage.jpg';
-            fs.stat("../uploads/"+name, function(err, stat) {
+            fs.stat("./uploads/"+name, function(err, stat) {
                 if (err) {
                     console.log(err);
                     res.json({status:'1'});
