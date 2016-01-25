@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
         if (err) {
             console.log(err);
             name = 'noImage.jpg';
-            fs.stat("./uploads/"+name, function(err, stat) {
+            fs.stat("../uploads/"+name, function(err, stat) {
                 if (err) {
                     console.log(err);
                     res.json({status:'1'});
