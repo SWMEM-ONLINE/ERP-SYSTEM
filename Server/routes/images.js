@@ -12,7 +12,7 @@ var util = require('util');
 router.get('/', function(req, res, next) {
     console.log("name:"+req.query.name); // form fields
     var name = req.query.name;
-    fs.stat("../../uploads/"+name, function(err, stat) {
+    fs.stat("../Server/uploads/"+name, function(err, stat) {
         if (err) {
             console.log(err);
             name = 'noImage.jpg';
@@ -43,7 +43,7 @@ router.get('/', function(req, res, next) {
                 'Content-Type' : 'image/' + ext,
                 'Content-Length' : stat.size
             });
-            rs = fs.createReadStream("../../uploads/" + name); // public/img.jpg을 읽는다
+            rs = fs.createReadStream("../Server/uploads/" + name); // public/img.jpg을 읽는다
             util.pump(rs, res, function(err) {
                 if(err) {
                     console.log(err);
