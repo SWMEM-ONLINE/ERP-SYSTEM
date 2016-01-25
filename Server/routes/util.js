@@ -295,7 +295,8 @@ function checkAuth(req) {
 
     var url = req.url;
     var grade = parseInt(getUserGrade(req));
-
+    console.log('url');
+    console.log(url);
     var result = false;
 
     switch(url) {
@@ -345,6 +346,7 @@ function checkAuth(req) {
                 result = true;
             break;
         case '/qnalist':                                            //문의 관리
+        case '/mileage':                                            //마일리지 관리
             if(grade <= 2) //운영자, 회장
                 result = true;
             break;
@@ -360,6 +362,7 @@ function checkAuth(req) {
         case '/vManage':                                            //설문 관리
         case '/createNewVote':                                      //설문 추가
         case '/deleteVote':                                         //설문 삭제
+        case '/push':                                               //push 전송
             if(grade < 10) //운영자, 자치회
                 result = true;
             break;

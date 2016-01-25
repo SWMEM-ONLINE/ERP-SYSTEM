@@ -157,7 +157,7 @@ function fee_carry() {
         var monthly_deposit = 0;
         var monthly_withdraw = 0;
         var remain_money = 0;
-        var writer = 'master';
+        var writer = 'admin';
         var date = util.getCurDate();
 
         values[0] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, util.getCurDateWithTime()];
