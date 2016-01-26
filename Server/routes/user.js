@@ -3,7 +3,6 @@
  */
 var express = require('express');
 var DB_handler = require('./DB_handler');
-var con = DB_handler.connectDB();
 var router = express.Router();
 var util = require('./util');
 var crypto = require('crypto');
@@ -11,9 +10,11 @@ var crypto = require('crypto');
 
 router.get('/info', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select u_id,u_name,u_sex,u_period,u_device,u_birth,u_email,u_phone,u_photo_url,u_push_flag,u_mail_flag from t_user where u_id="' + req.session.passport.user.id + '"';
+    var con = DB_handler.connectDB();
     con.query(query, function(err, response){
         var send = JSON.stringify(response);
-        res.render('user_info', {title: '사용자 정보', grade: util.getUserGrade(req), result:JSON.parse(send)});
+        DB_handler.disconnectDB(con);
+        return res.render('user_info', {title: '사용자 정보', grade: util.getUserGrade(req), result:JSON.parse(send)});
     });
 });
 
@@ -35,7 +36,7 @@ router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
     if(newPW != undefined) {
         encNewPW = crypto.createHash('sha256').update(newPW).digest('base64');
     }
-
+    var con = DB_handler.connectDB();
     var query = 'update t_user set';
     var flag = false;
     con.query('select u_password from t_user where u_id="'+uId+'"', function (err,result) {
@@ -69,11 +70,13 @@ router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
 
             query += ' where u_id = "' + uId + '"';
             con.query(query, function (err, result) {
-                res.redirect('/user/info');
+                DB_handler.disconnectDB(con);
+                return res.redirect('/user/info');
             });
         }
         else{
-            res.redirect('/user/info');
+            DB_handler.disconnectDB(con);
+            return res.redirect('/user/info');
         }
     });
 });
@@ -81,9 +84,8 @@ router.post('/info/edit', util.ensureAuthenticated, function(req, res, next) {
 router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
 
     var type = req.body.type;
-
     var query = 'select * from t_user';
-
+    var con = DB_handler.connectDB();
     if(type == 'members'){
         query += ' WHERE u_state <= 103';
     }
@@ -96,104 +98,118 @@ router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-        var send = JSON.stringify(rows);
-        res.json(JSON.parse(send));
+        else{
+            var send = JSON.stringify(rows);
+            DB_handler.disconnectDB(con);
+            return res.json(JSON.parse(send));
+        }
     });
 });
 
 
 router.post('/getFinishUserlist', util.ensureAuthenticated, function(req, res, next) {
-
-
-    var connection = DB_handler.connectDB();
-    connection.query('select * from t_user WHERE u_state = 102', function(err,data){
-
+    var con = DB_handler.connectDB();
+    con.query('select * from t_user WHERE u_state = 102', function(err,data){
         if (err) {
             console.error(err);
-            DB_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(con);
             return res.json({status:'101'});
         }
-
-        var userIds = data;
-
-        var query = '';
-        var userCnt = userIds.length;
-        for(var i=0 ; i<userCnt ; i++){
-            var uId = userIds[i].u_id;
-
-            query += 'select f_id from t_fee where f_payer = "' + uId + '" AND f_state = 0;';
-            query += 'select b.b_name name, DATEDIFF(CURDATE(), b.b_due_date) diff from t_book_rental a inner join t_book b on a.br_book_id=b.b_id where br_user="' + uId + '";';
-            query += 'select b.h_name name, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id where a.hr_user="' + uId + '";';
-        }
-
-        connection.query(query,function(err,rows){
-            if (err) {
-                console.error(err);
-                DB_handler.disconnectDB(connection);
-                return res.json({status:'101'});
-            }
-
-            query = '';
-
-            for(var i=0 ; i<userCnt ; i++){
+        else {
+            var userIds = data;
+            var query = '';
+            var userCnt = userIds.length;
+            for (var i = 0; i < userCnt; i++) {
                 var uId = userIds[i].u_id;
-                var u_fee = 0;
-                var u_book = 0;
-                var u_hardware = 0;
 
-                if(rows[i].length > 0 )
-                    u_fee = 1;
-                if(rows[i+1].length > 0 )
-                    u_book = 1;
-                if(rows[i+2].length > 0 )
-                    u_hardware = 1;
-
-                userIds[i].u_fee = u_fee;
-                userIds[i].u_book = u_book;
-                userIds[i].u_hardware = u_hardware;
-
-                query += 'update t_user set u_fee = '+u_fee+', u_book = '+u_book+', u_hardware = '+u_hardware+' where u_id = "'+uId + '";';
-
+                query += 'select f_id from t_fee where f_payer = "' + uId + '" AND f_state = 0;';
+                query += 'select b.b_name name, DATEDIFF(CURDATE(), b.b_due_date) diff from t_book_rental a inner join t_book b on a.br_book_id=b.b_id where br_user="' + uId + '";';
+                query += 'select b.h_name name, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id where a.hr_user="' + uId + '";';
             }
 
-            connection.query(query,function(err,rows) {
+            con.query(query, function (err, rows) {
                 if (err) {
                     console.error(err);
-                    DB_handler.disconnectDB(connection);
+                    DB_handler.disconnectDB(con);
                     return res.json({status: '101'});
                 }
+                else {
+                    query = '';
+                    for (var i = 0; i < userCnt; i++) {
+                        var uId = userIds[i].u_id;
+                        var u_fee = 0;
+                        var u_book = 0;
+                        var u_hardware = 0;
 
-                var send = JSON.stringify(userIds);
-                res.json(JSON.parse(send));
+                        if (rows[i].length > 0)
+                            u_fee = 1;
+                        if (rows[i + 1].length > 0)
+                            u_book = 1;
+                        if (rows[i + 2].length > 0)
+                            u_hardware = 1;
+
+                        userIds[i].u_fee = u_fee;
+                        userIds[i].u_book = u_book;
+                        userIds[i].u_hardware = u_hardware;
+
+                        query += 'update t_user set u_fee = ' + u_fee + ', u_book = ' + u_book + ', u_hardware = ' + u_hardware + ' where u_id = "' + uId + '";';
+
+                    }
+
+                    con.query(query, function (err, rows) {
+                        if (err) {
+                            console.error(err);
+                            DB_handler.disconnectDB(con);
+                            return res.json({status: '101'});
+                        }
+                        else{
+                            var send = JSON.stringify(userIds);
+                            DB_handler.disconnectDB(con);
+                            return res.json(JSON.parse(send));
+                        }
+                    });
+                }
             });
-
-        });
-
+        }
     });
 });
 
 router.post('/memberinfo', util.ensureAuthenticated, function(req, res, next) {
     var id = req.body.u_id;
     var query = 'select * from t_user where u_id = "'+id+'"';
-
+    var con = DB_handler.connectDB();
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-        var send = JSON.stringify(rows);
-        res.json(JSON.parse(send));
+        else{
+            var send = JSON.stringify(rows);
+            DB_handler.disconnectDB(con);
+            return res.json(JSON.parse(send));
+        }
     });
 });
 
 router.post('/getUserInfo', util.ensureAuthenticated, function(req, res, next) {
     var uid = req.body.uid;
     var query = 'select u_id,u_name,u_sex,u_period,u_device,u_birth,u_photo_url from t_user where u_id="' + uid + '"';
+    var con = DB_handler.connectDB();
     con.query(query, function(err, response){
-        var send = JSON.stringify(response);
-        res.json({status:'0', result:JSON.parse(send)});
+        if (err) {
+            console.error(err);
+            DB_handler.disconnectDB(con);
+            throw err;
+        }
+        else{
+            var send = JSON.stringify(response);
+            DB_handler.disconnectDB(con);
+            return res.json({status:'0', result:JSON.parse(send)});
+        }
     });
 });
 
@@ -202,7 +218,7 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
     var grade = req.body.origin_grade;
     var state = req.body.grade;
     var u_id = req.body.u_id;
-
+    var con = DB_handler.connectDB();
     var query = 'update t_user set u_state = '+state;
     if(grade == '104'){
         query += ', u_register_date = NOW()';
@@ -212,10 +228,13 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-
-        res.json({status:'0'});
+        else{
+            DB_handler.disconnectDB(con);
+            return res.json({status:'0'});
+        }
     });
 
 });
@@ -224,24 +243,33 @@ router.post('/reset', util.ensureAuthenticated, function(req, res, next) {
     var id = req.body.u_id;
     var encPW = crypto.createHash('sha256').update('0000').digest('base64');
     var query = 'update t_user set u_password = "'+encPW+'" where u_id = "'+id + '"';
+    var con = DB_handler.connectDB();
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-        res.json({status:'0'});
+        else{
+            DB_handler.disconnectDB(con);
+            return res.json({status:'0'});
+        }
     });
 });
 
 router.post('/info/deleteDevice', util.ensureAuthenticated, function(req, res, next) {
     var uId = util.getUserId(req);
     var query = 'update t_user set u_device = "",u_token = "" where u_id = "'+uId + '"';
+    var con = DB_handler.connectDB();
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
             throw err;
         }
-        res.json({status:'0'});
+        else {
+            DB_handler.disconnectDB(con);
+            return res.json({status: '0'});
+        }
     });
 });
 
@@ -265,30 +293,40 @@ router.post('/load_curlifeEval', util.ensureAuthenticated, function(req, res){
     var query = 'select * from t_life where l_recent=1;';
     query += 'select u_state from t_user where u_id="' + req.session.passport.user.id + '";';
     query += 'select * from t_life_cut';
+    var con = DB_handler.connectDB();
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
-            throw err
+            DB_handler.disconnectDB(con);
+            throw err;
         }
-        res.send(response);
+        else {
+            DB_handler.disconnectDB(con);
+            return res.send(response);
+        }
     });
 });
 
 router.post('/load_pastlifeEval', util.ensureAuthenticated, function(req, res){
     var query = 'select l_year, l_month, l_total, l_grade from t_life order by l_id desc';
+    var con = DB_handler.connectDB();
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
-            throw err
+            DB_handler.disconnectDB(con);
+            throw err;
         }
-        res.send(response);
+        else {
+            DB_handler.disconnectDB(con);
+            return res.send(response);
+        }
     })
 });
 
 router.post('/enroll_lifeEval', util.ensureAuthenticated, function(req, res){
     var datalist = req.body;
     var today = new Date();
-
+    var con = DB_handler.connectDB();
     var query = 'update t_life set l_recent=0;';
     query += 'insert into t_life set l_year="' + today.getFullYear() + '", l_month="' + (today.getMonth()+1) + '", l_first="' + datalist[0].content + '", l_first_cnt="' + datalist[0].cnt + '", l_first_point="' + datalist[0].point + '", ';
     query += 'l_second="' + datalist[1].content + '", l_second_cnt="' + datalist[1].cnt + '", l_second_point="' + datalist[1].point + '", ';
@@ -300,20 +338,29 @@ router.post('/enroll_lifeEval', util.ensureAuthenticated, function(req, res){
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
-            throw err
+            DB_handler.disconnectDB(con);
+            throw err;
         }
-        res.send('success');
+        else {
+            DB_handler.disconnectDB(con);
+            return res.send('success');
+        }
     });
 });
 
 router.post('/alter_gradeCut', util.ensureAuthenticated, function(req, res){
     var query = 'update t_life_cut set lc_a=' + parseInt(req.body.cut_A) + ', lc_b=' + parseInt(req.body.cut_B) + 'where lc_id=1';
+    var con = DB_handler.connectDB();
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
-            throw err
+            DB_handler.disconnectDB(con);
+            throw err;
         }
-        res.send('success');
+        else{
+            DB_handler.disconnectDB(con);
+            return res.send('success');
+        }
     })
 });
 
@@ -340,18 +387,20 @@ router.post('/getAlarmInfo', util.ensureAuthenticated, function(req, res){
 
     query += ' from t_user where t_user = "'+util.getUserId(req)+'"';
 
-    var connection = DB_handler.connectDB();
+    var con = DB_handler.connectDB();
 
-    connection.query(query, function(err, row){
+    con.query(query, function(err, row){
 
         if (err) {
             console.error(err);
-            DB_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(con);
             return res.json({status:'101'});
         }
-
-        var rows = JSON.stringify(row);
-        return res.json(JSON.parse(rows));
+        else{
+            var rows = JSON.stringify(row);
+            DB_handler.disconnectDB(con);
+            return res.json(JSON.parse(rows));
+        }
     });
 });
 
@@ -381,17 +430,18 @@ router.post('/setAlarmInfo', util.ensureAuthenticated, function(req, res){
     }
     query += ' where u_id = "'+util.getUserId(req)+'"';
 
-    var connection = DB_handler.connectDB();
+    var con = DB_handler.connectDB();
 
-    connection.query(query, function(err, row){
-
+    con.query(query, function(err, row){
         if (err) {
             console.error(err);
-            DB_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(con);
             return res.json({status:'101'});
         }
-
-        return res.json({status:'0'});
+        else{
+            DB_handler.disconnectDB(con);
+            return res.json({status:'0'});
+        }
     });
 });
 
@@ -407,11 +457,17 @@ router.post('/getUserlist', util.ensureAuthenticated, function(req, res, next){
     }else{
         query += 'u_mileage desc';
     }
+    var con = DB_handler.connectDB();
     con.query(query, function(err, response){
         if(err){
             console.log('Load DB ERROR in "user.js -> /getUserlist"');
+            DB_handler.disconnectDB(con);
+            throw err;
         }
-        res.send(response);
+        else{
+            DB_handler.disconnectDB(con);
+            return res.send(response);
+        }
     });
 });
 
@@ -439,18 +495,21 @@ router.post('/mileage_enroll', util.ensureAuthenticated, function(req, res, next
         query2 += 'insert into t_mileage set m_point=' + point + ', m_date="' + date + '", m_giver="' + req.session.passport.user.id + '", m_reason="' + reason + '", m_receiver="' + user[i] + '", m_type="' + classify + '";';
     }
 
-
+    var con = DB_handler.connectDB();
     con.query(query1, function(err, response){
         if(err){
             console.log('DB update ERROR in "user.js -> /mileage_enroll');
-            res.send('failed');
+            DB_handler.disconnectDB(con);
+            return res.send('failed');
         }else{
             con.query(query2, function(err2, response2){
                 if(err2){
                     console.log('DB insert ERROR in "user.js -> /mileage_enroll');
-                    res.send('failed');
+                    DB_handler.disconnectDB(con);
+                    return res.send('failed');
                 }else{
-                    res.send('success');
+                    DB_handler.disconnectDB(con);
+                    return res.send('success');
                 }
             });
         }
@@ -460,11 +519,14 @@ router.post('/mileage_enroll', util.ensureAuthenticated, function(req, res, next
 router.post('/mileage_history', util.ensureAuthenticated, function(req, res, next){
     var query = 'select b.u_name,a.* from t_mileage a inner join t_user b on a.m_giver=b.u_id order by a.m_id desc;';
     query += 'select b.u_name from t_mileage a inner join t_user b on a.m_receiver=b.u_id order by a.m_id desc';
+    var con = DB_handler.connectDB();
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "user.js -> /mileage_history"');
-            res.send('failed');
+            DB_handler.disconnectDB(con);
+            return res.send('failed');
         }else{
+            DB_handler.disconnectDB(con);
             res.send(response);
         }
     });
@@ -480,17 +542,21 @@ router.post('/mileage_delete', util.ensureAuthenticated, function(req, res, next
         else    pointQuery += 'update t_user set u_mileage=u_mileage+' + deletelist[i].point + ' where u_id="' + deletelist[i].receiver + '";';
         deleteQuery += 'delete from t_mileage where m_id=' + deletelist[i].deleteId +';';
     }
+    var con = DB_handler.connectDB();
     con.query(pointQuery, function(err1, response1){
         if(err1){
             console.log('DB update ERROR in "user.js -> /mileage_delete"');
-            res.send('failed');
+            DB_handler.disconnectDB(con);
+            return res.send('failed');
         }else{
             con.query(deleteQuery, function(err2, response2){
                 if(err2){
                     console.log('DB delete ERROR in "user.js -> /mileage_delete"');
-                    res.send('failed');
+                    DB_handler.disconnectDB(con);
+                    return res.send('failed');
                 }else{
-                    res.send('success');
+                    DB_handler.disconnectDB(con);
+                    return res.send('success');
                 }
             })
         }
@@ -509,9 +575,9 @@ router.post('/push', util.ensureAuthenticated, function(req, res, next){
         util.send(pushList[0],pusher+'님 알림',message,function(err,data){
             if (err) {
                 console.log(err);
-                res.json({status:'101'});
+                return res.json({status:'101'});
             } else {
-                res.json({status:'0'});
+                return res.json({status:'0'});
             }
         });
     }
@@ -519,9 +585,9 @@ router.post('/push', util.ensureAuthenticated, function(req, res, next){
         util.sendList(pushList,pusher+'님 알림',message,function(err,data){
             if (err) {
                 console.log(err);
-                res.json({status:'101'});
+                return res.json({status:'101'});
             } else {
-                res.json({status:'0'});
+                return res.json({status:'0'});
             }
         });
     }

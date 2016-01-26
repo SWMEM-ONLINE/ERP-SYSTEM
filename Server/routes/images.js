@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
             fs.stat("./Server/uploads/"+name, function(err, stat) {
                 if (err) {
                     console.log(err);
-                    res.json({status:'1'});
+                    return res.json({status:'1'});
                 }else{
                     var ext = name.substring(name.lastIndexOf(".")+1);  // jpg
                     var rs;
@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
                     util.pump(rs, res, function(err) {
                         if(err) {
                             console.log(err);
-                            res.json({status:'1'});
+                            return res.json({status:'1'});
                         }
                     });
                 }
@@ -47,7 +47,7 @@ router.get('/', function(req, res, next) {
             util.pump(rs, res, function(err) {
                 if(err) {
                     console.log(err);
-                    res.json({status:'1'});
+                    return res.json({status:'1'});
                 }
             });
         }

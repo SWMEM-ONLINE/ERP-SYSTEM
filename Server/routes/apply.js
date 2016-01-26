@@ -5,7 +5,6 @@ var express = require('express');
 var DB_handler = require('./DB_handler');
 var apply_newbook_handler = require('./apply_newbook_handler');
 
-var con = DB_handler.connectDB();
 var router = express.Router();
 var util = require('./util');
 
@@ -44,9 +43,9 @@ function ApplyPush(rows,title,content,res){
         util.send(manager[0].u_id,title,content, function(err,data) {
             if (err) {
                 console.log(err);
-                res.json({status:'fail'});
+                return res.json({status:'fail'});
             } else {
-                res.json({status:'success'});
+                return res.json({status:'success'});
             }
         });
     }
@@ -59,9 +58,9 @@ function ApplyPush(rows,title,content,res){
         util.sendList(Managers,title,content, function(err,data) {
             if (err) {
                 console.log(err);
-                res.json({status:'fail'});
+                return res.json({status:'fail'});
             } else {
-                res.json({status:'success'});
+                return res.json({status:'success'});
             }
         });
     }
@@ -69,13 +68,18 @@ function ApplyPush(rows,title,content,res){
 
 router.get('/room', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_ROOM+' and a_due_date > "'+ util.getCurDate() +'" Order by a_write_date';
+    var con = DB_handler.connectDB();
     con.query(query, function(err,rows){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-        var send = JSON.stringify(rows);
-        res.render('apply_room_server_equip', {title: '프로젝트실 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
+        else{
+            var send = JSON.stringify(rows);
+            DB_handler.disconnectDB(con);
+            return res.render('apply_room_server_equip', {title: '프로젝트실 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
+        }
     });
 });
 router.post('/room', util.ensureAuthenticated, function(req, res, next) {
@@ -83,8 +87,17 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 6';
+    var con = DB_handler.connectDB();
     con.query(query,function(err,rows){
-        ApplyPush(rows,title,content,res);
+        if(err){
+            console.error(err);
+            DB_handler.disconnectDB(con);
+            throw err;
+        }
+        else{
+            ApplyPush(rows,title,content,res);
+            DB_handler.disconnectDB(con);
+        }
     });
 });
 /* room@ */
@@ -92,13 +105,18 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
 /* @server */
 router.get('/server', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_SERVER+' and a_due_date > "'+ util.getCurDate() +'" Order by a_write_date';
+    var con = DB_handler.connectDB();
     con.query(query, function(err,rows){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-        var send = JSON.stringify(rows);
-        res.render('apply_room_server_equip', {title: '서버 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
+        else{
+            var send = JSON.stringify(rows);
+            DB_handler.disconnectDB(con);
+            return res.render('apply_room_server_equip', {title: '서버 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
+        }
     });
 });
 
@@ -107,8 +125,17 @@ router.post('/server', util.ensureAuthenticated, function(req, res, next) {
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 서버신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 8';
+    var con = DB_handler.connectDB();
     con.query(query,function(err,rows){
-        ApplyPush(rows,title,content,res);
+        if (err) {
+            console.error(err);
+            DB_handler.disconnectDB(con);
+            throw err;
+        }
+        else{
+            ApplyPush(rows,title,content,res);
+            DB_handler.disconnectDB(con);
+        }
     });
 });
 /* server@ */
@@ -116,13 +143,18 @@ router.post('/server', util.ensureAuthenticated, function(req, res, next) {
 /* @equipment */
 router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select * from t_apply where a_apply_type = '+APPLY_TYPE_EQUIPMENT+' and a_due_date > "'+ util.getCurDate() +'" Order by a_write_date';
+    var con = DB_handler.connectDB();
     con.query(query, function(err,rows){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-        var send = JSON.stringify(rows);
-        res.render('apply_room_server_equip', {title: '비품 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
+        else{
+            var send = JSON.stringify(rows);
+            DB_handler.disconnectDB(con);
+            return res.render('apply_room_server_equip', {title: '비품 신청', grade: util.getUserGrade(req), lists: JSON.parse(send)});
+        }
     });
 });
 router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
@@ -130,8 +162,17 @@ router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
     var userName = util.getUserName(req);
     var content = '[알림]'+userName+'님이 비품신청을 하였습니다.';
     var query = 'select u_id from t_user where u_state = 5';
+    var con = DB_handler.connectDB();
     con.query(query,function(err,rows){
-        ApplyPush(rows,title,content,res);
+        if (err) {
+            console.error(err);
+            DB_handler.disconnectDB(con);
+            throw err;
+        }
+        else{
+            ApplyPush(rows,title,content,res);
+            DB_handler.disconnectDB(con);
+        }
     });
 });
 /* equipment@ */
@@ -147,12 +188,17 @@ router.post('/hardware', util.ensureAuthenticated, function(req, res, next) {
     for(var i = 0; i < datalist.length; i++){
         query += 'insert into t_hardware_apply set ha_project_title="' + datalist[i].projectName + '", ha_requester="' + req.session.passport.user.id + '", ha_role="' + datalist[i].use + '", ha_upper_category="' + datalist[i].type + '", ha_lower_category="' + datalist[i].label + '", ha_item_name="' + datalist[i].name + '", ha_size="' + datalist[i].ea + '", ha_amount="' + datalist[i].count + '", ha_maker="' + datalist[i].maker + '", ha_link="' + datalist[i].link + '";';
     }
+    var con = DB_handler.connectDB();
     con.query(query, function(err, response){
         if(err){
-            res.send('failed');
-            throw err;
+            console.log(err);
+            DB_handler.disconnectDB(con);
+            return res.send('failed');
         }
-        res.send('success');
+        else{
+            DB_handler.disconnectDB(con);
+            return res.send('success');
+        }
     })
 });
 
@@ -187,26 +233,34 @@ router.post('/setApplyList/:type', util.ensureAuthenticated, function(req, res, 
         var a_writer = util.getUserId(req);
         values[i] = [a_id, a_apply_type, a_title, a_weblink, a_date,a_due_date,a_write_date, a_writer];
     }
-
+    var con = DB_handler.connectDB();
     con.query('insert into t_apply(a_id, a_apply_type, a_title, a_weblink, a_date,a_due_date,a_write_date, a_writer) values ?', [values], function(err,result){
         if (err) {
             console.error(err);
-            throw err;
-            res.json({status:'101'});
+            DB_handler.disconnectDB(con);
+            return res.json({status:'101'});
         }
-        res.json({status:'0'});
+        else{
+            DB_handler.disconnectDB(con);
+            return res.json({status:'0'});
+        }
     });
 });
 
 router.get('/getApplyList/:type', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select * from t_apply where a_writer = "'+util.getUserId(req)+'" and a_apply_type = "'+ req.params.type+'"';
+    var con = DB_handler.connectDB();
     con.query(query, function(err,result){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-        var send = JSON.stringify(result);
-        res.json({list:JSON.parse(send)});
+        else{
+            var send = JSON.stringify(result);
+            DB_handler.disconnectDB(con);
+            return res.json({list:JSON.parse(send)});
+        }
     });
 });
 
@@ -223,28 +277,32 @@ router.post('/edit/:type', util.ensureAuthenticated, function(req, res, next) {
     var a_writer = util.getUserId(req);
 
     var query = 'update t_apply set a_title="'+a_title+'",a_weblink="'+a_weblink+'",a_write_date="'+a_write_date+'",a_date="'+a_date+'",a_due_date="'+a_due_date+'" where a_writer="'+a_writer+'" and a_apply_type="'+a_apply_type+'" and a_id="'+id+'"';
+    var con = DB_handler.connectDB();
     con.query(query, function(err,result){
         if (err) {
             console.error(err);
-            throw err;
-            res.json({status:'101'});
+            DB_handler.disconnectDB(con);
+            return res.json({status:'101'});
         }
         else{
-            res.json({status:'0'});
+            DB_handler.disconnectDB(con);
+            return res.json({status:'0'});
         }
     });
 });
 
 router.post('/delete/:type', util.ensureAuthenticated, function(req, res, next) {
     var query = 'delete from t_apply where a_id='+req.body.delete_id+' and a_apply_type = '+req.params.type;
+    var con = DB_handler.connectDB();
     con.query(query, function(err,result){
         if (err) {
             console.error(err);
-            throw err;
-            res.json({status:'101'});
+            DB_handler.disconnectDB(con);
+            return res.json({status:'101'});
         }
         else{
-            res.json({status:'0'});
+            DB_handler.disconnectDB(con);
+            return res.json({status:'0'});
         }
     });
 });

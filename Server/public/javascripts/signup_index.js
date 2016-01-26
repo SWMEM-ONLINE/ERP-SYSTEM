@@ -12,7 +12,7 @@ var male=$('#sex_male');
 var female=$('#sex_female');
 
 /* @regex */
-var idReg= /^[a-zA-Z]{1}[a-zA-Z0-9]{3,11}$/;
+var idReg= /^[a-z]{1}[a-zA-Z0-9]{3,11}$/;
 var nameReg= /^[가-힣]{2,5}$/;
 var periodReg = /^[0-9]{2}(\-)[1-2]{1}$/;
 var phoneReg = /^01[0-9]{1}[0-9]{4}[0-9]{4}$/;
@@ -76,7 +76,7 @@ inputId.focusout(function(){
         toastr['error']('ID가 짧습니다');
     }
     else{
-        $.post('/signup/checkid', {userid : inputId.val()}, function(data){
+        $.post('/signup/checkid', {userid : inputId.val().toLowerCase()}, function(data){
 
             if(data.status === '0'){
                 toastr['error']('ID 사용불가능');
@@ -119,7 +119,7 @@ $('input[type=file]').change(function(e) {
 /* @sign form submit event */
 $('#form').submit(function(){
     /* @init */
-    var id = inputId.val();
+    var id = inputId.val().toLowerCase();
     var name = inputName.val();
     var pw = inputPw.val();
     var confirm = inputPwConfirm.val();
