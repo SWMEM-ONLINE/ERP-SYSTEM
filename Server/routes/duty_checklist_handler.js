@@ -22,14 +22,15 @@ function inquireCheckList(con,req,res){
         else{
             for(var i = 0 ; i< response.length; i++){
                 var data = response[i];
-
-               sendData.push(data);
+                 sendData.push(data);
             }
 
             res.send(sendData);
         }
     });
 }
+
+
 function inquireAllCheckList(con,req,res){
 
     var query = "SELECT * FROM swmem.t_duty_checklist order by section;";
@@ -303,13 +304,21 @@ function getRecentGrade(con,req,res){
         }else{
             console.log(response);
 
-            var data = response[0];
-            var grade = data.l_grade;
+            if(response.length==0){
+                console.log("no recent grade");
+                res.send("error");
+            }else{
 
-            console.log(response);
-            console.log(data);
-            console.log(grade);
-            res.send(grade);
+                var data = response[0];
+                var grade = data.l_grade;
+
+                console.log(response);
+                console.log(data);
+                console.log(grade);
+                res.send(grade);
+
+            }
+
 
         }
 
