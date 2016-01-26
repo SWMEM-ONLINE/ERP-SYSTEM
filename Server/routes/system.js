@@ -3,7 +3,6 @@
  */
 var express = require('express');
 var DB_handler = require('./DB_handler');
-var con = DB_handler.connectDB();
 var router = express.Router();
 var util = require('./util');
 var COMMAND_DEGREE = 9;
@@ -14,9 +13,18 @@ router.get('/appinfo', util.ensureAuthenticated, function(req, res, next) {
 
 router.post('/appinfo', util.ensureAuthenticated, function(req, res, next) {
     var query = 'select u_state,u_name from t_user where u_state <= '+COMMAND_DEGREE+' order by u_state';
+    var con = DB_handler.connectDB();
     con.query(query, function(err, data){
-        var send = JSON.stringify(data);
-        res.json(JSON.parse(send));
+        if(err){
+            console.log(err);
+            DB_handler.disconnectDB(con);
+            throw err;
+        }
+        else{
+            var send = JSON.stringify(data);
+            DB_handler.disconnectDB(con);
+            return res.json(JSON.parse(send));
+        }
     });
 });
 

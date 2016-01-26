@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
-var db_handler = require('./DB_handler');
+var DB_handler = require('./DB_handler');
 
 
 /* GET home page. */
@@ -41,7 +41,7 @@ router.post('/', function(req, res, next) {
     var uMail = true;
 
 
-    var connection = db_handler.connectDB();
+    var con = DB_handler.connectDB();
 
     var user = {    'u_id':uId,
                     'u_password':encPW,
@@ -67,41 +67,42 @@ router.post('/', function(req, res, next) {
                     'u_push_flag':uPush,
                     'u_mail_flag':uMail};
 
-    var query = connection.query('insert into t_user set ?',user,function(err,result){
+    con.query('insert into t_user set ?',user,function(err,result){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             throw err;
         }
-        db_handler.disconnectDB(connection);
-
-        res.redirect('/');
+        else{
+            DB_handler.disconnectDB(con);
+            res.redirect('/');
+        }
     });
 
 });
 
 router.post('/checkid', function(req, res) {
     var id = req.body.userid;
-    var connection = db_handler.connectDB();
+    var con = DB_handler.connectDB();
 
-    connection.query('select * from t_user where u_id=?',id,function(err,data){
+    con.query('select * from t_user where u_id=?',id,function(err,data){
         if(err){
             console.log(err);
+            DB_handler.disconnectDB(con);
+            throw err;
         }
         else {
             if (data.length > 0 || id === '') { //impossible
-                res.json({status: '0'});
+                DB_handler.disconnectDB(con);
+                return res.json({status: '0'});
             }
             else{
-                res.json({status: '1'}); //possible
+                DB_handler.disconnectDB(con);
+                return res.json({status: '1'}); //possible
             }
         }
-        db_handler.disconnectDB(connection);
     });
 });
-
-
-exports.join = function(reqy, res){
-};
 
 module.exports = router;
 

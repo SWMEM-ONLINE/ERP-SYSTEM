@@ -5,7 +5,6 @@
 var gcm = require('node-gcm');
 var DB_handler = require('./DB_handler');
 var nodemailer = require('nodemailer');
-var con = DB_handler.connectDB();
 
 var server_api_key = 'AIzaSyAQnrOAvlFfVZpjug3ndXBHg_HTIcSm_AY';
 
@@ -55,12 +54,13 @@ function send(id, title, content , callback){
         "where u_id = '" + id+"'; " ;
 
     var tokenLists = [];
+    var con = DB_handler.connectDB();
     con.query(query, function(err,response){
         if(err){
             console.log(err);
+            DB_handler.disconnectDB(con);
         }
         else{
-
             if(response.length ==1){
                 var data = response[0];
                 var token = data.u_token;
@@ -76,6 +76,7 @@ function send(id, title, content , callback){
             sender.send(message, tokenLists, 5, function (err, result) {
                 callback(err, result);
             });
+            DB_handler.disconnectDB(con);
         }
     });
 }
@@ -113,13 +114,13 @@ function sendList(user_ids, title, content , callback){
     }
 
     var tokenLists = [] ;
-
+    var con = DB_handler.connectDB();
     con.query(query, function(err,response){
         if(err){
             console.log(err);
+            DB_handler.disconnectDB(con);
         }
         else{
-
             for( var i = 0 ; i < response.length; i++){
                 var data = response[i];
                 for (var j = 0 ; j < data.length; j++){
@@ -139,6 +140,7 @@ function sendList(user_ids, title, content , callback){
             sender.send(message, tokenLists, 5, function (err, result) {
                 callback(err, result);
             });
+            DB_handler.disconnectDB(con);
         }
     });
 }
@@ -162,7 +164,7 @@ function sendMail(ids, subject, content){
     var query = "";
     var i;
     var receivers = [];
-
+    var con = DB_handler.connectDB();
     if( typeof ids == 'string'){
         query = " SELECT * FROM swmem.t_user WHERE (u_id = '" + ids +"');";
 
@@ -171,6 +173,7 @@ function sendMail(ids, subject, content){
             if(err)
             {
                 console.log(err);
+                DB_handler.disconnectDB(con);
             }
             else
             {
@@ -199,6 +202,7 @@ function sendMail(ids, subject, content){
                     console.log('Message sent: ' + info.response);
                     console.log(info);
                 });
+                DB_handler.disconnectDB(con);
             }
         });
 
@@ -216,6 +220,7 @@ function sendMail(ids, subject, content){
         con.query(query,function(err,response){
             if(err){
                 console.log(err);
+                DB_handler.disconnectDB(con);
             }else{
                 for( var i = 0 ; i < response.length; i++){
                     var data = response[i];
@@ -245,6 +250,7 @@ function sendMail(ids, subject, content){
                     console.log('Message sent: ' + info.response);
                     console.log(info);
                 });
+                DB_handler.disconnectDB(con);
             }
         });
     }

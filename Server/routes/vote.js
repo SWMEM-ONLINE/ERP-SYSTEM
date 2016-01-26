@@ -34,14 +34,12 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
     var writter = util.getUserId(req);
     var itemsArr = req.body.vItems;
     var itemCnt = itemsArr.length;
+    var con = DB_handler.connectDB();
 
-
-    var connection = DB_handler.connectDB();
-
-    connection.query('select * from t_user WHERE u_state <= 101',function(err,rows){
+    con.query('select * from t_user WHERE u_state <= 101',function(err,rows){
         if (err) {
             console.error(err);
-            DB_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(con);
             return res.json({status:'101'});
         }
 
@@ -58,10 +56,10 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
             'v_writer':writter
         };
 
-        connection.query('insert into t_vote set ?',vote,function(err,row){
+        con.query('insert into t_vote set ?',vote,function(err,row){
             if (err) {
                 console.error(err);
-                DB_handler.disconnectDB(connection);
+                DB_handler.disconnectDB(con);
                 return res.json({status:'101'});
             }
             var pid = row.insertId;
@@ -73,14 +71,14 @@ router.post('/createNewVote', util.ensureAuthenticated, function(req, res, next)
                 voteItems[i] = [0, pid, vi_title, vi_cnt];
             }
 
-            connection.query('insert into t_vote_item(vi_id, vi_pid, vi_title, vi_cnt) values ?', [voteItems], function(err,row){
+            con.query('insert into t_vote_item(vi_id, vi_pid, vi_title, vi_cnt) values ?', [voteItems], function(err,row){
                 if (err) {
                     console.error(err);
-                    DB_handler.disconnectDB(connection);
+                    DB_handler.disconnectDB(con);
                     return res.json({status:'101'});
                 }
 
-                DB_handler.disconnectDB(connection);
+                DB_handler.disconnectDB(con);
                 return res.json({status:'0'});
             });
         });
@@ -98,13 +96,13 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
 
     var type = req.body.Type;
     var uId = util.getUserId(req);
-
-    var connection = DB_handler.connectDB();
+    var con = DB_handler.connectDB();
 
     var query = 'select u_register_date from t_user where u_id = "'+uId+'"';
-    connection.query(query, function(err,row1) {
+    con.query(query, function(err,row1) {
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             return res.json({status:'101'});
         }
         var userRegiDate = util.convertDate(row1[0].u_register_date);
@@ -120,9 +118,10 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
         }
 
         query += ' ORDER BY v_write_date DESC';
-        connection.query(query, function(err,row){
+        con.query(query, function(err,row){
             if (err) {
                 console.error(err);
+                DB_handler.disconnectDB(con);
                 return res.json({status:'101'});
             }
             else{
@@ -131,9 +130,9 @@ router.post('/getVoteList', util.ensureAuthenticated, function(req, res, next) {
                 }
 
                 var rows = JSON.stringify(row);
+                DB_handler.disconnectDB(con);
                 return res.json(JSON.parse(rows));
             }
-            DB_handler.disconnectDB(connection);
         });
     });
 
@@ -152,32 +151,33 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
     var id = req.body.id;
     var uId = util.getUserId(req);
 
-    var connection = DB_handler.connectDB();
+    var con = DB_handler.connectDB();
 
     var query = 'select v_secret from t_vote where v_id = '+id;
 
-    connection.query(query, function(err,row) {
+    con.query(query, function(err,row) {
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             return res.json({status: '101'});
         }
         var isSecret = row[0].v_secret;
 
         query = 'select vu_pid from t_vote_user where vu_voter = "'+uId+'" ORDER BY vu_id';
 
-        connection.query(query, function(err,data){
+        con.query(query, function(err,data){
             if (err) {
                 console.error(err);
-                DB_handler.disconnectDB(connection);
+                DB_handler.disconnectDB(con);
                 return res.json({status:'101'});
             }
 
             query = 'select * from t_vote_item where vi_pid = '+id+' ORDER BY vi_id';
 
-            connection.query(query, function(err,data2){
+            con.query(query, function(err,data2){
                 if (err) {
                     console.error(err);
-                    DB_handler.disconnectDB(connection);
+                    DB_handler.disconnectDB(con);
                     return res.json({status:'101'});
                 }
                 else{
@@ -195,6 +195,7 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
                     var items = {secret:isSecret, list:JSON.parse(JSON.stringify(data2))};
                     console.log(items);
                     var rows = JSON.stringify(items);
+                    DB_handler.disconnectDB(con);
                     return res.json(JSON.parse(rows));
                 }
             });
@@ -215,17 +216,19 @@ router.post('/getVoteInfo', util.ensureAuthenticated, function(req, res, next) {
 router.post('/deleteVote', util.ensureAuthenticated, function(req, res, next) {
 
     var id = req.body.id;
-    var connection = DB_handler.connectDB();
+    var con = DB_handler.connectDB();
     var query = 'update t_vote set v_state = 0 where v_id = "'+id+'"';
 
-    connection.query(query, function(err,data){
+    con.query(query, function(err,data){
         if (err) {
             console.error(err);
-            DB_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(con);
             return res.json({status:'101'});
         }
-
-        return res.json({status:'0'});
+        else{
+            DB_handler.disconnectDB(con);
+            return res.json({status:'0'});
+        }
     });
 });
 
@@ -251,12 +254,12 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
         voteItems[i] = [0, iIds[i], uId];
     }
 
-    var connection = DB_handler.connectDB();
+    var con = DB_handler.connectDB();
 
-    connection.query('insert into t_vote_user(vu_id, vu_pid, vu_voter) values ?', [voteItems], function(err,data){
+    con.query('insert into t_vote_user(vu_id, vu_pid, vu_voter) values ?', [voteItems], function(err,data){
         if (err) {
             console.error(err);
-            DB_handler.disconnectDB(connection);
+            DB_handler.disconnectDB(con);
             return res.json({status:'101'});
         }
         var query = 'update t_vote set v_voted_cnt = v_voted_cnt+1 where v_id = '+vId+';';
@@ -264,14 +267,16 @@ router.post('/selectVote', util.ensureAuthenticated, function(req, res, next) {
             query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = '+iIds[i]+';';
         }
 
-        connection.query(query, function(err,data2){
+        con.query(query, function(err,data2){
             if (err) {
                 console.error(err);
-                DB_handler.disconnectDB(connection);
+                DB_handler.disconnectDB(con);
                 return res.json({status:'101'});
             }
-
-            return res.json({status:'0'});
+            else{
+                DB_handler.disconnectDB(con);
+                return res.json({status:'0'});
+            }
         });
     });
 });
@@ -295,7 +300,7 @@ router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
 
 
     var query = '';
-    var connection = DB_handler.connectDB();
+    var con = DB_handler.connectDB();
 
 
     if (oItemCnt > 0) {
@@ -305,88 +310,85 @@ router.post('/updateVote', util.ensureAuthenticated, function(req, res, next) {
             query += 'update t_vote_item set vi_cnt = vi_cnt - 1 where vi_id = ' + oIds[i] + ';';
         }
 
-        connection.query(query, function (err, data) {
+        con.query(query, function (err, data) {
             if (err) {
                 console.error(err);
-                DB_handler.disconnectDB(connection);
+                DB_handler.disconnectDB(con);
                 return res.json({status: '101'});
             }
-            if (itemCnt > 0) {
-
-                var voteItems = new Array(itemCnt);
-
-                for( var i=0 ; i<itemCnt ; i++ ){
-                    voteItems[i] = [0, iIds[i], uId];
-                }
-
-                connection.query('insert into t_vote_user(vu_id, vu_pid, vu_voter) values ?', [voteItems], function (err, data) {
-                    if (err) {
-                        console.error(err);
-                        DB_handler.disconnectDB(connection);
-                        return res.json({status: '101'});
+            else{
+                if (itemCnt > 0) {
+                    var voteItems = new Array(itemCnt);
+                    for( var i=0 ; i<itemCnt ; i++ ){
+                        voteItems[i] = [0, iIds[i], uId];
                     }
-
-                    query = '';
-
-                    for (var j = 0; j < itemCnt; j++) {
-                        query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = ' + iIds[j] + ';';
-                    }
-
-                    connection.query(query, function (err, data2) {
+                    con.query('insert into t_vote_user(vu_id, vu_pid, vu_voter) values ?', [voteItems], function (err, data) {
                         if (err) {
                             console.error(err);
-                            DB_handler.disconnectDB(connection);
+                            DB_handler.disconnectDB(con);
                             return res.json({status: '101'});
                         }
-                        DB_handler.disconnectDB(connection);
-                        return res.json({status: '0'});
+                        else{
+                            query = '';
+                            for (var j = 0; j < itemCnt; j++) {
+                                query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = ' + iIds[j] + ';';
+                            }
+                            con.query(query, function (err, data2) {
+                                if (err) {
+                                    console.error(err);
+                                    DB_handler.disconnectDB(con);
+                                    return res.json({status: '101'});
+                                }
+                                else{
+                                    DB_handler.disconnectDB(con);
+                                    return res.json({status: '0'});
+                                }
+                            });
+                        }
                     });
-                });
-            }
-            else {
-                DB_handler.disconnectDB(connection);
-                return res.json({status: '0'});
+                }
+                else {
+                    DB_handler.disconnectDB(connection);
+                    return res.json({status: '0'});
+                }
             }
         });
     }else if (itemCnt > 0) {
-
         var voteItems = new Array(itemCnt);
-
         for( var i=0 ; i<itemCnt ; i++ ){
             voteItems[i] = [0, iIds[i], uId];
         }
-
-        connection.query('insert into t_vote_user(vu_id, vu_pid, vu_voter) values ?', [voteItems], function (err, data) {
+        con.query('insert into t_vote_user(vu_id, vu_pid, vu_voter) values ?', [voteItems], function (err, data) {
             if (err) {
                 console.error(err);
-                DB_handler.disconnectDB(connection);
+                DB_handler.disconnectDB(con);
                 return res.json({status: '101'});
             }
+            else{
+                query = '';
 
-            query = '';
-
-            for (var j = 0; j < itemCnt; j++) {
-                query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = ' + iIds[j] + ';';
-            }
-
-            connection.query(query, function (err, data2) {
-                if (err) {
-                    console.error(err);
-                    DB_handler.disconnectDB(connection);
-                    return res.json({status: '101'});
+                for (var j = 0; j < itemCnt; j++) {
+                    query += 'update t_vote_item set vi_cnt = vi_cnt+1 where vi_id = ' + iIds[j] + ';';
                 }
-                DB_handler.disconnectDB(connection);
-                return res.json({status: '0'});
-            });
+
+                con.query(query, function (err, data2) {
+                    if (err) {
+                        console.error(err);
+                        DB_handler.disconnectDB(con);
+                        return res.json({status: '101'});
+                    }
+                    else{
+                        DB_handler.disconnectDB(con);
+                        return res.json({status: '0'});
+                    }
+                });
+            }
         });
     }
     else {
-        DB_handler.disconnectDB(connection);
+        DB_handler.disconnectDB(con);
         return res.json({status: '0'});
     }
-
-
-
 });
 
 /**
@@ -400,17 +402,19 @@ router.post('/getVoteUserList', util.ensureAuthenticated, function(req, res, nex
 
     var id = req.body.vItemId;
 
-    var connection = DB_handler.connectDB();
+    var con = DB_handler.connectDB();
 
     var query = 'select a.vu_voter, b.u_name from t_vote_user a INNER JOIN t_user b ON a.vu_voter = b.u_id where vu_pid = '+id+' ORDER BY b.u_name';
 
-    connection.query(query, function(err,row){
+    con.query(query, function(err,row){
         if (err) {
             console.error(err);
+            DB_handler.disconnectDB(con);
             return res.json({status:'101'});
         }
         else{
             var rows = JSON.stringify(row);
+            DB_handler.disconnectDB(con);
             return res.json(JSON.parse(rows));
         }
     });
