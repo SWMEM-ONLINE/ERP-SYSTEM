@@ -6,7 +6,6 @@ var express = require('express');
 var DB_handler = require('./DB_handler');
 var util = require('./util');
 
-var con = DB_handler.connectDB();
 var router = express.Router();
 var duty_handler = require('./duty_handler');
 var checklist_handler = require('./duty_checklist_handler');
@@ -55,96 +54,96 @@ router.get('/checkListSetting', util.ensureAuthenticated, function(req, res, nex
  *  Part. 포스트
  */
 router.post('/loadMyDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.loadMyDuty(con,req,res);
+    duty_handler.loadMyDuty(req,res);
 });
 
 router.post('/getUser', util.ensureAuthenticated, function(req, res){
-    duty_handler.getUser(con,req,res);
+    duty_handler.getUser(req,res);
 });
 
 router.post('/loadMyPointHistory', util.ensureAuthenticated, function(req, res){
-    duty_handler.loadMyPointHistory(con,req,res);
+    duty_handler.loadMyPointHistory(req,res);
 });
 
 router.post('/addPoint', util.ensureAuthenticated, function(req, res){
-    duty_handler.addPoint(con,req,res);
+    duty_handler.addPoint(req,res);
 });
 
 router.post('/modifyPoint', util.ensureAuthenticated, function(req, res){
-    duty_handler.modifyPoint(con,req,res);
+    duty_handler.modifyPoint(req,res);
 });
 
 router.post('/getAddPoint', util.ensureAuthenticated, function(req, res){
-    duty_handler.getAddPoint(con,req,res);
+    duty_handler.getAddPoint(req,res);
 });
 
 router.post('/getMemberList', util.ensureAuthenticated, function(req, res){
-    duty_handler.getMemberList(con,req,res);
+    duty_handler.getMemberList(req,res);
 });
 
 router.post('/removePointHistory', util.ensureAuthenticated, function(req, res){
-    duty_handler.removePointHistory(con,req,res);
+    duty_handler.removePointHistory(req,res);
 });
 
 router.post('/modifyPointHistoty', util.ensureAuthenticated, function(req, res){
-    duty_handler.modifyPointHistoty(con,req,res);
+    duty_handler.modifyPointHistoty(req,res);
 });
 
 router.post('/loadDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.loadDuty(con,req,res);
+    duty_handler.loadDuty(req,res);
 });
 
 router.post('/getName', util.ensureAuthenticated, function(req, res){
-    duty_handler.getName(con,req,res);
+    duty_handler.getName(req,res);
 });
 
 router.post('/requestChangeDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.requestChangeDuty(con,req,res);
+    duty_handler.requestChangeDuty(req,res);
 });
 
 router.post('/showChangeDutyHistrory', util.ensureAuthenticated, function(req, res){
-    duty_handler.showChangeDutyHistrory(con,req,res);
+    duty_handler.showChangeDutyHistrory(req,res);
 });
 
 router.post('/getID', util.ensureAuthenticated, function(req, res){
-    duty_handler.getID(con,req,res);
+    duty_handler.getID(req,res);
 });
 
 router.post('/acceptChangeDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.acceptChangeDuty(con,req,res);
+    duty_handler.acceptChangeDuty(req,res);
 });
 
 router.post('/declineChangeDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.declineChangeDuty(con,req,res);
+    duty_handler.declineChangeDuty(req,res);
 });
 
 router.post('/forceChangeDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.forceChangeDuty(con,req,res);
+    duty_handler.forceChangeDuty(req,res);
 });
 
 router.post('/showChangeDutyHistroryAll', util.ensureAuthenticated, function(req, res){
-    duty_handler.showChangeDutyHistroryAll(con,req,res);
+    duty_handler.showChangeDutyHistroryAll(req,res);
 });
 
 router.post('/loadAllDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.loadAllDuty(con,req,res);
+    duty_handler.loadAllDuty(req,res);
 });
 
 router.post('/autoMakeDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.autoMakeDuty(con,req,res);
+    duty_handler.autoMakeDuty(req,res);
 });
 
 
 router.post('/updateMemberPoint', util.ensureAuthenticated, function(req, res){
-    duty_handler.updateMemberPoint(con,req,res);
+    duty_handler.updateMemberPoint(req,res);
 });
 
 router.post('/loadTodayDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.loadTodayDuty(con,req,res);
+    duty_handler.loadTodayDuty(req,res);
 });
 
 router.post('/initLastDuty', util.ensureAuthenticated, function(req, res){
-    duty_handler.initLastDuty(con,req,res);
+    duty_handler.initLastDuty(req,res);
 });
 
 
@@ -152,45 +151,45 @@ router.post('/initLastDuty', util.ensureAuthenticated, function(req, res){
  *  checkList handle
  */
 router.post('/inquireCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.inquireCheckList(con,req,res);
+    checklist_handler.inquireCheckList(req,res);
 });
 
 router.post('/insertCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.insertCheckList(con,req,res);
+    checklist_handler.insertCheckList(req,res);
 });
 
 router.post('/modifyCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.modifyCheckList(con,req,res);
+    checklist_handler.modifyCheckList(req,res);
 });
 
 router.post('/deleteCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.deleteCheckList(con,req,res);
+    checklist_handler.deleteCheckList(req,res);
 });
 router.post('/inquireAllCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.inquireAllCheckList(con,req,res);
+    checklist_handler.inquireAllCheckList(req,res);
 });
 
 router.post('/inquireBadCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.inquireBadCheckList(con,req,res);
+    checklist_handler.inquireBadCheckList(req,res);
 });
 
 router.post('/inquireALLBadCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.inquireALLBadCheckList(con,req,res);
+    checklist_handler.inquireALLBadCheckList(req,res);
 });
 
 router.post('/insertBadCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.insertBadCheckList(con,req,res);
+    checklist_handler.insertBadCheckList(req,res);
 });
 
 router.post('/modifyBadCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.modifyBadCheckList(con,req,res);
+    checklist_handler.modifyBadCheckList(req,res);
 });
 router.post('/deleteBadCheckList', util.ensureAuthenticated, function(req, res){
-    checklist_handler.deleteBadCheckList(con,req,res);
+    checklist_handler.deleteBadCheckList(req,res);
 });
 
 router.post('/getRecentGrade', util.ensureAuthenticated, function(req, res){
-    checklist_handler.getRecentGrade(con,req,res);
+    checklist_handler.getRecentGrade(req,res);
 });
 
 

@@ -9,11 +9,12 @@
  */
 
 var util = require('./util');
+var DB_handler = require('./DB_handler');
 
 
+function initLastDuty(req,res){
 
-function initLastDuty(con,req,res){
-
+    var con = DB_handler.connectDB();
     var query = "UPDATE `swmem`.`t_user` SET `u_last_duty`= 0 WHERE `u_last_duty` > 0;";
 
     console.log(query);
@@ -28,6 +29,8 @@ function initLastDuty(con,req,res){
             console.log(response);
             res.send("success");
         }
+
+        DB_handler.disconnectDB(con);
 
 
     });
@@ -89,7 +92,9 @@ function Duty(date) {
  * @param req
  * @param res
  */
-function updateMemberPoint(con,req,res){
+function updateMemberPoint(req,res){
+
+    var con = DB_handler.connectDB();
 
     var memberList = [];
 
@@ -138,6 +143,8 @@ function updateMemberPoint(con,req,res){
 
         }
 
+        DB_handler.disconnectDB(con);
+
     });
 
 }
@@ -151,7 +158,10 @@ function updateMemberPoint(con,req,res){
  * @param memberList
  * @param callback
  */
-function updateMembers( con, memberList , callback){
+function updateMembers(memberList , callback){
+
+    var con = DB_handler.connectDB();
+
     var member;
     var query = '';
     for ( var i  in memberList)
@@ -180,6 +190,8 @@ function updateMembers( con, memberList , callback){
             console.log(response);
             callback("success");
         }
+        DB_handler.disconnectDB(con);
+
     });
 }
 
@@ -343,7 +355,9 @@ function isCompelte(dutyList , duty_count){
  * @param req
  * @param res
  */
-function autoMakeDuty(con,req,res){
+function autoMakeDuty(req,res){
+
+    var con = DB_handler.connectDB();
 
     console.log(req.body);
     console.log(req.body['selected_days[]']);
@@ -408,6 +422,7 @@ function autoMakeDuty(con,req,res){
         if(err){
             console.log(err);
             res.send("fail");
+            DB_handler.disconnectDB(con);
         }else{
 
             for(var i =0;i<response.length;i++){
@@ -429,6 +444,7 @@ function autoMakeDuty(con,req,res){
                 if(err){
                     console.log(err);
                     res.send("fail");
+                    DB_handler.disconnectDB(con);
                 }else {
 
                     for (var i = 0; i < response.length; i++) {
@@ -470,6 +486,7 @@ function autoMakeDuty(con,req,res){
                         console.log("current result : " +result_data);
                         if(len == result_data){
                             res.send("success");
+                            DB_handler.disconnectDB(con);
                         }
                     });
 
@@ -482,13 +499,20 @@ function autoMakeDuty(con,req,res){
 
         }
 
+
+
     });
 
 
 
 }
 
-function updateUserPoint(con,req,res,user_id,mode){
+function updateUserPoint(req,res,user_id,mode){
+
+
+    var con = DB_handler.connectDB();
+    DB_handler.disconnectDB(con);
+
     //일반 당직일 경우
     if( mode == 0 ) {
 
@@ -519,7 +543,10 @@ function updateUserPoint(con,req,res,user_id,mode){
     }
 }
 
-function isBadorManage( con, user_id , callback){
+function isBadorManage(user_id , callback){
+    var con = DB_handler.connectDB();
+    DB_handler.disconnectDB(con);
+
     var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user" +
         " where (u_id = '" + user_id + "');";
 
@@ -528,6 +555,7 @@ function isBadorManage( con, user_id , callback){
 
         if(err){
             console.log(err);
+            DB_handler.disconnectDB(con);
         }
         else{
             var data = response[0];
@@ -548,10 +576,15 @@ function isBadorManage( con, user_id , callback){
 
             console.log(response);
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function updateLastDuty(con,duty){
+function updateLastDuty(duty){
+
+
+    var con = DB_handler.connectDB();
+
 
     var query ="";
 
@@ -579,10 +612,15 @@ function updateLastDuty(con,duty){
             console.log(response);
 
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function insertDutyList(con,req,res, dutyList, callback){
+function insertDutyList(req,res, dutyList, callback){
+
+
+    var con = DB_handler.connectDB();
+
 
     for(var i = 0 ; i < dutyList.length; i++){
         var duty = dutyList[i];
@@ -591,12 +629,12 @@ function insertDutyList(con,req,res, dutyList, callback){
         for(var j = 1 ; j<= count; j++){
             var user_id = duty["user"+j];
             var mode = duty["mode"+j];
-            updateUserPoint(con,req,res,user_id,mode);
+            updateUserPoint(req,res,user_id,mode);
         }
         var query;
 
 
-        updateLastDuty(con, duty);
+        updateLastDuty(duty);
 
 
         if(count==1){
@@ -615,6 +653,7 @@ function insertDutyList(con,req,res, dutyList, callback){
                     console.log(response);
                     callback(1);
                 }
+
             });
         }
         else if(count==2){
@@ -634,6 +673,7 @@ function insertDutyList(con,req,res, dutyList, callback){
                     console.log(response);
                     callback(1);
                 }
+                DB_handler.disconnectDB(con);
 
             });
         }
@@ -657,6 +697,7 @@ function insertDutyList(con,req,res, dutyList, callback){
                     console.log(response);
                     callback(1);
                 }
+                DB_handler.disconnectDB(con);
 
             });
         }
@@ -681,6 +722,7 @@ function insertDutyList(con,req,res, dutyList, callback){
                     console.log(response);
                     callback(1);
                 }
+                DB_handler.disconnectDB(con);
 
             });
         }
@@ -688,8 +730,9 @@ function insertDutyList(con,req,res, dutyList, callback){
 }
 
 
-function forceChangeDuty(con,req,res){
+function forceChangeDuty(req,res){
 
+    var con = DB_handler.connectDB();
     console.log(req.body);
 
     var request_date1 = req.body.request_date1;
@@ -719,6 +762,7 @@ function forceChangeDuty(con,req,res){
         if(err){
             console.log(err);
             res.send("fail");
+            DB_handler.disconnectDB(con);
         }else{
 
             var get_query1 = " select * from  `swmem`.`t_duty` WHERE (`date`='"+request_date1.getFullYear()+"-"  + (request_date1.getMonth()+1)
@@ -728,11 +772,13 @@ function forceChangeDuty(con,req,res){
             con.query(get_query1, function(err, response){
                 if(err){
                     console.log(err);
+                    res.send("fail");
+                    DB_handler.disconnectDB(con);
                 }else{
 
                     if(response.length==0){
                         console.log("error");
-                        res.send("fail");
+                        DB_handler.disconnectDB(con);
 
                     }else{
 
@@ -750,12 +796,14 @@ function forceChangeDuty(con,req,res){
                         console.log(get_query2);
                         con.query(get_query2, function(err, response){
                             if(err){
+                                DB_handler.disconnectDB(con);
                                 console.log(err);
+                                res.send("fail");
                             }else{
 
                                 if(response.length==0){
                                     console.log("error");
-                                    res.send("fail");
+                                    DB_handler.disconnectDB(con);
 
                                 }else{
 
@@ -782,11 +830,13 @@ function forceChangeDuty(con,req,res){
                                     con.query(change_query1, function(err, response){
                                         if(err){
                                             console.log(err);
+                                            DB_handler.disconnectDB(con);
+                                            res.send("fail");
                                         }else{
 
                                             if(response.length==0){
                                                 console.log("error");
-                                                res.send("fail");
+                                                DB_handler.disconnectDB(con);
 
                                             }else{
 
@@ -810,6 +860,7 @@ function forceChangeDuty(con,req,res){
                                                     }else{
                                                         res.send("success");
                                                     }
+                                                    DB_handler.disconnectDB(con);
                                                 });
 
 
@@ -839,10 +890,12 @@ function forceChangeDuty(con,req,res){
 /**
     요청된 체인지 듀티를 바꾸는 확인
  */
-function declineChangeDuty(con,req,res){
+function declineChangeDuty(req,res){
 
     console.log(req.body);
 
+    var con = DB_handler.connectDB();
+    DB_handler.disconnectDB(con);
 
     var index = req.body.index;
 
@@ -870,6 +923,8 @@ function declineChangeDuty(con,req,res){
 
             }
         }
+
+        DB_handler.disconnectDB(con);
     });
 
 
@@ -936,9 +991,10 @@ function getRequestInfo(data , request_id){
 /**
  *  요청한 당직 맞변경을 수락한다.
  */
-function acceptChangeDuty(con,req,res){
+function acceptChangeDuty(req,res){
 
     console.log(req.body);
+    var con = DB_handler.connectDB();
 
     var index = req.body.index;
     var request_date1 = new Date(req.body.request_date1);
@@ -962,12 +1018,13 @@ function acceptChangeDuty(con,req,res){
         if(err){
             console.log(err);
             res.send("fail");
+            DB_handler.disconnectDB(con);
         }else{
 
             if(response.length==0){
                 console.log("error");
                 res.send("fail");
-
+                DB_handler.disconnectDB(con);
             }else{
 
                 console.log(response);
@@ -981,11 +1038,13 @@ function acceptChangeDuty(con,req,res){
                     if(err){
                         console.log(err);
                         res.send("fail");
+                        DB_handler.disconnectDB(con);
                     }else{
 
                         if(response.length==0){
                             console.log("error");
                             res.send("fail");
+                            DB_handler.disconnectDB(con);
 
                         }else{
 
@@ -1005,12 +1064,13 @@ function acceptChangeDuty(con,req,res){
                                 if(err){
                                     res.send("fail");
                                     console.log(err);
+                                    DB_handler.disconnectDB(con);
                                 }else{
 
                                     if(response.length==0){
                                         res.send("fail");
                                         console.log("error");
-
+                                        DB_handler.disconnectDB(con);
                                     }else{
 
                                         //console.log(response[0]);
@@ -1038,11 +1098,13 @@ function acceptChangeDuty(con,req,res){
                                             if(err){
                                                 res.send("fail");
                                                 console.log(err);
+                                                DB_handler.disconnectDB(con);
                                             }else{
 
                                                 if(response.length==0){
                                                     res.send("fail");
                                                     console.log("error");
+                                                    DB_handler.disconnectDB(con);
 
                                                 }else{
 
@@ -1063,11 +1125,11 @@ function acceptChangeDuty(con,req,res){
                                                         if(err){
                                                             res.send("fail");
                                                             console.log(err);
+                                                            DB_handler.disconnectDB(con);
                                                         }else{
 
                                                             if(response.length==0){
                                                                 console.log("error");
-
                                                                 res.send("fail");
                                                             }else{
 
@@ -1076,6 +1138,7 @@ function acceptChangeDuty(con,req,res){
                                                                 res.send("success");
 
                                                             }
+                                                            DB_handler.disconnectDB(con);
                                                         }
                                                     });
 
@@ -1103,7 +1166,7 @@ function acceptChangeDuty(con,req,res){
 
 
 
-function getID(con,req,res){
+function getID(req,res){
 
     var id  = req.session.passport.user.id;
 
@@ -1111,7 +1174,7 @@ function getID(con,req,res){
 }
 
 
-function showChangeDutyHistroryAll(con,req,res){
+function showChangeDutyHistroryAll(req,res){
 
     console.log(req.body);
 
@@ -1130,6 +1193,7 @@ function showChangeDutyHistroryAll(con,req,res){
             res.send(response);
 
         }
+        DB_handler.disconnectDB(con);
     });
 
 
@@ -1137,8 +1201,9 @@ function showChangeDutyHistroryAll(con,req,res){
 
 
 
-function showChangeDutyHistrory(con,req,res){
+function showChangeDutyHistrory(req,res){
 
+    var con = DB_handler.connectDB();
     console.log(req.body);
 
 
@@ -1159,18 +1224,18 @@ function showChangeDutyHistrory(con,req,res){
             console.log(response);
 
             res.send(response);
-
-
         }
+        DB_handler.disconnectDB(con);
     });
 
 
 }
 
 
-function requestChangeDuty(con,req,res){
+function requestChangeDuty(req,res){
 
 
+    var con = DB_handler.connectDB();
     console.log(req.body);
 
     var request_date1 = req.body.request_date1;
@@ -1209,6 +1274,7 @@ function requestChangeDuty(con,req,res){
 
             }
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
@@ -1219,8 +1285,9 @@ function requestChangeDuty(con,req,res){
 
 
 
-function loadDuty(con,req,res){
+function loadDuty(req,res){
 
+    var con = DB_handler.connectDB();
     var year = req.body.year;
     var month = req.body.month;
     var date = req.body.date;
@@ -1263,13 +1330,15 @@ function loadDuty(con,req,res){
                 res.send(sendData);
                 console.log(sendData);
             }
+            DB_handler.disconnectDB(con);
         }
     });
 
 }
 
 
-function loadAllDuty(con,req,res){
+function loadAllDuty(req,res){
+    var con = DB_handler.connectDB();
 
     var year = req.body.year;
     var month = req.body.month;
@@ -1287,6 +1356,7 @@ function loadAllDuty(con,req,res){
 
         if(err){
             console.log(err);
+            DB_handler.disconnectDB(con);
         }else{
 
             if(response.length==0){
@@ -1296,13 +1366,15 @@ function loadAllDuty(con,req,res){
                 res.send(response);
                 console.log(response);
             }
+            DB_handler.disconnectDB(con);
         }
     });
 }
 
 
 
-function getName(con, req, res ){
+function getName( req, res ){
+    var con = DB_handler.connectDB();
 
     var id = req.body.id;
 
@@ -1317,8 +1389,8 @@ function getName(con, req, res ){
         }else{
             console.log(response[0]);
             res.send(response[0].u_name);
-            //return response[0].u_name;
         }
+        DB_handler.disconnectDB(con);
 
     });
 
@@ -1326,8 +1398,9 @@ function getName(con, req, res ){
 
 
 
-function modifyPointHistoty(con,req,res){
+function modifyPointHistoty(req,res){
 
+    var con = DB_handler.connectDB();
     var receiveId = req.body['receive_id[]'];
     var addTime = req.body.addTime;
     var mode = req.body.mode;
@@ -1385,6 +1458,7 @@ function modifyPointHistoty(con,req,res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
 
     });
 
@@ -1397,8 +1471,9 @@ function modifyPointHistoty(con,req,res){
 
 
 
-function removePointHistory(con,req,res){
+function removePointHistory(req,res){
 
+    var con = DB_handler.connectDB();
     var receiveId = req.body['receive_id[]'];
     var addTime = req.body.addTime;
     var mode = req.body.mode;
@@ -1436,14 +1511,16 @@ function removePointHistory(con,req,res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
 
     });
 
 }
 
 
-function getMemberList(con,req,res){
+function getMemberList(req,res){
 
+    var con = DB_handler.connectDB();
     var query = "select u_id, u_name, u_sex, u_birth, u_phone, u_email, u_state, u_period," +
         " u_branch, u_device , u_token, u_mileage, u_good_duty_point, u_bad_duty_point," +
         " u_manager_bad_duty_point, u_photo_url, u_register_date from t_user where u_state > 1";
@@ -1453,11 +1530,13 @@ function getMemberList(con,req,res){
 
         console.log("send all memberList to browser");
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function getAddPoint(con,req,res){
+function getAddPoint(req,res){
 
+    var con = DB_handler.connectDB();
 
     var send_id = req.session.passport.user.id;
 
@@ -1566,15 +1645,17 @@ function getAddPoint(con,req,res){
                 console.log(convertData);
             }
         }
+        DB_handler.disconnectDB(con);
     });
 
 
 }
 
 
-function addPoint(con,req,res){
+function addPoint(req,res){
 
 
+    var con = DB_handler.connectDB();
     // sended data
     console.log(req.body);
     var send_id = req.session.passport.user.id;
@@ -1648,12 +1729,14 @@ function addPoint(con,req,res){
     }
 
     res.send(data);
+    DB_handler.disconnectDB(con);
 
 }
 
 
-function loadMyPointHistory(con,req,res){
+function loadMyPointHistory(req,res){
 
+    var con = DB_handler.connectDB();
     var id = req.session.passport.user.id;
     // 클라이언트에서 오는 데이터
 
@@ -1692,15 +1775,19 @@ function loadMyPointHistory(con,req,res){
 
             res.send(datas);
             console.log(datas);
+
         }
 
+        DB_handler.disconnectDB(con);
     });
 
 }
 
 
 // 자신의 벌당직 상황을 조회한다.
-function loadMyDuty(con,req,res){
+function loadMyDuty(req,res){
+
+    var con = DB_handler.connectDB();
 
     var id = req.session.passport.user.id;
 
@@ -1745,13 +1832,15 @@ function loadMyDuty(con,req,res){
 
             res.send(datas);
             console.log(datas);
+            DB_handler.disconnectDB(con);
         }
     });
 
 
 }
 
-function getUser(con, req, res){
+function getUser( req, res){
+    var con = DB_handler.connectDB();
     var id = req.session.passport.user.id;
     var name = req.session.passport.user.name;
 
@@ -1773,15 +1862,17 @@ function getUser(con, req, res){
             res.send(data);
             console.log(data);
         }
+        DB_handler.disconnectDB(con);
     });
 
 
 }
 
 
-function loadTodayDuty(con,req,res){
+function loadTodayDuty(req,res){
 
 
+    var con = DB_handler.connectDB();
     var currentDate = new Date();
     var year = currentDate.getFullYear();
     var month = currentDate.getMonth()+1;
@@ -1821,6 +1912,7 @@ function loadTodayDuty(con,req,res){
                 res.send(data);
             }
         }
+        DB_handler.disconnectDB(con);
     });
 
 

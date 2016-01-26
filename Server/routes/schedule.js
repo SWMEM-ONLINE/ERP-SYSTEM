@@ -17,20 +17,20 @@ router.get('/sManage', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.post('/manage/loadSchedule', util.ensureAuthenticated, function(req, res){
-    schedule_handler.loadSchedule(con, req, res);
+    schedule_handler.loadSchedule( req, res);
 });
 
 router.post('/manage/enrollSchedule', util.ensureAuthenticated, function(req, res){
-    schedule_handler.enrollSchedule(con, req, res);
+    schedule_handler.enrollSchedule( req, res);
 });
 
 router.post('/manage/deleteSchedule', util.ensureAuthenticated, function(req, res) {
-    schedule_handler.deleteSchedule(con, req, res);
+    schedule_handler.deleteSchedule( req, res);
 });
 
 router.post('/getEvents', util.ensureAuthenticated, function(req, res){
     console.log("getevnets");
-    schedule_handler.getEvents(con,req,res);
+    schedule_handler.getEvents(req,res);
 });
 
 module.exports = router;

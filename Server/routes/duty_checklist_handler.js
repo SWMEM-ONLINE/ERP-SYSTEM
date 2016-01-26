@@ -2,9 +2,13 @@
  * Created by HyunJae on 2016. 1. 4..
  */
 
+var DB_handler = require('./DB_handler');
 
-function inquireCheckList(con,req,res){
+function inquireCheckList(req,res){
 
+
+
+    var con = DB_handler.connectDB();
     var grade = req.body.grade;
 
     var query = "SELECT * FROM swmem.t_duty_checklist where grade <= '" + grade + "' order by section, grade;";
@@ -27,12 +31,14 @@ function inquireCheckList(con,req,res){
 
             res.send(sendData);
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
 
-function inquireAllCheckList(con,req,res){
+function inquireAllCheckList(req,res){
 
+    var con = DB_handler.connectDB();
     var query = "SELECT * FROM swmem.t_duty_checklist order by section;";
 
     var sendData = [];
@@ -53,11 +59,13 @@ function inquireAllCheckList(con,req,res){
 
             res.send(sendData);
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function insertCheckList(con,req,res){
+function insertCheckList(req,res){
 
+    var con = DB_handler.connectDB();
 
     var grade = req.body.grade;
     var section = req.body.section;
@@ -84,12 +92,16 @@ function insertCheckList(con,req,res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
+
     });
 
 }
 
-function modifyCheckList(con,req,res){
+function modifyCheckList(req,res){
 
+
+    var con = DB_handler.connectDB();
 
     var grade = req.body.grade;
     var section = req.body.section;
@@ -114,14 +126,16 @@ function modifyCheckList(con,req,res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
     });
 
 
 
 }
 
-function deleteCheckList(con,req,res){
+function deleteCheckList(req,res){
 
+    var con = DB_handler.connectDB();
 
     var index = req.body.index;
 
@@ -142,12 +156,15 @@ function deleteCheckList(con,req,res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
     });
 
 }
 
 
-function inquireALLBadCheckList(con,req,res){
+function inquireALLBadCheckList(req,res){
+
+    var con = DB_handler.connectDB();
 
     var query = "SELECT * FROM swmem.t_duty_bad_checklist;";
 
@@ -169,11 +186,13 @@ function inquireALLBadCheckList(con,req,res){
 
             res.send(sendData);
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
 
-function inquireBadCheckList(con,req,res){
+function inquireBadCheckList(req,res){
+    var con = DB_handler.connectDB();
 
     var day = req.body.day;
 
@@ -197,10 +216,13 @@ function inquireBadCheckList(con,req,res){
 
             res.send(sendData);
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function insertBadCheckList(con,req,res){
+function insertBadCheckList(req,res){
+
+    var con = DB_handler.connectDB();
 
 
     var day = req.body.day;
@@ -228,13 +250,15 @@ function insertBadCheckList(con,req,res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
     });
 
 }
 
-function modifyBadCheckList(con,req,res){
+function modifyBadCheckList(req,res){
 
 
+    var con = DB_handler.connectDB();
     var day = req.body.day;
     var section = req.body.section;
     var content = req.body.content;
@@ -258,14 +282,16 @@ function modifyBadCheckList(con,req,res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
     });
 
 
 
 }
 
-function deleteBadCheckList(con,req,res){
+function deleteBadCheckList(req,res){
 
+    var con = DB_handler.connectDB();
 
     var index = req.body.index;
 
@@ -286,12 +312,15 @@ function deleteBadCheckList(con,req,res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
     });
 
 }
 
 
-function getRecentGrade(con,req,res){
+function getRecentGrade(req,res){
+
+    var con = DB_handler.connectDB();
 
     var query = "SELECT l_grade FROM swmem.t_life where l_recent = 1;";
 
@@ -321,6 +350,8 @@ function getRecentGrade(con,req,res){
 
 
         }
+
+        DB_handler.disconnectDB(con);
 
     });
 }

@@ -2,9 +2,12 @@
  * Created by HyunJae on 2016. 1. 13..
  */
 
+var DB_handler = require('./DB_handler');
 var util = require('./util');
 
-function loadSchedule(con, req, res){
+function loadSchedule( req, res){
+
+    var con = DB_handler.connectDB();
     var date = req.body;
     var query = 'select a.u_name, b.* from t_user a inner join t_schedule b on a.u_id=b.s_enroll_user where month(s_start_date)="' + date.month + '" and year(s_start_date)="' + date.year + '"';
     con.query(query, function(err, response){
@@ -12,10 +15,12 @@ function loadSchedule(con, req, res){
             throw err
         }
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function enrollSchedule(con, req, res){
+function enrollSchedule(req, res){
+    var con = DB_handler.connectDB();
     var flag = req.body.flag;
     var start_date = convertDateformat(req.body.start_date);
     var end_date = convertDateformat(req.body.end_date);
@@ -29,6 +34,7 @@ function enrollSchedule(con, req, res){
             }else{
                 res.send('alter');
             }
+
         });
     }else{                          // 등록하는 케이스
         var enroll_query = 'insert into t_schedule SET ?';
@@ -45,12 +51,15 @@ function enrollSchedule(con, req, res){
             }else{
                 res.send('enroll');
             }
+            DB_handler.disconnectDB(con);
         });
     }
 }
 
-function deleteSchedule(con, req, res){
+function deleteSchedule(req, res){
     var id = req.body.schedule_id;
+
+    var con = DB_handler.connectDB();
     var delete_query = 'delete from t_schedule where s_id="' + id + '"';
     con.query(delete_query, function(err, response){
         if(err){
@@ -58,6 +67,7 @@ function deleteSchedule(con, req, res){
         }else{
             res.send('success');
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
@@ -93,7 +103,8 @@ function Event(title,start,end,flag){
     }
 }
 
-function getEvents(con,req,res){
+function getEvents(req,res){
+    var con = DB_handler.connectDB();
     var eventLists = [];
     var i ;
     var year = req.body.year;
@@ -107,6 +118,7 @@ function getEvents(con,req,res){
         if(err)
         {
             console.log(err);
+            DB_handler.disconnectDB(con);
         }
         else
         {
@@ -128,6 +140,7 @@ function getEvents(con,req,res){
 
                         res.send(eventLists);
 
+                        DB_handler.disconnectDB(con);
                     });
                 });
             });
