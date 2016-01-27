@@ -143,6 +143,7 @@ function getEvents(req,res){
                     getBook(con,id,eventLists,function(eventLists){
 
                         res.send(eventLists);
+                        DB_handler.disconnectDB(con);
                     });
                 });
             });
@@ -151,17 +152,13 @@ function getEvents(req,res){
              * year랑 date로 ㄲ
              */
 
-           // res.send(eventLists);
         }
-        DB_handler.disconnectDB(con);
     });
 
 }
 
 
-function getBook(id,eventLists,callback){
-
-    var con = DB_handler.connectDB();
+function getBook(con,id,eventLists,callback){
 
     var query = "SELECT (SELECT b_name FROM swmem.t_book WHERE b_id = br_book_id) name ,(SELECT b_due_date FROM swmem.t_book WHERE b_id = br_book_id) due_date FROM swmem.t_book_rental " +
         "WHERE br_user = '"+id+"';";
@@ -197,8 +194,6 @@ function getBook(id,eventLists,callback){
             callback(eventLists);
         }
 
-        DB_handler.disconnectDB(con);
-
 
     });
 
@@ -206,9 +201,7 @@ function getBook(id,eventLists,callback){
 
 
 
-function getHardware(id,eventLists,callback){
-
-    var con = DB_handler.connectDB();
+function getHardware(con,id,eventLists,callback){
 
     var query ="SELECT hr_due_date , (SELECT h_name FROM swmem.t_hardware WHERE h_id = hr_hardware_id) name FROM swmem.t_hardware_rental WHERE hr_user = '" + id + "';";
     var i;
@@ -243,8 +236,6 @@ function getHardware(id,eventLists,callback){
             }
             callback(eventLists);
         }
-        DB_handler.disconnectDB(con);
-
 
     });
 
@@ -254,10 +245,7 @@ function getHardware(id,eventLists,callback){
 
 
 
-function getDuty(id,year,month,eventLists,callback){
-
-    var con = DB_handler.connectDB();
-
+function getDuty(con,id,year,month,eventLists,callback){
 
     var query = "select * from swmem.t_duty where ( user_id1 = '" + id + "' or user_id2 = '" + id + "' or user_id3 = '" + id + "' or user_id4 = '" + id
         + "') and month(date)= " + month + " and year(date) = " + year;
@@ -326,7 +314,6 @@ function getDuty(id,year,month,eventLists,callback){
             }
             callback(eventLists);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
