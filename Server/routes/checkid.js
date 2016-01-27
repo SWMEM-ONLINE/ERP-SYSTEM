@@ -15,7 +15,7 @@ router.post('/', util.ensureAuthenticated, function(req, res) {
         if(err){
             console.log(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status: 'fail'});
         }
         else {
             if (data.length > 0 || id === '') { //impossible

@@ -102,25 +102,30 @@ function memberSelect(obj){
     var id = obj.id;
     var idx = id.substr(8);
     $.post('/fee/userList',function(req){
-        var string;
-        var data;
-        string = '<table id='+idx+'>';
-        string += '<thead>';
-        string += '<tr><th class="memberSelect">선택</th><th class="memberName">이름</th></tr>';
-        string += '</thead>';
-        string += '<tbody>';
-        data = req.result;
-        for(var i=0;i<data.length;i++){
-            var member = data[i];
-            string += '<tr>';
-            string += '<td><input id="'+member.u_name+'" type="checkbox" name="memberCheck[]" value = "'+member.u_id+'"></td><td><label for = "'+member.u_name+'">'+ member.u_name +'('+member.u_id+')</label></td>';
-            string += '</tr>';
+        if(req.status == 'fail'){
+            toastr['error']('회원목록 로딩 실패');
         }
-        string += '</tbody></table>';
-        $('.modal-title').text('해당회원 선택');
-        $('div.modal .modal-body').html(string);
+        else {
+            var string;
+            var data;
+            string = '<table id=' + idx + '>';
+            string += '<thead>';
+            string += '<tr><th class="memberSelect">선택</th><th class="memberName">이름</th></tr>';
+            string += '</thead>';
+            string += '<tbody>';
+            data = req.result;
+            for (var i = 0; i < data.length; i++) {
+                var member = data[i];
+                string += '<tr>';
+                string += '<td><input id="' + member.u_name + '" type="checkbox" name="memberCheck[]" value = "' + member.u_id + '"></td><td><label for = "' + member.u_name + '">' + member.u_name + '(' + member.u_id + ')</label></td>';
+                string += '</tr>';
+            }
+            string += '</tbody></table>';
+            $('.modal-title').text('해당회원 선택');
+            $('div.modal .modal-body').html(string);
+            $('div.modal').modal();
+        }
     });
-    $('div.modal').modal();
 }
 
 $('#selectAll').unbind().click(function(){
@@ -229,7 +234,7 @@ $('#submit').unbind().click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data.status === '0'){
-                    toastr['success']('성공');
+                    toastr['success']('입력 성공');
                     for(var i=1;i<count;i++){
                         document.getElementById('addlist').deleteRow(1);
                     }
@@ -238,6 +243,9 @@ $('#submit').unbind().click(function(){
                     $('#price_'+(rowCount-1)).val('');
                     $('#members_'+(rowCount-1)).val('');
                     $('#type_'+(rowCount-1)).html('구분');
+                }
+                else{
+                    toastr['error']('입력 실패');
                 }
             }
         });

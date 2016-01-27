@@ -16,31 +16,36 @@ function getMemberList(){
         data:JSON.stringify(send),
         contentType:'application/json',
         success: function(data) {
-            tbodyString += '<tr>';
-            var periodCnt = 0;
-            for (var i = 0; i < data.length; i++) {
-                var user = data[i];
-                if (periodCnt % 5 == 0 && i != 0) {
-                    tbodyString += '</tr><tr>';
-                }
-                if (periodNum != user.u_period) {
-                    tbodyString += '</tr><th colspan="5">' + user.u_period + '</th></tr><tr>';
-                    periodNum = user.u_period;
-                    periodCnt = 0;
-                }
-                var classString = 'table-clickable';
-                tbodyString += '<td id="' + user.u_id + '" class="' + classString + '">' + user.u_name + '</td>';
-                periodCnt++;
+            if(data.status == 'fail'){
+                toastr['error']('회원 목록 로딩 실패');
             }
-            var remain = periodCnt % 5;
-            if (remain > 0) {
-                for (i = remain; i < 5; i++) {
-                    tbodyString += '<td></td>';
+            else {
+                tbodyString += '<tr>';
+                var periodCnt = 0;
+                for (var i = 0; i < data.length; i++) {
+                    var user = data[i];
+                    if (periodCnt % 5 == 0 && i != 0) {
+                        tbodyString += '</tr><tr>';
+                    }
+                    if (periodNum != user.u_period) {
+                        tbodyString += '</tr><th colspan="5">' + user.u_period + '</th></tr><tr>';
+                        periodNum = user.u_period;
+                        periodCnt = 0;
+                    }
+                    var classString = 'table-clickable';
+                    tbodyString += '<td id="' + user.u_id + '" class="' + classString + '">' + user.u_name + '</td>';
+                    periodCnt++;
                 }
+                var remain = periodCnt % 5;
+                if (remain > 0) {
+                    for (i = remain; i < 5; i++) {
+                        tbodyString += '<td></td>';
+                    }
+                }
+                tbodyString += '</tr>';
+                $('#memberList tbody').empty();
+                $('#memberList tbody').append(tbodyString);
             }
-            tbodyString += '</tr>';
-            $('#memberList tbody').empty();
-            $('#memberList tbody').append(tbodyString);
         }
     });
 }

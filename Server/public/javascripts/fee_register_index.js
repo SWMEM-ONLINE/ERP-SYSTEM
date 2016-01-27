@@ -176,7 +176,7 @@ $('#submit').unbind().click(function(){
             contentType:'application/json',
             success: function(data){
                 if(data.status === '0'){
-                    toastr['success']('성공');
+                    toastr['success']('입력 성공');
                     for(var i=1;i<count;i++){
                         document.getElementById('addlist').deleteRow(1);
                     }
@@ -185,6 +185,9 @@ $('#submit').unbind().click(function(){
                     $('#price_'+(rowCount-1)).val('');
                     $('#type_'+(rowCount-1)).html('구분');
                     registerList();
+                }
+                else{
+                    toastr['error']('입력 실패');
                 }
             }
         });
@@ -248,6 +251,9 @@ $('#deleteHistory').unbind().click(function(){
             $('div.modal').modal('hide');
             registerList();
             toastr['success']('기록 삭제');
+        }
+        else{
+            toastr['error']('삭제 실패');
         }
     });
 });

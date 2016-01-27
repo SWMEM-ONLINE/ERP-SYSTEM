@@ -99,7 +99,7 @@ router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             var send = JSON.stringify(rows);
@@ -185,7 +185,7 @@ router.post('/memberinfo', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             var send = JSON.stringify(rows);

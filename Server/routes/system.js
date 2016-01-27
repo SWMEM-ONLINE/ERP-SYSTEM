@@ -18,7 +18,7 @@ router.post('/appinfo', util.ensureAuthenticated, function(req, res, next) {
         if(err){
             console.log(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             var send = JSON.stringify(data);

@@ -73,7 +73,7 @@ router.get('/room', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.render('error',{title:'잘못된 접근'});
         }
         else{
             var send = JSON.stringify(rows);
@@ -92,7 +92,7 @@ router.post('/room', util.ensureAuthenticated, function(req, res, next) {
         if(err){
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             ApplyPush(rows,title,content,res);
@@ -110,7 +110,7 @@ router.get('/server', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.render('error',{title:'잘못된 접근'});
         }
         else{
             var send = JSON.stringify(rows);
@@ -130,7 +130,7 @@ router.post('/server', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             ApplyPush(rows,title,content,res);
@@ -148,7 +148,7 @@ router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.render('error',{title:'잘못된 접근'});
         }
         else{
             var send = JSON.stringify(rows);
@@ -167,7 +167,7 @@ router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             ApplyPush(rows,title,content,res);
@@ -254,7 +254,7 @@ router.get('/getApplyList/:type', util.ensureAuthenticated, function(req, res, n
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             var send = JSON.stringify(result);

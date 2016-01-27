@@ -26,6 +26,9 @@ $('.push-equipment').on('click', function () {
             if(data.status == 'success'){
                 toastr['success']('신청되었습니다');
             }
+            else{
+                toastr['error']('실패했습니다');
+            }
         });
     }
 });
@@ -35,6 +38,9 @@ $('.push-room').on('click', function () {
             if(data.status == 'success'){
                 toastr['success']('신청되었습니다');
             }
+            else{
+                toastr['error']('실패했습니다');
+            }
         });
 });
 
@@ -43,6 +49,9 @@ $('.push-server').on('click', function () {
         $.post('/apply/server',function(data){
             if(data.status == 'success'){
                 toastr['success']('신청되었습니다');
+            }
+            else{
+                toastr['error']('실패했습니다');
             }
         });
     }

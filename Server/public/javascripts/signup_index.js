@@ -83,10 +83,15 @@ inputId.focusout(function(){
                 signup_success = false;
                 idok = false;
             }
-            else{
+            else if(data.status === '1'){
                 toastr['info']('ID 사용가능');
                 signup_success = true;
                 idok = true;
+            }
+            else{
+                toastr['error']('ID 체크 실패');
+                signup_success = false;
+                idok = false;
             }
         });
     }
