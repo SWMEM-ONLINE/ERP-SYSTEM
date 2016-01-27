@@ -43,3 +43,15 @@ $('#loginButton').click(function(){
         }
     });
 });
+
+$('#login_id').keypress(function(event) {
+    if (event.keyCode == 13){
+        $('#loginButton').click();
+    }
+});
+
+$('#login_password').keypress(function(event) {
+    if (event.keyCode == 13){
+        $('#loginButton').click();
+    }
+});
