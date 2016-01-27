@@ -108,10 +108,10 @@ function updateMemberPoint(req,res){
             console.log(err);
         }
         else{
-
+            console.log(response);
             for(var i =0;i<response.length;i++){
                 var data = response[i];
-
+                console.log(data);
                 var Member ={};
                 Member.id = data.u_id;
                 Member.name = data.u_name;
@@ -126,10 +126,11 @@ function updateMemberPoint(req,res){
                 Member.bad_point = result.bad_point;
                 Member.manage_bad_point = result.manage_bad_point;
                 memberList.push(Member);
+                console.log(Member);
 
             }
 
-            updateMembers(con,memberList , function(data){
+            updateMembers(memberList , function(data){
 
                 console.log(data);
                 if(data == "success"){
@@ -154,7 +155,6 @@ function updateMemberPoint(req,res){
 
 /**
  * 실질적으로 멤버들의 상벌당직을 업그레이드 시키는 부분
- * @param con
  * @param memberList
  * @param callback
  */
@@ -299,8 +299,14 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
     /*
         일반당직을 생성하는 부분
      */
-    while(true){
+
+    var gen_count = 10000;
+
+    console.log(memberList);
+
+    while(gen_count>0 && memberList.length!=0){
        // console.log("와일문안");
+
         for(i =0 ; i < dutyList.length; i++){
 
             duty = dutyList[i];
@@ -315,10 +321,25 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
         if(isCompelte(dutyList,duty_count)){
             break;
         }
+        gen_count--;
     }
-    console.log("duty List is genearated");
 
-    return dutyList;
+    if(memberList.length==0){
+        console.log("there is no member");
+        return false;
+    }
+
+
+    if(gen_count ==0){
+        console.log("Fail to Generate DutyList");
+        return false;
+
+    }else{
+        console.log("Success to Generate DutyList");
+        return true;
+    }
+
+
 
 }
 
@@ -360,8 +381,6 @@ function autoMakeDuty(req,res){
     var con = DB_handler.connectDB();
 
     console.log(req.body);
-    console.log(req.body['selected_days[]']);
-
     var selected_days;
 
     if(typeof req.body['selected_days[]'] == "undefined"){
@@ -472,26 +491,29 @@ function autoMakeDuty(req,res){
                     console.log(memberList);
                     console.log(memberList2);
 
-                    dutyList = generateDuty(memberList,memberList2,dutyList,duty_count,bad_duty_count);
+                    if(generateDuty(memberList,memberList2,dutyList,duty_count,bad_duty_count)){
 
-                    console.log(dutyList);
+                        console.log(dutyList);
 
-                    var len = dutyList.length;
+                        var len = dutyList.length;
 
-                    console.log("len : " + len);
-                    var result_data = 0;
-                    insertDutyList(con,req,res,dutyList , function(data){
-                        result_data+= data;
+                        console.log("len : " + len);
+                        var result_data = 0;
+                        insertDutyList(con,req,res,dutyList , function(data){
+                            result_data+= data;
 
-                        console.log("current result : " +result_data);
-                        if(len == result_data){
-                            res.send("success");
-                            DB_handler.disconnectDB(con);
-                        }
-                    });
+                            console.log("current result : " +result_data);
+                            if(len == result_data){
+                                res.send("success");
+                                DB_handler.disconnectDB(con);
+                            }
+                        });
 
-                    //console.log("send all memberList to browser");
-                    //res.send(response);
+                    }else{
+                        res.send("fail");
+                        DB_handler.disconnectDB(con);
+                    }
+
                 }
 
             });
@@ -507,11 +529,7 @@ function autoMakeDuty(req,res){
 
 }
 
-function updateUserPoint(req,res,user_id,mode){
-
-
-    var con = DB_handler.connectDB();
-    DB_handler.disconnectDB(con);
+function updateUserPoint(con, req,res,user_id,mode){
 
     //일반 당직일 경우
     if( mode == 0 ) {
@@ -616,10 +634,7 @@ function updateLastDuty(duty){
     });
 }
 
-function insertDutyList(req,res, dutyList, callback){
-
-
-    var con = DB_handler.connectDB();
+function insertDutyList(con, req,res, dutyList, callback){
 
 
     for(var i = 0 ; i < dutyList.length; i++){
@@ -629,7 +644,7 @@ function insertDutyList(req,res, dutyList, callback){
         for(var j = 1 ; j<= count; j++){
             var user_id = duty["user"+j];
             var mode = duty["mode"+j];
-            updateUserPoint(req,res,user_id,mode);
+            updateUserPoint(con,req,res,user_id,mode);
         }
         var query;
 
@@ -673,7 +688,6 @@ function insertDutyList(req,res, dutyList, callback){
                     console.log(response);
                     callback(1);
                 }
-                DB_handler.disconnectDB(con);
 
             });
         }
@@ -697,7 +711,6 @@ function insertDutyList(req,res, dutyList, callback){
                     console.log(response);
                     callback(1);
                 }
-                DB_handler.disconnectDB(con);
 
             });
         }
@@ -722,7 +735,6 @@ function insertDutyList(req,res, dutyList, callback){
                     console.log(response);
                     callback(1);
                 }
-                DB_handler.disconnectDB(con);
 
             });
         }
@@ -1176,8 +1188,8 @@ function getID(req,res){
 
 function showChangeDutyHistroryAll(req,res){
 
+    var con = DB_handler.connectDB();
     console.log(req.body);
-
 
     var query = "SELECT * ,(select u_name from t_user where u_id = request_userid1),(select u_name from t_user where u_id = request_userid2) FROM swmem.t_duty_change_history ;";
 
