@@ -12,9 +12,10 @@ function loadSchedule( req, res){
     var query = 'select a.u_name, b.* from t_user a inner join t_schedule b on a.u_id=b.s_enroll_user where month(s_start_date)="' + date.month + '" and year(s_start_date)="' + date.year + '"';
     con.query(query, function(err, response){
         if(err){
-            throw err
+            console.log('DB select ERROR in "schedule_handler.js -> loadSchedule"');
+        }else{
+            res.send(response);
         }
-        res.send(response);
         DB_handler.disconnectDB(con);
     });
 }
@@ -31,10 +32,10 @@ function enrollSchedule(req, res){
         con.query(alter_query, function(err, response){
             if(err){
                 res.send('alter_failed');
+                console.log('DB update ERROR in "schedule_handler.js -> enrollSchedule"');
             }else{
                 res.send('alter');
             }
-
         });
     }else{                          // 등록하는 케이스
         var enroll_query = 'insert into t_schedule SET ?';
@@ -48,6 +49,7 @@ function enrollSchedule(req, res){
         con.query(enroll_query, s_data, function(err, response){
             if(err){
                 res.send('enroll_failed');
+                console.log('DB insert ERROR in "schedule_handler.js -> enrollSchedule"');
             }else{
                 res.send('enroll');
             }
@@ -65,6 +67,7 @@ function deleteSchedule(req, res){
     con.query(delete_query, function(err, response){
         if(err){
             res.send('failed');
+            console.log('DB delete ERROR in "schedule_handler.js -> deleteSchedule"');
         }else{
             res.send('success');
         }

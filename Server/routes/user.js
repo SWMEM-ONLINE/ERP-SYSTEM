@@ -462,7 +462,6 @@ router.post('/getUserlist', util.ensureAuthenticated, function(req, res, next){
         if(err){
             console.log('Load DB ERROR in "user.js -> /getUserlist"');
             DB_handler.disconnectDB(con);
-            throw err;
         }
         else{
             DB_handler.disconnectDB(con);
