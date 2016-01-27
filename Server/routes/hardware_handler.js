@@ -10,11 +10,12 @@ function loadHardwarelist(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "hardware_handler.js -> loadHardwarelist"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
-
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -25,19 +26,23 @@ function borrowHardware(req, res){
     query1 += 'update t_hardware set h_remaining=h_remaining-1 where h_id="'+req.body.hardware_id+'"';
     con.query(query, function(err, response){
         if(err){
-            console.log('DB select ERROR in "hardware_handler.js -> borrowHardware"');
+            console.log('DB select1 ERROR in "hardware_handler.js -> borrowHardware"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             if(response[0].h_remaining > 0){                // If remaining.
                 con.query(query1, function(err2, response2){
                     if(err2){
                         res.send('failed');
                         console.log('DB insert ERROR in "hardware_handler.js -> borrowHardware"');
+                        DB_handler.disconnectDB(con);
                     }else{
                         var query2 = 'select u_id from t_user where u_state = 1';
-                        con.query(query2, function(err2, response2){
-
-                            if(err2){
-                                console.log('DB select ERROR in "hardware_handler.js -> borrowHardware"');
+                        con.query(query2, function(err3, response3){
+                            if(err3){
+                                console.log('DB select2 ERROR in "hardware_handler.js -> borrowHardware"');
+                                DB_handler.disconnectDB(con);
+                                res.send('failed');
                             }else{
                                 var manager_list = [];
                                 for(var i = 0; i < response2.length; i++){
@@ -52,16 +57,16 @@ function borrowHardware(req, res){
                                     }
                                 });
                                 res.send('success');
+                                DB_handler.disconnectDB(con);
                             }
                         });
                     }
                 });
             }else{                                          // nothing there.
                 res.send('failed');
+                DB_handler.disconnectDB(con);
             }
         }
-
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -71,11 +76,12 @@ function loadLender(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "hardware_handler.js -> loadLender"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
-
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -85,6 +91,8 @@ function turnInHardware(req, res){
     con.query(query, function(err1, response1){
         if(err1){
             console.log('DB select ERROR in "hardware_handler.js -> turnInHardware"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             if(response1.length === 0){
                 var query1 = 'insert into t_hardware_waiting SET ?';
@@ -99,13 +107,14 @@ function turnInHardware(req, res){
                     if(err2){
                         res.send('failed_2');
                         console.log('DB insert ERROR in "hardware_handler.js -> turnInHardware"');
-
+                        DB_handler.disconnectDB(con);
                     }else{
                         var query2 = 'select u_id from t_user where u_state = 1';
                         con.query(query2, function(err3, response3){
                             if(err3){
                                 console.log('DB select2 ERROR in "hardware_handler.js -> turnInHardware"');
-
+                                DB_handler.disconnectDB(con);
+                                res.send('failed');
                             }else{
                                 var manager_list = [];
                                 for(var i = 0; i < response3.length; i++){
@@ -120,15 +129,16 @@ function turnInHardware(req, res){
                                     }
                                 });
                                 res.send('success');
+                                DB_handler.disconnectDB(con);
                             }
                         });
                     }
                 });
             }else{
                 res.send('failed_1');
+                DB_handler.disconnectDB(con);
             }
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -138,7 +148,8 @@ function postponeHardware(req, res){
     con.query(query, function(err1, response1){
         if(err1){
             console.log('DB select ERROR in "hardware_handler.js -> postponeHardware"');
-
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             if(response1.length === 0){
                 var query1 = 'insert into t_hardware_waiting SET ?';
@@ -152,33 +163,34 @@ function postponeHardware(req, res){
                 con.query(query1, dataset, function(err, response){
                     if(err){
                         res.send('failed_2');
-                        throw err
-                    }
+                        console.log('DB insert error in "hardware_handler.js -> postponeHardware"');
+                        DB_handler.disconnectDB(con);
+                    }else{
+                        var query2 = 'select u_id from t_user where u_state = 1';
+                        con.query(query2, function(err3, response3) {
 
-                    var query2 = 'select u_id from t_user where u_state = 1';
-                    con.query(query2, function(err3, response3){
-
-                        var manager_list = [];
-                        for(var i = 0; i < response3.length; i++){
-                            manager_list.push(response3[i].u_id);
-                        }
-
-                        util.sendList(manager_list, '하드웨어 연장신청', util.pushContents.h_requestPostpone, function(err_push, data){
-                            if(err_push){
-                                console.log(err_push);
-                            }else{
-                                console.log(data);
+                            var manager_list = [];
+                            for (var i = 0; i < response3.length; i++) {
+                                manager_list.push(response3[i].u_id);
                             }
+
+                            util.sendList(manager_list, '하드웨어 연장신청', util.pushContents.h_requestPostpone, function (err_push, data) {
+                                if (err_push) {
+                                    console.log(err_push);
+                                } else {
+                                    console.log(data);
+                                }
+                            });
+                            res.send('success');
+                            DB_handler.disconnectDB(con);
                         });
-                        res.send('success');
-                    });
+                    }
                 });
             }else{
                 res.send('failed_1');
+                DB_handler.disconnectDB(con);
             }
         }
-
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -188,11 +200,12 @@ function loadmyRequestedHardware(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "hardware_handler.js -> loadmyRequestedHardware"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
-
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -202,11 +215,12 @@ function loadmyHardware(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "hardware_handler.js -> loadmyHardware"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
-
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     })
 }
 
@@ -216,11 +230,12 @@ function loadmyappliedHardware(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "hardware_handler.js -> loadmyappliedHardware"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
-
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -231,11 +246,11 @@ function deleteRequest(req, res){
         if(err){
             res.send('failed');
             console.log('DB delete ERROR in "hardware_handler.js -> deleteRequest"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
-
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -246,10 +261,11 @@ function cancelmyApply(req, res){
         if(err){
             res.send('failed');
             console.log('DB delete ERROR in "hardware_handler.js -> cancelmyApply"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -263,10 +279,11 @@ function enrollHardware(req, res){
         if(err){
             res.send('failed');
             console.log('DB insert ERROR in "hardware_handler.js -> enrollHardware"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -277,11 +294,12 @@ function alterHardware(req, res){
         if(err){
             res.send('failed');
             console.log('DB update ERROR in "hardware_handler.js -> alterHardware"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
 
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -292,10 +310,11 @@ function deleteHardware(req, res){
         if(err){
             res.send('failed');
             console.log('DB delete ERROR in "hardware_handler.js -> deleteHardware"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     })
 }
 
@@ -306,10 +325,11 @@ function loadNow(req, res){
         if(err){
             res.send('failed');
             console.log('DB select ERROR in "hardware_handler.js -> loadNow"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -320,10 +340,11 @@ function loadPast(req, res){
         if(err){
             res.send('failed');
             console.log('DB select ERROR in "hardware_handler.js -> loadPast"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -334,10 +355,11 @@ function loadRequest(req, res){
         if(err){
             res.send('failed');
             console.log('DB select ERROR in "hardware_handler.js -> loadRequest"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -347,10 +369,12 @@ function loadApply(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "hardware_handler.js -> loadApply"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -382,6 +406,7 @@ function approveRequest(req, res){
                     if(err){
                         res.send('failed');
                         console.log('DB insert ERROR in "hardware_handler.js -> approveRequest"');
+                        DB_handler.disconnectDB(con);
                     }else{
                         util.sendList(userIdlist, '하드웨어 대여승인', util.pushContents.h_approveBorrow, function(err_push, data){
                             if(err_push){
@@ -391,6 +416,7 @@ function approveRequest(req, res){
                             }
                         });
                         res.send('success');
+                        DB_handler.disconnectDB(con);
                     }
                 });
                 break;
@@ -404,6 +430,7 @@ function approveRequest(req, res){
                     if(err){
                         res.send('failed');
                         console.log('DB update ERROR in "hardware_handler.js -> approveRequest"');
+                        DB_handler.disconnectDB(con);
                     }else{
                         util.sendList(userIdlist, '하드웨어 연장승인', util.pushContents.h_approvePostpone, function(err_push, data){
                             if(err_push){
@@ -413,6 +440,7 @@ function approveRequest(req, res){
                             }
                         });
                         res.send('success');
+                        DB_handler.disconnectDB(con);
                     }
                 });
                 break;
@@ -421,6 +449,8 @@ function approveRequest(req, res){
                 con.query(query_turnin1, function(err, response){
                     if(err){
                         console.log('DB select ERROR in "hardware_handler.js -> approveRequest"');
+                        DB_handler.disconnectDB(con);
+                        res.send('failed');
                     }else{
                         var query_turnin2 = '';
                         for(var i = 0; i < response[0].length; i++){
@@ -448,6 +478,7 @@ function approveRequest(req, res){
                             if(err2){
                                 res.send('failed');
                                 console.log('DB query ERROR in "hardware_handler.js -> approveRequest"');
+                                DB_handler.disconnectDB(con);
                             }else{
                                 util.sendList(userIdlist, '하드웨어 반납승인', util.pushContents.h_approveTurnin, function(err_push, data){
                                     if(err_push){
@@ -457,6 +488,7 @@ function approveRequest(req, res){
                                     }
                                 });
                                 res.send('success');
+                                DB_handler.disconnectDB(con);
                             }
                         });
                     }
@@ -471,6 +503,7 @@ function approveRequest(req, res){
             if(err){
                 res.send('failed');
                 console.log('DB update ERROR in "hardware_handler.js -> approveRequest"');
+                DB_handler.disconnectDB(con);
             }else{
                 util.sendList(userIdlist, '하드웨어 구매승인', util.pushContents.h_approveApply, function(err_push, data){
                     if(err_push){
@@ -480,10 +513,10 @@ function approveRequest(req, res){
                     }
                 });
                 res.send('success');
+                DB_handler.disconnectDB(con);
             }
         });
     }
-    DB_handler.disconnectDB(con);
 }
 
 function rejectRequest(req, res){
@@ -499,6 +532,7 @@ function rejectRequest(req, res){
             if(err){
                 res.send('failed');
                 console.log('DB update ERROR in "hardware_handler.js -> approveRequest"');
+                DB_handler.disconnectDB(con);
             }else{
                 var title = '';
                 var content = '';
@@ -524,6 +558,7 @@ function rejectRequest(req, res){
                     }
                 });
                 res.send('success');
+                DB_handler.disconnectDB(con);
             }
         });
     }else{
@@ -532,6 +567,7 @@ function rejectRequest(req, res){
             if(err){
                 res.send('failed');
                 console.log('DB update ERROR in "hardware_handler.js -> approveRequest"');
+                DB_handler.disconnectDB(con);
             }else{
                 util.sendList(userIdlist, '하드웨어 구매거절', util.pushContents.h_rejectApply, function(err_push, data){
                     if(err_push){
@@ -541,10 +577,10 @@ function rejectRequest(req, res){
                     }
                 });
                 res.send('success');
+                DB_handler.disconnectDB(con);
             }
         });
     }
-    DB_handler.disconnectDB(con);
 }
 
 function getDate(base, plusDate){

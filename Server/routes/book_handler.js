@@ -27,10 +27,12 @@ function loadNewTechbook(res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> loadNewTechbook"');
+            res.send('failed');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -40,10 +42,12 @@ function loadNewHumanitiesbook(res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> loadNewHumanitiesbook"');
+            res.send('failed');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -64,6 +68,8 @@ function borrowBook(req, res){
     con.query(query, function(err, response) {
         if(err){
             console.log('DB select ERROR in "book_handler.js -> borrowBook"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             if (response.length === 0) {
                 var query1 = 'select u_name from t_user where u_id="' + req.session.passport.user.id + '"';
@@ -76,17 +82,24 @@ function borrowBook(req, res){
                 con.query(query1, function (err2, response2) {
                     if(err2){
                         console.log('DB select ERROR in "book_handler.js -> borrowBook"');
+                        DB_handler.disconnectDB(con);
+                        res.send('failed');
                     }else{
                         var query2 = 'update t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + response2[0].u_name + '" where b_id="' + req.body.book_id + '"';
                         con.query(query2, function(err3, response3){
                             if(err3){
                                 console.log('DB update ERROR in "book_handler.js -> borrowBook"');
+                                DB_handler.disconnectDB(con);
+                                res.send('failed');
                             }else{
                                 con.query(query3, queryData, function(err4, response4){
                                     if(err4){
                                         console.log('DB insert ERROR in "book_handler.js -> borrowBook"');
+                                        DB_handler.disconnectDB(con);
+                                        res.send('failed');
                                     }else{
                                         res.send('success');
+                                        DB_handler.disconnectDB(con);
                                     }
                                 });
                             }
@@ -95,9 +108,9 @@ function borrowBook(req, res){
                 });
             } else {
                 res.send('failed');
+                DB_handler.disconnectDB(con);
             }
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -112,10 +125,12 @@ function searchBook(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> searchBook"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -139,10 +154,11 @@ function missingBook(req, res){
         if(err){
             res.send('failed');
             console.log('DB query ERROR in "book_handler.js -> missingBook"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -164,21 +180,28 @@ function reserveBook(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB query ERROR in "book_handler.js -> reserveBook"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             if(response.length != 0){
                 con.query(query1, function(err2, response2){
                     if(err2){
                         console.log('DB select ERROR in "book_handler.js -> reserveBook"');
+                        DB_handler.disconnectDB(con);
+                        res.send('failed');
                     }else{
                         if(response2.length != 0){
                             res.send('failed_2');
+                            DB_handler.disconnectDB(con);
                         }else{
                             con.query(query2, function(err3, response3){
                                 if(err3){
                                     res.send('failed_3');
                                     console.log('DB update ERROR in "book_handler.js -> reserveBook"');
+                                    DB_handler.disconnectDB(con);
                                 }else{
                                     res.send('success');
+                                    DB_handler.disconnectDB(con);
                                 }
                             });
                         }
@@ -186,9 +209,9 @@ function reserveBook(req, res){
                 });
             }else{
                 res.send('failed_1');
+                DB_handler.disconnectDB(con);
             }
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -199,26 +222,28 @@ function borrowBook_QR(req, res){
         if(err){
             res.send('failed');
             console.log('DB select ERROR in "book_handler.js -> borrowBook_QR"');
+            DB_handler.disconnectDB(con);
         }else{
             if(response.length === 0){
                 res.send('noOne');
+                DB_handler.disconnectDB(con);
             }else{
                 var book_id = response[0].b_id;
                 var due_date = getDate(new Date(), 14);
                 var query1 = 'update t_book set b_state=1, b_due_date="' + due_date + '", b_rental_username="' + req.session.passport.user.name + '" where b_id="' + book_id + '";';
                 query1 += 'insert into t_book_rental SET br_user="' + req.session.passport.user.id + '", br_book_id=' + book_id + ', br_rental_date="' + getDate(new Date(), 0) + '"';
                 con.query(query1, function(err2, response2){
-
                     if(err2){
                         res.send('failed');
                         console.log('DB query ERROR in "book_handler.js -> borrowBook_QR"');
+                        DB_handler.disconnectDB(con);
                     }else{
                         res.send('success');
+                        DB_handler.disconnectDB(con);
                     }
                 });
             }
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -230,10 +255,11 @@ function loadnowHistory(req, res){
         if(err){
             res.send('failed');
             console.log('DB select ERROR in "book_handler.js -> loadnowHistory"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -244,10 +270,11 @@ function loadpastHistory(req, res){
         if(err){
             res.send('failed');
             console.log('DB select ERROR in "book_handler.js -> loadpastHistory"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -258,10 +285,11 @@ function loadmissingBook(req, res){
         if(err) {
             res.send('failed');
             console.log('DB select ERROR in "book_handler.js -> loadmissingBook"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -273,10 +301,11 @@ function reenroll(req, res){
         if(err){
             res.send('failed');
             console.log('DB query ERROR in "book_handler.js -> reenroll"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -286,10 +315,12 @@ function loadinArrears(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB query ERROR in "book_handler.js -> loadinArrears"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -299,10 +330,12 @@ function loadApplylist(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> loadApplylist"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -313,6 +346,8 @@ function enrollBook(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> enrollBook"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             for(var i = 0; i < response.length; i++){
                 query1 += 'insert into t_book set b_type=' + response[i].ba_type + ', b_name="' + response[i].ba_name + '", b_isbn="' + response[i].ba_isbn + '", b_author="' + response[i].ba_author + '", b_publisher="' + response[i].ba_publisher + '", b_location="' + req.body.location + '", b_photo_url="' + response[i].ba_photo_url + '", b_price=' + response[i].ba_price + ';';
@@ -322,13 +357,13 @@ function enrollBook(req, res){
                 if(err2){
                     res.send('failed');
                     console.log('DB query ERROR in "book_handler.js -> enrollBook"');
+                    DB_handler.disconnectDB(con);
                 }else{
                     res.send('success');
+                    DB_handler.disconnectDB(con);
                 }
             });
         }
-
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -340,10 +375,11 @@ function buyComplete(req, res){
         if(err){
             res.send('failed');
             console.log('DB update ERROR in "book_handler.js -> buyComplete"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -353,10 +389,12 @@ function loadbooklist(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> loadbooklist"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -367,10 +405,11 @@ function resetbookLocation(req, res){
         if(err){
             res.send('failed');
             console.log('DB update ERROR in "book_handler.js -> resetbookLocation"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 

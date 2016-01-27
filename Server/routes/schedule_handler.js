@@ -13,10 +13,12 @@ function loadSchedule( req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "schedule_handler.js -> loadSchedule"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -33,8 +35,10 @@ function enrollSchedule(req, res){
             if(err){
                 res.send('alter_failed');
                 console.log('DB update ERROR in "schedule_handler.js -> enrollSchedule"');
+                DB_handler.disconnectDB(con);
             }else{
                 res.send('alter');
+                DB_handler.disconnectDB(con);
             }
         });
     }else{                          // 등록하는 케이스
@@ -50,13 +54,14 @@ function enrollSchedule(req, res){
             if(err){
                 res.send('enroll_failed');
                 console.log('DB insert ERROR in "schedule_handler.js -> enrollSchedule"');
+                DB_handler.disconnectDB(con);
             }else{
                 res.send('enroll');
+                DB_handler.disconnectDB(con);
             }
 
         });
     }
-    DB_handler.disconnectDB(con);
 }
 
 function deleteSchedule(req, res){
@@ -68,10 +73,11 @@ function deleteSchedule(req, res){
         if(err){
             res.send('failed');
             console.log('DB delete ERROR in "schedule_handler.js -> deleteSchedule"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 

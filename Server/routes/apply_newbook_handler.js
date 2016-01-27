@@ -11,10 +11,12 @@ function loadMyapply(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "apply_newbook_handler.js -> loadMyapply"');
+            res.send('failed');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -28,6 +30,8 @@ function request(req, res){
     con.query(query1, function(err, response1){
         if(err){
             console.log('DB select ERROR in "apply_newbook_handler.js -> request"');
+            res.send('failed');
+            DB_handler.disconnectDB(con);
         }else{
             if(response1.length === 0){
                 var query = 'INSERT into t_book_apply SET ?';
@@ -53,15 +57,18 @@ function request(req, res){
                 con.query(query, data, function(err2, response2){
                     if(err2){
                         console.log('DB insert ERROR in "apply_newbook_handler.js -> request"');
+                        res.send('failed');
+                        DB_handler.disconnectDB(con);
                     }else{
                         res.send('success');
+                        DB_handler.disconnectDB(con);
                     }
                 });
             }else{
                 res.send('failed');
+                DB_handler.disconnectDB(con);
             }
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -76,10 +83,11 @@ function deleteMyapply(req, res){
         if(err){
             res.send('failed');
             console.log('DB delete ERROR in "apply_newbook_handler.js -> deleteMyapply"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send('success');
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -89,10 +97,12 @@ function checkDuplication(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "apply_newbook_handler.js -> checkDuplication"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     })
 }
 

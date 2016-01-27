@@ -11,10 +11,12 @@ function loadBookMain(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "main_handler.js -> loadBookMain"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -24,11 +26,12 @@ function loadHardwareMain(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "main_handler.js -> loadHardwareMain"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
-
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -38,10 +41,12 @@ function loadmyMileage(req, res){
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "main_handler.js -> loadmyMileage"');
+            DB_handler.disconnectDB(con);
+            res.send('failed');
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -52,10 +57,11 @@ function getUserpermission(req, res){
         if(err){
             res.send('failed');
             console.log('DB select ERROR in "main_handler.js -> getUserpermission"');
+            DB_handler.disconnectDB(con);
         }else{
             res.send(response);
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -71,6 +77,7 @@ function hasToken(req, res){
         if(err){
             console.log(err);
             res.send("error");
+            DB_handler.disconnectDB(con);
         }
         else{
 
@@ -80,18 +87,20 @@ function hasToken(req, res){
                 if(token == null || token == "undefined" || token == "")
                 {
                     res.send("false");
+                    DB_handler.disconnectDB(con);
                 }
                 else
                 {
                     res.send("true");
+                    DB_handler.disconnectDB(con);
                 }
             }
             else
             {
                 res.send("false");
+                DB_handler.disconnectDB(con);
             }
         }
-        DB_handler.disconnectDB(con);
     });
 }
 function getToken(req, res){
@@ -112,12 +121,13 @@ function getToken(req, res){
         if(err){
             console.log(err);
             res.send("error");
+            DB_handler.disconnectDB(con);
         }
         else{
             console.log(response);
             res.send("success");
+            DB_handler.disconnectDB(con);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
