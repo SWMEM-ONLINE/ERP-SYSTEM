@@ -9,16 +9,22 @@ $.ajax({
     url:'/sys/appinfo',
     contentType:'application/json',
     success:function(data){
-        var string = '';
-        console.log(data);
-        string += '<div class="row">';
-        for(var i=0; i<data.length; i++){
-            string += '<p class="col-xs-6 col-sm-4 text-center"><strong>' + degree[data[i].u_state] + '</strong>  ' + data[i].u_name + '</p>';
-            console.log(data[i].u_state);
-            console.log(data[i].u_name);
+        if(data.status == 'fail'){
+            toastr['error']('자치회 목록 로딩 실패');
         }
-        string += '</div>';
+        else {
 
-        $('div#councillist').html(string);
+            var string = '';
+            console.log(data);
+            string += '<div class="row">';
+            for (var i = 0; i < data.length; i++) {
+                string += '<p class="col-xs-6 col-sm-4 text-center"><strong>' + degree[data[i].u_state] + '</strong>  ' + data[i].u_name + '</p>';
+                console.log(data[i].u_state);
+                console.log(data[i].u_name);
+            }
+            string += '</div>';
+
+            $('div#councillist').html(string);
+        }
     }
 });

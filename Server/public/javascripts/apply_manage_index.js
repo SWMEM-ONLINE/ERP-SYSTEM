@@ -22,14 +22,19 @@ reloadList(thisPage);
 
 function reloadList(thisPage){
     $.get('/apply/getApplyList/'+thisPage,function(data){
-        var result = data.list;
-        $('#history tbody').empty();
-        if(result.length == 0){
-            $('#history tbody').append('<tr class="empty"><td colspan="4"><h4>신청서가 없습니다</h4></td></tr>');
+        if(data.status == 'fail'){
+            toastr['error']('리스트 로딩 실패');
         }
-        else{
-            for(var i=0;i<result.length;i++){
-                $('#history tbody').append('<tr><td class="hidden">'+result[i].a_id+'</td></td><td>'+result[i].a_date+'</td><td>'+result[i].a_title+'</td><td class="ellipsis">'+result[i].a_weblink+'</td><td>'+result[i].a_due_date+'</td></tr>');
+        else {
+            var result = data.list;
+            $('#history tbody').empty();
+            if (result.length == 0) {
+                $('#history tbody').append('<tr class="empty"><td colspan="4"><h4>신청서가 없습니다</h4></td></tr>');
+            }
+            else {
+                for (var i = 0; i < result.length; i++) {
+                    $('#history tbody').append('<tr><td class="hidden">' + result[i].a_id + '</td></td><td>' + result[i].a_date + '</td><td>' + result[i].a_title + '</td><td class="ellipsis">' + result[i].a_weblink + '</td><td>' + result[i].a_due_date + '</td></tr>');
+                }
             }
         }
     });

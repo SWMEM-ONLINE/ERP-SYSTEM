@@ -14,47 +14,52 @@ function myqnaList(pageNum){
         data:JSON.stringify(data),
         contentType:'application/json',
         success:function(data){
-            var totalPage = data.totalPage;
-
-            var tbodyString = '';
-            var paginationString = '';
-            if(totalPage == 0){
-                tbodyString += '<tr class="empty">';
-                tbodyString += '<td colspan=3><h4>문의 기록이 없습니다</h4></td>';
-                tbodyString += '</tr>';
+            if(data.status == 'fail'){
+                toastr['error']('투표목록 로딩 실패');
             }
-            else{
-                var dataList = data.list;
-                for(var i=0;i<dataList.length;i++){
-                    var list = dataList[i];
-                    tbodyString += '<tr id="'+list.q_id+'">';
-                    tbodyString += '<td>'+list.q_title+'</td>'+'<td class="hidden">'+list.q_content+'</td>'+'<td class="hidden">'+list.q_state+'</td>'+'<td class="hidden">'+list.q_id+'</td>'+'<td>'+list.q_write_date+'</td>';
-                    if(list.q_state == 0){
-                        tbodyString += '<td>답변대기</td>';
-                    }
-                    else if(list.q_state == 1){
-                        tbodyString += '<td>답변완료</td>';
-                    }
-                    tbodyString += '<td class="hidden">'+pageNum+'</td>';
+            else {
+                var totalPage = data.totalPage;
+
+                var tbodyString = '';
+                var paginationString = '';
+                if (totalPage == 0) {
+                    tbodyString += '<tr class="empty">';
+                    tbodyString += '<td colspan=3><h4>문의 기록이 없습니다</h4></td>';
                     tbodyString += '</tr>';
                 }
+                else {
+                    var dataList = data.list;
+                    for (var i = 0; i < dataList.length; i++) {
+                        var list = dataList[i];
+                        tbodyString += '<tr id="' + list.q_id + '">';
+                        tbodyString += '<td>' + list.q_title + '</td>' + '<td class="hidden">' + list.q_content + '</td>' + '<td class="hidden">' + list.q_state + '</td>' + '<td class="hidden">' + list.q_id + '</td>' + '<td>' + list.q_write_date + '</td>';
+                        if (list.q_state == 0) {
+                            tbodyString += '<td>답변대기</td>';
+                        }
+                        else if (list.q_state == 1) {
+                            tbodyString += '<td>답변완료</td>';
+                        }
+                        tbodyString += '<td class="hidden">' + pageNum + '</td>';
+                        tbodyString += '</tr>';
+                    }
 
-                paginationString += '<tr>';
-                for(var i=0;i<totalPage;i++){
-                    if(i + 1 == pageNum){
-                        paginationString += '<th>' + (i+1) + '</th>';
+                    paginationString += '<tr>';
+                    for (var i = 0; i < totalPage; i++) {
+                        if (i + 1 == pageNum) {
+                            paginationString += '<th>' + (i + 1) + '</th>';
+                        }
+                        else {
+                            paginationString += '<td><a id="' + (i + 1) + '" onclick="myqnaList(this.id)">' + (i + 1) + '</a></td>';
+                        }
                     }
-                    else {
-                        paginationString += '<td><a id="'+ (i+1) +'" onclick="myqnaList(this.id)">' + (i+1) + '</a></td>';
-                    }
+
+                    paginationString += '</tr>';
                 }
-
-                paginationString += '</tr>';
+                $('#history>tbody').empty();
+                $('#history>tbody').append(tbodyString);
+                $('#pagination>tbody').empty();
+                $('#pagination>tbody').append(paginationString);
             }
-            $('#history>tbody').empty();
-            $('#history>tbody').append(tbodyString);
-            $('#pagination>tbody').empty();
-            $('#pagination>tbody').append(paginationString);
         }
     });
 }
@@ -70,14 +75,19 @@ function commentList(q_id){
         data:JSON.stringify(req),
         contentType:'application/json',
         success: function(data){
-            for(var i=0;i<data.length;i++){
-                row = data[i];
-                tbodyString += '<tr>';
-                tbodyString += '<td class="name">'+row.u_name+'</td>'+'<td class="comment">'+row.qr_content+'</td>';
-                tbodyString += '</tr>';
+            if(data.status == 'fail'){
+                toastr['error']('댓글 로딩 실패');
             }
-            $('#commentTable tbody').empty();
-            $('#commentTable tbody').append(tbodyString);
+            else {
+                for (var i = 0; i < data.length; i++) {
+                    row = data[i];
+                    tbodyString += '<tr>';
+                    tbodyString += '<td class="name">' + row.u_name + '</td>' + '<td class="comment">' + row.qr_content + '</td>';
+                    tbodyString += '</tr>';
+                }
+                $('#commentTable tbody').empty();
+                $('#commentTable tbody').append(tbodyString);
+            }
         }
     });
 }
@@ -102,6 +112,9 @@ $('#submit').unbind().click(function(){
                     myqnaList(1);
                     $('#title').val('');
                     $('#qna').val('');
+                }
+                else{
+                    toastr['error']('실패');
                 }
             }
         });
@@ -145,6 +158,9 @@ function submitEnter(e,q_id){
                         commentList(q_id);
                         $('#comment').val('');
                     }
+                    else{
+                        toastr['error']('댓글 전송 실패');
+                    }
                 }
             });
         }
@@ -169,6 +185,9 @@ $('#commentEnter').on('click',function(){
                 if(data.status === '0'){
                     commentList(q_id);
                     $('#comment').val('');
+                }
+                else{
+                    toastr['error']('댓글 전송 실패');
                 }
             }
         });

@@ -15,7 +15,7 @@ router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.render('error',{title:'잘못된 접근'});
         }
         else{
             var send = JSON.stringify(rows);
@@ -78,7 +78,7 @@ router.post('/userList', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            return res.json({status:'101'});
+            return res.json({status:'fail'});
         }
         else {
             var send = JSON.stringify(rows);
@@ -101,7 +101,7 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.render('error',{title:'잘못된 접근'});
         }
         else{
             var send = JSON.stringify(rows);
@@ -123,7 +123,7 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else {
             var send = JSON.stringify(rows);
@@ -311,7 +311,7 @@ router.post('/manage/search', util.ensureAuthenticated, function(req, res, next)
         if(err){
             console.log(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             var rows = JSON.stringify(data);

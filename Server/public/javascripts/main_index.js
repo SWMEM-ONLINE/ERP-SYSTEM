@@ -213,7 +213,7 @@ function getToken(token,device){
         if(response=="success"){
             toastr['success']('기기 등록 완료');
         }else{
-            toastr['error']('에러!!');
+            toastr['error']('에러');
         }
     });
 }

@@ -71,7 +71,7 @@ router.post('/', function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             DB_handler.disconnectDB(con);
@@ -89,7 +89,7 @@ router.post('/checkid', function(req, res) {
         if(err){
             console.log(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else {
             if (data.length > 0 || id === '') { //impossible

@@ -86,49 +86,55 @@ function reloadList(data){
         url:'/fee/manage/search',
         data:data,
         contentType:'application/json',
-        success: function(rows){
-            var tbodyString = '';
-            $('#memberList tbody').empty();
-            if(rows.length == 0){
-                tbodyString += '<tr class="empty"><td colspan="4"><h4>내역이 없습니다</h4></td></tr>';
+        success: function(rows) {
+            if (rows.status == 'fail') {
+                toastr['error']('리스트 로딩 실패');
             }
-            else{
-                for(var i=0;i<rows.length;i++){
-                    var row = rows[i];
-                    var type;
-                    var state;
-                    tbodyString += '<tr>';
-                    tbodyString += '<td class="hidden">'+row.f_id+'</td>';
-                    tbodyString += '<td>'+row.f_date+'</td>';
-                    if(row.f_type == 1)
-                        type = '회비';
+            else {
 
-                    else if(row.f_type == 2){
-                        type = '삼과비';
-                    }
-                    else if(row.f_type == 3){
-                        type = '기타';
-                    }
-                    tbodyString += '<td>'+type+'</td>';
-                    tbodyString += '<td>'+row.u_name+'</td>';
-                    if(row.f_state == 0){
-                        state = '미납';
-                        tbodyString += '<td class="text-danger">'+state+'</td>';
-                    }
-                    else if(row.f_state == 1){
-                        state = '납부';
-                        tbodyString += '<td>'+state+'</td>';
-                    }
-
-                    tbodyString += '<td class="hidden">'+row.u_id+'</td>';
-                    tbodyString += '<td class="hidden">'+row.u_period+'</td>';
-                    tbodyString += '<td class="hidden">'+row.f_content+'</td>';
-                    tbodyString += '<td class="hidden">'+row.f_price+'</td>';
-                    tbodyString += '<td class="hidden">'+row.f_write_date+'</td>';
-                    tbodyString += '</tr>';
+                var tbodyString = '';
+                $('#memberList tbody').empty();
+                if (rows.length == 0) {
+                    tbodyString += '<tr class="empty"><td colspan="4"><h4>내역이 없습니다</h4></td></tr>';
                 }
+                else {
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = rows[i];
+                        var type;
+                        var state;
+                        tbodyString += '<tr>';
+                        tbodyString += '<td class="hidden">' + row.f_id + '</td>';
+                        tbodyString += '<td>' + row.f_date + '</td>';
+                        if (row.f_type == 1)
+                            type = '회비';
+
+                        else if (row.f_type == 2) {
+                            type = '삼과비';
+                        }
+                        else if (row.f_type == 3) {
+                            type = '기타';
+                        }
+                        tbodyString += '<td>' + type + '</td>';
+                        tbodyString += '<td>' + row.u_name + '</td>';
+                        if (row.f_state == 0) {
+                            state = '미납';
+                            tbodyString += '<td class="text-danger">' + state + '</td>';
+                        }
+                        else if (row.f_state == 1) {
+                            state = '납부';
+                            tbodyString += '<td>' + state + '</td>';
+                        }
+
+                        tbodyString += '<td class="hidden">' + row.u_id + '</td>';
+                        tbodyString += '<td class="hidden">' + row.u_period + '</td>';
+                        tbodyString += '<td class="hidden">' + row.f_content + '</td>';
+                        tbodyString += '<td class="hidden">' + row.f_price + '</td>';
+                        tbodyString += '<td class="hidden">' + row.f_write_date + '</td>';
+                        tbodyString += '</tr>';
+                    }
+                }
+                $('#memberList tbody').append(tbodyString);
             }
-            $('#memberList tbody').append(tbodyString);
         }
     });
 }
@@ -228,6 +234,9 @@ $('#pay').unbind().click(function(){
                     $('div.modal').modal('hide');
                     toastr['success']('납부완료 성공');
                 }
+                else{
+                    toastr['error']('납부완료 실패');
+                }
             }
         });
     }
@@ -252,6 +261,9 @@ $('#delete').unbind().click(function(){
                 reloadList(JSON.stringify(arr));
                 $('div.modal').modal('hide');
                 toastr['success']('삭제 성공');
+            }
+            else{
+                toastr['success']('삭제 실패');
             }
         }
     });

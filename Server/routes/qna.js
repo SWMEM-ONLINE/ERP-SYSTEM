@@ -56,7 +56,7 @@ router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else {
             var countRow = JSON.parse(JSON.stringify(rows[rows.length - 1]));
@@ -117,7 +117,7 @@ router.post('/getQnaReply', util.ensureAuthenticated, function(req, res, next) {
     con.query(query, function(err,rows){
         if (err) {
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             var send = JSON.stringify(rows);
@@ -142,7 +142,7 @@ router.post('/qnalist', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else {
 
