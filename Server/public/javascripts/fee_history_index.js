@@ -46,6 +46,7 @@ function feeList(year,month){
                 var rows = data.result;
                 var deposit = data.deposit;
                 var withdraw = data.withdraw;
+                var total = data.total;
                 if(rows.length === 0){
                         string += '<tr>';
                         string += '<td colspan=4>';
@@ -77,6 +78,7 @@ function feeList(year,month){
                         }
                         tfoot += '<tr><td></td><td></td><th>월 수입</th><td class="text-primary">'+ deposit + '</td></tr>';
                         tfoot += '<tr><td></td><td></td><th>월 지출</th><td class="text-danger">' + withdraw + '</td></tr>';
+                        tfoot += '<tr><th colspan = "2">남은 회비</th><th colspan = "2" class="total">'+total+'</th></tr>';
                         tfoot += '<tr><td colspan="4"><button id="excelSave" class="btn" type="button">엑셀로 저장</button></td></tr>';
                 }
                 $('.table tbody').html(string);
@@ -112,7 +114,8 @@ $('table').on('click','#excelSave',function(){
         sheet.getCell('D'+i).value(parseInt($('table tfoot tr td.text-primary').html()));
         sheet.getCell('C'+(i+1)).value('월 지출');
         sheet.getCell('D'+(i+1)).value(parseInt($('table tfoot tr td.text-danger').html()));
-
+        sheet.getCell('C'+(i+2)).value('남은회비');
+        sheet.getCell('D'+(i+2)).value(parseInt($('table tfoot tr th.total').html()));
         var today = new Date();
         var y = today.getFullYear();
         var m = (today.getMonth() + 1);
