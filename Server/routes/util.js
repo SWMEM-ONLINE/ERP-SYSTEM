@@ -563,3 +563,4 @@ exports.sendList = sendList;
 exports.sendMail = sendMail;
 exports.getTotalDeposit = getTotalDeposit;
 exports.getTotalWithdraw = getTotalWithdraw;
+exports.checkAuth = checkAuth;

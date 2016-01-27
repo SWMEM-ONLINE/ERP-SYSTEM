@@ -155,7 +155,7 @@ app.use('/vote',vote);
 app.use('/schedule',schedule);
 app.get('/',
     function(req, res) {
-      if (req.isAuthenticated()) {
+      if (req.isAuthenticated() && util.checkAuth(req)) {
         return res.redirect('/main');
       }
       return res.render('index_login', { title: '로그인' });
