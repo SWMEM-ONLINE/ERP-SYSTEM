@@ -107,8 +107,9 @@ router.get('/history', util.ensureAuthenticated, function(req, res, next) {
             var send = JSON.stringify(rows);
             var deposit = util.getTotalDeposit(rows);
             var withdraw = util.getTotalWithdraw(rows);
+            var total = deposit - withdraw;
             DB_handler.disconnectDB(con);
-            return res.render('fee_history', { title: '회비내역', grade: util.getUserGrade(req), result:JSON.parse(send), deposit:deposit,withdraw:withdraw});
+            return res.render('fee_history', { title: '회비내역', grade: util.getUserGrade(req), result:JSON.parse(send), deposit:deposit, withdraw:withdraw, total:total});
         }
     });
 });
@@ -129,8 +130,9 @@ router.post('/history', util.ensureAuthenticated, function(req, res, next) {
             var send = JSON.stringify(rows);
             var deposit = util.getTotalDeposit(rows);
             var withdraw = util.getTotalWithdraw(rows);
+            var total = deposit - withdraw;
             DB_handler.disconnectDB(con);
-            return res.json({result: JSON.parse(send), deposit: deposit, withdraw: withdraw});
+            return res.json({result: JSON.parse(send), deposit: deposit, withdraw: withdraw, total:total});
         }
     });
 
