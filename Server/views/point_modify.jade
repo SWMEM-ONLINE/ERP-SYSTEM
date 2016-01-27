@@ -30,34 +30,27 @@ block content
                 .modal-header
                     h4.modal-title 상벌당직 수정
                 .modal-body
-                    .row
-                        h4 날짜
-                        p#modal-date
-                    .row
-                        h4 등록자
-                        p#modal-enroller
-                    div
-                        h4 대상자(,로 구분)
-                        input#modal-objects.form-control
-                    .row
-                        h4 구분
-                        .btn-group
-                            button#mode-button.btn.dropdown-toggle(data-toggle='dropdown') 구분
-                            ul#mode-dropdown.dropdown-menu(style='width:100%')
-                                li
-                                    a(href='#') 상당직
-                                li
-                                    a(href='#') 벌당직
-                                li
-                                    a(href='#') 운영실 벌당직
-                    .row
-                        h4 일수
-                        .input-group
-                            input#modal-pointnumber.form-control(min='0', type='number')
-                            span.input-group-addon 일
-                    div
-                        h4 사유
-                        input#modal-reason.form-control
+                    h5 날짜
+                    p#modal-date
+                    h5 등록자
+                    p#modal-enroller
+                    h5 대상자(,로 구분)
+                    input#modal-objects
+                    h5 구분
+                    .btn-group
+                        button#mode-button.btn.dropdown-toggle(data-toggle='dropdown') 구분
+                        ul#mode-dropdown.dropdown-menu
+                            li
+                                a(href='#') 상당직
+                            li
+                                a(href='#') 벌당직
+                            li
+                                a(href='#') 운영실 벌당직
+                    h5 일수
+                    .input-group
+                        input#modal-pointnumber(min='0', type='number')
+                    h5 사유
+                    input#modal-reason
                 .modal-footer
                     button#modify.btn(type='button') 적용
                     button#cancel.btn(type='button') 삭제

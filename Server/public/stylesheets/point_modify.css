@@ -1,7 +1,8 @@
-div.content input{
+input{
     text-align: center;
     border:1px solid #cccccc;
     border-radius: 4px;
     margin-top:10px;
     margin-bottom:10px;
+    width: 100%;
 }

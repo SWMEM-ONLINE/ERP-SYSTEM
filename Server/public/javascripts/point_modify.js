@@ -55,20 +55,20 @@ function generateHtml(response){
 
             htmlString += '<tr>';
 
-                htmlString += "<td>"
+                htmlString += "<td>";
 
-                htmlString +=  "" + data.year +"년 " + data.month +"월 " + data.date+ "일 "
-                htmlString += "</td>"
+                htmlString +=  "" + data.year +"년 " + data.month +"월 " + data.date+ "일 ";
+                htmlString += "</td>";
 
-                htmlString += "<td>"
+                htmlString += "<td>";
                 htmlString +=  "" + name;
-                htmlString += "</td>"
+                htmlString += "</td>";
 
-                htmlString += "<td>"
+                htmlString += "<td>";
                 htmlString +=  "" + data.receive_name;
-                htmlString += "</td>"
+                htmlString += "</td>";
 
-                htmlString += "<td>"
+                htmlString += "<td>";
 
                 if(data.mode==0){
                     htmlString +=  "상당직";
@@ -78,11 +78,11 @@ function generateHtml(response){
                     htmlString +=  "운영실 벌당직";
                 }
 
-                htmlString += "</td>"
+                htmlString += "</td>";
 
-                htmlString += "<td>"
+                htmlString += "<td>";
                 htmlString +=  "" + data.point;
-                htmlString += "</td>"
+                htmlString += "</td>";
 
             htmlString += '</tr>';
 
@@ -101,13 +101,6 @@ function clickEvent(response){
         var index = $(this).index();        // catch 'index' which user clicked
         var htmlString = '';
         var data = response[index];
-
-        $('#modify').addClass('btn-primary');
-        $('#modify').text('수정');
-        $('#cancel').addClass('btn-primary');
-        $('#cancel').text('삭제');
-
-        $(".modal-header").html("상 벌당직 수정");
 
         $("#modal-date").html("" + data.year +"년 " + data.month +"월 " + data.date+ "일 ");
 
