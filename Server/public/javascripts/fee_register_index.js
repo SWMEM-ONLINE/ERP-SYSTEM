@@ -208,12 +208,11 @@ function registerList(){
     $.post('/fee/history',{date:date},function(response){
         var data = response.result;
         if(data.length == 0){
-            tbodyString += '<tr class="empty"><td colspan = 4><h4>이번달 수입지출내역이 없습니다</h4></td></tr>';
+            tbodyString += '<tr class="empty"><td colspan = 5><h4>이번달 수입지출내역이 없습니다</h4></td></tr>';
         }
         else{
             for(var i=0;i<data.length;i++){
                 tbodyString += '<tr>';
-                tbodyString += '<td class="hidden">'+data[i].fm_id+'</td>';
                 tbodyString += '<td>'+data[i].fm_date+'</td>';
                 if(data[i].fm_money_type === 1){
                     tbodyString += '<td class="text-danger">지출</td>';
@@ -223,6 +222,7 @@ function registerList(){
                 }
                 tbodyString += '<td>'+data[i].fm_money_content+'</td>';
                 tbodyString += '<td>'+data[i].fm_price+'</td>';
+                tbodyString += '<td><button id="delete'+data[i].fm_id+'" class="btn cancel">삭제</button></td>';
                 tbodyString += '</tr>';
             }
         }
@@ -231,21 +231,8 @@ function registerList(){
     });
 }
 
-$('#registerList').on('click','tr:not(.empty)',function(){
-    var arr = new Array();
-    $(this).children('td').map(function () {
-        arr.push($(this).text());
-    });
-    document.getElementById('deleteHistory').setAttribute('num','row'+arr[0]);
-    $('div.modal #date').html(arr[1]);
-    $('div.modal #type').html(arr[2]);
-    $('div.modal #content').html(arr[3]);
-    $('div.modal #price').html(arr[4]);
-    $('div.modal').modal();
-});
-
-$('#deleteHistory').click(function(){
-    var id = document.getElementById('deleteHistory').getAttribute('num').substr(3);
+$('#registerList').on('click','button',function(){
+    var id = this.id.substr(6);
     $.post('/fee/deleteFeeManage',{id:id},function(response){
         if(response.status == '0'){
             $('div.modal').modal('hide');
