@@ -1,10 +1,16 @@
 /**
  * Created by jung-inchul on 2015. 11. 15..
  */
-function loadMyapply(con, req, res){
+
+var DB_handler = require('./DB_handler');
+
+
+function loadMyapply(req, res){
+    var con = DB_handler.connectDB();
     var query = 'SELECT * FROM t_book_apply where ba_user="'+ req.session.passport.user.id +'"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
@@ -12,7 +18,8 @@ function loadMyapply(con, req, res){
  *  If you want to apply new book, use this function with data Object.
  *  Check apply_table and no duplications are there, then insert book's data in database to apply.
  */
-function request(con, req, res){
+function request(req, res){
+    var con = DB_handler.connectDB();
     var query1 = 'select * from t_book_apply where ba_isbn="' + req.body.isbn + '"';
     con.query(query1, function(err, response1){
         if(response1.length === 0){
@@ -42,6 +49,7 @@ function request(con, req, res){
         }else{
             res.send('failed');
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
@@ -49,7 +57,8 @@ function request(con, req, res){
  *  If you want to delete your request, use this function.
  *  factor value is isbn because is book's own characteristic value.
  */
-function deleteMyapply(con, req, res){
+function deleteMyapply(req, res){
+    var con = DB_handler.connectDB();
     var query = 'DELETE FROM t_book_apply WHERE ba_isbn="' + req.body.isbn + '"';
     con.query(query, function(err, response){
         if(err){
@@ -57,13 +66,16 @@ function deleteMyapply(con, req, res){
             throw err;
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function checkDuplication(con, req, res){
+function checkDuplication(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select b_isbn, count(b_isbn) cnt from t_book where b_state != 3 group by b_isbn UNION select count(ba_isbn), ba_isbn from t_book_apply group by ba_isbn';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     })
 }
 

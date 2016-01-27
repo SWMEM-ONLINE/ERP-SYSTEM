@@ -1,28 +1,39 @@
 /**
  * Created by jung-inchul on 2015. 12. 15..
  */
-function loadBookMain(con, req, res){
+
+var DB_handler = require('./DB_handler');
+
+
+function loadBookMain(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select b.b_name name, DATEDIFF(CURDATE(), b.b_due_date) diff from t_book_rental a inner join t_book b on a.br_book_id=b.b_id where br_user="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadHardwareMain(con, req, res){
+function loadHardwareMain(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select b.h_name name, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id where a.hr_user="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadmyMileage(con, req, res){
+function loadmyMileage(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select u_mileage from t_user where u_id="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function getUserpermission(con, req, res){
+function getUserpermission(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select u_state from t_user where u_id="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         if(err){
@@ -30,11 +41,12 @@ function getUserpermission(con, req, res){
             throw err;
         }
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function hasToken(con, req, res){
-
+function hasToken(req, res){
+    var con = DB_handler.connectDB();
     var id = req.session.passport.user.id;
 
     var query = "select u_token from t_user " +
@@ -65,9 +77,11 @@ function hasToken(con, req, res){
                 res.send("false");
             }
         }
+        DB_handler.disconnectDB(con);
     });
 }
-function getToken(con, req, res){
+function getToken(req, res){
+    var con = DB_handler.connectDB();
 
     var token = req.body.token;
     var device = req.body.device;
@@ -89,6 +103,7 @@ function getToken(con, req, res){
             console.log(response);
             res.send("success");
         }
+        DB_handler.disconnectDB(con);
     });
 }
 

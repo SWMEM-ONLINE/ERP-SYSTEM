@@ -3,29 +3,37 @@
  */
 
 var util = require('./util');
+var DB_handler = require('./DB_handler');
 
-function loadBorrowedBook(con, req, res){
+function loadBorrowedBook(req, res){
+    var con = DB_handler.connectDB();
     var query = 'SELECT *, DATEDIFF(CURDATE(), a.b_due_date) diff FROM t_book a INNER JOIN t_book_rental b ON a.b_id=b.br_book_id where b.br_user="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadReservedBook(con, req, res){
+function loadReservedBook(req, res){
+    var con = DB_handler.connectDB();
     var query = 'SELECT * FROM t_book a INNER JOIN t_book_reserve b ON a.b_id=b.bre_book_id where b.bre_user="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadAppliedBook(con, req, res){
+function loadAppliedBook(req, res){
+    var con = DB_handler.connectDB();
     var query = 'SELECT * FROM t_book_apply where ba_user="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function turninBook(con, req, res){
+function turninBook(req, res){
+    var con = DB_handler.connectDB();
     var today = getDate(new Date(), 0);
     var query = 'insert into t_book_return SET brt_user="' + req.session.passport.user.id + '", brt_book_id=' + req.body.book_id + ', brt_rental_date="' + req.body.rental_date + '", brt_return_date="' + today + '";';
     query += 'update t_book set b_state=0, b_due_date=null, b_rental_username=null where b_id="' + req.body.book_id + '";';
@@ -62,9 +70,11 @@ function turninBook(con, req, res){
         }
     });
     if(req.body.reserved_cnt > 0)   push2Subscriber(con, req.session.passport.user.id, req.body.book_id);
+    DB_handler.disconnectDB(con);
 }
 
-function postponeBook(con, req, res){
+function postponeBook(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book a inner join t_book_rental b on a.b_id=b.br_book_id where b.br_id="' + req.body.rental_id + '"';
     var query2 = 'update t_book_rental set br_extension_cnt=br_extension_cnt+1 where br_id=' + req.body.rental_id + ';';
     query2 += 'update t_book set b_due_date=ADDDATE(b_due_date, 14) where b_id="' + req.body.book_id + '"';
@@ -80,10 +90,12 @@ function postponeBook(con, req, res){
                 res.send('success');
             });
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function missingBook(con, req, res){
+function missingBook(req, res){
+    var con = DB_handler.connectDB();
     var today = getDate(new Date(), 0);
     var query = 'insert into t_book_loss SET brl_user="' + req.session.passport.user.id + '", brl_book_id="' + req.body.book_id + '", brl_loss_date="' + today + '";';
     query += ' update t_book set b_state=3 where b_id="' + req.body.book_id +'";';
@@ -95,10 +107,12 @@ function missingBook(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function cancelReservation(con, req, res){
+function cancelReservation(req, res){
+    var con = DB_handler.connectDB();
     if(req.body.reserved_cnt >= 1){
         var query = 'select bre_myturn from t_book_reserve where bre_id="' + req.body.reserve_id + '"';
         con.query(query, function(err, response){
@@ -117,10 +131,12 @@ function cancelReservation(con, req, res){
                 res.send('success');
             });
         });
+        DB_handler.disconnectDB(con);
     }
 }
 
-function cancelAppliedbook(con, req, res){
+function cancelAppliedbook(req, res){
+    var con = DB_handler.connectDB();
     var query = 'delete from t_book_apply where ba_id="' + req.body.apply_id + '"';
     con.query(query, function(err, response){
         if(err){
@@ -128,10 +144,12 @@ function cancelAppliedbook(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function push2Subscriber(con, userId, book_id){
+function push2Subscriber(userId, book_id){
+    var con = DB_handler.connectDB();
     var due_date = getDate(new Date(), 14);
     var query1 = 'select * FROM t_user a INNER JOIN t_book_reserve b ON a.u_id=b.bre_user where b.bre_book_id="' + book_id + '" and b.bre_myturn=1';
     con.query(query1, function(err, response){
@@ -156,6 +174,7 @@ function push2Subscriber(con, userId, book_id){
     con.query(query4);
     var query5 = 'delete from t_book_reserve where bre_myturn=0 and bre_book_id="' + book_id + '"';
     con.query(query5);
+    DB_handler.disconnectDB(con);
 }
 
 function getDate(base, plusDate){

@@ -114,7 +114,7 @@ function book_remaining(){
             for(var j = 0; j < response.length; j++){
                 if(response[j].diff === -3 || response[j].diff === -1){
                     content += (response[j].b_name + '의 반납일이 ' + (-response[j].diff) + '일 남았습니다');
-                    util.send(response[i].br_user, '도서 반납일 알림', content, function(err2, response2){
+                    util.send(response[j].br_user, '도서 반납일 알림', content, function(err2, response2){
                         if(err2){
                             console.log(err2);
                         }else{

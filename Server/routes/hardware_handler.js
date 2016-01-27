@@ -2,15 +2,19 @@
  * Created by jung-inchul on 2015. 12. 7..
  */
 var util = require('./util');
+var DB_handler = require('./DB_handler');
 
-function loadHardwarelist(con, req, res){
+function loadHardwarelist(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_hardware';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function borrowHardware(con, req, res){
+function borrowHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select h_remaining from t_hardware where h_id="' + req.body.hardware_id + '"';
     var query1 = 'insert into t_hardware_waiting SET hw_user="' + req.session.passport.user.id + '", hw_hardware_id=' + req.body.hardware_id + ', hw_request_date="' + getDate(new Date(), 0) + '", hw_kind=0;';
     query1 += 'update t_hardware set h_remaining=h_remaining-1 where h_id="'+req.body.hardware_id+'"';
@@ -42,17 +46,21 @@ function borrowHardware(con, req, res){
         }else{                                          // nothing there.
             res.send('failed');
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadLender(con, req, res){
+function loadLender(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_hardware_rental a inner join t_user b on a.hr_user=b.u_id where a.hr_hardware_id="'+req.body.hardware_id+'"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function turnInHardware(con, req, res){
+function turnInHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_hardware_waiting where hw_rental_id="' + req.body.rental_id + '"';
     con.query(query, function(err1, response1){
         if(response1.length === 0){
@@ -91,10 +99,12 @@ function turnInHardware(con, req, res){
         }else{
             res.send('failed_1');
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function postponeHardware(con, req, res){
+function postponeHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_hardware_waiting where hw_rental_id="' + req.body.rental_id + '"';
     con.query(query, function(err1, response1){
         if(response1.length === 0){
@@ -133,31 +143,39 @@ function postponeHardware(con, req, res){
         }else{
             res.send('failed_1');
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadmyRequestedHardware(con, req, res){
+function loadmyRequestedHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_hardware_waiting a inner join t_hardware b on a.hw_hardware_id=b.h_id where a.hw_user="'+ req.session.passport.user.id +'"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadmyHardware(con, req, res){
+function loadmyHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select *, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id where a.hr_user="'+ req.session.passport.user.id +'"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     })
 }
 
-function loadmyappliedHardware(con, req, res){
+function loadmyappliedHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select *, b.u_name from t_hardware_apply a inner join t_user b on a.ha_requester=b.u_id where a.ha_requester="' + req.session.passport.user.id + '"';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function deleteRequest(con, req, res){
+function deleteRequest(req, res){
+    var con = DB_handler.connectDB();
     var query = 'delete from t_hardware_waiting where hw_id="' + req.body.waiting_id + '"';
     con.query(query, function(err, response){
         if(err){
@@ -165,10 +183,12 @@ function deleteRequest(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function cancelmyApply(con, req, res){
+function cancelmyApply(req, res){
+    var con = DB_handler.connectDB();
     var query = 'delete from t_hardware_apply where ha_id="' + req.body.apply_id + '"';
     con.query(query, function(err, response){
         if(err){
@@ -176,10 +196,12 @@ function cancelmyApply(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function enrollHardware(con, req, res){
+function enrollHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = '';
     for(var i = 0; i < req.body.length; i++){
         query += 'insert into t_hardware set h_name="' + req.body[i].name + '", h_total=' + req.body[i].amount + ', h_remaining=' + req.body[i].amount + ', h_serial="' + req.body[i].serial + '";';
@@ -190,10 +212,12 @@ function enrollHardware(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function alterHardware(con, req, res){
+function alterHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = 'update t_hardware set h_name="' + req.body.name + '", h_total=' + req.body.total + ', h_remaining=' + req.body.remaining + ', h_serial="' + req.body.serial + '" where h_id=' + req.body.id;
     con.query(query, function(err, response){
         if(err){
@@ -201,10 +225,12 @@ function alterHardware(con, req, res){
             throw err;
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function deleteHardware(con, req, res){
+function deleteHardware(req, res){
+    var con = DB_handler.connectDB();
     var query = 'delete from t_hardware where h_id="' + req.body.hardware_id + '"';
     con.query(query, function(err, response){
         if(err){
@@ -212,19 +238,23 @@ function deleteHardware(con, req, res){
             throw err;
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     })
 }
 
-function loadNow(con, req, res){
+function loadNow(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id inner join t_user c on a.hr_user=c.u_id';
     con.query(query, function(err, response){
         if(err)
             res.send('failed');
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadPast(con, req, res){
+function loadPast(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_hardware a inner join t_hardware_return b on a.h_id=b.ht_hardware_id inner join t_user c on b.ht_user=c.u_id';
     con.query(query, function(err, response){
         if(err){
@@ -232,10 +262,12 @@ function loadPast(con, req, res){
             throw err
         }
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadRequest(con, req, res){
+function loadRequest(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_hardware_waiting a inner join t_hardware b on a.hw_hardware_id=b.h_id inner join t_user c on a.hw_user=c.u_id where a.hw_kind=' + req.body.kind;
     con.query(query, function(err, response){
         if(err){
@@ -243,17 +275,21 @@ function loadRequest(con, req, res){
             throw err
         }
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadApply(con, req, res){
+function loadApply(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select *, b.u_name from t_hardware_apply a inner join t_user b on a.ha_requester=b.u_id';
     con.query(query, function(err, response){
        res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function approveRequest(con, req, res){
+function approveRequest(req, res){
+    var con = DB_handler.connectDB();
     if(req.body.type != 3){
         var today = getDate(new Date(), 0);
         var due_date = getDate(new Date(), 30);
@@ -373,9 +409,11 @@ function approveRequest(con, req, res){
             res.send('success');
         });
     }
+    DB_handler.disconnectDB(con);
 }
 
-function rejectRequest(con, req, res){
+function rejectRequest(req, res){
+    var con = DB_handler.connectDB();
     var temp = req.body.userIdlist;
     var userIdlist = temp.split(',');
 
@@ -431,6 +469,7 @@ function rejectRequest(con, req, res){
             res.send('success');
         });
     }
+    DB_handler.disconnectDB(con);
 }
 
 function getDate(base, plusDate){

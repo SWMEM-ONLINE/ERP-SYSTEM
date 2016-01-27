@@ -2,9 +2,6 @@
  * Created by jung-inchul on 2015. 11. 30..
  */
 var express = require('express');
-var DB_handler = require('./DB_handler');
-
-var con = DB_handler.connectDB();
 var router = express.Router();
 var book_handler = require('./book_handler');
 var book_my_handler = require('./book_mybook_handler');
@@ -23,63 +20,63 @@ router.get('/mybook', util.ensureAuthenticated, function(req, res, next){
 });
 
 router.post('/loadNewHumanitiesbook', util.ensureAuthenticated, function(req, res){
-   book_handler.loadNewHumanitiesbook(con, res);
+   book_handler.loadNewHumanitiesbook(res);
 });
 
 router.post('/loadNewTechbook', util.ensureAuthenticated, function(req, res){
-    book_handler.loadNewTechbook(con, res);
+    book_handler.loadNewTechbook(res);
 });
 
 router.post('/searchBook', util.ensureAuthenticated, function(req, res){
-    book_handler.searchBook(con, req, res);  // { 카테고리 : 무엇인지, 찾으려는 단어 : 입력값 } 형태
+    book_handler.searchBook(req, res);  // { 카테고리 : 무엇인지, 찾으려는 단어 : 입력값 } 형태
 });
 
 router.post('/borrowBook', util.ensureAuthenticated, function(req, res){
-    book_handler.borrowBook(con, req, res);
+    book_handler.borrowBook(req, res);
 });
 
 router.post('/reserveBook', util.ensureAuthenticated, function(req, res){
-    book_handler.reserveBook(con, req, res);
+    book_handler.reserveBook(req, res);
 });
 
 router.post('/missingBook', util.ensureAuthenticated, function(req, res){
-    book_handler.missingBook(con, req, res);
+    book_handler.missingBook(req, res);
 });
 
 router.post('/borrowBook_QR', util.ensureAuthenticated, function(req, res){
-    book_handler.borrowBook_QR(con, req, res);
+    book_handler.borrowBook_QR(req, res);
 });
 
 router.post('/mybook/borrowed', util.ensureAuthenticated, function(req, res){
-    book_my_handler.loadBorrowedBook(con, req, res);
+    book_my_handler.loadBorrowedBook(req, res);
 });
 
 router.post('/mybook/reserved', util.ensureAuthenticated, function(req, res){
-    book_my_handler.loadReservedBook(con, req, res);
+    book_my_handler.loadReservedBook(req, res);
 });
 
 router.post('/mybook/applied', util.ensureAuthenticated, function(req, res){
-    book_my_handler.loadAppliedBook(con, req, res);
+    book_my_handler.loadAppliedBook(req, res);
 });
 
 router.post('/mybook/turnIn', util.ensureAuthenticated, function(req, res){
-    book_my_handler.turninBook(con, req, res);
+    book_my_handler.turninBook(req, res);
 });
 
 router.post('/mybook/cancelReservation', util.ensureAuthenticated, function(req, res){
-    book_my_handler.cancelReservation(con, req, res);
+    book_my_handler.cancelReservation(req, res);
 });
 
 router.post('/mybook/postpone', util.ensureAuthenticated, function(req, res){
-    book_my_handler.postponeBook(con, req, res);
+    book_my_handler.postponeBook(req, res);
 });
 
 router.post('/mybook/missing',util.ensureAuthenticated, function(req, res){
-    book_my_handler.missingBook(con, req, res);
+    book_my_handler.missingBook(req, res);
 });
 
 router.post('/mybook/cancelAppliedbook',util.ensureAuthenticated, function(req, res){
-    book_my_handler.cancelAppliedbook(con, req, res);
+    book_my_handler.cancelAppliedbook(req, res);
 });
 
 router.get('/manage/history', util.ensureAuthenticated, function(req, res, next){
@@ -87,11 +84,11 @@ router.get('/manage/history', util.ensureAuthenticated, function(req, res, next)
 });
 
 router.post('/manage/loadnowHistory', util.ensureAuthenticated, function(req, res){
-    book_handler.loadnowHistory(con, req, res);
+    book_handler.loadnowHistory(req, res);
 });
 
 router.post('/manage/loadpastHistory', util.ensureAuthenticated, function(req, res){
-    book_handler.loadpastHistory(con, req, res);
+    book_handler.loadpastHistory(req, res);
 });
 
 router.get('/manage/missing', util.ensureAuthenticated, function(req, res, next){
@@ -99,15 +96,15 @@ router.get('/manage/missing', util.ensureAuthenticated, function(req, res, next)
 });
 
 router.post('/manage/loadmissingBook', util.ensureAuthenticated, function(req, res){
-    book_handler.loadmissingBook(con, req, res);
+    book_handler.loadmissingBook(req, res);
 });
 
 router.post('/manage/reenroll', util.ensureAuthenticated, function(req, res){
-    book_handler.reenroll(con, req, res);
+    book_handler.reenroll(req, res);
 });
 
 router.post('/manage/inArrears', util.ensureAuthenticated, function(req, res){
-    book_handler.loadinArrears(con, req, res);
+    book_handler.loadinArrears(req, res);
 });
 
 router.get('/manage/inArrears', util.ensureAuthenticated, function(req, res){
@@ -115,7 +112,7 @@ router.get('/manage/inArrears', util.ensureAuthenticated, function(req, res){
 });
 
 router.post('/manage/loadinArrears', util.ensureAuthenticated, function(req, res){
-    book_handler.loadinArrears(con, req, res);
+    book_handler.loadinArrears(req, res);
 });
 
 router.get('/manage/apply', util.ensureAuthenticated, function(req, res){
@@ -123,15 +120,15 @@ router.get('/manage/apply', util.ensureAuthenticated, function(req, res){
 });
 
 router.post('/manage/loadapplylist', util.ensureAuthenticated, function(req, res){
-    book_handler.loadApplylist(con, req, res);
+    book_handler.loadApplylist(req, res);
 });
 
 router.post('/manage/enrollBook', util.ensureAuthenticated, function(req, res){
-    book_handler.enrollBook(con, req, res);
+    book_handler.enrollBook(req, res);
 });
 
 router.post('/manage/buyComplete', util.ensureAuthenticated, function(req, res){
-    book_handler.buyComplete(con, req, res);
+    book_handler.buyComplete(req, res);
 });
 
 router.get('/manage/item', util.ensureAuthenticated, function(req, res){
@@ -139,11 +136,11 @@ router.get('/manage/item', util.ensureAuthenticated, function(req, res){
 });
 
 router.post('/manage/loadbooklist', util.ensureAuthenticated, function(req, res){
-    book_handler.loadbooklist(con, req, res);
+    book_handler.loadbooklist(req, res);
 });
 
 router.post('/manage/resetbookLocation', util.ensureAuthenticated, function(req, res){
-    book_handler.resetbookLocation(con, req, res);
+    book_handler.resetbookLocation(req, res);
 });
 
 

@@ -18,19 +18,19 @@ router.get('/newbook', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.post('/newbook/request', util.ensureAuthenticated, function(req, res){
-    apply_newbook_handler.request(con, req, res);   // { 책의 내용들 } 형태
+    apply_newbook_handler.request(req, res);   // { 책의 내용들 } 형태
 });
 
 router.post('/newbook/loadMyapply', util.ensureAuthenticated, function(req, res){
-    apply_newbook_handler.loadMyapply(con, req, res);   // id 만 딱 전송
+    apply_newbook_handler.loadMyapply(req, res);   // id 만 딱 전송
 });
 
 router.post('/newbook/deleteMyapply', util.ensureAuthenticated,  function(req, res){
-    apply_newbook_handler.deleteMyapply(con, req, res);   // { b_isbn : 숫자 } 형태
+    apply_newbook_handler.deleteMyapply(req, res);   // { b_isbn : 숫자 } 형태
 });
 
 router.post('/newbook/checkDuplication', function(req, res){
-    apply_newbook_handler.checkDuplication(con, req, res);
+    apply_newbook_handler.checkDuplication(req, res);
 });
 /* book@ */
 

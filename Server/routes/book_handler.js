@@ -3,6 +3,7 @@
  */
 
 var fs = require('fs');
+var DB_handler = require('./DB_handler');
 
 /*
     Load new tech or humanities booklist. Send one select query and return data.
@@ -20,17 +21,21 @@ var fs = require('fs');
      1 : Humanities book
  */
 
-function loadNewTechbook(con, res){
+function loadNewTechbook(res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book where b_new=1 and b_type=0 and not (b_state=3)';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadNewHumanitiesbook(con, res){
+function loadNewHumanitiesbook(res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book where b_new=1 and b_type=1 and not (b_state=3)';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
@@ -41,7 +46,9 @@ function loadNewHumanitiesbook(con, res){
     - update query to t_book : change state to 1, due_date, rental_username.
     - insert query to t_book_rental : insert rental data
  */
-function borrowBook(con, req, res){
+function borrowBook(req, res){
+    var con = DB_handler.connectDB();
+
     var today = getDate(new Date(), 0);
     var due_date = getDate(new Date(), 14);
 
@@ -64,18 +71,21 @@ function borrowBook(con, req, res){
         } else {
             res.send('failed');
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
 /*
     Search Book Process
  */
-function searchBook(con, req, res){
+function searchBook(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book where ' + req.body.category + ' like "%' + req.body.searchWords + '%" and not (b_state=3)';
     if(req.body.flag === 'tech')    query += 'and b_type=0';
     else    query += 'and b_type=1';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
@@ -87,7 +97,8 @@ function searchBook(con, req, res){
     - delete query to t_book_reserve
  */
 
-function missingBook(con, req, res){
+function missingBook(req, res){
+    var con = DB_handler.connectDB();
     var today = getDate(new Date(), 0);
     var query = 'UPDATE t_book set b_state=3 where b_id="' + req.body.book_id +'";';
     query += 'delete from t_book_rental where br_book_id="' + req.body.book_id + '";';
@@ -100,6 +111,7 @@ function missingBook(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
@@ -110,7 +122,8 @@ function missingBook(con, req, res){
     - update query to t_book : increase reserved_cnt
  */
 
-function reserveBook(con, req, res){
+function reserveBook(req, res){
+    var con = DB_handler.connectDB();
     var today = getDate(new Date(), 0);
     var query = 'select * from t_book_rental where br_book_id="' + req.body.book_id + '"';
     var query1 = 'select br_user from t_book_rental where br_user="' + req.session.passport.user.id+'" and br_book_id="' + req.body.book_id + '"UNION select bre_user from t_book_reserve where bre_user="' + req.session.passport.user.id + '" and bre_book_id="' + req.body.book_id + '"';
@@ -135,10 +148,12 @@ function reserveBook(con, req, res){
         }else{
             res.send('failed_1');
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function borrowBook_QR(con, req, res){
+function borrowBook_QR(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book where b_isbn="' + req.body.isbn + '" and b_state=0';
     console.log(query);
     con.query(query, function(err, response){
@@ -164,10 +179,12 @@ function borrowBook_QR(con, req, res){
                 });
             }
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadnowHistory(con, req, res){
+function loadnowHistory(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book_rental a inner join t_book b on a.br_book_id=b.b_id inner join t_user c on a.br_user=c.u_id';
     con.query(query, function(err, response){
         console.log(response);
@@ -176,10 +193,12 @@ function loadnowHistory(con, req, res){
             throw err
         }
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadpastHistory(con, req, res){
+function loadpastHistory(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book a inner join t_book_return b on a.b_id=b.brt_book_id inner join t_user c on b.brt_user=c.u_id';
     con.query(query, function(err, response){
         if(err){
@@ -187,10 +206,12 @@ function loadpastHistory(con, req, res){
             throw err
         }
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadmissingBook(con, req, res){
+function loadmissingBook(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book_loss a inner join t_book b on a.brl_book_id=b.b_id inner join t_user c on a.brl_user=c.u_id';
     con.query(query, function(err, response){
         if(err){
@@ -198,10 +219,12 @@ function loadmissingBook(con, req, res){
             throw err
         }
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function reenroll(con, req, res){
+function reenroll(req, res){
+    var con = DB_handler.connectDB();
     var query = 'update t_book set b_state=0 where b_id IN (' + req.body.enrollList + ');';
     query += 'delete from t_book_loss where brl_book_id IN (' + req.body.enrollList + ');';
     con.query(query, function(err, response){
@@ -210,24 +233,30 @@ function reenroll(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadinArrears(con, req, res){
+function loadinArrears(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select *,DATEDIFF(CURDATE(), b_due_date) diff from t_user a inner join t_book b on a.u_name=b.b_rental_username where (DATEDIFF(CURDATE(), b_due_date)) > 0';
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadApplylist(con, req, res){
+function loadApplylist(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book_apply a inner join t_user b on a.ba_user=b.u_id where ba_type=' + req.body.flag;
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function enrollBook(con, req, res){
+function enrollBook(req, res){
+    var con = DB_handler.connectDB();
     var query='select * from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
     var query1 = '';
     con.query(query, function(err, response){
@@ -242,10 +271,12 @@ function enrollBook(con, req, res){
             }
             res.send('success');
         });
+        DB_handler.disconnectDB(con);
     });
 }
 
-function buyComplete(con, req, res){
+function buyComplete(req, res){
+    var con = DB_handler.connectDB();
     var query = 'update t_book_apply set ba_state=1 where ba_id IN (' + req.body.buyIdlist + ');';
     query += 'update t_book set b_new=0 where b_new=1 and b_type=' + req.body.type;
     con.query(query, function(err, response){
@@ -254,17 +285,21 @@ function buyComplete(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 
-function loadbooklist(con, req, res){
+function loadbooklist(req, res){
+    var con = DB_handler.connectDB();
     var query = 'select * from t_book where b_type=' + req.body.flag;
     con.query(query, function(err, response){
         res.send(response);
+        DB_handler.disconnectDB(con);
     });
 }
 
-function resetbookLocation(con, req, res){
+function resetbookLocation(req, res){
+    var con = DB_handler.connectDB();
     var query = 'update t_book set b_location="' + req.body.location + '" where b_id IN (' + req.body.resetIdlist + ')';
     con.query(query, function(err, response){
         if(err){
@@ -272,6 +307,7 @@ function resetbookLocation(con, req, res){
             throw err
         }
         res.send('success');
+        DB_handler.disconnectDB(con);
     });
 }
 

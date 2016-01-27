@@ -5,8 +5,6 @@ var express = require('express');
 var router = express.Router();
 var util = require('./util');
 var main_handler = require('./main_handler');
-var DB_handler = require('./DB_handler');
-var con = DB_handler.connectDB();
 
 
 /* GET users listing. */
@@ -19,27 +17,27 @@ router.post('/', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.post('/loadmyBook', util.ensureAuthenticated, function(req, res, next){
-    main_handler.loadBookMain(con, req, res);
+    main_handler.loadBookMain(req, res);
 });
 
 router.post('/loadmyHardware', util.ensureAuthenticated, function(req, res, next){
-    main_handler.loadHardwareMain(con, req, res);
+    main_handler.loadHardwareMain(req, res);
 });
 
 router.post('/loadmyMileage', util.ensureAuthenticated, function(req, res, next){
-    main_handler.loadmyMileage(con, req, res);
+    main_handler.loadmyMileage(req, res);
 });
 
 router.post('/getUserpermission', util.ensureAuthenticated, function(req, res, next){
-    main_handler.getUserpermission(con, req, res);
+    main_handler.getUserpermission(req, res);
 });
 
 router.post('/hasToken', util.ensureAuthenticated, function(req, res, next){
-    main_handler.hasToken(con, req, res);
+    main_handler.hasToken(req, res);
 });
 
 router.post('/getToken', util.ensureAuthenticated, function(req, res, next){
-    main_handler.getToken(con, req, res);
+    main_handler.getToken(req, res);
 });
 
 module.exports = router;
