@@ -4,7 +4,6 @@
 
 var util = require("./util");
 var DB_handler = require('./DB_handler');
-var con = DB_handler.connectDB();
 
 
 /**
@@ -14,7 +13,7 @@ var con = DB_handler.connectDB();
  */
 function nextDayDuty() {
 
-
+    var con = DB_handler.connectDB();
     var today = new Date();
     var tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
 
@@ -29,6 +28,7 @@ function nextDayDuty() {
     con.query(query, function (err, response) {
         if(err){
             console.log(err);
+            DB_handler.disconnectDB(con);
         }
         else{
             var i;
@@ -74,6 +74,7 @@ function nextDayDuty() {
                     });
                 }
             }
+            DB_handler.disconnectDB(con);
         }
 
     });
@@ -81,12 +82,13 @@ function nextDayDuty() {
 
 
 function hardware_remaining(){
+    var con = DB_handler.connectDB();
     var query = 'select a.hr_user, b.h_name, DATEDIFF(CURDATE(), a.hr_due_date) diff from t_hardware_rental a inner join t_hardware b on a.hr_hardware_id=b.h_id';
-
     var content = '대여하신 하드웨어 ';
     con.query(query, function(err, response){
         if(err){
             console.log("Load DB ERROR in job_schedule_handler.js's hardware_remaining function");
+            DB_handler.disconnectDB(con);
         }else{
             for(var i = 0; i < response.length; i++){
                 if(response[i].diff === -3 || response[i].diff === -1){
@@ -100,16 +102,20 @@ function hardware_remaining(){
                     });
                 }
             }
+
+            DB_handler.disconnectDB(con);
         }
     });
 }
 
 function book_remaining(){
+    var con = DB_handler.connectDB();
     var query = 'select a.br_user, b.b_name, DATEDIFF(CURDATE(), b.b_due_date) diff from t_book_rental a inner join t_book b on a.br_book_id=b.b_id';
     var content = '대여하신 도서 ';
     con.query(query, function(err, response){
         if(err){
             console.log("Load DB ERROR in job_schedule_handler.js's book_remaining function");
+            DB_handler.disconnectDB(con);
         }else{
             for(var j = 0; j < response.length; j++){
                 if(response[j].diff === -3 || response[j].diff === -1){
@@ -123,6 +129,8 @@ function book_remaining(){
                     });
                 }
             }
+
+            DB_handler.disconnectDB(con);
         }
     });
 }
@@ -133,6 +141,7 @@ function book_remaining(){
  */
 
 function fee_carry() {
+    var con = DB_handler.connectDB();
 
     var lastMonth = '"'+util.getCurDate().substring(0,7)+'%"';
     var query = 'select * from t_fee_manage where fm_date like '+lastMonth;
@@ -171,6 +180,7 @@ function fee_carry() {
             }
             res.render('main', { title: '메인', grade: util.getUserGrade(req) });
 
+            DB_handler.disconnectDB(con);
         });
 
     });
@@ -183,12 +193,14 @@ function fee_carry() {
 
 function vote_complete() {
 
+    var con = DB_handler.connectDB();
     var query = 'update t_vote set v_state = 2 where v_state = 1 AND date(DATE_ADD(v_write_date, INTERVAL 14 DAY)) <= date(NOW())';
 
     con.query(query, function(err, res){
         if(err){
             console.log("err");
         }
+        DB_handler.disconnectDB(con);
     });
 }
 
