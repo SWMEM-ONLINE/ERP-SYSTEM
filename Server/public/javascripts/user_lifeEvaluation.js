@@ -147,10 +147,10 @@ function enrollButton(){
                 success: function(response){
                     if(response === 'success')  toastr['success']('생활등급 등록완료');
                     else    toastr['error']('생활등급 등록실패');
+                    loadlifeEvaluation();
                 }
             });
             $('div.modal').modal('hide');
-            loadlifeEvaluation();
         }
     });
 }
@@ -170,10 +170,9 @@ function alterButton(alter_A, alter_B){
             $.post('/user/alter_gradeCut', {cut_A: alter_A, cut_B: alter_B}, function(response){
                 if(response === 'success')  toastr['success']('변경성공');
                 else    toastr['error']('변경실패');
+                loadlifeEvaluation();
             });
-
             $('div.modal').modal('hide');
-            loadlifeEvaluation();
         }
     });
 }
