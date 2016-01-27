@@ -413,6 +413,21 @@ function resetbookLocation(req, res){
     });
 }
 
+function cancelBuying(req, res){
+    var con = DB_handler.connectDB();
+    var query = 'update t_book_apply set ba_state=0 where ba_id IN (' + req.body.cancelIdlist + ')';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            console.log('DB update ERROR in "book_handler.js -> cancelBuying"');
+            DB_handler.disconnectDB(con);
+        }else{
+            res.send('success');
+            DB_handler.disconnectDB(con);
+        }
+    });
+}
+
 function getDate(base, plusDate){
     var tempDate = new Date(base);
     tempDate.setDate(tempDate.getDate() + plusDate);
@@ -420,7 +435,7 @@ function getDate(base, plusDate){
     return date;
 }
 
-
+exports.cancelBuying = cancelBuying;
 exports.borrowBook_QR = borrowBook_QR;
 exports.resetbookLocation = resetbookLocation;
 exports.loadbooklist = loadbooklist;

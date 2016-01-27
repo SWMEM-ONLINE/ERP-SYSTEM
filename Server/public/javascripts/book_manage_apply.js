@@ -138,7 +138,7 @@ loadapplylist(0);
 function loadapplylist(flag){
     var htmlString = '';
     $.post('/book/manage/loadapplylist', {flag : flag}, function(datalist){
-        htmlString += '<tfoot><tr><th colspan="2"><span id="checkSum" class="pull-right">0 원</span></th></tr><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="down2excel" class="btn">엑셀 저장</button></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="2"><span id="checkSum" class="pull-right">0 원</span></th></tr><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="cancelBuying" class="btn">구매취소</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="down2excel" class="btn btn-danger">엑셀 저장</button></th></tr></tfoot>';
         htmlString += '<tbody id="applyTableData">';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td><img class="bookImg" src="' + data.ba_photo_url + '"</td>';
@@ -161,6 +161,7 @@ function loadapplylist(flag){
         selectAllButton(datalist);
         buyCompleteButton(datalist, flag);
         enrollButton(datalist);
+        cancelBuyingButton(datalist, flag);
         down2excelButton(datalist);
     });
 }
@@ -308,6 +309,34 @@ function enrollButton(datalist){
             makelocationData();
             registerButton(datalist);
         }
+    });
+}
+
+function cancelBuyingButton(datalist, flag){
+    $('button#cancelBuying').unbind().click(function(){
+        var cancelIdlist = '';
+        if($('table tbody#applyTableData tr.warning').length === 0){
+            toastr['error']('도서를 선택해주세요');
+            return;
+        }
+        $('table tbody#applyTableData tr.warning').each(function(){
+            var idx = $(this).index();
+            cancelIdlist += datalist[idx].ba_id + ',';
+        });
+
+        cancelIdlist = cancelIdlist.substring(0, cancelIdlist.length -1);
+
+
+        $.post('/book/manage/cancelBuying', {cancelIdlist : cancelIdlist}, function(response){
+            if(response === 'success'){
+                toastr['success']('취소성공');
+            }
+            else{
+                toastr['error']('취소실패');
+            }
+        });
+        $('div.modal').modal('hide');
+        loadapplylist(flag);
     });
 }
 

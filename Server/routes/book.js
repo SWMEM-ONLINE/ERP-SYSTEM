@@ -131,6 +131,10 @@ router.post('/manage/buyComplete', util.ensureAuthenticated, function(req, res){
     book_handler.buyComplete(req, res);
 });
 
+router.post('/manage/cancelBuying', util.ensureAuthenticated, function(req, res){
+    book_handler.cancelBuying(req, res);
+});
+
 router.get('/manage/item', util.ensureAuthenticated, function(req, res){
     res.render('book_manage_item', { title : '도서 관리', grade: util.getUserGrade(req)});
 });
