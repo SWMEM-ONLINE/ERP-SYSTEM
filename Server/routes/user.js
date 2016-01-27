@@ -229,7 +229,7 @@ router.post('/updateUserGrade', util.ensureAuthenticated, function(req, res, nex
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             DB_handler.disconnectDB(con);
@@ -248,7 +248,7 @@ router.post('/reset', util.ensureAuthenticated, function(req, res, next) {
         if (err) {
             console.error(err);
             DB_handler.disconnectDB(con);
-            throw err;
+            return res.json({status:'fail'});
         }
         else{
             DB_handler.disconnectDB(con);
@@ -264,7 +264,7 @@ router.post('/info/deleteDevice', util.ensureAuthenticated, function(req, res, n
     con.query(query,function(err,rows){
         if (err) {
             console.error(err);
-            throw err;
+            return res.json({status: 'fail'});
         }
         else {
             DB_handler.disconnectDB(con);

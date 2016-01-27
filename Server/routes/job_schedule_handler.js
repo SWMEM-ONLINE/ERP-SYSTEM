@@ -148,41 +148,39 @@ function fee_carry() {
 
     con.query(query, function(err,rows){
         if (err) {
-            console.error(err);
+            console.log(err);
         }
-
-        var deposit = util.getTotalDeposit(rows);
-        var withdraw = util.getTotalWithdraw(rows);
-
-
-        var values = new Array(1);
-        var id = 0;
-        var price = deposit - withdraw;
-        var money_type = false;
-        if(price < 0){
-            money_type = true;
-        }
-        var money_content = "회비 이월";
-        var monthly_deposit = 0;
-        var monthly_withdraw = 0;
-        var remain_money = 0;
-        var writer = 'admin';
-        var date = util.getCurDate();
-
-        values[0] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, util.getCurDateWithTime()];
-
-
-        con.query('insert into t_fee_manage(fm_id, fm_money_type, fm_money_content,fm_price,fm_monthly_deposit,fm_monthly_withdraw,fm_remain_money,fm_writer,fm_date,fm_write_date) values ?', [values], function(err,result){
-
-            console.log(result);
-            if (err) {
-                console.log(err);
+        else {
+            var deposit = util.getTotalDeposit(rows);
+            var withdraw = util.getTotalWithdraw(rows);
+            var values = new Array(1);
+            var id = 0;
+            var price = deposit - withdraw;
+            var money_type = false;
+            if (price < 0) {
+                money_type = true;
             }
-            res.render('main', { title: '메인', grade: util.getUserGrade(req) });
+            var money_content = "회비 이월";
+            var monthly_deposit = 0;
+            var monthly_withdraw = 0;
+            var remain_money = 0;
+            var writer = 'admin';
+            var date = util.getCurDate();
 
-            DB_handler.disconnectDB(con);
-        });
+            values[0] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, util.getCurDateWithTime()];
 
+
+            con.query('insert into t_fee_manage(fm_id, fm_money_type, fm_money_content,fm_price,fm_monthly_deposit,fm_monthly_withdraw,fm_remain_money,fm_writer,fm_date,fm_write_date) values ?', [values], function (err, result) {
+                if (err) {
+                    console.log(err);
+                    DB_handler.disconnectDB(con);
+                }
+                else {
+                    DB_handler.disconnectDB(con);
+                    res.render('main', {title: '메인', grade: util.getUserGrade(req)});
+                }
+            });
+        }
     });
 }
 
@@ -198,7 +196,7 @@ function vote_complete() {
 
     con.query(query, function(err, res){
         if(err){
-            console.log("err");
+            console.log(err);
         }
         DB_handler.disconnectDB(con);
     });

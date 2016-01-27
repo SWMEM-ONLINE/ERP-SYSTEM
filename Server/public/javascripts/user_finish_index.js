@@ -90,6 +90,9 @@ function changeState(id){
                 getMemberList();
                 toastr['success']('수료 처리되었습니다');
             }
+            else{
+                toastr['error']('수료 처리 실패');
+            }
         }
     });
 }

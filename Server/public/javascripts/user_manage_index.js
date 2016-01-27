@@ -92,20 +92,24 @@ $('#memberList').on('click','td',function(){
         data:JSON.stringify(send),
         contentType:'application/json',
         success: function(data){
-
-            console.log(data);
-            $('div.modal #id').html(data[0].u_id);
-            $('div.modal #name').html(data[0].u_name);
-            $('div.modal #period').html(data[0].u_period);
-            $('div.modal #phone').html(data[0].u_phone);
-            $('div.modal #mail').html(data[0].u_email);
-            $('div.modal #type').html(degree[data[0].u_state]);
-            $('div.modal #selectAdmin').html('계정 전환');
-            document.getElementById('type').setAttribute('origin',data[0].u_state);
-            document.getElementById('profile').setAttribute('src','http://211.189.127.124:3000/image?name='+data[0].u_photo_url);
-            //document.getElementById('profile').setAttribute('src','http://www.swmem.org/image?name='+data[0].u_photo_url);
-            document.getElementById('selectAdmin').setAttribute('number',0);
-            $('div.modal').modal();
+            if(data.status == 'fail'){
+                toastr['error']('회원 정보 읽기 실패');
+            }
+            else {
+                console.log(data);
+                $('div.modal #id').html(data[0].u_id);
+                $('div.modal #name').html(data[0].u_name);
+                $('div.modal #period').html(data[0].u_period);
+                $('div.modal #phone').html(data[0].u_phone);
+                $('div.modal #mail').html(data[0].u_email);
+                $('div.modal #type').html(degree[data[0].u_state]);
+                $('div.modal #selectAdmin').html('계정 전환');
+                document.getElementById('type').setAttribute('origin', data[0].u_state);
+                document.getElementById('profile').setAttribute('src', 'http://211.189.127.124:3000/image?name=' + data[0].u_photo_url);
+                //document.getElementById('profile').setAttribute('src','http://www.swmem.org/image?name='+data[0].u_photo_url);
+                document.getElementById('selectAdmin').setAttribute('number', 0);
+                $('div.modal').modal();
+            }
         }
     });
 });
@@ -123,6 +127,9 @@ $('#reset').unbind().click(function(){
         success: function(data) {
             if (data.status == '0') {
                 toastr['success']('비밀번호 초기화');
+            }
+            else{
+                toastr['error']('비밀번호 초기화 실패');
             }
         }
     });
@@ -158,6 +165,9 @@ $('#save').unbind().click(function(){
                     getMemberList();
                     $('div.modal').modal('hide');
                     toastr['success']('저장 완료');
+                }
+                else{
+                    toastr['error']('저장 실패');
                 }
             }
         })

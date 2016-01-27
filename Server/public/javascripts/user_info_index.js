@@ -42,6 +42,9 @@ $('#mail').click(function(){
                     $('#mail').addClass('access');
                     $('#mail').removeClass('prohibit');
                 }
+                else{
+                    toastr['error']('E-mail 알림 해제 실패');
+                }
             }
         });
     }
@@ -60,6 +63,9 @@ $('#mail').click(function(){
                     toastr['success']('E-mail 알림 해제');
                     $('#mail').removeClass('access');
                     $('#mail').addClass('prohibit');
+                }
+                else{
+                    toastr['error']('E-mail 알림 설정 실패');
                 }
             }
         });
@@ -83,6 +89,9 @@ $('#device').unbind().click(function(){
                     $('#device').removeClass('prohibit');
                     $('#device').addClass('access');
                 }
+                else{
+                    toastr['error']('Push 알림 설정 실패');
+                }
             }
         });
     }
@@ -102,6 +111,9 @@ $('#device').unbind().click(function(){
                     $('#device').addClass('prohibit');
                     $('#device').removeClass('access');
                 }
+                else{
+                    toastr['error']('Push 알림 해제 실패');
+                }
             }
         });
     }
@@ -118,6 +130,9 @@ $('#deleteDevice').unbind().click(function () {
                 $('#device_info').empty();
                 $('#device_info').html('등록된 디바이스 정보가 없습니다');
                 $('table #deleteDevice').remove();
+            }
+            else{
+                toastr['error']('디바이스 정보 삭제 실패');
             }
         }
     });
