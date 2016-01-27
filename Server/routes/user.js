@@ -298,7 +298,7 @@ router.post('/load_curlifeEval', util.ensureAuthenticated, function(req, res){
         if(err){
             res.send('failed');
             DB_handler.disconnectDB(con);
-            throw err;
+            console.log('DB select ERROR in "main.js -> /load_curlifeEval"');
         }
         else {
             DB_handler.disconnectDB(con);
@@ -314,7 +314,7 @@ router.post('/load_pastlifeEval', util.ensureAuthenticated, function(req, res){
         if(err){
             res.send('failed');
             DB_handler.disconnectDB(con);
-            throw err;
+            console.log('DB select ERROR in "main.js -> /load_pastlifeEval"');
         }
         else {
             DB_handler.disconnectDB(con);
@@ -339,7 +339,7 @@ router.post('/enroll_lifeEval', util.ensureAuthenticated, function(req, res){
         if(err){
             res.send('failed');
             DB_handler.disconnectDB(con);
-            throw err;
+            console.log('DB select ERROR in "main.js -> /enroll_lifeEval"');
         }
         else {
             DB_handler.disconnectDB(con);
@@ -355,7 +355,7 @@ router.post('/alter_gradeCut', util.ensureAuthenticated, function(req, res){
         if(err){
             res.send('failed');
             DB_handler.disconnectDB(con);
-            throw err;
+            console.log('DB select ERROR in "main.js -> /alter_gradeCut"');
         }
         else{
             DB_handler.disconnectDB(con);
