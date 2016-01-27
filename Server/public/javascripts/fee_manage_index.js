@@ -104,7 +104,6 @@ function reloadList(data){
                         var state;
                         tbodyString += '<tr>';
                         tbodyString += '<td class="hidden">' + row.f_id + '</td>';
-                        tbodyString += '<td>' + row.f_date + '</td>';
                         if (row.f_type == 1)
                             type = '회비';
 
@@ -167,20 +166,15 @@ $('#memberList tbody').on('click','tr:not(.empty)',function () {
     });
 
     fid = arr[0];
-    date = arr[1];
-    type = arr[2];
-    name = arr[3];
-    paid = arr[4];
-    uid = arr[5];
-    period = arr[6];
-    content = arr[7];
-    price =arr[8];
+    type = arr[1];
+    name = arr[2];
+    paid = arr[3];
+    uid = arr[4];
+    period = arr[5];
+    content = arr[6];
+    price =arr[7];
     modalHead += name+'('+ period +')';
     modalBody += '<table class="table" id="'+fid+'">';
-    modalBody += '<tr>';
-    modalBody += '<th>날짜</th>';
-    modalBody += '<td>'+ date +'</td>';
-    modalBody += '</tr>';
     modalBody += '<tr>';
     modalBody += '<th>구분</th>';
     modalBody += '<td>'+ type +'</td>';

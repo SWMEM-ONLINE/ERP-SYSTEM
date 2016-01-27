@@ -103,7 +103,7 @@ function expense(string){
     $(type).html($(drop).children('a').html());
 }
 
-$('#submit').unbind().click(function(){
+$('#submit').click(function(){
     var date ;
     var content;
     var price;
@@ -216,10 +216,10 @@ function registerList(){
                 tbodyString += '<td class="hidden">'+data[i].fm_id+'</td>';
                 tbodyString += '<td>'+data[i].fm_date+'</td>';
                 if(data[i].fm_money_type === 1){
-                    tbodyString += '<td>지출</td>';
+                    tbodyString += '<td class="text-danger">지출</td>';
                 }
                 else{
-                    tbodyString += '<td>수입</td>';
+                    tbodyString += '<td class="text-primary">수입</td>';
                 }
                 tbodyString += '<td>'+data[i].fm_money_content+'</td>';
                 tbodyString += '<td>'+data[i].fm_price+'</td>';
@@ -236,7 +236,7 @@ $('#registerList').on('click','tr:not(.empty)',function(){
     $(this).children('td').map(function () {
         arr.push($(this).text());
     });
-    document.getElementById('deleteHistory').setAttribute('id','row'+arr[0]);
+    document.getElementById('deleteHistory').setAttribute('num','row'+arr[0]);
     $('div.modal #date').html(arr[1]);
     $('div.modal #type').html(arr[2]);
     $('div.modal #content').html(arr[3]);
@@ -244,8 +244,8 @@ $('#registerList').on('click','tr:not(.empty)',function(){
     $('div.modal').modal();
 });
 
-$('#deleteHistory').unbind().click(function(){
-    var id = this.id.substr(3);
+$('#deleteHistory').click(function(){
+    var id = document.getElementById('deleteHistory').getAttribute('num').substr(3);
     $.post('/fee/deleteFeeManage',{id:id},function(response){
         if(response.status == '0'){
             $('div.modal').modal('hide');

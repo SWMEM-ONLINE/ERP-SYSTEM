@@ -128,13 +128,13 @@ function memberSelect(obj){
     });
 }
 
-$('#selectAll').unbind().click(function(){
+$('#selectAll').click(function(){
     $("input[name='memberCheck[]']").each(function () {
         $(this).attr('checked',true);
     });
 });
 
-$('#select').unbind().click(function(){
+$('#select').click(function(){
     var mem = new Array();
     var name = new Array();
     $("input[name='memberCheck[]']").each( function () {
@@ -156,7 +156,7 @@ $('#select').unbind().click(function(){
     $('div.modal').modal('hide');
 });
 
-$('#submit').unbind().click(function(){
+$('#submit').click(function(){
     var date;
     var type;
     var content;
