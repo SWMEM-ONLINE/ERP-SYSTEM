@@ -110,6 +110,8 @@ function Event(title,start,end,flag){
         this.color='#BA68C8';
     }else if(flag == 3){
         this.color='#388e3c';
+    }else if(flag == 4){
+        this.color='#E91E63';
     }
 }
 
@@ -148,17 +150,52 @@ function getEvents(req,res){
 
                     getBook(con,id,eventLists,function(eventLists){
 
-                        res.send(eventLists);
-                        DB_handler.disconnectDB(con);
+                        getBirthday(con,eventLists,function(eventLists){
+
+                            res.send(eventLists);
+                            DB_handler.disconnectDB(con);
+                        });
                     });
                 });
             });
-            /**
-             * 당직이랑 대여 조회부분
-             * year랑 date로 ㄲ
-             */
 
         }
+    });
+
+}
+
+function getBirthday(con,eventLists,callback){
+
+    var query = "SELECT u_name , u_birth FROM swmem.t_user WHERE u_state > 0 and u_state <=100 ;";
+    var i;
+
+    con.query(query, function(err,response){
+
+        if(err){
+            console.log(err);
+        }else{
+            console.log(response);
+            var data;
+            var title="";
+            var convertDate;
+            var birth="";
+            for(i=0;i<response.length;i++){
+                data = response[i];
+                title ="[생일] ";
+                title += data.u_name;
+                birth = data.u_birth;
+
+                var month = birth.substr(2,2);
+                var date = birth.substr(4,2);
+
+                convertDate =  new Date().getFullYear() + "-" + month + "-" +date;
+
+                var event = new Event(title, convertDate, convertDate, 4);
+                eventLists.push(event);
+            }
+            callback(eventLists);
+        }
+
     });
 
 }
