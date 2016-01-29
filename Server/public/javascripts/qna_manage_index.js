@@ -31,6 +31,7 @@ function qnaList(pageNum){
                     var dataList = data.list;
                     for (var i = 0; i < dataList.length; i++) {
                         var list = dataList[i];
+                        console.log(list);
                         tbodyString += '<tr id="' + list.q_id + '">';
                         tbodyString += '<td>' + list.q_writer + '</td>' + '<td>' + list.q_title + '</td>' + '<td class="hidden">' + list.q_content + '</td>' + '<td class="hidden">' + list.q_state + '</td>' + '<td class="hidden">' + list.q_id + '</td>' + '<td>' + list.q_write_date + '</td>';
                         if (list.q_state == 0) {
@@ -85,6 +86,8 @@ $('#history tbody').on('click','tr:not(.empty)',function () {
     }
     document.getElementById('solve').setAttribute('value',arr[4]);
     document.getElementById('solve').setAttribute('page',arr[7]);
+    document.getElementById('delete').setAttribute('value',arr[4]);
+    document.getElementById('delete').setAttribute('page',arr[7]);
     commentList(arr[4]);
     $('div.modal').modal();
 });
@@ -173,7 +176,7 @@ $('#commentEnter').on('click',function(){
 });
 
 
-$('#solve').unbind().click(function(){
+$('#solve').click(function(){
     var data = {
         q_id:document.getElementById('solve').getAttribute('value'),
         state:1
@@ -191,6 +194,29 @@ $('#solve').unbind().click(function(){
             }
             else{
                 toastr['error']('해결 전송 실패');
+            }
+        }
+    });
+});
+
+$('#delete').click(function(){
+    var data = {
+        q_id:document.getElementById('delete').getAttribute('value')
+    };
+
+    $.ajax({
+        type:'post',
+        url:'/qna/qnaDelete',
+        data:JSON.stringify(data),
+        contentType:'application/json',
+        success: function(data){
+            if(data.status === '0'){
+                qnaList(document.getElementById('delete').getAttribute('page'));
+                $('div.modal').modal('hide');
+                toastr['success']('삭제 성공');
+            }
+            else{
+                toastr['error']('삭제 실패');
             }
         }
     });

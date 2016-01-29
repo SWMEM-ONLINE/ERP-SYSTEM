@@ -41,43 +41,43 @@ router.post('/qnaAdd', util.ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
-
-    var writer = util.getUserId(req);
-    var page = parseInt(req.body.pageIdx);
-    var curIdx = (page-1)*20;
-    var length = 20;
-
-    var query = 'select * from t_qna where q_writer = "'+writer+'" and q_state not in ( 3 ) order by q_write_date DESC limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
-
-    var con = DB_handler.connectDB();
-
-    con.query(query, function(err,rows){
-        if (err) {
-            console.error(err);
-            DB_handler.disconnectDB(con);
-            return res.json({status:'fail'});
-        }
-        else {
-            var countRow = JSON.parse(JSON.stringify(rows[rows.length - 1]));
-            var obj = countRow[0];
-            var rowLength = parseInt(obj['Count(q_ID)']);
-            var totalPaget = parseInt(rowLength / 20);
-            if (0 < rowLength % 20) {
-                totalPaget++;
-            }
-
-            rows.pop();
-
-            var list = JSON.parse(JSON.stringify(rows))[0];
-
-            var json = {"list": list, "totalPage": totalPaget, "curPage": page};
-            DB_handler.disconnectDB(con);
-            return res.json(json);
-        }
-    });
-
-});
+//router.post('/myqnalist', util.ensureAuthenticated, function(req, res, next) {
+//
+//    var writer = util.getUserId(req);
+//    var page = parseInt(req.body.pageIdx);
+//    var curIdx = (page-1)*20;
+//    var length = 20;
+//
+//    var query = 'select * from t_qna where q_writer = "'+writer+'" and q_state not in ( 3 ) order by q_write_date DESC limit '+curIdx+','+length+'; select Count(q_ID) from t_qna where q_state not in ( 3 )';
+//
+//    var con = DB_handler.connectDB();
+//
+//    con.query(query, function(err,rows){
+//        if (err) {
+//            console.error(err);
+//            DB_handler.disconnectDB(con);
+//            return res.json({status:'fail'});
+//        }
+//        else {
+//            var countRow = JSON.parse(JSON.stringify(rows[rows.length - 1]));
+//            var obj = countRow[0];
+//            var rowLength = parseInt(obj['Count(q_ID)']);
+//            var totalPaget = parseInt(rowLength / 20);
+//            if (0 < rowLength % 20) {
+//                totalPaget++;
+//            }
+//
+//            rows.pop();
+//
+//            var list = JSON.parse(JSON.stringify(rows))[0];
+//
+//            var json = {"list": list, "totalPage": totalPaget, "curPage": page};
+//            DB_handler.disconnectDB(con);
+//            return res.json(json);
+//        }
+//    });
+//
+//});
 
 
 router.post('/setQnaReply', util.ensureAuthenticated, function(req, res, next) {
