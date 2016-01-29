@@ -185,7 +185,7 @@ $('#memberList tbody').on('click','tr:not(.empty)',function () {
     modalBody += '</tr>';
     modalBody += '<tr>';
     modalBody += '<th>금액</th>';
-    modalBody += '<td>'+ price +'</td>';
+    modalBody += '<td>'+ parseInt(price).toLocaleString() +'</td>';
     modalBody += '</tr>';
     modalBody += '<tr>';
     modalBody += '<th>상태</th>';

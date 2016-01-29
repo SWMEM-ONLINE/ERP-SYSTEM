@@ -8,8 +8,11 @@ var util = require('./util');
 var DB_handler = require('./DB_handler');
 
 router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
+    res.render('fee_unpaid', {title: '회비미납내역',grade: util.getUserGrade(req)});
+});
 
-    var query = 'select * from t_fee where f_payer = "'+util.getUserId(req)+'" AND f_state = 0 ORDER BY f_write_date';
+router.post('/unpaid', util.ensureAuthenticated, function(req, res, next) {
+    var query = 'select * from t_fee where f_payer = "'+util.getUserId(req)+'" AND f_state = 0 ORDER BY f_write_date DESC';
     var con = DB_handler.connectDB();
     con.query(query, function(err,rows){
         if (err) {
@@ -20,7 +23,7 @@ router.get('/unpaid', util.ensureAuthenticated, function(req, res, next) {
         else{
             var send = JSON.stringify(rows);
             DB_handler.disconnectDB(con);
-            return res.render('fee_unpaid', { title: '회비미납내역', grade: util.getUserGrade(req), result:JSON.parse(send)});
+            return res.json(JSON.parse(send));
         }
     });
 });

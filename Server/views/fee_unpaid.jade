@@ -14,7 +14,7 @@ block content
          h3 회비 미납내역
          hr
          .content
-            table.table
+            table#unpaidList.table
                thead
                   tr
                      th 날짜
@@ -22,22 +22,5 @@ block content
                      th 내용
                      th 금액
                tbody
-                  if result.length == 0
-                     tr
-                        td(colspan=4)
-                           h4 미납내역이 없습니다
-                  else
-                     for row in result
-                        tr
-                           td= row.f_date
-                           td
-                              if row.f_type == 1
-                                 span 회비
-                              else if row.f_type == 2
-                                 span 삼과비
-                              else
-                                 span 기타
-                           td= row.f_content
-                           td= row.f_price
 append script
-   script(src='../javascripts/bootstrap-datepicker.js')
+   script(src='../javascripts/fee_unpaid_index.js')

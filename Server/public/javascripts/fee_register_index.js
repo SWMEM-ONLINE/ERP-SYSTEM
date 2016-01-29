@@ -221,7 +221,7 @@ function registerList(){
                     tbodyString += '<td class="text-primary">수입</td>';
                 }
                 tbodyString += '<td>'+data[i].fm_money_content+'</td>';
-                tbodyString += '<td>'+data[i].fm_price+'</td>';
+                tbodyString += '<td>'+data[i].fm_price.toLocaleString()+'</td>';
                 tbodyString += '<td><button id="delete'+data[i].fm_id+'" class="btn cancel">삭제</button></td>';
                 tbodyString += '</tr>';
             }

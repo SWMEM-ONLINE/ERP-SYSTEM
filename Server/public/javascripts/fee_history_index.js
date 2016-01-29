@@ -69,16 +69,16 @@ function feeList(year,month){
                                 }
                                 string += '<td>'+row.fm_money_content+'</td>';
                                 if(row.fm_money_type === 1){
-                                        string += '<td class="text-danger">' + row.fm_price + '</td>';
+                                        string += '<td class="text-danger">' + row.fm_price.toLocaleString() + '</td>';
                                 }
                                 else{
-                                        string += '<td class="text-primary">' + row.fm_price + '</td>';
+                                        string += '<td class="text-primary">' + row.fm_price.toLocaleString() + '</td>';
                                 }
                                 string += '</tr>';
                         }
-                        tfoot += '<tr><td></td><td></td><th>월 수입</th><td class="text-primary">'+ deposit + '</td></tr>';
-                        tfoot += '<tr><td></td><td></td><th>월 지출</th><td class="text-danger">' + withdraw + '</td></tr>';
-                        tfoot += '<tr><th colspan = "2">남은 회비</th><th colspan = "2" class="total">'+total+'</th></tr>';
+                        tfoot += '<tr><td></td><td></td><th>월 수입</th><td class="text-primary">'+ deposit.toLocaleString() + '</td></tr>';
+                        tfoot += '<tr><td></td><td></td><th>월 지출</th><td class="text-danger">' + withdraw.toLocaleString() + '</td></tr>';
+                        tfoot += '<tr><th colspan = "2">남은 회비</th><th colspan = "2" class="total">'+total.toLocaleString()+'</th></tr>';
                         tfoot += '<tr><td colspan="4"><button id="excelSave" class="btn" type="button">엑셀로 저장</button></td></tr>';
                 }
                 $('.table tbody').html(string);
@@ -107,15 +107,15 @@ $('table').on('click','#excelSave',function(){
                 sheet.getCell('A'+i).value(arr[0]);
                 sheet.getCell('B'+i).value(arr[1]);
                 sheet.getCell('C'+i).value(arr[2]);
-                sheet.getCell('D'+i).value(parseInt(arr[3]));
+                sheet.getCell('D'+i).value(arr[3]);
                 i++;
         });
         sheet.getCell('C'+i).value('월 수입');
-        sheet.getCell('D'+i).value(parseInt($('table tfoot tr td.text-primary').html()));
+        sheet.getCell('D'+i).value($('table tfoot tr td.text-primary').html());
         sheet.getCell('C'+(i+1)).value('월 지출');
-        sheet.getCell('D'+(i+1)).value(parseInt($('table tfoot tr td.text-danger').html()));
+        sheet.getCell('D'+(i+1)).value($('table tfoot tr td.text-danger').html());
         sheet.getCell('C'+(i+2)).value('남은회비');
-        sheet.getCell('D'+(i+2)).value(parseInt($('table tfoot tr th.total').html()));
+        sheet.getCell('D'+(i+2)).value($('table tfoot tr th.total').html());
         var today = new Date();
         var y = today.getFullYear();
         var m = (today.getMonth() + 1);
