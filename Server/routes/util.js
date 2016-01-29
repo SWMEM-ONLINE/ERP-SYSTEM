@@ -365,6 +365,7 @@ function checkAuth(req) {
         case '/getAddPoint':
         case '/modifyPointHistoty':
         case '/removePointHistory':
+        case '/qnaManage':                                          //문의 관리
         case '/vManage':                                            //설문 관리
         case '/createNewVote':                                      //설문 추가
         case '/deleteVote':                                         //설문 삭제

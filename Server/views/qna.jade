@@ -22,6 +22,7 @@ block content
                thead
                   tr
                      th 제목
+                     th 작성자
                      th 날짜
                      th 답변상태
                tbody
@@ -36,12 +37,14 @@ block content
                p#p1
                p#p2
                p#p3
+               p#p4
                .commentDiv
                   input#comment(type='text')
                   button#commentEnter.btn 입력
                table#commentTable.table
                   tbody
             .modal-footer
+               button#delete.btn(type='button') 삭제
                button.btn(type='button', data-dismiss='modal') 닫기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

@@ -10,7 +10,7 @@ function myqnaList(pageNum){
     };
     $.ajax({
         type:'post',
-        url:'/qna/myqnalist',
+        url:'/qna/qnalist',
         data:JSON.stringify(data),
         contentType:'application/json',
         success:function(data){
@@ -24,7 +24,7 @@ function myqnaList(pageNum){
                 var paginationString = '';
                 if (totalPage == 0) {
                     tbodyString += '<tr class="empty">';
-                    tbodyString += '<td colspan=3><h4>문의 기록이 없습니다</h4></td>';
+                    tbodyString += '<td colspan=4><h4>문의 기록이 없습니다</h4></td>';
                     tbodyString += '</tr>';
                 }
                 else {
@@ -32,7 +32,7 @@ function myqnaList(pageNum){
                     for (var i = 0; i < dataList.length; i++) {
                         var list = dataList[i];
                         tbodyString += '<tr id="' + list.q_id + '">';
-                        tbodyString += '<td>' + list.q_title + '</td>' + '<td class="hidden">' + list.q_content + '</td>' + '<td class="hidden">' + list.q_state + '</td>' + '<td class="hidden">' + list.q_id + '</td>' + '<td>' + list.q_write_date + '</td>';
+                        tbodyString += '<td>' + list.q_title + '</td>' + '<td class="hidden">' + list.q_content + '</td>' + '<td class="hidden">' + list.q_state + '</td>' + '<td class="hidden">' + list.q_id + '</td>' + '<td>' + list.q_writer + '</td>'+'<td>' + list.q_write_date + '</td>';
                         if (list.q_state == 0) {
                             tbodyString += '<td>답변대기</td>';
                         }
@@ -132,10 +132,12 @@ $('#history tbody').on('click','tr:not(.empty)',function () {
     });
     $('.modal-title').text(arr[0]);
     $('p#p1').text(arr[4]);
-    $('p#p2').text(arr[1]);
-    $('p#p3').text(arr[5]);
+    $('p#p2').text(arr[5]);
+    $('p#p3').text(arr[1]);
+    $('p#p4').text(arr[6]);
     document.getElementById('comment').setAttribute('onkeypress','submitEnter(event,'+arr[3]+')');
     document.getElementById('commentEnter').setAttribute('q_id',arr[3]);
+    document.getElementById('delete').setAttribute('value',arr[3]);
     commentList(arr[3]);
     $('div.modal').modal();
 });
@@ -192,4 +194,27 @@ $('#commentEnter').on('click',function(){
             }
         });
     }
+});
+
+$('#delete').click(function(){
+    var data = {
+        q_id:document.getElementById('delete').getAttribute('value')
+    };
+
+    $.ajax({
+        type:'post',
+        url:'/qna/qnaDelete',
+        data:JSON.stringify(data),
+        contentType:'application/json',
+        success: function(data){
+            if(data.status === '0'){
+                myqnaList(1);
+                $('div.modal').modal('hide');
+                toastr['success']('삭제 성공');
+            }
+            else{
+                toastr['error']('삭제 실패');
+            }
+        }
+    });
 });
