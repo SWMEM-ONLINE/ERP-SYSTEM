@@ -39,3 +39,23 @@ button{
         padding:0;
     }
 }
+
+.point{
+    font-size: 21px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.gray{
+    color: dimgray;
+}
+
+.period{
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+.alltable{
+    font-size: 15px;
+
+}

@@ -146,6 +146,13 @@ router.post('/initLastDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.initLastDuty(req,res);
 });
 
+router.post('/getAllPoint', util.ensureAuthenticated, function(req, res){
+    duty_handler.getAllPoint(req,res);
+});
+router.post('/getAllPointHistory', util.ensureAuthenticated, function(req, res){
+    duty_handler.getAllPointHistory(req,res);
+});
+
 
 /**
  *  checkList handle

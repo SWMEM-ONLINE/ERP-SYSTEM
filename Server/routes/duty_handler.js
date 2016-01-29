@@ -12,6 +12,143 @@ var util = require('./util');
 var DB_handler = require('./DB_handler');
 
 
+function getAllPointHistory(req,res){
+
+    var con = DB_handler.connectDB();
+
+    var year = req.body.year;
+    var month = req.body.month;
+
+
+    var query = "select * ,(select u_name from t_user where u_id = receive_user) receive_name, (select u_name from t_user where u_id = send_user) send_name from t_duty_point_history  " +
+        "WHERE month(date) = "+month+" " +
+        "and year(date) = "+year+";";
+
+    console.log(query);
+
+    con.query(query, function(err, response){
+
+        if(err){
+            console.log(err);
+            DB_handler.disconnectDB(con);
+        }
+        else{
+
+            var datas =[];
+
+
+            for (var i=0;i<response.length;i++){
+                var row = response[i];
+                datas[i] ={};
+                datas[i].receive_name = row.receive_name;
+                datas[i].send_name = row.send_name;
+                datas[i].receive_id = row.receive_user;
+                datas[i].year = row.date.getFullYear();
+                datas[i].month = row.date.getMonth() + 1;
+                datas[i].date = row.date.getDate();
+                datas[i].addTime = row.add_time;
+                datas[i].mode = row.mode;
+                datas[i].point = row.point;
+                datas[i].reason = row.reason;
+
+            }
+
+
+            if(datas.length==0){
+
+                console.log("there is no data");
+                res.send({});
+                DB_handler.disconnectDB(con);
+
+            }
+
+            else{
+                var convertData = [];
+                var count = 0;
+                var time = datas[0].addTime.toString();
+
+                for(var i=0;i<datas.length;i++) {
+
+                    var data = datas[i];
+
+                    if (typeof convertData[count] == "undefined") {
+                        convertData[count] = {
+                            receive_name: [],
+                            receive_id: []
+                        };
+                    }
+
+
+                    if (time === data.addTime.toString()) {
+                        (convertData[count].receive_name).push(data.receive_name);
+                        (convertData[count].receive_id).push(data.receive_id);
+                        convertData[count].send_name = data.send_name;
+                        convertData[count].year = data.year;
+                        convertData[count].month = data.month;
+                        convertData[count].date = data.date;
+                        convertData[count].addTime = data.addTime;
+                        convertData[count].mode = data.mode;
+                        convertData[count].point = data.point;
+                        convertData[count].reason = data.reason;
+                    } else {
+                        time = data.addTime.toString();
+                        count++;
+
+                        if (typeof convertData[count] == "undefined") {
+                            convertData[count] = {
+                                receive_name: [],
+                                receive_id: []
+                            };
+                        }
+
+                        (convertData[count].receive_name).push(data.receive_name);
+                        (convertData[count].receive_id).push(data.receive_id);
+                        convertData[count].send_name = data.send_name;
+                        convertData[count].year = data.year;
+                        convertData[count].month = data.month;
+                        convertData[count].date = data.date;
+                        convertData[count].addTime = data.addTime;
+                        convertData[count].mode = data.mode;
+                        convertData[count].point = data.point;
+                        convertData[count].reason = data.reason;
+                    }
+                }
+
+                res.send(convertData);
+                DB_handler.disconnectDB(con);
+                console.log(convertData);
+            }
+        }
+    });
+
+}
+
+function getAllPoint(req,res){
+
+    var con = DB_handler.connectDB();
+    var query = "select u_id, u_name, u_period, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from swmem.t_user where (u_state <= 100 and u_state > 1) order by u_period;";
+
+    console.log(query);
+
+    con.query(query,function(err, response){
+
+        if(err){
+            console.log(err);
+            res.send("error");
+        }
+        else{
+            console.log(response);
+            res.send(response);
+        }
+
+        DB_handler.disconnectDB(con);
+
+
+    });
+}
+
+
+
 function initLastDuty(req,res){
 
     var con = DB_handler.connectDB();
@@ -23,7 +160,7 @@ function initLastDuty(req,res){
         if(err){
             console.log(err);
             res.send("error");
-            throw err;
+
         }
         else{
             console.log(response);
@@ -1861,7 +1998,6 @@ function getUser( req, res){
 
         if(err){
             console.log(err);
-            throw err;
         }
         else{
 
@@ -2023,3 +2159,5 @@ exports.autoMakeDuty = autoMakeDuty;
 exports.updateMemberPoint = updateMemberPoint;
 exports.loadTodayDuty = loadTodayDuty;
 exports.initLastDuty = initLastDuty;
+exports.getAllPoint = getAllPoint;
+exports.getAllPointHistory = getAllPointHistory;

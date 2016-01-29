@@ -16,22 +16,46 @@ block content
             h3 상벌당직 조회
             hr
             .content
+                button#toggle(type='button').btn.btn-block 전체회원조회
                 input.datepicker(type='text', placeholder='월 선택' readonly="readonly")
-                p#name.blur
-                p#total
-                p#foot.blur
-                p#name2.blur
-                p#point_status
-                p#foot2.blur
-                table.table
-                    thead
-                        tr
-                            th 일자
-                            th 등록자
-                            th 구분
-                            th 일수
-                            th 사유
-                    tbody#history
+                #all.hidden
+                    table.table.alltable
+                        thead
+                            tr
+                                th 이름
+                                th 상당직
+                                th 벌당직
+                                th 운영실 벌당직
+                                th 총계
+                        tbody#allPoint
+                    hr
+                    table.table.alltable
+                        thead
+                            tr
+                                th 일자
+                                th 등록자
+                                th 대상자
+                                th 구분
+                                th 일수
+                                th 사유
+                        tbody#allPointHistory
+                #person
+                    #name.gray
+                    #total.point
+                    #foot.gray
+                    hr
+                    #name2.gray
+                    #point_status.point
+                    #foot2.gray
+                    table.table
+                        thead
+                            tr
+                                th 일자
+                                th 등록자
+                                th 구분
+                                th 일수
+                                th 사유
+                        tbody#history
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

@@ -17,7 +17,7 @@ $('.datepicker').datepicker({
     keyboardNavigation : false,
     todayHighlight: true,
     startView: 1,
-    endDate: '+1d',
+    endDate: '+5d',
     autoclose: true
 });
 
@@ -57,7 +57,6 @@ $('#toggle').unbind().click(function(){
         personDuty(new Date().getFullYear(), new Date().getMonth()+1);
         flag=0;
     }
-
 
 });
 
