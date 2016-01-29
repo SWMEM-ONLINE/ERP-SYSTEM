@@ -188,5 +188,25 @@ router.post('/qnaModify', util.ensureAuthenticated, function(req, res, next) {
 
 });
 
+router.post('/qnaDelete', util.ensureAuthenticated, function(req, res, next) {
+
+    var id = req.body.q_id;
+
+    var con = DB_handler.connectDB();
+    var query = 'delete from t_qna where q_id="'+id+'"';
+    con.query(query, function(err,result){
+        if (err) {
+            console.error(err);
+            DB_handler.disconnectDB(con);
+            return res.json({status:'101'});
+        }
+        else {
+            DB_handler.disconnectDB(con);
+            res.json({status: '0'});
+        }
+    });
+
+});
+
 
 module.exports = router;
