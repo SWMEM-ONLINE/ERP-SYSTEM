@@ -12,7 +12,7 @@ router.get('/', util.ensureAuthenticated, function(req, res, next) {
     res.render('qna', { title: '문의 등록', grade: util.getUserGrade(req)});
 });
 
-router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
+router.get('/qnaManage', util.ensureAuthenticated, function(req, res, next) {
     res.render('qna_manage', { title: '문의 관리', grade: util.getUserGrade(req)});
 });
 
