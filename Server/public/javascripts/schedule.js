@@ -69,20 +69,15 @@ function makeModal(date,clickedTitle){
 
     var i;
     var htmlString = "";
-    $('.modal-title').html(date.format());
-
-    htmlString+="<tbody>";
+    $('.modal-title').text(date.format());
 
     for(i=0;i<clickedTitle.length;i++){
-        htmlString+="<tr>";
-        htmlString+="<td>";
-        htmlString+=clickedTitle[i]+"";
-        htmlString+="</td>";
-        htmlString+="</tr>";
+        htmlString+="<p>";
+        htmlString+=clickedTitle[i];
+        htmlString+="</p>";
     }
-
-    htmlString+="</tbody>";
-    $('#modal-table').html(htmlString);
+    $('#modal-table').empty();
+    $('#modal-table').append(htmlString);
     $('div.modal').modal();
 
 }

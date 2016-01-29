@@ -103,15 +103,15 @@ function Event(title,start,end,flag){
     this.end = end;
     this.color= null;
     if(flag == 0){
-        this.color='#EF5350';
+        this.color='#6B9900';
     }else if(flag == 1){
-        this.color='#64B5F6';
+        this.color='#050099';
     }else if(flag == 2){
-        this.color='#BA68C8';
+        this.color='#980000';
     }else if(flag == 3){
-        this.color='#388e3c';
+        this.color='#353535';
     }else if(flag == 4){
-        this.color='#E91E63';
+        this.color='#998A00';
     }
 }
 
