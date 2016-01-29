@@ -82,24 +82,24 @@ router.get('/room', util.ensureAuthenticated, function(req, res, next) {
         }
     });
 });
-router.post('/room', util.ensureAuthenticated, function(req, res, next) {
-    var title ='SWSSM NOTICE';
-    var userName = util.getUserName(req);
-    var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
-    var query = 'select u_id from t_user where u_state = 6';
-    var con = DB_handler.connectDB();
-    con.query(query,function(err,rows){
-        if(err){
-            console.error(err);
-            DB_handler.disconnectDB(con);
-            return res.json({status:'fail'});
-        }
-        else{
-            ApplyPush(rows,title,content,res);
-            DB_handler.disconnectDB(con);
-        }
-    });
-});
+//router.post('/room', util.ensureAuthenticated, function(req, res, next) {
+//    var title ='SWSSM NOTICE';
+//    var userName = util.getUserName(req);
+//    var content = '[알림]'+userName+'님이 프로젝트실신청을 하였습니다.';
+//    var query = 'select u_id from t_user where u_state = 6';
+//    var con = DB_handler.connectDB();
+//    con.query(query,function(err,rows){
+//        if(err){
+//            console.error(err);
+//            DB_handler.disconnectDB(con);
+//            return res.json({status:'fail'});
+//        }
+//        else{
+//            ApplyPush(rows,title,content,res);
+//            DB_handler.disconnectDB(con);
+//        }
+//    });
+//});
 /* room@ */
 
 /* @server */
@@ -120,24 +120,24 @@ router.get('/server', util.ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.post('/server', util.ensureAuthenticated, function(req, res, next) {
-    var title ='SWSSM NOTICE';
-    var userName = util.getUserName(req);
-    var content = '[알림]'+userName+'님이 서버신청을 하였습니다.';
-    var query = 'select u_id from t_user where u_state = 8';
-    var con = DB_handler.connectDB();
-    con.query(query,function(err,rows){
-        if (err) {
-            console.error(err);
-            DB_handler.disconnectDB(con);
-            return res.json({status:'fail'});
-        }
-        else{
-            ApplyPush(rows,title,content,res);
-            DB_handler.disconnectDB(con);
-        }
-    });
-});
+//router.post('/server', util.ensureAuthenticated, function(req, res, next) {
+//    var title ='SWSSM NOTICE';
+//    var userName = util.getUserName(req);
+//    var content = '[알림]'+userName+'님이 서버신청을 하였습니다.';
+//    var query = 'select u_id from t_user where u_state = 8';
+//    var con = DB_handler.connectDB();
+//    con.query(query,function(err,rows){
+//        if (err) {
+//            console.error(err);
+//            DB_handler.disconnectDB(con);
+//            return res.json({status:'fail'});
+//        }
+//        else{
+//            ApplyPush(rows,title,content,res);
+//            DB_handler.disconnectDB(con);
+//        }
+//    });
+//});
 /* server@ */
 
 /* @equipment */
@@ -157,24 +157,24 @@ router.get('/equipment', util.ensureAuthenticated, function(req, res, next) {
         }
     });
 });
-router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
-    var title ='SWSSM NOTICE';
-    var userName = util.getUserName(req);
-    var content = '[알림]'+userName+'님이 비품신청을 하였습니다.';
-    var query = 'select u_id from t_user where u_state = 5';
-    var con = DB_handler.connectDB();
-    con.query(query,function(err,rows){
-        if (err) {
-            console.error(err);
-            DB_handler.disconnectDB(con);
-            return res.json({status:'fail'});
-        }
-        else{
-            ApplyPush(rows,title,content,res);
-            DB_handler.disconnectDB(con);
-        }
-    });
-});
+//router.post('/equipment', util.ensureAuthenticated, function(req, res, next) {
+//    var title ='SWSSM NOTICE';
+//    var userName = util.getUserName(req);
+//    var content = '[알림]'+userName+'님이 비품신청을 하였습니다.';
+//    var query = 'select u_id from t_user where u_state = 5';
+//    var con = DB_handler.connectDB();
+//    con.query(query,function(err,rows){
+//        if (err) {
+//            console.error(err);
+//            DB_handler.disconnectDB(con);
+//            return res.json({status:'fail'});
+//        }
+//        else{
+//            ApplyPush(rows,title,content,res);
+//            DB_handler.disconnectDB(con);
+//        }
+//    });
+//});
 /* equipment@ */
 
 /* @hardware */

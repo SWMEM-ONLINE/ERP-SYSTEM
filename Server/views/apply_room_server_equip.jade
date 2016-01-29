@@ -19,7 +19,6 @@ block content
                   tr
                      th 기간
                      th 링크
-                     th 신청하기
                tbody
                   if lists.length === 0
                      tr
@@ -31,19 +30,18 @@ block content
                            td
                               = list.a_date
                               |  ~
-                              br
                               = list.a_due_date
                            td
                               a(href=list.a_weblink,target='_blank')
                                  = list.a_title
-                           td
-                              - type = list.a_apply_type
-                              if type == 1
-                                 button.btn.push-room.push 신청하기
-                              else if type == 2
-                                 button.btn.push-server.push 신청하기
-                              else if type == 3
-                                 button.btn.push-equipment.push 신청하기
+                           //td
+                           //   - type = list.a_apply_type
+                           //   if type == 1
+                           //      button.btn.push-room.push 신청하기
+                           //   else if type == 2
+                           //      button.btn.push-server.push 신청하기
+                           //   else if type == 3
+                           //      button.btn.push-equipment.push 신청하기
 append script
    script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
    script(src='../javascripts/apply_room_server_equip.js')
