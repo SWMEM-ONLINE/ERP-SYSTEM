@@ -193,7 +193,7 @@ router.post('/qnaDelete', util.ensureAuthenticated, function(req, res, next) {
     var id = req.body.q_id;
 
     var con = DB_handler.connectDB();
-    var query = 'delete from t_qna where q_id="'+id+'"';
+    var query = 'update t_qna set q_state = 3 where q_id = '+id;
     con.query(query, function(err,result){
         if (err) {
             console.error(err);
