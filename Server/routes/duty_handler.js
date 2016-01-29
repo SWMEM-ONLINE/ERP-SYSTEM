@@ -698,9 +698,7 @@ function updateUserPoint(con, req,res,user_id,mode){
     }
 }
 
-function isBadorManage(user_id , callback){
-    var con = DB_handler.connectDB();
-    DB_handler.disconnectDB(con);
+function isBadorManage(con, user_id , callback){
 
     var query = "select u_id, u_name, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from t_user" +
         " where (u_id = '" + user_id + "');";
@@ -710,7 +708,6 @@ function isBadorManage(user_id , callback){
 
         if(err){
             console.log(err);
-            DB_handler.disconnectDB(con);
         }
         else{
             var data = response[0];
@@ -731,14 +728,12 @@ function isBadorManage(user_id , callback){
 
             console.log(response);
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
-function updateLastDuty(duty){
+function updateLastDuty(con,duty){
 
 
-    var con = DB_handler.connectDB();
 
 
     var query ="";
@@ -767,7 +762,6 @@ function updateLastDuty(duty){
             console.log(response);
 
         }
-        DB_handler.disconnectDB(con);
     });
 }
 
@@ -786,7 +780,7 @@ function insertDutyList(con, req,res, dutyList, callback){
         var query;
 
 
-        updateLastDuty(duty);
+        updateLastDuty(con, duty);
 
 
         if(count==1){
