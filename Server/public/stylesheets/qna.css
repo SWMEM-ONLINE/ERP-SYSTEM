@@ -69,3 +69,11 @@ table#history td {
     margin-right: 5px;
     padding:3px;
 }
+
+.waitforans{
+    background-color:#980000;padding:5px;border-radius: 5px;color: white;
+}
+
+.answered{
+    background-color:#003399;padding:5px;border-radius: 5px;color: white;
+}

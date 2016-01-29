@@ -35,10 +35,10 @@ function qnaList(pageNum){
                         tbodyString += '<tr id="' + list.q_id + '">';
                         tbodyString += '<td>' + list.q_writer + '</td>' + '<td>' + list.q_title + '</td>' + '<td class="hidden">' + list.q_content + '</td>' + '<td class="hidden">' + list.q_state + '</td>' + '<td class="hidden">' + list.q_id + '</td>' + '<td>' + list.q_write_date + '</td>';
                         if (list.q_state == 0) {
-                            tbodyString += '<td>답변대기</td>';
+                            tbodyString += '<td><span class="waitforans">답변대기</span></td>';
                         }
                         else if (list.q_state == 1) {
-                            tbodyString += '<td>답변완료</td>';
+                            tbodyString += '<td><span class="answered">답변완료</span></td>';
                         }
                         tbodyString += '<td class="hidden">' + pageNum + '</td>';
                         tbodyString += '</tr>';
