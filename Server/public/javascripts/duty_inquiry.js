@@ -34,8 +34,7 @@ $('.datepicker').on('changeDate',function(event){
     }
 });
 
-var cuurentDate = new Date();
-console.log(cuurentDate.getDate());
+var currentDate = new Date();
 // 0 이면 person
 // 1 이면 ALL
 var flag = 0 ;
@@ -203,7 +202,7 @@ function setElement(name, mode, date){
         element.textColor= '#EF6C00';
     }
 
-    if(date.getDate()  == cuurentDate.getDate() && date.getMonth() == currentDate.getMonth()){
+    if(date.getDate()  == currentDate.getDate() && date.getMonth() == currentDate.getMonth() ){
         element.color = "#FCF8E3";
     }
     else{
