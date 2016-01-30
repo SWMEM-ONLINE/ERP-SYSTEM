@@ -326,24 +326,53 @@ router.post('/load_pastlifeEval', util.ensureAuthenticated, function(req, res){
 router.post('/enroll_lifeEval', util.ensureAuthenticated, function(req, res){
     var datalist = req.body;
     var today = new Date();
+    var month = today.getMonth();
     var con = DB_handler.connectDB();
-    var query = 'update t_life set l_recent=0;';
-    query += 'insert into t_life set l_year="' + today.getFullYear() + '", l_month="' + (today.getMonth()+1) + '", l_first="' + datalist[0].content + '", l_first_cnt="' + datalist[0].cnt + '", l_first_point="' + datalist[0].point + '", ';
-    query += 'l_second="' + datalist[1].content + '", l_second_cnt="' + datalist[1].cnt + '", l_second_point="' + datalist[1].point + '", ';
-    query += 'l_third="' + datalist[2].content + '", l_third_cnt="' + datalist[2].cnt + '", l_third_point="' + datalist[2].point + '", ';
-    query += 'l_fourth="' + datalist[3].content + '", l_fourth_cnt="' + datalist[3].cnt + '", l_fourth_point="' + datalist[3].point + '", ';
-    query += 'l_fifth="' + datalist[4].content + '", l_fifth_cnt="' + datalist[4].cnt + '", l_fifth_point="' + datalist[4].point + '", '
-    query += 'l_total=' + datalist[1].total + ', l_grade="' + datalist[1].grade + '";';
 
-    con.query(query, function(err, response){
-        if(err){
+    var pre_query = 'select * from t_life where l_month=' + (month + 1);
+    con.query(pre_query, function(err2, response2){
+        if(err2){
             res.send('failed');
             DB_handler.disconnectDB(con);
-            console.log('DB select ERROR in "main.js -> /enroll_lifeEval"');
-        }
-        else {
-            DB_handler.disconnectDB(con);
-            return res.send('success');
+            console.log('DB pre_query ERROR in "main.js -> /enroll_lifeEval"');
+        }else{
+            if(response2.length === 0){             // 기존에 이번달 생활등급이 등록이 안되어 있을 경우
+                var enroll_query = 'update t_life set l_recent=0;';
+                enroll_query += 'insert into t_life set l_year="' + today.getFullYear() + '", l_month="' + (today.getMonth()+1) + '", l_first="' + datalist[0].content + '", l_first_cnt="' + datalist[0].cnt + '", l_first_point="' + datalist[0].point + '", ';
+                enroll_query += 'l_second="' + datalist[1].content + '", l_second_cnt="' + datalist[1].cnt + '", l_second_point="' + datalist[1].point + '", ';
+                enroll_query += 'l_third="' + datalist[2].content + '", l_third_cnt="' + datalist[2].cnt + '", l_third_point="' + datalist[2].point + '", ';
+                enroll_query += 'l_fourth="' + datalist[3].content + '", l_fourth_cnt="' + datalist[3].cnt + '", l_fourth_point="' + datalist[3].point + '", ';
+                enroll_query += 'l_fifth="' + datalist[4].content + '", l_fifth_cnt="' + datalist[4].cnt + '", l_fifth_point="' + datalist[4].point + '", ';
+                enroll_query += 'l_total=' + datalist[1].total + ', l_grade="' + datalist[1].grade + '";';
+                con.query(enroll_query, function(err, response){
+                    if(err){
+                        res.send('failed');
+                        DB_handler.disconnectDB(con);
+                        console.log('DB enroll_query ERROR in "main.js -> /enroll_lifeEval"');
+                    }
+                    else {
+                        DB_handler.disconnectDB(con);
+                        return res.send('success');
+                    }
+                });
+            }else{                                  // 이번달 생활등급이 이미 존재하는 경우
+                var alter_query = 'update t_life set l_year="' + today.getFullYear() + '", l_month="' + (today.getMonth()+1) + '", l_first="' + datalist[0].content + '", l_first_cnt="' + datalist[0].cnt + '", l_first_point="' + datalist[0].point + '", ';
+                alter_query += 'l_second="' + datalist[1].content + '", l_second_cnt="' + datalist[1].cnt + '", l_second_point="' + datalist[1].point + '", ';
+                alter_query += 'l_third="' + datalist[2].content + '", l_third_cnt="' + datalist[2].cnt + '", l_third_point="' + datalist[2].point + '", ';
+                alter_query += 'l_fourth="' + datalist[3].content + '", l_fourth_cnt="' + datalist[3].cnt + '", l_fourth_point="' + datalist[3].point + '", ';
+                alter_query += 'l_fifth="' + datalist[4].content + '", l_fifth_cnt="' + datalist[4].cnt + '", l_fifth_point="' + datalist[4].point + '", ';
+                alter_query += 'l_total=' + datalist[1].total + ', l_grade="' + datalist[1].grade + '";';
+                con.query(alter_query, function(err3, response3){
+                    if(err3){
+                        res.send('failed');
+                        DB_handler.disconnectDB(con);
+                        console.log('DB alter_query ERROR in "main.js -> /enroll_lifeEval"');
+                    }else{
+                        res.send('success');
+                        DB_handler.disconnectDB(con);
+                    }
+                })
+            }
         }
     });
 });
