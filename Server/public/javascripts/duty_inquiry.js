@@ -7,7 +7,8 @@ $(document).ready(function() {
     $('#calendar').fullCalendar({
         // put your options and callbacks here
         header: false,
-        height: 720
+        height: 720,
+        eventOrder : "color"
     })
 });
 
@@ -33,6 +34,8 @@ $('.datepicker').on('changeDate',function(event){
     }
 });
 
+var cuurentDate = new Date();
+console.log(cuurentDate.getDate());
 // 0 이면 person
 // 1 이면 ALL
 var flag = 0 ;
@@ -116,7 +119,7 @@ function generateHtml(datas){
 
 
     if(datas.length === 0){
-        htmlString += '<p> ';
+        htmlString += '<p>';
         htmlString += '이 달에는 당직이 존재하지 않습니다. ';
         htmlString += '</p>';
     }
@@ -196,9 +199,14 @@ function setElement(name, mode, date){
 
     if(mode == 0){
         element.textColor= 'black';
-        element.color= 'white';
     }else{
-        element.textColor= ' #ffc107';
+        element.textColor= '#EF6C00';
+    }
+
+    if(date.getDate()  == cuurentDate.getDate()){
+        element.color = "#FCF8E3";
+    }
+    else{
         element.color= 'white';
     }
     return element;

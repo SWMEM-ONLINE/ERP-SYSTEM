@@ -24,6 +24,7 @@ $('#calendar').fullCalendar({
     editable: false,
     displayEventTime: false,
     eventLimit: true,
+    eventOrder : "color",
     height: 720,
     dayClick: function(date, jsEvent, view) {
         getClickedEvents(date);
