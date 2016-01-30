@@ -130,7 +130,6 @@ function generateMemberTable(res){
         }
 
     }
-    periods.reverse();
 
     var htmlString ="";
     var len = periods.length;
