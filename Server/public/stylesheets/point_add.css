@@ -5,3 +5,7 @@ div.content table input{
     height: 36px;
     border-radius: 4px;
 }
+
+.table{
+    font-size: 16px;
+}

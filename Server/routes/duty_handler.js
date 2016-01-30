@@ -1674,7 +1674,7 @@ function getMemberList(req,res){
     var con = DB_handler.connectDB();
     var query = "select u_id, u_name, u_sex, u_birth, u_phone, u_email, u_state, u_period," +
         " u_branch, u_device , u_token, u_mileage, u_good_duty_point, u_bad_duty_point," +
-        " u_manager_bad_duty_point, u_photo_url, u_register_date from t_user where u_state > 1 order by u_period";
+        " u_manager_bad_duty_point, u_photo_url, u_register_date from t_user where u_state > 1 order by u_period DESC;";
 
     console.log(query);
     con.query(query, function(err, response){
