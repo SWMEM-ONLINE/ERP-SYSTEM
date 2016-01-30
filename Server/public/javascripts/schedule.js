@@ -22,6 +22,7 @@ $('.datepicker').val(year+"년 "+ month+"월");
 $('#calendar').fullCalendar({
     header: false,
     editable: false,
+    displayEventTime: false,
     eventLimit: true,
     height: 720,
     dayClick: function(date, jsEvent, view) {
