@@ -203,7 +203,7 @@ function setElement(name, mode, date){
         element.textColor= '#EF6C00';
     }
 
-    if(date.getDate()  == cuurentDate.getDate()){
+    if(date.getDate()  == cuurentDate.getDate() && date.getMonth() == currentDate.getMonth()){
         element.color = "#FCF8E3";
     }
     else{
