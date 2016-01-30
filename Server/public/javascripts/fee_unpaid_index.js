@@ -24,7 +24,7 @@ $.post('/fee/unpaid',function(response) {
             tbodyString += '<td>'+response[i].f_price.toLocaleString()+'</td>';
             tbodyString += '</tr>';
         }
-        $('#unpaidList tbody').empty();
-        $('#unpaidList tbody').append(tbodyString);
     }
+    $('#unpaidList tbody').empty();
+    $('#unpaidList tbody').append(tbodyString);
 });
