@@ -25,12 +25,10 @@ function loadSchedule( req, res){
 function enrollSchedule(req, res){
     var con = DB_handler.connectDB();
     var flag = req.body.flag;
-    var start_date = convertDateformat(req.body.start_date);
-    var end_date = convertDateformat(req.body.end_date);
     var grade = util.getUserGrade(req);
 
     if(flag === '1'){                 // 내용 변경 케이스
-        var alter_query = 'update t_schedule set s_title="' + req.body.title + '", s_start_date="' + start_date + '", s_end_date="' + end_date + '", s_enroll_user="' + req.session.passport.user.id + '" where s_id="' + req.body.schedule_id + '"';
+        var alter_query = 'update t_schedule set s_title="' + req.body.title + '", s_start_date="' + req.body.start_date + '", s_end_date="' + req.body.end_date + '", s_enroll_user="' + req.session.passport.user.id + '" where s_id="' + req.body.schedule_id + '"';
         con.query(alter_query, function(err, response){
             if(err){
                 res.send('alter_failed');
@@ -46,8 +44,8 @@ function enrollSchedule(req, res){
         var s_data = {
             s_title : req.body.title,
             s_enroll_user : req.session.passport.user.id,
-            s_start_date : start_date,
-            s_end_date : end_date,
+            s_start_date : req.body.start_date,
+            s_end_date : req.body.end_date,
             s_flag : grade
         };
         con.query(enroll_query, s_data, function(err, response){
@@ -80,22 +78,6 @@ function deleteSchedule(req, res){
         }
     });
 }
-
-function convertDateformat(base){
-    var div = base.split(' ');
-    var dateformat = div[0] + ' ';
-
-    if(div[1] === 'AM'){
-        if(div[2] === '12') dateformat += '00';
-        else    dateformat += div[2];
-    }else{
-        if(div[2] === '12') dateformat += '12';
-        else    dateformat += (parseInt(div[2]) + 12);
-    }
-    return dateformat;
-}
-
-
 
 function Event(title,start,end,flag){
     this.title = title;

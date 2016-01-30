@@ -28,10 +28,10 @@ toastr.options = {
 
 // Datepicker 관련
 
-$('.datepicker').val(select_year+"년 "+ select_month+"월");
+$('#monthpicker').val(select_year+"년 "+ select_month+"월");
 
 $('#monthpicker').datepicker({
-    format: "yyyy년 m월",
+    format: "yyyy년 mm월",
     minViewMode: 1,
     keyboardNavigation : false,
     todayHighlight: true,
@@ -39,19 +39,23 @@ $('#monthpicker').datepicker({
     autoclose: true
 });
 
+$('#startDate').datepicker({
+    format: "yyyy-mm-dd",
+    todayHighlight: true,
+    autoclose: true
+});
+
+$('#endDate').datepicker({
+    format: "yyyy-mm-dd",
+    autoclose: true
+});
+
+
+
 $('#monthpicker').on('changeDate',function(event){
     select_year = event.date.getFullYear();
     select_month = event.date.getMonth() + 1;
     loadSchedule(select_year, select_month);
-});
-
-$(document).ready(function () {
-    $('.datetimepicker').datetimepicker({
-        sideBySide : true,
-        format : 'YYYY/M/DD A hh',
-        showClear: true,
-        showClose: true
-    });
 });
 
 
@@ -93,11 +97,8 @@ function generateHtml(datalist){
     }
     else{
         $.each(datalist, function (idx, data) {
-            var start = new Date(data.s_start_date);
-            var end = new Date(data.s_end_date);
-
-            htmlString += '<tr><td>' + start.getFullYear() + '/' + (start.getMonth()+1) + '/' + start.getDate() + ' (' + start.getHours() +'h)</td>';
-            htmlString += '<td>' + end.getFullYear() + '/' + (end.getMonth()+1) + '/' + end.getDate() + ' (' + end.getHours() +'h)</td>';
+            htmlString += '<tr><td>' + data.s_start_date + '</td>';
+            htmlString += '<td>' + data.s_end_date + '</td>';
             htmlString += '<td>' + data.s_title + '</td>';
             htmlString += '<td>' + data.u_name + '</td>';
             htmlString += '</tr>';
@@ -109,8 +110,6 @@ function generateHtml(datalist){
 function clickEvent(datalist){
     $('table tbody#scheduleList tr').unbind().click(function(){
         var idx = $(this).index();
-        var s_date = makeDateformat(datalist[idx].s_start_date);
-        var e_date = makeDateformat(datalist[idx].s_end_date);
         flag = 1;
         s_id = datalist[idx].s_id;
 
@@ -118,8 +117,8 @@ function clickEvent(datalist){
         $('button#delete').removeClass('hidden');
 
         $('#title').val(datalist[idx].s_title);
-        $('#startTime').val(s_date);
-        $('#endTime').val(e_date);
+        $('#startDate').val(datalist[idx].s_start_date);
+        $('#endDate').val(datalist[idx].s_end_date);
 
         $('div.modal').modal();
     });
@@ -139,8 +138,8 @@ $('button#addSchedule').unbind().click(function(){
     $('button#delete').addClass('hidden');
 
     $('#title').val('');
-    $('#startTime').val('');
-    $('#endTime').val('');
+    $('#startDate').val('');
+    $('#endDate').val('');
 
     $('div.modal').modal();
 });
@@ -148,8 +147,8 @@ $('button#addSchedule').unbind().click(function(){
 function enrollButton(){
     $('button#enroll').unbind().click(function(){
         var content = $('#title').val();
-        var start = $('#startTime').val();
-        var end = $('#endTime').val();
+        var start = $('#startDate').val();
+        var end = $('#endDate').val();
 
         var sendData = {
             flag : flag,
@@ -182,25 +181,4 @@ function deleteButton(){
         });
         $('div.modal').modal('hide');
     });
-}
-
-
-// Date 형식 통일시키기
-
-
-
-function makeDateformat(temp){
-    var date = new Date(temp);
-    var format = date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate();
-
-    if(date.getHours() === 0){
-        format += ' AM 12';
-    }else if(date.getHours() < 12){
-        format += ' AM ' + date.getHours();
-    }else if(date.getHours() === 12){
-        format += ' PM 12';
-    }else{
-        format += ' PM ' + (date.getHours()-12);
-    }
-    return format;
 }
