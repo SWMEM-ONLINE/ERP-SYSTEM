@@ -40,7 +40,7 @@ CREATE TABLE t_book (
   b_location VARCHAR(10),
   b_photo_url VARCHAR(200),
   b_state int DEFAULT '0',
-  b_new int DEFAULT '1',
+  b_enroll_date VARCHAR(20),
   b_price int,
   b_reserved_cnt int DEFAULT 0,
   b_due_date VARCHAR(20),

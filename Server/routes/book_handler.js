@@ -12,10 +12,6 @@ var DB_handler = require('./DB_handler');
      1 : Someone borrowed
      3 : Missed State
 
-    * b_new
-     0 : Already exists
-     1 : Newest book
-
     * b_type
      0 : Tech book
      1 : Humanities book
@@ -23,7 +19,8 @@ var DB_handler = require('./DB_handler');
 
 function loadNewTechbook(res){
     var con = DB_handler.connectDB();
-    var query = 'select * from t_book where b_new=1 and b_type=0 and not (b_state=3)';
+    var date = new Date();
+    var query = 'select * from t_book where year(b_enroll_date)=' + date.getFullYear() + ' and month(b_enroll_date)=' + (date.getMonth()+1) + ' and b_type=0 and not (b_state=3)';
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> loadNewTechbook"');
@@ -38,7 +35,9 @@ function loadNewTechbook(res){
 
 function loadNewHumanitiesbook(res){
     var con = DB_handler.connectDB();
-    var query = 'select * from t_book where b_new=1 and b_type=1 and not (b_state=3)';
+    var date = new Date();
+    var query = 'select * from t_book where year(b_enroll_date)=' + date.getFullYear() + ' and month(b_enroll_date)=' + (date.getMonth()+1) + ' and b_type=1 and not (b_state=3)';
+
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> loadNewHumanitiesbook"');
@@ -341,6 +340,7 @@ function loadApplylist(req, res){
 
 function enrollBook(req, res){
     var con = DB_handler.connectDB();
+    var today = dateformat();
     var query='select * from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
     var query1 = '';
     con.query(query, function(err, response){
@@ -350,7 +350,7 @@ function enrollBook(req, res){
             res.send('failed');
         }else{
             for(var i = 0; i < response.length; i++){
-                query1 += 'insert into t_book set b_type=' + response[i].ba_type + ', b_name="' + response[i].ba_name + '", b_isbn="' + response[i].ba_isbn + '", b_author="' + response[i].ba_author + '", b_publisher="' + response[i].ba_publisher + '", b_location="' + req.body.location + '", b_photo_url="' + response[i].ba_photo_url + '", b_price=' + response[i].ba_price + ';';
+                query1 += 'insert into t_book set b_type=' + response[i].ba_type + ', b_name="' + response[i].ba_name + '", b_isbn="' + response[i].ba_isbn + '", b_author="' + response[i].ba_author + '", b_publisher="' + response[i].ba_publisher + '", b_location="' + req.body.location + '", b_photo_url="' + response[i].ba_photo_url + '", b_enroll_date="' + today + '", b_price=' + response[i].ba_price + ';';
             }
             query1 += 'delete from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
             con.query(query1, function(err2, response2){
@@ -367,10 +367,15 @@ function enrollBook(req, res){
     });
 }
 
+function dateformat(){
+    var date = new Date();
+    var result = date.getFullYear() + '-' + (date.getMonth()+ 1) + '-' + date.getDate();
+    return result;
+}
+
 function buyComplete(req, res){
     var con = DB_handler.connectDB();
     var query = 'update t_book_apply set ba_state=1 where ba_id IN (' + req.body.buyIdlist + ');';
-    query += 'update t_book set b_new=0 where b_new=1 and b_type=' + req.body.type;
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
