@@ -1622,6 +1622,14 @@ function removePointHistory(req,res){
     var mode = req.body.mode;
     var point = req.body.point;
 
+
+    if(typeof receiveId == "string"){
+        receiveId = new Array(receiveId);
+    }
+
+
+    console.log(typeof receiveId);
+
     for(var i=0;i<receiveId.length;i++){
         var id = receiveId[i];
 

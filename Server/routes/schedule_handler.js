@@ -163,8 +163,8 @@ function getBirthday(con,eventLists,callback){
             var birth="";
             for(i=0;i<response.length;i++){
                 data = response[i];
-                title ="[생일] ";
-                title += data.u_name;
+                title = data.u_name;
+                title += " 생일";
                 birth = data.u_birth;
 
                 var month = birth.substr(2,2);

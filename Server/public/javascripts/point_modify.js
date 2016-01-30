@@ -68,14 +68,15 @@ function generateHtml(response){
                 htmlString +=  "" + data.receive_name;
                 htmlString += "</td>";
 
-                htmlString += "<td>";
-
-                if(data.mode==0){
+                if(data.mode == 0 ){
+                    htmlString += "<td style='color:#009926'>";
                     htmlString +=  "상당직";
-                }else if(data.mode==1){
-                    htmlString +=  "벌당직";
+                }else if (data.mode == 1){
+                    htmlString += "<td style='color: #8B0000'>";
+                    htmlString += "벌당직";
                 }else if(data.mode ==2){
-                    htmlString +=  "운영실 벌당직";
+                    htmlString += "<td style='color: #8B0000'>";
+                    htmlString += "운영실벌당직";
                 }
 
                 htmlString += "</td>";
