@@ -40,7 +40,7 @@ $('#newbookSearchWords').keydown(function(){
 $('#newbookSearchBtn').unbind().click(function() {
     var s_searchWords = $('#newbookSearchWords').val();
     if (s_searchWords.length == 0) {
-        toastr['info']('검색어를 입력해주세요');
+        toastr['error']('검색어를 입력해주세요');
         return false;
     }
     else{
@@ -51,7 +51,7 @@ $('#newbookSearchBtn').unbind().click(function() {
 function settingHTML(datalist, pageIndex, totalResults, searchWords, searchCategory){
 
     if(datalist.length === 0){
-        toastr['info']('검사 결과가 없습니다');
+        toastr['error']('검사 결과가 없습니다');
     }else {
         $.post('/apply/newbook/checkDuplication', function(response){
             var htmlString = '<tbody>';
@@ -132,7 +132,7 @@ function clickEvent(datalist, pageIndex, totalResults, searchWords, searchCatego
                     toastr['error']('이미 누군가 신청한 책입니다');
                 }
                 else{
-                    toastr['info']('도서신청에 성공했습니다');
+                    toastr['success']('도서신청에 성공했습니다');
                     settingHTML(datalist, pageIndex, totalResults, searchWords, searchCategory);
                 }
             });
@@ -161,7 +161,7 @@ function getInterparklist(pageIndex, searchWords, searchCategory) {
             settingHTML(response.item, pageIndex, response.totalResults, searchWords, searchCategory);
         },
         error:function(response){
-            toastr['info']('검색에 실패하였습니다. 다시 시도해주세요');
+            toastr['error']('검색에 실패하였습니다. 다시 시도해주세요');
         }
     });
 }

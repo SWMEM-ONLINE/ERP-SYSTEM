@@ -124,7 +124,7 @@ function clickEvent(datalist){
             if(datalist[index].b_state === 0){
                 $.post("/book/borrowBook", {book_id : datalist[index].b_id}, function (data) {
                     if(data === 'failed')   toastr['error']('책 대여 실패');
-                    else    toastr['info']('책 대여 성공');
+                    else    toastr['success']('책 대여 성공');
                     init();
                 });
                 $('div.modal').modal('hide');
@@ -139,7 +139,7 @@ function clickEvent(datalist){
                 }else if(data === 'failed_1'){
                     toastr['error']('대여중인 책이 아니므로 예약이 불가능합니다');
                 }else{
-                    toastr['info']('책 예약 성공');
+                    toastr['success']('책 예약 성공');
                 }
                 init();
             });
@@ -148,7 +148,7 @@ function clickEvent(datalist){
         $('button#missing').unbind().click(function(){                  // Missing button to enroll missingbook list.
             $.post("/book/missingBook", {book_id : datalist[index].b_id}, function (data) {
                 if(data === 'success'){
-                    toastr['info']('분실도서 등록 완료');
+                    toastr['success']('분실도서 등록 완료');
                 }
                 else{
                     toastr['error']('분실도서 등록 실패');
@@ -173,6 +173,6 @@ function rentBookByQR(token){
     $.post("/book/borrowBook_QR", {isbn : isbn[2]}, function (data) {
         if(data === 'failed')   toastr['error']('책 대여 실패');
         else if(data === 'noOne')   toastr['error']('책이 존재하지 않습니다');
-        else     toastr['info']('책 대여 성공');
+        else     toastr['success']('책 대여 성공');
     });
 }

@@ -81,7 +81,7 @@ function loadBorrowedBooklist(){
                         toastr['error']('반납 실패');
                     }
                     else{
-                        toastr['info']('반납성공\n벌당직' + response + '일 부여');
+                        toastr['success']('반납성공\n벌당직' + response + '일 부여');
                     }
                     loadBorrowedBooklist();
                 });
