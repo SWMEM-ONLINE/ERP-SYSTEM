@@ -8,7 +8,7 @@ input{
     margin-bottom:5px;
 }
 
-input.datepicker{
+input#monthpicker{
     width: 170px;
 }
 
