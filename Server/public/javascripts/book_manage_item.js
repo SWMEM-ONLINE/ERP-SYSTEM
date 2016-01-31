@@ -242,9 +242,8 @@ function resetButton(datalist){
             else{
                 toastr['error']('도서위치 변경실패');
             }
+            loadbooklist(flag);
         });
         $('div.modal').modal('hide');
-        loadbooklist(flag);
-        //window.location.reload();
     });
 }

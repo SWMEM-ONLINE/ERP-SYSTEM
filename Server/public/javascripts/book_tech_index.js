@@ -29,6 +29,7 @@ $("#borrowUsingQRcode").unbind().click(function(){
 
 var flag_category = 0;                                                  // This variable means index of category which user selected
 var category = ['b_name', 'b_author', 'b_publisher'];                   // Dropdown contents
+var searchWords;
 
 
 $('#categoryDropdown li a').unbind().click(function(){
@@ -55,18 +56,23 @@ $('#bookSearchWords').keydown(function(){
 });
 
 $('#bookSearchBtn').unbind().click(function() {
-    var searchWords = $('#bookSearchWords').val();                      // Get typing data in textbox
+    var searchWords_temp = $('#bookSearchWords').val();                      // Get typing data in textbox
+    searchWords = searchWords_temp;
     if (searchWords.length === 0) {                                  // type nothing situation
         toastr['error']('검색어를 입력해주세요');
         return false;
     }else{
         $('#noti').remove();                                            // remove '이번달 들어온 인문도서 목록입니다' content
-        $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : 'tech'}, function(data){
-            settingHTML(data);
-            clickEvent(data);
-        });
+        search();
     }
 });
+
+function search(){
+    $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : 'tech'}, function(data){
+        settingHTML(data);
+        clickEvent(data);
+    });
+}
 
 
 function settingHTML(datalist){
@@ -125,7 +131,7 @@ function clickEvent(datalist){
                 $.post("/book/borrowBook", {book_id : datalist[index].b_id}, function (data) {
                     if(data === 'failed')   toastr['error']('책 대여 실패');
                     else    toastr['success']('책 대여 성공');
-                    init();
+                    search();
                 });
                 $('div.modal').modal('hide');
             }
@@ -141,7 +147,7 @@ function clickEvent(datalist){
                 }else{
                     toastr['success']('책 예약 성공');
                 }
-                init();
+                search();
             });
         });
 
@@ -153,7 +159,7 @@ function clickEvent(datalist){
                 else{
                     toastr['error']('분실도서 등록 실패');
                 }
-                init();
+                search();
             });
             $('div.modal').modal('hide');
         });
