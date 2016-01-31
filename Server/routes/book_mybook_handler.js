@@ -65,16 +65,9 @@ function turninBook(req, res){
         }else{
             var due_date = new Date(req.body.due_date);
             var t = new Date(today);
-            var diff = (t.getTime() - due_date.getTime()) / (1000 * 60 * 60 * 24);
+            var diff = parseInt((t.getTime() - due_date.getTime()) / (1000 * 60 * 60 * 24));
 
             if(diff > 0){
-                util.send(req.session.passport.user.id, '책 반납일 미준수', util.pushContents.b_turnin, function(err2, data){
-                    if(err2){
-                        console.log(err2);
-                    }else{
-                        console.log(data);
-                    }
-                });
                 var query_imposeDuty = 'update t_user set u_bad_duty_point=u_bad_duty_point+' + diff + ' where u_id="' + req.session.passport.user.id + '";';
                 query_imposeDuty += 'insert into t_duty_point_history SET date="' + today + '", receive_user="' + req.session.passport.user.id + '", send_user="' + response[3][0].u_id + '", mode=1, point=' + diff + ', reason="책 반납일 미준수"';
                 con.query(query_imposeDuty, function(err3, response3){
@@ -83,10 +76,17 @@ function turninBook(req, res){
                         console.log('DB query2 ERROR "book_mybook_handler.js -> turninBook');
                         DB_handler.disconnectDB(con);
                     }else{
-                        res.send(diff);
+                        util.send(req.session.passport.user.id, '책 반납일 미준수', util.pushContents.b_turnin, function(err2, data){
+                            if(err2){
+                                console.log(err2);
+                            }else{
+                                console.log(data);
+                            }
+                        });
+                        res.send(' ' + diff);
                         DB_handler.disconnectDB(con);
                     }
-                })
+                });
             }else{
                 res.send('success');
                 DB_handler.disconnectDB(con);

@@ -22,7 +22,7 @@ toastr.options = {
 
 var flag_category = 0;                                                  // This variable means index of category which user selected
 var category = ['b_name', 'b_author', 'b_publisher'];                   // Dropdown contents
-var searchWords;
+var searchWords = '';
 
 
 $("#borrowUsingQRcode").unbind().click(function(){
@@ -67,10 +67,14 @@ $('#bookSearchBtn').unbind().click(function() {
 });
 
 function search(){
-    $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : 'humanities'}, function(data){
-        settingHTML(data);
-        clickEvent(data);
-    });
+    if(searchWords.length === 0){
+        init();
+    }else{
+        $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : 'humanities'}, function(data){
+            settingHTML(data);
+            clickEvent(data);
+        });
+    }
 }
 
 

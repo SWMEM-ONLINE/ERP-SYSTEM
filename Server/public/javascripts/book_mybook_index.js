@@ -72,15 +72,17 @@ function loadBorrowedBooklist(){
         htmlString += '</tbody>';
         $('#myBorrowedBook').html(htmlString);
         $('button#turnIn').each(function(index){                            // turnIn button function.
-            $(this).unbind().click(function(event){
+            $(this).unbind().click(function(){
                 $.post('/book/mybook/turnIn', {reserved_cnt: datalist[index].b_reserved_cnt, rental_id: datalist[index].br_id, book_id: datalist[index].br_book_id, rental_date: datalist[index].br_rental_date, due_date: datalist[index].b_due_date}, function(response){
-                    if(response==='success'){
+                    console.log(response);
+                    if(response === 'success'){
                         toastr['success']('반납 성공');
                     }
                     else if(response === 'failed'){
                         toastr['error']('반납 실패');
                     }
                     else{
+                        console.log(response);
                         toastr['success']('반납성공\n벌당직' + response + '일 부여');
                     }
                     loadBorrowedBooklist();
@@ -89,7 +91,7 @@ function loadBorrowedBooklist(){
         });
         $('button#postpone').each(function(index){                          // postpone button function
             if(datalist[index].br_extension_cnt === 0 && datalist[index].b_reserved_cnt === 0 && datalist[index].diff <= 0) {
-                $(this).unbind().click(function (event) {
+                $(this).unbind().click(function () {
                     $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id}, function (response) {
                         if(response === 'success'){
                             toastr['success']('연장 성공');
@@ -103,7 +105,7 @@ function loadBorrowedBooklist(){
             }
         });
         $('button#missing').each(function(index){                           // missing button function
-            $(this).unbind().click(function(event){
+            $(this).unbind().click(function(){
                 $.post('/book/mybook/missing', {book_id : datalist[index].b_id}, function(response){
                     if(response === 'success'){
                         toastr['success']('분실신고 성공');
@@ -199,7 +201,7 @@ function makeProgressbar(t2, t3){
     borrow_date.setHours(9);
     due_date.setHours(9);
     if(due_date.getTime() <= today.getTime()){
-        var gap = parseInt(today.getTime() - due_date.getTime()) / (3600000* 24) + 1;
+        var gap = parseInt((today.getTime() - due_date.getTime()) / (3600000* 24));
         if(gap === 0) text = '대여 기한이 오늘까지입니다.';
         else text = gap + '일 지났습니다.';
         string += '<div class="progress progress-striped active">';
@@ -208,9 +210,8 @@ function makeProgressbar(t2, t3){
     }
     else{
         var numerator = parseInt((due_date.getTime() - today.getTime()) / (3600000 * 24)) + 1;
-        var denominator = parseInt((due_date.getTime()-borrow_date.getTime()) / ( 3600000 * 24 ));
+        var denominator = parseInt((due_date.getTime()-borrow_date.getTime()) / ( 3600000 * 24 )) + 1;
         var percent = (100 - (numerator / denominator * 100));
-        console.log(numerator);
         text = numerator + '일 남았습니다.';
         string += '<div class="progress progress-striped active">';
         string += '<div class="progress-bar ' + (numerator > 7 ? 'progress-bar' : 'progress-bar-danger' ) + '" role="progressbar" style="width:' + percent + '%">' + text;

@@ -250,8 +250,8 @@ function makeProgressbar(t1, t2, t3){
         string += '</div>';
     }
     else{
-        var numerator = parseInt((due_date.getTime() - now.getTime()) / (3600000 * 24));
-        var denominator = parseInt((due_date.getTime()-borrow_date.getTime()) / ( 3600000 * 24 ));
+        var numerator = parseInt((due_date.getTime() - now.getTime()) / (3600000 * 24)) + 1;
+        var denominator = parseInt((due_date.getTime()-borrow_date.getTime()) / ( 3600000 * 24 )) + 1;
         var percent = (100 - (numerator / denominator * 100));
         text = numerator + '일 남았습니다.';
         string += '<div class="progress progress-striped active">';
