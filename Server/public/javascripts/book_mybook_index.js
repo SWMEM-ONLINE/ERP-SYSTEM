@@ -83,8 +83,8 @@ function loadBorrowedBooklist(){
                     else{
                         toastr['info']('반납성공\n벌당직' + response + '일 부여');
                     }
+                    loadBorrowedBooklist();
                 });
-                loadBorrowedBooklist();
             });
         });
         $('button#postpone').each(function(index){                          // postpone button function
@@ -97,8 +97,8 @@ function loadBorrowedBooklist(){
                         else{
                             toastr['error']('연장 실패');
                         }
+                        loadBorrowedBooklist();
                     });
-                    loadBorrowedBooklist();
                 });
             }
         });
@@ -111,8 +111,8 @@ function loadBorrowedBooklist(){
                     else{
                         toastr['error']('분실등록 실패');
                     }
+                    loadBorrowedBooklist();
                 });
-                loadBorrowedBooklist();
             });
         });
     });
@@ -146,8 +146,8 @@ function loadReservedBooklist(){
                     else{
                         toastr['error']('에약취소 실패');
                     }
+                    loadReservedBooklist();
                 });
-                loadReservedBooklist();
             });
         });
     });
@@ -181,8 +181,8 @@ function loadAppliedBooklist(){
                     else{
                         toastr['error']('도서신청 취소 실패');
                     }
+                    loadAppliedBooklist();
                 });
-                loadAppliedBooklist();
             });
         });
     });
