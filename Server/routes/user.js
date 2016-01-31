@@ -93,7 +93,7 @@ router.post('/userlist', util.ensureAuthenticated, function(req, res, next) {
         query += ' WHERE u_state <= 104';
     }
 
-    query += ' order by u_period';
+    query += ' order by u_period,u_name';
 
     con.query(query,function(err,rows){
         if (err) {
@@ -179,7 +179,7 @@ router.post('/getFinishUserlist', util.ensureAuthenticated, function(req, res, n
 
 router.post('/memberinfo', util.ensureAuthenticated, function(req, res, next) {
     var id = req.body.u_id;
-    var query = 'select * from t_user where u_id = "'+id+'"';
+    var query = 'select * from t_user where u_id = "'+id+'" order by u_period,u_name';
     var con = DB_handler.connectDB();
     con.query(query,function(err,rows){
         if (err) {
