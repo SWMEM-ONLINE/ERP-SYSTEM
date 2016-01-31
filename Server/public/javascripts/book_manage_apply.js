@@ -357,7 +357,7 @@ function makelocationData(){
             temp = 0;
         }
         temp++;
-        modalString += '<td><input type="radio" name="location" value="' + key + '">';
+        modalString += '<td style="text-align:left"><input type="radio" name="location" value="' + key + '">';
         if(divide % 2 === 0){
             modalString += '  ' + '<span class="label label-warning col-xs"> ' + key + '</span>' + '  ' + value + '</td>';
         }else{
