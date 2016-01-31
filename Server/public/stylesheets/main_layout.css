@@ -166,6 +166,10 @@ footer h5{
     background-color: #BCE067;
 }
 
+.table-hover>tbody>tr.warning:hover>td, .table-hover>tbody>tr.warning:hover>th, .table-hover>tbody>tr:hover>.warning, .table-hover>tbody>tr>td.warning:hover, .table-hover>tbody>tr>th.warning:hover{
+    background-color: #dfdfdf;
+}
+
 .modal-footer .btn,.modal-footer .btn+.btn{
     margin:5px;
 }
