@@ -327,9 +327,10 @@ router.post('/enroll_lifeEval', util.ensureAuthenticated, function(req, res){
     var datalist = req.body;
     var today = new Date();
     var month = today.getMonth();
+    var year = today.getFullYear();
     var con = DB_handler.connectDB();
 
-    var pre_query = 'select * from t_life where l_month=' + (month + 1);
+    var pre_query = 'select * from t_life where l_month=' + (month + 1) + ' and l_year=' + year;
     con.query(pre_query, function(err2, response2){
         if(err2){
             res.send('failed');
@@ -361,7 +362,7 @@ router.post('/enroll_lifeEval', util.ensureAuthenticated, function(req, res){
                 alter_query += 'l_third="' + datalist[2].content + '", l_third_cnt="' + datalist[2].cnt + '", l_third_point="' + datalist[2].point + '", ';
                 alter_query += 'l_fourth="' + datalist[3].content + '", l_fourth_cnt="' + datalist[3].cnt + '", l_fourth_point="' + datalist[3].point + '", ';
                 alter_query += 'l_fifth="' + datalist[4].content + '", l_fifth_cnt="' + datalist[4].cnt + '", l_fifth_point="' + datalist[4].point + '", ';
-                alter_query += 'l_total=' + datalist[1].total + ', l_grade="' + datalist[1].grade + '";';
+                alter_query += 'l_total=' + datalist[1].total + ', l_grade="' + datalist[1].grade + '" where l_month=' + (month + 1) + ' and l_year=' + year;
                 con.query(alter_query, function(err3, response3){
                     if(err3){
                         res.send('failed');
