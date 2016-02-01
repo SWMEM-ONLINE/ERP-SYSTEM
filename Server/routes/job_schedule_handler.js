@@ -143,14 +143,24 @@ function book_remaining(){
 function fee_carry() {
     var con = DB_handler.connectDB();
 
-    var lastMonth = '"'+util.getCurDate().substring(0,7)+'%"';
-    var query = 'select * from t_fee_manage where fm_date like '+lastMonth;
+    var now = new Date();
+    var datetime = now.getFullYear();
+    var month = (now.getMonth());
 
+    if(month < 10)
+        datetime += '/0'+month;
+    else
+        datetime += '/'+month;
+
+    var lastMonth = '"'+datetime+'%"';
+    var query = 'select * from t_fee_manage where fm_date like '+lastMonth;
+    console.log(query);
     con.query(query, function(err,rows){
         if (err) {
             console.log(err);
         }
         else {
+            console.log(rows);
             var deposit = util.getTotalDeposit(rows);
             var withdraw = util.getTotalWithdraw(rows);
             var values = new Array(1);
@@ -169,15 +179,20 @@ function fee_carry() {
 
             values[0] = [id, money_type, money_content, price, monthly_deposit, monthly_withdraw, remain_money, writer, date, util.getCurDateWithTime()];
 
+            console.log('deposit');
+            console.log(deposit);
+            console.log('withdraw');
+            console.log(withdraw);
+            console.log('price');
+            console.log(price);
 
-            con.query('insert into t_fee_manage(fm_id, fm_money_type, fm_money_content,fm_price,fm_monthly_deposit,fm_monthly_withdraw,fm_remain_money,fm_writer,fm_date,fm_write_date) values ?', [values], function (err, result) {
+            con.query('insert into t_fee_manage(fm_id, fm_money_type, fm_money_content, fm_price, fm_monthly_deposit,fm_monthly_withdraw,fm_remain_money,fm_writer,fm_date,fm_write_date) values ?', [values], function (err, result) {
                 if (err) {
                     console.log(err);
                     DB_handler.disconnectDB(con);
                 }
                 else {
                     DB_handler.disconnectDB(con);
-                    res.render('main', {title: '메인', grade: util.getUserGrade(req)});
                 }
             });
         }
