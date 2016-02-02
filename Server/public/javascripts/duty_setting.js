@@ -50,7 +50,7 @@ $('.datepicker').datepicker({
     keyboardNavigation : false,
     todayHighlight: true,
     startView: 1,
-    endDate: '+50d',
+    endDate: '+7d',
     autoclose: true
 });
 
@@ -127,7 +127,6 @@ $('#bad_duty_count li a').unbind().click(function(){
 });
 
 
-
 function isSelected(){
     if(duty_count !=null && bad_duty_count!=null){
         $("#setting").removeClass("hidden");
@@ -144,7 +143,6 @@ function day_click(date) {
             $(this).css('background-color', 'white');
         }
     }
-
     if(flag){
         selected_days.push(date.format());
         $("#selected_days").html(""+selected_days.length);

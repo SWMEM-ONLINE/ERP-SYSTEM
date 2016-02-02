@@ -1,14 +1,43 @@
 /**
- * Created by HyunJae on 2015. 12. 23..
+ * Created by kimhu on 2016-02-02.
  */
 
+
+toastr.options = {
+    'closeButton': false,
+    'debug': false,
+    'newestOnTop': false,
+    'progressBar': false,
+    'positionClass': 'toast-top-right',
+    'preventDuplicates': false,
+    'onclick': null,
+    'showDuration': '100',
+    'hideDuration': '500',
+    'timeOut': '2000',
+    'extendedTimeOut': '1000',
+    'showEasing': 'swing',
+    'hideEasing': 'linear',
+    'showMethod': 'fadeIn',
+    'hideMethod': 'fadeOut'
+};
 
 $(document).ready(function() {
     $('#calendar').fullCalendar({
         // put your options and callbacks here
         header: false,
         height: 720,
-        eventOrder : "-mode"
+        eventOrder : "-mode",
+        editable : true,
+        dayClick: function(date, jsEvent, view) {
+            DateClick(date,jsEvent,view);
+
+        },
+        eventClick: function(calEvent, jsEvent, view) {
+            clickEvent(calEvent, jsEvent, view);
+        },
+        eventDrop: function(event, delta, revertFunc) {
+            dropDuty(event, delta, revertFunc);
+        }
     })
 });
 
@@ -22,70 +51,68 @@ $('.datepicker').datepicker({
     autoclose: true
 });
 
+var currentDate = new Date();
+var prevEvent = null;
 $('.datepicker').on('changeDate',function(event){
     var year = event.date.getFullYear();
     var month = event.date.getMonth() + 1;
 
-    if(flag == 0){
-        personDuty(year,month);
-    }
-    else{
-        allDuty(year,month);
-    }
-});
 
-var currentDate = new Date();
-// 0 이면 person
-// 1 이면 ALL
-var flag = 0 ;
-var prevEvent = null;
-
-$('#toggle').unbind().click(function(){
-
-    // ALL 보기
-    if(flag==0){
-        flag=1;
-        $("#person").addClass("hidden");
-        $("#all").removeClass("hidden");
-        $(this).html("내 당직만 보기");
-        allDuty(new Date().getFullYear(), new Date().getMonth()+1);
-    }
-
-    // 개인적 보기
-    else{
-        $("#all").addClass("hidden");
-        $("#person").removeClass("hidden");
-        $(this).html("전체 당직 보기");
-        personDuty(new Date().getFullYear(), new Date().getMonth()+1);
-        flag=0;
-    }
+    allDuty(year,month);
 
 });
 
 
-personDuty(new Date().getFullYear(), new Date().getMonth()+1);
+allDuty(new Date().getFullYear(), new Date().getMonth()+1);
 
 
-function personDuty(year, month){
+function DateClick(date, jsEvent, view) {
 
-    $.post('/duty/getUser', function(res){
+    console.log(date);
+    console.log(jsEvent);
+    console.log(view);
 
-        var htmlString = res.name + "님은";
-        $('#name').html(htmlString);
+}
 
-        htmlString = "    ";
-        $('#foot').html(htmlString);
+function clickEvent(calEvent, jsEvent, view){
+    console.log(calEvent);
+    console.log(jsEvent);
+    console.log(view);
 
+    toastr['success'](calEvent.user_id);
+
+}
+
+
+function dropDuty(event, delta, revertFunc){
+
+    var sendData={};
+    sendData.id = event.user_id;
+    sendData.mode = event.mode;
+    sendData.fromDate = event.fromDate;
+    sendData.toDate =event.start.format();
+
+    $.post("/duty/moveDuty",sendData, function(res){
+        console.log(res);
+
+        if(res == "success"){
+            toastr['success']('당직 이동 성공');
+            event.fromDate = event.start.format();
+        }else if(res == "full"){
+            toastr['error']('당직 추가 불가능');
+            revertFunc();
+        }else if(res == "empty"){
+            toastr['error']('당직 추가 불가능');
+            revertFunc();
+        }else if(res == "error"){
+            toastr['error']('당직 이동 실패');
+            revertFunc();
+        }else{
+            toastr['error']('당직 이동 실패');
+            revertFunc();
+        }
     });
 
-    var sendData ={};
-    sendData.year = year;
-    sendData.month = month;
-
-    $.post('/duty/loadMyDuty', sendData , function(res){
-        generateHtml(res);
-        $('.datepicker').val(year+"년 "+ month+"월");
-    });
 }
 
 
@@ -111,40 +138,6 @@ function allDuty(year, month){
 }
 
 
-
-function generateHtml(datas){
-
-    var htmlString = '<div>';
-
-
-    if(datas.length === 0){
-        htmlString += '<p>';
-        htmlString += '이 달에는 당직이 존재하지 않습니다. ';
-        htmlString += '</p>';
-    }
-    else{
-
-        $.each(datas, function (idx, data) {
-
-            htmlString += '<p>';
-            htmlString += data.month + "월 " + data.date +  "일 ";
-
-            if(data.type == 0){
-                htmlString += " 일반당직";
-            }else if (data.type ==1){
-                htmlString += " 벌당직";
-            }
-
-            htmlString += '</p>';
-
-        });
-
-    }
-    htmlString += '</div>';
-    $('#duty').html(htmlString);
-
-}
-
 function makeEvent(res){
 
     var event = [] ;
@@ -163,25 +156,30 @@ function makeEvent(res){
             var name3 = data['(select u_name from t_user where user_id3= u_id)'];
             var name4 = data['(select u_name from t_user where user_id4= u_id)'];
 
+            var id1 = data.user_id1;
+            var id2 = data.user_id2;
+            var id3 = data.user_id3;
+            var id4 = data.user_id4;
+
             var mode1 = data.user1_mode;
             var mode2 = data.user2_mode;
             var mode3 = data.user3_mode;
             var mode4 = data.user4_mode;
             var element;
             if(name1 != null){
-                element = setElement(name1,mode1,date);
+                element = setElement(name1,mode1,date,id1);
                 event.push(element);
             }
             if(name2 != null){
-                element = setElement(name2,mode2,date);
+                element = setElement(name2,mode2,date,id2);
                 event.push(element);
             }
             if(name3 != null){
-                element = setElement(name3,mode3,date);
+                element = setElement(name3,mode3,date,id3);
                 event.push(element);
             }
             if(name4 != null){
-                element = setElement(name4,mode4,date);
+                element = setElement(name4,mode4,date,id4);
                 event.push(element);
             }
         }
@@ -196,6 +194,7 @@ function setElement(name, mode, date,id){
     element.allDay = true;
     element.fromDate = date;
     element.start = date;
+    element.user_id = id;
     element.mode = mode;
 
     if(mode == 0){

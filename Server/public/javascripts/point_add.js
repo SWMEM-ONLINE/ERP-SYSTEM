@@ -21,16 +21,14 @@ toastr.options = {
 };
 
 var date = new Date();
-
 var dateHtml = date.getFullYear() + "년 " + (date.getMonth()+1)  + "월 " + date.getDate() +"일";
-
-$("#date").html(dateHtml);
-
 
 var periods;
 var select_user_list;
 var select_mode;
 
+
+$("#date").html(dateHtml);
 
 loadMemberList();
 
@@ -76,8 +74,6 @@ $("#send").unbind().click(function(){
             else{
                 toastr['success']('상벌당직 추가 성공');
 
-
-
                 loadMemberList();
 
                 select_mode = null;
@@ -85,7 +81,6 @@ $("#send").unbind().click(function(){
                 $("#point").val("");
                 $("#reason").val("");
                 $("#mode-button").html("구분");
-
 
             }
         });
@@ -134,8 +129,6 @@ function generateMemberTable(res){
     var htmlString ="";
     var len = periods.length;
 
-
-
     if(len ==0){
         $("#tmp").html("there is no data");
     }
@@ -174,7 +167,6 @@ function generateMemberTable(res){
         }
     }
 
-
     $("#memberList").html(htmlString);
 
 }
@@ -206,32 +198,5 @@ function clickEvent(response){
 
 
     });
-
-    //
-    //$("#memberList").on("click", "td", function() {
-    //
-    //
-    //    var index = $(this).attr('id')
-    //    $(this).toggleClass('warning');
-    //
-    //
-    //    var data  =  response[index];
-    //    var id = data.u_id;
-    //
-    //    var flag = 1;
-    //    for(var i=0;i<select_user_list.length;i++){
-    //        var user = select_user_list[i];
-    //        if(user == id){
-    //            flag = 0;
-    //            select_user_list.splice(i,1);
-    //        }
-    //    }
-    //
-    //    if(flag == 1 ){
-    //
-    //        select_user_list.push(id);
-    //    }
-    //
-    //});
 
 }

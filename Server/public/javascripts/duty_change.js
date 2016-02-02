@@ -264,6 +264,12 @@ $('.datepicker').on('changeDate',function(event){
     };
     $.post('/duty/loadDuty', sendData , function(res){
 
+        $("#user_1").addClass("hidden");
+        $("#user_2").addClass("hidden");
+        $("#user_3").addClass("hidden");
+        $("#user_4").addClass("hidden");
+
+
         var user_id1 = res.user_id1;
         var user_id2 = res.user_id2;
         var user_id3 = res.user_id3;

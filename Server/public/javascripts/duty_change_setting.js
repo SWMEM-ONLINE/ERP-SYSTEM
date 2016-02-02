@@ -23,16 +23,6 @@ var endDate;
 
 var currentDate = new Date();
 
-//$.post("/duty/declineChangeDuty", function(res){
-//
-//});
-//$.post("/duty/acceptChangeDuty", function(res){
-//
-//});
-//$.post("/duty/forceChangeDuty", function(res){
-//
-//});
-
 
 endDate =  numberOfDays(currentDate.getFullYear(), currentDate.getMonth()+1) - currentDate.getDate();
 
@@ -74,7 +64,6 @@ $("#showresult").click(function(){
             var index = data.index;
             var accept = data.accepted;
 
-
             htmlString += "<tr>";
             htmlString += "<td>";
 
@@ -89,7 +78,6 @@ $("#showresult").click(function(){
                 rq_name2;
             htmlString += request2;
             htmlString += "</td>";
-
 
             // wait
             if(accept==0){

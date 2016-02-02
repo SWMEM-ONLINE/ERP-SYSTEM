@@ -30,19 +30,19 @@ router.get('/checklist', util.ensureAuthenticated, function(req, res, next) {
 });
 
 router.get('/add', util.ensureAuthenticated, function(req, res, next) {
-    res.render('point_add', { title: '상벌당직추가', grade: util.getUserGrade(req)});
+    res.render('point_add', { title: '상벌당직 추가', grade: util.getUserGrade(req)});
 });
 
 router.get('/modify', util.ensureAuthenticated, function(req, res, next) {
-    res.render('point_modify', { title: '상벌당직수정', grade: util.getUserGrade(req)});
+    res.render('point_modify', { title: '상벌당직 수정', grade: util.getUserGrade(req)});
 });
 
 router.get('/setting', util.ensureAuthenticated, function(req, res, next) {
-    res.render('duty_setting', { title: '당직설정', grade: util.getUserGrade(req)});
+    res.render('duty_setting', { title: '당직 설정', grade: util.getUserGrade(req)});
 });
 
-router.get('/changeSetting', util.ensureAuthenticated, function(req, res, next) {
-    res.render('duty_change_setting', { title: '당직 맞변경 관리', grade: util.getUserGrade(req)});
+router.get('/manage', util.ensureAuthenticated, function(req, res, next) {
+    res.render('duty_manage', { title: '당직 관리', grade: util.getUserGrade(req)});
 });
 
 router.get('/checkListSetting', util.ensureAuthenticated, function(req, res, next) {
@@ -151,6 +151,10 @@ router.post('/getAllPoint', util.ensureAuthenticated, function(req, res){
 });
 router.post('/getAllPointHistory', util.ensureAuthenticated, function(req, res){
     duty_handler.getAllPointHistory(req,res);
+});
+
+router.post('/moveDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.moveDuty(req,res);
 });
 
 

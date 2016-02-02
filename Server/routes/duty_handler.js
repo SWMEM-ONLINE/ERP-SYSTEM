@@ -12,6 +12,237 @@ var util = require('./util');
 var DB_handler = require('./DB_handler');
 
 
+
+function moveDuty(req,res){
+
+    var con = DB_handler.connectDB();
+
+    var request = {
+        id : req.body.id,
+        mode : req.body.mode,
+        fromDate : new Date(req.body.fromDate),
+        toDate : new Date(req.body.toDate)
+
+    };
+
+
+    console.log(request.id);
+    console.log(request.mode);
+    console.log(request.fromDate);
+    console.log(request.toDate);
+
+
+    isMovePossible(con,request,function(result){
+        console.log(result);
+        if(result == "possible"){
+            deleteDuty(con,request,function(result){
+                console.log(result);
+                if(result == "delete"){
+
+                    insertDuty(con,request,function(result){
+                        if(result == "insert"){
+
+                            res.send("success");
+                        }else{
+                            res.send(result);
+                        }
+                    });
+                }
+                else{
+                    res.send(result);
+                }
+            });
+        }else{
+            res.send(result);
+        }
+    })
+
+
+}
+
+
+
+
+
+function deleteDuty(con,request,callback){
+
+    var query = "SELECT * FROM swmem.t_duty WHERE " +
+        "year(date) = "+ (request.fromDate.getFullYear())+ " " +
+        "and month(date) = "+(request.fromDate.getMonth()+1)+" " +
+        "and dayofmonth(date) = " +(request.fromDate.getDate()) + ";";
+
+    console.log(query);
+
+    con.query(query, function(err, response){
+
+        if(err){
+            callback("error");
+        }else{
+            if(response.length==0){
+                callback("error");
+            }else{
+                console.log(response);
+                var data = response[0];
+                var flag = null;
+                for(var i=1;i<=4;i++){
+                    var user = "user_id" + i;
+
+                    if(data[user] == request.id){
+                        flag = i;
+                        break;
+                    }
+
+                }
+
+                if(flag==null){
+                    callback("error");
+                }
+                else{
+                    var targetId = "user_id" + flag;
+                    var targetMode ="user" + flag + "_mode";
+
+                    var deletequery = "UPDATE `swmem`.`t_duty` " +
+                        "SET " +
+                        "`" +targetId +"`=NULL, " +
+                        "`"+targetMode+"`=NULL " +
+                        "WHERE " +
+                        "year(date) = "+ (request.fromDate.getFullYear())+ " " +
+                        "and month(date) = "+(request.fromDate.getMonth()+1)+" " +
+                        "and dayofmonth(date) = " +(request.fromDate.getDate()) + ";";
+
+                    console.log(deletequery);
+
+                    con.query(deletequery, function(err, response){
+
+                        if(err){
+                            callback("error");
+                        }else{
+                            console.log(response);
+                            callback("delete");
+                        }
+                    });
+
+                }
+
+
+            }
+        }
+
+    });
+}
+
+function insertDuty(con,request,callback){
+
+    var query = "SELECT * FROM swmem.t_duty WHERE " +
+        "year(date) = "+ (request.toDate.getFullYear())+ " " +
+        "and month(date) = "+(request.toDate.getMonth()+1)+" " +
+        "and dayofmonth(date) = " +(request.toDate.getDate()) + ";";
+
+    console.log(query);
+
+    con.query(query, function(err,response){
+
+        if(err){
+            callback("error");
+        }else{
+            if(response.length == 0){
+                callback("error");
+            }else{
+
+                var data = response[0];
+                console.log(data);
+                var flag = null;
+                for(var i=1;i<=4;i++){
+                    var user = "user_id" + i;
+
+                    if(data[user] == null){
+                        flag = i;
+                        break;
+                    }
+
+                }
+
+                if(flag ==null){
+                    callback("error");
+                }else{
+                    var targetId = "user_id" + flag;
+                    var targetMode ="user" + flag + "_mode";
+
+                    var insertQuery = "UPDATE `swmem`.`t_duty` SET" +
+                        " `"+targetId+"`='"+request.id+"', " +
+                        "`"+targetMode+"`='"+request.mode+"'  WHERE " +
+                        "year(date) = "+ (request.toDate.getFullYear())+ " " +
+                        "and month(date) = "+(request.toDate.getMonth()+1)+" " +
+                        "and dayofmonth(date) = " +(request.toDate.getDate()) + ";";
+
+                    console.log(insertQuery);
+
+                    con.query(insertQuery, function(err, response){
+
+                        if(err){
+                            callback("error");
+                        }else{
+                            console.log(response);
+                            callback("insert");
+                        }
+                    });
+
+
+                }
+
+
+            }
+        }
+
+    });
+}
+
+
+function isMovePossible(con,request,callback){
+
+    var query = "SELECT * FROM swmem.t_duty WHERE " +
+        "year(date) = "+ (request.toDate.getFullYear())+ " " +
+        "and month(date) = "+(request.toDate.getMonth()+1)+" " +
+        "and dayofmonth(date) = " +(request.toDate.getDate()) + ";";
+
+    console.log(query);
+
+    con.query(query, function(err,response){
+
+        if(err){
+            callback("error");
+        }else{
+            if(response.length == 0){
+                callback("empty");
+            }else{
+
+                var data = response[0];
+                console.log(data);
+                var flag = 1;
+                for(var i=1;i<=4;i++){
+                    var user = "user_id" + i;
+
+                    if(data[user] == null){
+                        flag = 0;
+                        break;
+                    }
+
+                }
+                if(flag == 0){
+                    callback("possible");
+                }else{
+                    callback("impossible");
+                }
+
+            }
+        }
+
+    });
+
+}
+
+
+
 function getAllPointHistory(req,res){
 
     var con = DB_handler.connectDB();
@@ -2163,3 +2394,4 @@ exports.loadTodayDuty = loadTodayDuty;
 exports.initLastDuty = initLastDuty;
 exports.getAllPoint = getAllPoint;
 exports.getAllPointHistory = getAllPointHistory;
+exports.moveDuty = moveDuty;
