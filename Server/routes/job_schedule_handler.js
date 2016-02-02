@@ -150,7 +150,6 @@ function fee_carry() {
         month = 12;
         datetime = datetime - 1;
     }
-
     if (month < 10)
         datetime += '/0' + month;
     else
