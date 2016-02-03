@@ -1,3 +1,22 @@
-img.android{
-    width:300px;
+.bs-callout{
+    margin: 20px;
+    padding: 10px 20px;
+
+    border-left: 3px solid #122359;
+    border-top:1px solid #dfdfdf;
+    border-right:1px solid #dfdfdf;
+    border-bottom:1px solid #dfdfdf;
+}
+
+.bs-callout > p{
+    text-align: left;
+    font-size: 13px;
+}
+
+p{
+    margin-bottom:5px !important;
+}
+
+img{
+    width: 50%;
 }

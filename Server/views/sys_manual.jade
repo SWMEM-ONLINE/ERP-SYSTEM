@@ -14,6 +14,464 @@ block content
          h3 사용 메뉴얼
          hr
          .content
-            h3 building....
+            ul.nav.nav-pills.nav-justified
+               li.active
+                  a(href='#book') 도서
+               li
+                  a(href='#hardware') 하드웨어
+               li
+                  a(href='#fee') 회비
+               li
+                  a(href='#duty') 당직
+               li
+                  a(href='#schedule') 스케줄
+               li
+                  a(href='#apply') 자재신청
+               li
+                  a(href='#vote') 투표
+               li
+                  a(href='#qna') 문의
+               li
+                  a(href='#user') USER
+            .manual
+               h3#book 도서 시스템
+               hr
+               h4 도서대여 및 예약
+               img(src='../images/manual/Book_rental1.png')
+               .bs-callout
+                  p 상단 메뉴 탭에서 도서 버튼을 누르고 대여하려는 책이 기술서적인지, 인문학 서적인지 판단하여 선택
+                  p 첫 화면에는 이번 달 들어온 도서들이 보여짐
+               img(src='../images/manual/Book_rental2.png')
+               .bs-callout
+                  p 대여하려는 책의 도서명, 출판사명, 저자명 중 하나를 입력하고 검색
+                  p 검색결과 중 대여하려는 책을 선택
+               img(src='../images/manual/Book_rental3.png')
+               .bs-callout
+                  p 창 하단부의 '대여'버튼 클릭시 도서 대여상태가 됨
+                  p 누군가 대여중인 책일 경우 '대여'버튼이 Disable 되어있으므로, '예약' 버튼을 눌러 예약대기열에 추가
+                  p 예약된 도서가 반납될 경우, 자동으로 예약 1순위자가 반납일부터 대여상태로 전환됨
+                  p 분실도서 신고를 하고자 할 경우 '분실신고' 버튼 클릭
+               hr
+               h4 내 도서
+               img(src='../images/manual/Book_mybook1.png')
+               p
+               img(src='../images/manual/Book_mybook2.png')
+               p
+               img(src='../images/manual/Book_mybook3.png')
+               .bs-callout
+                  p 대여, 예약, 신청한 도서는 '도서' 탭의 '내 도서' 에서 확인 가능
+               hr
+               h4 도서 연장, 반납
+               img(src='../images/manual/Book_postpone1.png')
+               .bs-callout
+                  p 내 도서를 이용하여 대여중인 도서 조회 후 도서반납, 연장, 분실신고가 가능함
+                  p 예약자가 있거나 반납 기간이 지난 경우 도서 연장 버튼이 Disable 되어 불가능함
+               img(src='../images/manual/Book_postpone2.png')
+               .bs-callout
+                  p 연장을 할 경우, 14일이 추가로 늘어남
+               hr
+               h4 도서 관리
+               img(src='../images/manual/Book_manage1.png')
+               .bs-callout
+                  p 도서-도서관리 메뉴클릭시 기술서적과 인문서적의 리스트를 볼 수 있음
+               img(src='../images/manual/Book_manage2.png')
+               .bs-callout
+                  p 위치를 변경하려는 도서들을 선택하고, 하단부의 위치변경 버튼을 누름
+               img(src='../images/manual/Book_manage3.png')
+               .bs-callout
+                  p 변경하고자 하는 위치로 선택하고 '변경' 버튼을 클릭
+               hr
+               h4 신청도서 관리
+               img(src='../images/manual/Book_apply1.png')
+               .bs-callout
+                  p 신청도서 관리 메뉴를 선택시 신청되어있는 도서 리스트 확인 가능
+               img(src='../images/manual/Book_apply2.png')
+               .bs-callout
+                  p 해당 달에 주문한 도서들을 선택 후 '구매' 버튼을 눌러 주문완료 상태로 바꾼다
+               img(src='../images/manual/Book_apply3.png')
+               .bs-callout
+                  p '도서등록' 버튼을 눌러 도서의 위치 지정 후 '등록'버튼을 눌러 등록
+               img(src='../images/manual/Book_apply4.png')
+               .bs-callout
+                  p '엑셀로 저장' 버튼을 누를 시 선택한 도서들의 정보가 엑셀로 저장된다
+               img(src='../images/manual/Book_apply5.png')
+               .bs-callout
+                  p 엑셀로 저장된 엑셀의 형식은 사진과 같다
+               hr
+               h4 대여 기록
+               img(src='../images/manual/Book_history.png')
+               .bs-callout
+                  p '도서 대여 기록' 메뉴 선택시 현재 대여중인 도서목록과 과거 대여 히스토리를 볼 수 있음
+               hr
+               h4 연체자 기록
+               img(src='../images/manual/Book_inArrears.png')
+               .bs-callout
+                  p '연체자 목록'메뉴 선택 시 연체자 리스트를 볼 수 있음
+               hr
+               h4 분실도서 목록
+               img(src='../images/manual/Book_missing1.png')
+               .bs-callout
+                  p '분실도서 목록' 메뉴 선택 시 분실처리된 도서 목록을 볼 수 있음
+               img(src='../images/manual/Book_missing2.png')
+               .bs-callout
+                  p 분실처리를 해제하고자 할 경우 도서들을 선택 후 '복구하기' 버튼을 누른다
+               h3#hardware 하드웨어 시스템
+               hr
+               h4 하드웨어 대여
+               img(src='../images/manual/Hardware_rental1.png')
+               .bs-callout
+                  p 하드웨어 탭의 대여 신청버튼 클릭시 하드웨어의 리스트를 볼 수 있음
+               img(src='../images/manual/Hardware_rental2.png')
+               .bs-callout
+                  p 대여신청하려는 하드웨어 선택 후 대여신청 버튼으로 대여를 신청함
+               hr
+               h4 요청결과 보기
+               img(src='../images/manual/Hardware_myhardware1.png')
+               .bs-callout
+                  p 나의 하드웨어에서 요청 처리 선택시 신청, 반납, 연장 요청 처리결과를 볼 수 있음
+                  p 신청자는 처리결과 확인 후 반드시 삭제버튼을 눌러 삭제해야 함
+                  p 반납요청 허가 후 요청처리에서 삭제하며 확인해야 남은 수량이 증가함
+               hr
+               h4 내 하드웨어
+               img(src='../images/manual/Hardware_myhardware2.png')
+               .bs-callout
+                  p 나의 하드웨어에서 대여한 하드웨어 선택시 대여승인이 처리된 하드웨어 리스트를 볼 수 있음
+                  p 우측의 대여신청, 반납신청 버튼 클릭시 운영자에게 대여신청, 반납신청이 들어감
+               hr
+               h4 신청한 하드웨어
+               img(src='../images/manual/Hardware_myhardware3.png')
+               .bs-callout
+                  p 나의 하드웨어에서 신청한 하드웨어 선택시 자신이 구매신청한 하드웨어 리스트를 볼 수 있음
+               img(src='../images/manual/Hardware_myhardware4.png')
+               .bs-callout
+                  p 구매신청한 하드웨어 리스트 중 '자세히' 버튼을 눌러 상세 정보를 볼 수 있고, '취소' 버튼을 눌러 구매신청을 취소할 수 있음
+               hr
+               h4 하드웨어 관리
+               img(src='../images/manual/Hardware_enroll.png')
+               .bs-callout
+                  p 하드웨어 관리 메뉴 - 등록 탭에서 이름, 수량, 시리얼 넘버를 기재하고 '등록' 버튼을 눌러 등록
+               img(src='../images/manual/Hardware_edit1.png')
+               .bs-callout
+                  p 하드웨어 관리 메뉴 - 변경/삭제 탭 선택시 현재 보유중인 하드웨어 리스트를 볼 수 있음
+               img(src='../images/manual/Hardware_edit2.png')
+               .bs-callout
+                  p 변경하거나 삭제하려는 하드웨어를 선택하면 정보 창이 뜸
+               img(src='../images/manual/Hardware_m_apply1.png')
+               .bs-callout
+                  p 하드웨어-신청관리 탭 클릭시 대여, 연장, 반납 신청 조회가능
+               img(src='../images/manual/Hardware_m_apply2.png')
+               .bs-callout
+                  p 선청 선택 후 '승인' 버튼 누를 경우 승인상태가 됨
+                  p 신청 선택 후 '미승인' 버튼 누를 경우 미승인 상태가 됨
+               img(src='../images/manual/Hardware_m_apply3.png')
+               .bs-callout
+                  p 하드웨어-신청관리-구매 탭 선택시 구매신청 리스트를 볼 수 있음
+               img(src='../images/manual/Hardware_m_apply4.png')
+               .bs-callout
+                  p '자세히' 버튼을 누르면 신청한 하드웨어 상세 정보 조회가능
+               img(src='../images/manual/Hardware_m_apply5.png')
+               .bs-callout
+                  p 항목들 선택 후 '엑셀로 저장' 버튼 클릭 시 엑셀파일로 저장
+               h3#fee 회비 시스템
+               hr
+               h4 회비 내역
+               img(src='../images/manual/Fee_history.png')
+               .bs-callout
+                  p 회비의 수입과 지출 관련 내역을 월별로 확인할 수 있습니다.
+                  p 월별 회비 관련 내역을 엑셀로 저장할 수 있습니다.
+               hr
+               h4 미납 내역
+               img(src='../images/manual/Fee_unpaid.png')
+               .bs-callout
+                  p 본인의 회비 미납내역에 대해 확인할 수 있습니다.
+               hr
+               h4 수입지출내역 등록
+               img(src='../images/manual/Fee_register.png')
+               .bs-callout
+                  p 회비관련 수입지출내역을 등록할 수 있습니다.
+                  p 모든 입력칸은 공백 없이 작성되어야 등록이 가능합니다.
+                  p 회비는 해당월 내용만 입력가능하고 삭제가 가능합니다."
+               hr
+               h4 회비 추가
+               img(src='../images/manual/Fee_charge1.png')
+               p
+               img(src='../images/manual/Fee_charge2.png')
+               .bs-callout
+                  p 각 회원에게 회비를 청구할 수 있습니다.
+                  p 모든 입력칸은 공백 없이 작성되어야 등록이 가능합니다.
+                  p 구분은 회비,삼과비,기타로 작성가능하고 내용은 되도록 알아볼 수 있도록 간결하게 작성바랍니다."
+               hr
+               h4 회비 관리
+               img(src='../images/manual/Fee_manage1.png')
+               .bs-callout
+                  p 회원들에게 청구했던 회비의 내용을 확인할 수 있습니다.
+                  p 전체 내용을 조회하려면 선택없이 조회버튼을 누르면 됩니다.
+                  p 각 조건별로 선택하면 조건에 맞는 내용 검색이 가능합니다.
+                  p 각 회원에 대한 회비 관련 내용을 볼 수 있습니다.
+                  p 청구한 회비의 삭제 및 납부 여부를 선택할 수 있습니다.
+               h3#duty 당직 시스템
+               hr
+               h4 당직 조회
+               img(src='../images/manual/Duty_inquire1.png')
+               .bs-callout
+                  p 설정된 본인의 당직을 조회 할 수 있습니다.
+               img(src='../images/manual/Duty_inquire2.png')
+               .bs-callout
+                  p 전체회원조회를 클릭하여 당직 전체를 조회 할 수 있습니다.
+               img(src='../images/manual/Duty_inquire3.png')
+               .bs-callout
+                  p 0000년 00월을 클릭하여 원하는 달의 당직을 조회 할 수 있습니다.
+               hr
+               h4 당직 맞변경
+               img(src='../images/manual/Duty_exchange1.png')
+               .bs-callout
+                  p 나의 당직에서 원하는 당직 날짜를 선택한후 원하는 날짜의 원하는 사람을 클릭합니다.
+               img(src='../images/manual/Duty_exchange2.png')
+               .bs-callout
+                  p 이후 신청하기 버튼을 누르면 당직 맞변경 신청이 가능하며 내역에서 대기중이라는 것을 확인 할 수 있습니다.
+               img(src='../images/manual/Duty_exchange3.png')
+               .bs-callout
+                  p 신청을 받은 회원은 맞변경신청결과 조회 버튼을 클릭하여 신청을 승인 혹은 거절 할 수 있습니다.
+               img(src='../images/manual/Duty_exchange4.png')
+               .bs-callout
+                  p 이후 신청을 한 회원과 신청을 받은 회원의 당직이 교환신청이 완료됩니다.
+               hr
+               h4 상벌당직 조회
+               img(src='../images/manual/Duty_point_inquire1.png')
+               .bs-callout
+                  p 본인의 상벌당직 내역을 확인 할 수 있습니다.
+               img(src='../images/manual/Duty_point_inquire2.png')
+               .bs-callout
+                  p 전체회원조회를 클릭하여  상벌당직 전체를 조회 할 수 있습니다.
+               img(src='../images/manual/Duty_point_inquire3.png')
+               .bs-callout
+                  p 0000년 00월을 클릭하여 원하는 달의 상벌당직을 조회 할 수 있습니다.
+               hr
+               h4 체크리스트
+               img(src='../images/manual/Duty_checkList1.png')
+               .bs-callout
+                  p 체크리스트를 클릭하여 그달의 등급에 따른 당직 체크리스트를 조회 할 수 있습니다.
+               img(src='../images/manual/Duty_checkList2.png')
+               .bs-callout
+                  p 벌당직 체크리스트를 클릭하여 벌당직 체크리스트를 조회 할 수 있습니다.
+               hr
+               h4 상벌당직 추가
+               img(src='../images/manual/Duty_point_add1.png')
+               .bs-callout
+                  p 상벌당직 추가에서 원하는 회원을 클릭한후 구분, 일수, 사유를 채운 후 상벌당직을 부여 할 수 있습니다.
+               hr
+               h4 상벌당직 수정
+               img(src='../images/manual/Duty_point_modify1.png')
+               .bs-callout
+                  p 상벌당직 수정에서 자신의 부여한 상벌당직 내역을 확인 할 수 있습니다.
+               img(src='../images/manual/Duty_point_modify2.png')
+               .bs-callout
+                  p 상벌당직 수정에서 원하는 상벌당직내역을 클릭한후 구분,일수, 사유를 수정 또는 삭제 할 수 있습니다.
+               hr
+               h4 당직설정
+               img(src='../images/manual/Duty_setting.png')
+               .bs-callout
+                  p 총 당직수와 벌당직 수 그리고 제외할 날짜를 클릭한 후 설정 버튼을 클릭하여 당직이 설정됩니다.
+               hr
+               h4 체크리스트 관리
+               img(src='../images/manual/Duty_checklist_add1.png')
+               .bs-callout
+                  p 일반당직 혹은 벌당직을 눌러 수정할 체크리스트를 선택합니다.
+               img(src='../images/manual/Duty_checklist_add2.png')
+               .bs-callout
+                  p 원하는 일반당직을 클릭하여 수정하여 일반당직을 추가할 수 있습니다.
+               img(src='../images/manual/Duty_checklist_add3.png')
+               .bs-callout
+                  p 원하는 벌당직을 클릭하여 수정하여 벌당직을 추가할 수 있습니다.
+               h3#schedule 스케줄
+               hr
+               h4 스케줄 보기
+               img(src='../images/manual/Schedule_inquire1.png')
+               .bs-callout
+                  p 0000년 00월을 클릭하여 원하는 스케줄을 볼 수 있습니다.
+               hr
+               h4 스케줄 관리
+               img(src='../images/manual/Schedule_add1.png')
+               .bs-callout
+                  p 스케줄 등록을 클릭합니다.
+               img(src='../images/manual/Schedule_add2.png')
+               .bs-callout
+                  p 원하는 스케줄의 이름과 날짜를 클릭하여 스케줄을 등록 할 수 있습니다.
+               img(src='../images/manual/Schedule_modify.png')
+               .bs-callout
+                  p 스케줄목록에서 원하는 스케줄을 클릭하여 스케줄을 수정 및 삭제 할 수 있습니다.
+               h3#apply 자재신청
+               hr
+               h4 도서 신청
+               img(src='../images/manual/Apply_book.png')
+               .bs-callout
+                  p 멤버십에 없는 책에 대해 신청이 가능합니다.
+                  p 도서명, 저자, 출판사를 선택하고 책 이름을 검색합니다.
+                  p 원하는 도서에 대해 신청을 하면 책 신청이 완료됩니다.
+               hr
+               h4 하드웨어 신청
+               img(src='../images/manual/Apply_hardware.png')
+               .bs-callout
+                  p 과제 혹은 시그에 필요한 하드웨어 신청을 할 수 있습니다.
+                  p 항목에 대해 모두 입력하고 등록을 합니다.
+                  p 운영자님이 확인하시는 부분이므로 꼼꼼히 확인하여 등록할 수 있도록 합니다.
+                  p 예시를 통해 확인할 수 있습니다. 무조건 PC에서 신청하도록 합니다.
+               hr
+               h4 서버,프로젝트실,비품
+               img(src='../images/manual/Apply_others.png')
+               .bs-callout
+                  p 서버, 프로젝트실, 비품에 대해 신청을 할 수 있습니다.
+                  p 자치회 각 장들이 신청서 링크를 올리면 Docs를 통해 신청이 가능합니다.
+                  p 기간이 정해져 있으므로 기간을 준수하여 신청하도록 합니다.
+               hr
+               h4 서버,프로젝트실,비품 관리
+               img(src='../images/manual/Apply_manage.png')
+               .bs-callout
+                  p 서버,프로젝트실,비품에 대한 신청서를 올릴 수 있습니다.
+                  p 추가삭제를 사용하여 여러 링크를 올릴 수 있습니다.
+                  p 링크등록시에 http://을 붙여서 입력하시기 바랍니다.
+                  p 신청서에 대해 정보를 수정,삭제가 가능합니다.
+               h3#vote 투표
+               hr
+               h4 투표 참여
+               img(src='../images/manual/Vote1.png')
+               .bs-callout
+                  p 투표 목록을 확인 할 수 있습니다.
+                  p 목록에 노출된 마감일 까지 투표에 참여 가능합니다. (불참시 벌당직)
+                  p 참여하고자 하는 투표를 누르면 투표 팝업창이 생성됩니다.
+               img(src='../images/manual/Vote2.png')
+               .bs-callout
+                  p 투표의 현황을 확인 할 수 있습니다.
+                  p 투표하기 버튼을 누르면 투표선택이 가능합니다.
+               img(src='../images/manual/Vote3.png')
+               .bs-callout
+                  p 투표 항목 왼쪽에 생성된 셀렉트 버튼을 누르면 체크 상태로 변하고 체크상태로 변한 셀렉트 버튼을 다시 누르면 체크 상태가 해제됩니다.
+                  p 단일/중복 투표 상태 여부에 따라 체크 가능한 항목의 수는 제한됩니다.
+                  p 원하는 항목을 선택 후 완료 버튼을 누르면면 투표가 완료됩니다.
+               img(src='../images/manual/Vote4.png')
+               .bs-callout
+                  p 본인이 투표한 정보가 반영되어 갱신이 됩니다.
+                  p 체크한 투표 항목을 변경하려면 투표하기 버튼을 누르고 재투표가 가능합니다.
+                  p 투표 항목을 누르면 해당 항목을 투표한 회원 목록 팝업창이 생성됩니다.
+               img(src='../images/manual/Vote5.png')
+               .bs-callout
+                  p 항목별 선택한 회원을 확인 할 수 있습니다.
+               hr
+               h4 투표 관리
+               img(src='../images/manual/VoteManage1.png')
+               .bs-callout
+                  p 등록된 투표 목록을 확인 할 수 있습니다.
+                  p 투표추가 버튼을 누르면 투표추가 팝업창이 생성됩니다.
+               img(src='../images/manual/VoteManage2.png')
+               .bs-callout
+                  p 투표제목을 입력합니다.
+                  p 투표내용을 입력합니다.
+                  p 투표항목 복수선택 여부를 체크합니다.
+                  p 투표항목을 입력합니다.
+                  p 항목추가를 누르면 새로운 항목 입력칸이 생성됩니다.
+                  p 생성 버튼을 누르면 입력한 투표가 생성됩니다.
+               img(src='../images/manual/VoteManage3.png')
+               .bs-callout
+                  p 투표생성 입력 예시
+               img(src='../images/manual/VoteManage4.png')
+               .bs-callout
+                  p 생성된 투표
+               img(src='../images/manual/VoteManage5.png')
+               .bs-callout
+                  p 투표 정보를 확인 할 수 있습니다.
+                  p 투표 항목을 누르면 투표에 참여한 회원 정보를 확인 가능합니다.
+                  p 삭제 버튼을 누르면 해당 투표가 삭제됩니다.
+               h3#qna 문의
+               hr
+               h4 문의 신청
+               img(src='../images/manual/Qna1.png')
+               .bs-callout
+                  p 문의 제목을 입력합니다.
+                  p 문의 내용을 입력합니다.
+                  p 문의등록 버튼을 눌러 문의를 등록합니다.
+               img(src='../images/manual/Qna2.png')
+               .bs-callout
+                  p 문의등록 예시
+               img(src='../images/manual/Qna3.png')
+               .bs-callout
+                  p 등록된 문의는 하단 목록에서 확인 가능합니다.
+                  p 신규 등록된 문의는 답변대기 상태이며 운영자 및 자치회에서 확인 후 답변완료 상태로 변경됩니다.
+                  p 문의 목록을 누르면 문의정보 팝업이 생성됩니다.
+               img(src='../images/manual/Qna4.png')
+               .bs-callout
+                  p 등록된 문의 정보를 확인 가능합니다.
+                  p 운영자 및 자치회에서 등록한 댓글을 확인 할 수 있습니다.
+               img(src='../images/manual/Qna5.png')
+               .bs-callout
+                  p 댓글 예시
+               img(src='../images/manual/Qna6.png')
+               .bs-callout
+                  p 답변 완료상태 예시
+               hr
+               h4 문의 관리
+               img(src='../images/manual/QnaManage1.png')
+               .bs-callout
+                  p 회원이 등록한 문의 목록을 확인 가능합니다.
+                  p 문의 목록을 누르면 문의정보 팝업이 생성됩니다.
+               img(src='../images/manual/QnaManage2.png')
+               .bs-callout
+                  p 회원이 등록한 문의 정보를 자세하게 열람 가능합니다.
+                  p 댓글을 등록하여 문의한 회원에게 답변 할 수 있습니다.
+                  p 답변완료 버튼을 누르면 해당 문의는 답변완료 상태로 변경됩니다.
+               img(src='../images/manual/QnaManage3.png')
+               .bs-callout
+                  p 댓글 예시
+               img(src='../images/manual/QnaManage4.png')
+               .bs-callout
+                  p 답변 완료상태 예시
+               h3#user 사용자
+               hr
+               h4 나의 페이지
+               img(src='../images/manual/User_info.png')
+               .bs-callout
+                  p 유저의 개인정보를 확인하고 수정할수 있습니다.
+                  p E-mail 알림과 안드로이드 디바이스 푸시에 대한 On/Off  설정을 할 수 있습니다.
+                  p 비밀번호, 전화번호, E-mail, 사진을 수정하고자 할때에는 기존의 비밀번호를 입력하여야 가능합니다.
+               hr
+               h4 회원 목록
+               img(src='../images/manual/User_members.png')
+               .bs-callout
+                  p 시스템에 가입되어있는 회원들의 정보를 확인할수 있습니다.
+               hr
+               h4 생활 지수
+               img(src='../images/manual/User_life.png')
+               .bs-callout
+                  p 멤버십 생활에 대한 지수를 확인할수 있습니다.
+                  p 생활지수 등록은 회장의 권한으로 가지고 매달 등록 및 수정할수 있습니다.
+               hr
+               h4 회원 관리
+               img(src='../images/manual/User_manage.png')
+               .bs-callout
+                  p 운영자와 회장의 권한으로 회원들의 계정등급을 조정하고 비밀번호 초기화를 할 수 있습니다.
+               hr
+               h4 수료회원 관리
+               img(src='../images/manual/User_finish.png')
+               .bs-callout
+                  p 수료예정인 회원들의 리스트를 확인할수 있습니다.
+                  p 수료예정으로 등급이 조정된 회원은 도서대여여부, 하드웨어대여여부, 회비연체여부를 확인할 수 있습니다.
+                  p 수료 버튼을 누르면 회원목록 및 수료예정회원관리 리스트에서 사라지게 됩니다.
+                  p 수료 버튼을 누르면 더이상 회원등급 조정이 불가능하므로 신중히 확인바랍니다.
+               hr
+               h4 마일리지 관리
+               img(src='../images/manual/User_mileage1.png')
+               p
+               img(src='../images/manual/User_mileage2.png')
+               .bs-callout
+                  p 회원들의 마일리지를 조정할 수 있습니다.
+                  p 점수에 대해 +, - 를 선택하고 사유를 입력한 뒤 회원을 선택 후 등록하기를 합니다.
+                  p 기수순, 점수순으로 정렬하여 보기가 가능합니다.
+                  p 마일리지를 부여한것에 대해 기록을 볼 수 있고 삭제가 가능합니다.
+               hr
+               h4 Push 전송
+               img(src='../images/manual/User_push.png')
+               .bs-callout
+                  p 회원들에게 메세지 알림을 줄 수 있습니다.
+                  p 회원을 선택하고 메세지를 입력한 뒤 전송을 누르면 E-mail과 안드로이드 디바이스 사용자의 경우 푸시 알림이 전송됩니다.
+                  p 알림에 본인의 이름으로 전송되므로 신중히 전송바랍니다.
 append script
    script(src='../javascripts/system_manual_index.js')
