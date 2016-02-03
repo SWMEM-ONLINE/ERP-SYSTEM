@@ -188,6 +188,8 @@ function rejectButton(datalist, flag){            // 거절 버튼
     $('button#reject').unbind().click(function(){
         var rejectlist = '';
         var userIdlist = '';
+        var cnt_notWaiting = 0;
+        var hardwareIdlist = '';
 
         if($('#tableData tr.warning').length === 0){
             toastr['error']('항목이 선택되지 않았습니다');
@@ -197,12 +199,29 @@ function rejectButton(datalist, flag){            // 거절 버튼
             if($(this).hasClass('warning')){
                 rejectlist += datalist[index].hw_id + ',';
                 userIdlist += datalist[index].hw_iser + ',';
+                hardwareIdlist += datalist[index].hw_hardware_id + ',';
+                if(flag === 3){
+                    if(datalist[index].ha_result != 0){
+                        cnt_notWaiting++;
+                    }
+                }else{
+                    if(datalist[index].hw_result != 0){
+                        cnt_notWaiting++;
+                    }
+                }
             }
         });
+
+        if(cnt_notWaiting > 0){
+            toastr['error']('처리된 건은 수정할 수 없습니다');
+            return;
+        }
+
         rejectlist = rejectlist.substring(0, rejectlist.length-1);
         userIdlist = userIdlist.substring(0, userIdlist.length-1);
+        hardwareIdlist = hardwareIdlist.substring(0, hardwareIdlist.length -1);
 
-        $.post('/hardware/manage/rejectRequest', {type: flag, rejectlist: rejectlist, userIdlist: userIdlist}, function(response){
+        $.post('/hardware/manage/rejectRequest', {type: flag, rejectlist: rejectlist, userIdlist: userIdlist, hardwareIdlist: hardwareIdlist}, function(response){
             if(response === 'success'){
                 toastr['success']('미승인처리 완료');
             }

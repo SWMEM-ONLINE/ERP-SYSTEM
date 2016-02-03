@@ -523,40 +523,44 @@ function rejectRequest(req, res){
     var con = DB_handler.connectDB();
     var temp = req.body.userIdlist;
     var userIdlist = temp.split(',');
+    var hardwareIdlist = req.body.hardwareIdlist;
 
 
     if(req.body.type != 3){
         var query = 'update t_hardware_waiting set hw_result=2 where hw_id IN (';
-        query += req.body.rejectlist + ')';
+        query += req.body.rejectlist + ');';
+
+        var title = '';
+        var content = '';
+
+        switch(parseInt(req.body.type)){
+            case 0:         // 대여
+                title = '하드웨어 대여 거절';
+                content = util.pushContents.h_rejectBorrow;
+                query += 'update t_hardware set h_remaining=h_remaining+1 where h_id IN (' + hardwareIdlist + ');';
+                break;
+            case 1:         // 연장
+                title = '하드웨어 연장 거절';
+                content = util.pushContents.h_rejectPostpone;
+                break;
+            default :       // 반납
+                title = '하드웨어 반납 거절';
+                content = util.pushContents.h_rejectTurnin;
+        }
+        util.sendList(userIdlist, title, content, function(err_push, data){
+            if(err_push){
+                console.log(err_push);
+            }else{
+                console.log(data);
+            }
+        });
+        console.log(query);
         con.query(query, function(err, response){
             if(err){
                 res.send('failed');
-                console.log('DB update ERROR in "hardware_handler.js -> approveRequest"');
+                console.log('DB update ERROR in "hardware_handler.js -> rejectRequest_1"');
                 DB_handler.disconnectDB(con);
             }else{
-                var title = '';
-                var content = '';
-
-                switch(parseInt(req.body.type)){
-                    case 0:         // 대여
-                        title = '하드웨어 대여 거절';
-                        content = util.pushContents.h_rejectBorrow;
-                        break;
-                    case 1:         // 연장
-                        title = '하드웨어 연장 거절';
-                        content = util.pushContents.h_rejectPostpone;
-                        break;
-                    default :       // 반납
-                        title = '하드웨어 반납 거절';
-                        content = util.pushContents.h_rejectTurnin;
-                }
-                util.sendList(userIdlist, title, content, function(err_push, data){
-                    if(err_push){
-                        console.log(err_push);
-                    }else{
-                        console.log(data);
-                    }
-                });
                 res.send('success');
                 DB_handler.disconnectDB(con);
             }
@@ -566,7 +570,7 @@ function rejectRequest(req, res){
         con.query(query_rejectApply, function(err, response){
             if(err){
                 res.send('failed');
-                console.log('DB update ERROR in "hardware_handler.js -> approveRequest"');
+                console.log('DB update ERROR in "hardware_handler.js -> rejectRequest_2"');
                 DB_handler.disconnectDB(con);
             }else{
                 util.sendList(userIdlist, '하드웨어 구매거절', util.pushContents.h_rejectApply, function(err_push, data){
