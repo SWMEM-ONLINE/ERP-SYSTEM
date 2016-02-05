@@ -33,7 +33,7 @@ $(document).ready(function() {
 
         },
         eventClick: function(calEvent, jsEvent, view) {
-            clickEvent(calEvent, jsEvent, view);
+            EventClick(calEvent, jsEvent, view);
         },
         eventDrop: function(event, delta, revertFunc) {
             dropDuty(event, delta, revertFunc);
@@ -72,14 +72,76 @@ function DateClick(date, jsEvent, view) {
     console.log(jsEvent);
     console.log(view);
 
+    var sendData={};
+
+    sendData.date = date.format();
+
+    $.post("/duty/loadSpecificDuty",sendData, function(res){
+
+        console.log(res);
+
+
+        //if(res == "success"){
+        //    toastr['success']('당직 변경 성공');
+        //
+        //    if(event.mode == 1){
+        //        event.textColor= 'black';
+        //        event.mode = 0;
+        //    }else{
+        //        event.textColor= '#EF6C00';
+        //        event.mode = 1;
+        //    }
+        //    $('#calendar').fullCalendar( 'rerenderEvents' );
+        //
+        //}else if(res == "empty"){
+        //    toastr['error']('당직이 비어있습니다.');
+        //
+        //}else if(res == "notEnough"){
+        //    toastr['error']('벌당직이 모자랍니다!');
+        //}
+        //else {
+        //    toastr['error']('당직 변경 실패');
+        //}
+    });
+
+
 }
 
-function clickEvent(calEvent, jsEvent, view){
-    console.log(calEvent);
-    console.log(jsEvent);
-    console.log(view);
+function EventClick(event, jsEvent, view){
 
-    toastr['success'](calEvent.user_id);
+    var sendData={};
+    sendData.id = event.user_id;
+    sendData.mode = event.mode;
+    sendData.toDate =event.start.format();
+
+    console.log(sendData);
+
+
+    $.post("/duty/changeDutyMode",sendData, function(res){
+        console.log(res);
+
+        if(res == "success"){
+            toastr['success']('당직 변경 성공');
+
+            if(event.mode == 1){
+                event.textColor= 'black';
+                event.mode = 0;
+            }else{
+                event.textColor= '#EF6C00';
+                event.mode = 1;
+            }
+            $('#calendar').fullCalendar( 'rerenderEvents' );
+
+        }else if(res == "empty"){
+            toastr['error']('당직이 비어있습니다.');
+
+        }else if(res == "notEnough"){
+            toastr['error']('벌당직이 모자랍니다!');
+        }
+        else {
+            toastr['error']('당직 변경 실패');
+        }
+    })
 
 }
 

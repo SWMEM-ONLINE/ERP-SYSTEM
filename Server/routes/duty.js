@@ -156,6 +156,13 @@ router.post('/getAllPointHistory', util.ensureAuthenticated, function(req, res){
 router.post('/moveDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.moveDuty(req,res);
 });
+router.post('/changeDutyMode', util.ensureAuthenticated, function(req, res){
+    duty_handler.changeDutyMode(req,res);
+});
+
+router.post('/loadSpecificDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.loadSpecificDuty(req,res);
+});
 
 
 /**

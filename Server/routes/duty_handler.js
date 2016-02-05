@@ -11,6 +11,222 @@
 var util = require('./util');
 var DB_handler = require('./DB_handler');
 
+function loadSpecificDuty(req,res){
+
+    var con = DB_handler.connectDB();
+
+
+    var date = new Date(req.body.date);
+
+    console.log(date);
+
+    var query = "SELECT * FROM swmem.t_duty WHERE " +
+    "year(date) = "+ (date.getFullYear())+ " " +
+    "and month(date) = "+(date.getMonth()+1)+" " +
+    "and dayofmonth(date) = " +(date.getDate()) + ";";
+
+    con.query(query, function(err, response) {
+        if(err){
+            res.send("error");
+            console.log(err);
+        }else{
+            if(response.length==0){
+                res.send("empty");
+            }
+            else{
+                res.send(response);
+            }
+        }
+
+    });
+
+
+
+    //DB_handler.disconnectDB(con);
+}
+
+
+function changeDutyMode(req,res){
+    var con = DB_handler.connectDB();
+
+    var request = {
+        id : req.body.id,
+        mode : req.body.mode,
+        toDate : new Date(req.body.toDate)
+    };
+
+    console.log(request);
+    isBadorNormal(con,request,function(result){
+        console.log(result);
+
+        if(result == "normal"){
+            noremalToBad(con,request,function(result){
+                res.send(result);
+                DB_handler.disconnectDB(con);
+            });
+        }
+        else if(result == "bad"){
+            badToNormal(con,request,function(result){
+                res.send(result);
+                DB_handler.disconnectDB(con);
+            });
+        }
+        else{
+            res.send(result);
+            DB_handler.disconnectDB(con);
+        }
+
+
+
+    });
+
+}
+
+function isBadorNormal(con,request,callback){
+
+
+    var query = "SELECT * FROM swmem.t_duty WHERE " +
+        "year(date) = "+request.toDate.getFullYear()+" and " +
+        "month(date) = " +(request.toDate.getMonth() + 1) + " and " +
+        "dayofmonth(date) = "+ request.toDate.getDate() +";";
+
+    con.query(query, function(err, response) {
+        if(err){
+            callback("error");
+        }else{
+            if(response.length == 0){
+                callback("empty");
+            }else{
+
+                var data = response[0];
+                console.log(data);
+                var flag = null;
+                for(var i=1;i<=4;i++){
+                    var user = "user_id" + i;
+                    var mode = "user" + i + "_mode";
+                    if(data[user] == request.id){
+                        flag = data[mode];
+                        request.index = i;
+                        break;
+                    }
+
+                }
+                if(flag == 0){
+                    callback("normal");
+                }else if(flag == 1){
+                    callback("bad");
+                }
+                else{
+                    callback("error");
+                }
+
+            }
+        }
+
+    });
+
+}
+
+function noremalToBad(con,request,callback){
+
+    var query = "SELECT * FROM swmem.t_user WHERE " +
+        "u_id = '" +request.id+"';";
+    console.log(query);
+
+    con.query(query, function(err, response) {
+
+        if(err){
+            console.log(err);
+            callback("error");
+        }else{
+            if(response.length == 0){
+                callback("empty");
+            }else{
+
+                var data = response[0];
+                var badPoint = data.u_bad_duty_point;
+                var managerBadPoint = data.u_manager_bad_duty_point;
+
+                if(managerBadPoint ==0 && badPoint ==0){
+                    console.log("notEnough");
+                    callback("notEnough");
+                }else if(managerBadPoint >0){
+                    var managerQuery =
+                        "UPDATE `swmem`.`t_duty` SET `user"+request.index+"_mode`='1' " +
+                        "WHERE year(date) = "+request.toDate.getFullYear()+" and " +
+                        "month(date) = " +(request.toDate.getMonth() + 1) + " and " +
+                        "dayofmonth(date) = "+ request.toDate.getDate() +";";
+
+                    managerQuery += "update t_user set u_manager_bad_duty_point = u_manager_bad_duty_point -1 " +
+                        "WHERE u_id = '" + request.id + "';";
+
+                    console.log(managerQuery);
+                    con.query(managerQuery, function(err, response) {
+                        if(err){
+                            console.log(err);
+                            callback("error");
+                        }else{
+                            console.log(response);
+                            callback("success");
+                        }
+                    });
+
+
+
+                }else if(badPoint>0){
+                    var badQuery =
+                        "UPDATE `swmem`.`t_duty` SET `user"+request.index+"_mode`='1' " +
+                        "WHERE year(date) = "+request.toDate.getFullYear()+" and " +
+                        "month(date) = " +(request.toDate.getMonth() + 1) + " and " +
+                        "dayofmonth(date) = "+ request.toDate.getDate() +";";
+
+                    badQuery += "update t_user set u_bad_duty_point = u_bad_duty_point -1 " +
+                        "WHERE u_id = '" + request.id + "';";
+
+                    console.log(badQuery);
+                    con.query(badQuery, function(err, response) {
+                        if(err){
+                            console.log(err);
+                            callback("error");
+                        }else{
+                            console.log(response);
+                            callback("success");
+                        }
+                    });
+                }else{
+                    callback("error");
+                }
+
+            }
+        }
+
+    });
+
+}
+
+function badToNormal(con,request,callback){
+
+    var query =
+        "UPDATE `swmem`.`t_duty` SET `user"+request.index+"_mode`='0' " +
+        "WHERE year(date) = "+request.toDate.getFullYear()+" and " +
+        "month(date) = " +(request.toDate.getMonth() + 1) + " and " +
+        "dayofmonth(date) = "+ request.toDate.getDate() +";";
+
+    query += "update t_user set u_manager_bad_duty_point = u_bad_duty_point + 1 " +
+        "WHERE u_id = '" + request.id + "';";
+
+    con.query(query, function(err, response) {
+        if(err){
+            console.log(err);
+            callback("error");
+        }else{
+            console.log(response);
+            callback("success");
+        }
+    });
+
+
+}
 
 
 function moveDuty(req,res){
@@ -43,26 +259,26 @@ function moveDuty(req,res){
                         if(result == "insert"){
 
                             res.send("success");
+                            DB_handler.disconnectDB(con);
                         }else{
                             res.send(result);
+                            DB_handler.disconnectDB(con);
                         }
                     });
                 }
                 else{
                     res.send(result);
+                    DB_handler.disconnectDB(con);
                 }
             });
         }else{
             res.send(result);
+            DB_handler.disconnectDB(con);
         }
     })
 
 
 }
-
-
-
-
 
 function deleteDuty(con,request,callback){
 
@@ -197,7 +413,6 @@ function insertDuty(con,request,callback){
     });
 }
 
-
 function isMovePossible(con,request,callback){
 
     var query = "SELECT * FROM swmem.t_duty WHERE " +
@@ -240,7 +455,6 @@ function isMovePossible(con,request,callback){
     });
 
 }
-
 
 
 function getAllPointHistory(req,res){
@@ -1666,8 +1880,10 @@ function loadDuty(req,res){
     var month = req.body.month;
     var date = req.body.date;
 
-    var loadDutyQuery = "select * from swmem.t_duty where month(date)= " + month + " and year(date) = " + year + " and dayofmonth(date) = " + date;
-
+    var loadDutyQuery = "select * from swmem.t_duty " +
+        "where month(date)= " + month + " and " +
+        "year(date) = " + year + " and " +
+        "dayofmonth(date) = " + date;
 
 
     console.log(loadDutyQuery);
@@ -2395,3 +2611,5 @@ exports.initLastDuty = initLastDuty;
 exports.getAllPoint = getAllPoint;
 exports.getAllPointHistory = getAllPointHistory;
 exports.moveDuty = moveDuty;
+exports.changeDutyMode = changeDutyMode;
+exports.loadSpecificDuty = loadSpecificDuty;
