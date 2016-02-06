@@ -86,7 +86,6 @@ function loadNormalCheckList(){
 
 
 
-
 function addClickEvent(){
 
     $('tbody tr').unbind().click(function(){

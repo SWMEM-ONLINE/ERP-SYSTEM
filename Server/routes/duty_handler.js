@@ -11,6 +11,8 @@
 var util = require('./util');
 var DB_handler = require('./DB_handler');
 
+
+
 function loadSpecificDuty(req,res){
 
     var con = DB_handler.connectDB();
@@ -20,10 +22,12 @@ function loadSpecificDuty(req,res){
 
     console.log(date);
 
-    var query = "SELECT * FROM swmem.t_duty WHERE " +
+    var query = "SELECT * ,(SELECT u_name from swmem.t_user WHERE u_id = user_id1) username1 ,(SELECT u_name from swmem.t_user WHERE u_id = user_id2) username2 ,(SELECT u_name from swmem.t_user WHERE u_id = user_id3) username3,(SELECT u_name from swmem.t_user WHERE u_id = user_id4) username4 from swmem.t_duty WHERE " +
     "year(date) = "+ (date.getFullYear())+ " " +
     "and month(date) = "+(date.getMonth()+1)+" " +
     "and dayofmonth(date) = " +(date.getDate()) + ";";
+
+    console.log(query);
 
     con.query(query, function(err, response) {
         if(err){
@@ -1967,6 +1971,7 @@ function getName( req, res ){
     var con = DB_handler.connectDB();
 
     var id = req.body.id;
+
 
     var getNameQuery = " select u_name from t_user where u_id = '" + id + "';";
 

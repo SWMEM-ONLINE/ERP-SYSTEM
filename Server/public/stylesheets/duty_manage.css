@@ -7,9 +7,18 @@ div.content input{
 }
 
 p.blur{
-    color: black;
+    color: darkgray;
 }
 
 div#all{
     margin-bottom:20px;
+}
+
+.delete{
+    background-color: red;
+}
+
+.add{
+    background-color: #009926;
+
 }

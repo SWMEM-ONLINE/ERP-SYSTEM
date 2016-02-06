@@ -18,6 +18,38 @@ block content
                 input.datepicker(type='text', placeholder='월 선택' readonly='readonly')
                 div#all
                     #calendar.text-center
+
+            .modal.fade
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            h4.modal-title 당직 수정
+
+                        .modal-body
+                            h5 날짜
+                            #date
+
+                            #empty.hidden
+                                p.blur 당직을 생성할시 모든 당직을 수동으로 설정해야 합니다.
+                                button.btn(type='button') 당직 생성
+
+                            #duties.hidden
+                                table.table
+                                    thead
+                                        tr
+                                            th 당직구분
+                                            th 당직자
+                                            th 삭제
+                                    tbody#tbody
+
+
+
+
+                        .modal-footer
+                            //button#modify.btn(type='button') 수정
+                            //button#cancel.btn(type='button') 삭제
+                            button.btn(type='button', data-dismiss='modal') 닫기
+
 append script
     script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')

@@ -51,12 +51,12 @@ $('.datepicker').datepicker({
     autoclose: true
 });
 
+var memberList = null;
 var currentDate = new Date();
 var prevEvent = null;
 $('.datepicker').on('changeDate',function(event){
     var year = event.date.getFullYear();
     var month = event.date.getMonth() + 1;
-
 
     allDuty(year,month);
 
@@ -65,12 +65,12 @@ $('.datepicker').on('changeDate',function(event){
 
 allDuty(new Date().getFullYear(), new Date().getMonth()+1);
 
+getMember(function (result){
+    memberList = result;
+});
 
 function DateClick(date, jsEvent, view) {
 
-    console.log(date);
-    console.log(jsEvent);
-    console.log(view);
 
     var sendData={};
 
@@ -80,32 +80,139 @@ function DateClick(date, jsEvent, view) {
 
         console.log(res);
 
+        if(res == "empty"){
+            init();
+            emptyDuty(res);
 
-        //if(res == "success"){
-        //    toastr['success']('당직 변경 성공');
-        //
-        //    if(event.mode == 1){
-        //        event.textColor= 'black';
-        //        event.mode = 0;
-        //    }else{
-        //        event.textColor= '#EF6C00';
-        //        event.mode = 1;
-        //    }
-        //    $('#calendar').fullCalendar( 'rerenderEvents' );
-        //
-        //}else if(res == "empty"){
-        //    toastr['error']('당직이 비어있습니다.');
-        //
-        //}else if(res == "notEnough"){
-        //    toastr['error']('벌당직이 모자랍니다!');
-        //}
-        //else {
-        //    toastr['error']('당직 변경 실패');
-        //}
+
+        }else if(res == "error"){
+            toastr['error']('당직 조회 실패');
+        }
+        else{
+            init();
+            hasDuty(res);
+        }
     });
 
 
 }
+
+function init(){
+    $("#empty").addClass("hidden");
+    $("#duties").addClass("hidden");
+
+}
+
+function emptyDuty(res){
+    $("#empty").removeClass("hidden");
+
+    var htmlString = "";
+
+    htmlString += "<h3>당직이 존재하지 않습니다.</h3>";
+
+
+
+    $('div.modal').modal();
+
+}
+
+function hasDuty(res){
+    $("#duties").removeClass("hidden");
+
+    var data = res[0];
+    var date = new Date(data.date);
+    $("#date").html( date.getFullYear() +  "년 " + (date.getMonth()+1) + "월 "
+    + date.getDate() +"일" );
+
+    console.log(data);
+
+    var htmlString = "";
+
+
+    for(var i=1;i<=4;i++){
+        var name = "username"+ i;
+        var mode = "user"+i+"_mode";
+
+
+        if(data[name] != null){
+
+            htmlString += "<tr>";
+
+            if(data[mode] == 0 ){
+                htmlString += "<td style='color :#009926'>";
+                htmlString +=  "일반당직";
+            }else if (data[mode] == 1){
+                htmlString += "<td style='color : #8B0000'>";
+                htmlString += "벌당직";
+            }else if(data[mode] ==2){
+                htmlString += "<td style='color : #8B0000'>";
+                htmlString += "운영실벌당직";
+            }
+
+            htmlString += "</td>";
+            htmlString += "<td>";
+            htmlString += data[name];
+            htmlString += "</td>";
+            htmlString += "<td >";
+            htmlString += "<button index='"+i+"' id='delete" + i + "' type='button' class ='delete'> 삭제 </buttontype>";
+            htmlString += "</td>";
+            htmlString += "</tr>";
+
+
+        }
+        else{
+
+            htmlString += "<tr>";
+            htmlString += "<td colspan='3'>";
+            htmlString += "<button index='"+i+"' type='button' class ='add'> 추가 </button>";
+            htmlString += "</td>";
+            htmlString += "</tr>";
+
+        }
+    }
+
+
+    $("#tbody").html(htmlString);
+
+
+    // click Event
+
+    for( var i=1;i<=4;i++){
+         name = "username"+ i;
+
+
+        if(data[name] != null){
+
+            $("#delete"+ i ).click(function(){
+                var index = $(this).attr('index');
+                console.log(index);
+            });
+
+        }
+    }
+
+    $('button.add').unbind().click(function(){
+        var index = $(this).attr('index');
+        console.log(index);
+
+    });
+
+    $('div.modal').modal();
+
+}
+
+
+function getMember(callback){
+
+    $.post("/duty/getMemberList", function(res){
+
+        console.log(res);
+        callback(res);
+
+    });
+}
+
+
 
 function EventClick(event, jsEvent, view){
 
