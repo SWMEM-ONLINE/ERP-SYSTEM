@@ -2859,7 +2859,7 @@ function getUser( req, res){
     var id = req.session.passport.user.id;
     var name = req.session.passport.user.name;
 
-    var query = 'SELECT u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point FROM swmem.t_user where u_id = "'+ id + '";';
+    var query = "SELECT u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point FROM swmem.t_user where u_id = '" + id + "';";
     con.query(query, function(err, response){
 
         if(err){
