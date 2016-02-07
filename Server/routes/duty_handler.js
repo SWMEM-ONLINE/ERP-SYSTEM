@@ -1228,8 +1228,8 @@ function pointSort(data){
  * @param memberList    정회원리스트
  * @param memberList2   정회원 + 자치회의 벌당직회원리스트
  * @param dutyList      생성된 날짜별로 존재하는 당직객체
- * @param duty_count
- * @param bad_duty_count
+ * @param duty_count    선택된 총 당직 수
+ * @param bad_duty_count    벌당직 숫자
  * @returns {*}
  */
 function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_count){
@@ -1238,7 +1238,6 @@ function generateDuty(memberList,memberList2, dutyList, duty_count , bad_duty_co
     var member;
     var duty;
     var bad_duty_list = [];
-
 
     /*
      memberList2를 활용해 bad_duty_list를 만든다
