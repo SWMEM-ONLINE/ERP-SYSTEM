@@ -986,12 +986,12 @@ function getAllPoint(req,res){
                             if(receive_id == memberList[j].u_id){
 
                                 if(mode ==0){
-                                    memberList[i].good_point += point;
+                                    memberList[j].good_point += point;
                                 }else if(mode ==1){
-                                    memberList[i].bad_point += point;
+                                    memberList[j].bad_point += point;
 
                                 }else{
-                                    memberList[i].manager_bad_point += point;
+                                    memberList[j].manager_bad_point += point;
                                 }
                                 break;
                             }
