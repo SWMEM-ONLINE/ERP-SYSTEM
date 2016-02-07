@@ -208,7 +208,7 @@ function emptyDuty(date_format){
                     if(res == "success"){
                         toastr['success']('당직 생성 성공');
                         $('div.modal').modal('hide');
-                        allDuty(sendData.date.getFullYear(), sendData.date.getMonth()+1);
+                        allDuty(currentYear, currentMonth);
                         $('#calendar').fullCalendar( 'rerenderEvents' );
 
                     }else{
@@ -290,7 +290,7 @@ function addDuty(sendData){
                 if(res== "success"){
                     toastr['success']('당직 추가 성공');
                     $('div.modal').modal('hide');
-                    allDuty(sendData.date.getFullYear(), sendData.date.getMonth()+1);
+                    allDuty(currentYear, currentMonth);
                     $('#calendar').fullCalendar( 'rerenderEvents' );
                     $('#member_button').html("회원");
                     $('#mode_button').html("구분");
@@ -389,7 +389,7 @@ function hasDuty(res){
 
                     if(res== "delete"){
                         toastr['success']('당직 삭제 성공');
-                        allDuty(date.getFullYear(), date.getMonth()+1);
+                        allDuty(currentYear, currentMonth);
                         $('div.modal').modal('hide');
                         $('#calendar').fullCalendar( 'rerenderEvents' );
 
