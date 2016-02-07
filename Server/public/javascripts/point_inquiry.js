@@ -92,7 +92,7 @@ function getAllPoint(year, month){
 
     $('.datepicker').val(year+"년 "+ month+"월");
 
-    $.post('/duty/getAllPoint', function(res){
+    $.post('/duty/getAllPoint', sendData ,function(res){
         //console.log(res);
         generateAllHtml(res);
     });
@@ -132,18 +132,18 @@ function generateAllHtml(response){
             htmlString += "</td>";
 
             htmlString += "<td>";
-            htmlString +=  "" + data.u_good_duty_point;
+            htmlString +=  "" + data.good_point;
             htmlString += "</td>";
 
             htmlString += "<td>";
-            htmlString +=  "" + data.u_bad_duty_point;
+            htmlString +=  "" + data.bad_point;
             htmlString += "</td>";
 
             htmlString += "<td>";
-            htmlString +=  "" + data.u_manager_bad_duty_point;
+            htmlString +=  "" + data.manager_bad_point;
             htmlString += "</td>";
 
-            sum = data.u_good_duty_point - data.u_bad_duty_point - data.u_manager_bad_duty_point;
+            sum = data.good_point - data.bad_point - data.manager_bad_point;
 
 
             htmlString += "<td>";

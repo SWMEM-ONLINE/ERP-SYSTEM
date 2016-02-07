@@ -194,16 +194,30 @@ function emptyDuty(date_format){
 
     var sendData={};
     sendData.date = date;
+    sendData.year = sendData.date.getFullYear();
+    sendData.month = sendData.date.getMonth()+1;
+    sendData.accept = 1;
 
     $("#createButton").unbind().click(function(){
 
         $.post("/duty/createMonthDuty", sendData, function(res){
             console.log(res);
             if(res== "success"){
-                toastr['success']('당직 생성 성공');
-                $('div.modal').modal('hide');
-                allDuty(sendData.date.getFullYear(), sendData.date.getMonth()+1);
-                $('#calendar').fullCalendar( 'rerenderEvents' );
+
+                $.post("/duty/setAccept", sendData, function(res){
+                    if(res == "success"){
+                        toastr['success']('당직 생성 성공');
+                        $('div.modal').modal('hide');
+                        allDuty(sendData.date.getFullYear(), sendData.date.getMonth()+1);
+                        $('#calendar').fullCalendar( 'rerenderEvents' );
+
+                    }else{
+                        toastr['error']('당직 설정 에러');
+
+                    }
+                });
+
+
             }else if(res == "notEnough"){
                 toastr['warning']('벌당직이 모자랍니다!');
             }else{

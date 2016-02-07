@@ -12,6 +12,35 @@ var util = require('./util');
 var DB_handler = require('./DB_handler');
 
 
+function setAccept(req,res){
+
+    var con = DB_handler.connectDB();
+
+    var request ={};
+    request.accept = req.body.accept;
+    request.year = req.body.year;
+    request.month = req.body.month;
+
+    var query = "update t_duty_point_history set " +
+        "accept = " + request.accept +" " +
+        "where month(add_time)= " + request.month + " and " +
+        "year(add_time) = " + request.year + ";";
+
+    con.query(query,function(err,response){
+
+        if(err){
+            console.log(err);
+            res.send("error");
+            DB_handler.disconnectDB(con);
+
+        }else{
+            res.send("success");
+            DB_handler.disconnectDB(con);
+        }
+    });
+}
+
+
 function deleteAllDuty(req,res){
 
     var con = DB_handler.connectDB();
@@ -32,6 +61,9 @@ function deleteAllDuty(req,res){
     con.query(query,function(err,response){
         if(err){
             console.log(err);
+            res.send("error");
+            DB_handler.disconnectDB(con);
+
         }else{
 
 
@@ -75,9 +107,13 @@ function deleteAllDuty(req,res){
                 if(err){
                     console.log(err);
                     res.send("error");
+                    DB_handler.disconnectDB(con);
+
                 }else{
                     console.log(response);
                     res.send("success");
+                    DB_handler.disconnectDB(con);
+
                 }
             });
 
@@ -896,7 +932,11 @@ function getAllPointHistory(req,res){
 function getAllPoint(req,res){
 
     var con = DB_handler.connectDB();
-    var query = "select u_id, u_name, u_period, u_good_duty_point, u_bad_duty_point, u_manager_bad_duty_point,u_last_duty from swmem.t_user where (u_state <= 100 and u_state > 1) order by u_period , u_name;";
+
+    var year = req.body.year;
+    var month = req.body.month;
+    var memberList;
+    var query = "select u_id, u_name, u_period, u_last_duty from swmem.t_user where (u_state <= 100 and u_state > 1) order by u_period , u_name;";
 
     console.log(query);
 
@@ -905,18 +945,68 @@ function getAllPoint(req,res){
         if(err){
             console.log(err);
             res.send("error");
+            DB_handler.disconnectDB(con);
         }
         else{
-            console.log(response);
-            res.send(response);
+            memberList = response;
+
+            for(var i=0;i<memberList.length;i++){
+                memberList[i].good_point=0;
+                memberList[i].bad_point=0;
+                memberList[i].manager_bad_point=0;
+            }
+
+            console.log(memberList);
+
+            var getQeury = "select * ,(select u_name from t_user where u_id = receive_user) receive_name, (select u_name from t_user where u_id = send_user) send_name from t_duty_point_history  " +
+                "WHERE month(date) = "+month+" " +
+                "and year(date) = "+year+";";
+
+            console.log(getQeury);
+
+
+            con.query(getQeury,function(err, response) {
+
+                if(err){
+                    console.log(err);
+                    res.send("error");
+                }else{
+                    console.log(response);
+                    var data;
+                    var point;
+                    var mode;
+                    var receive_id;
+                    for(var i=0;i<response.length;i++){
+                        data = response[i];
+                        receive_id = data.receive_user;
+                        mode = data.mode;
+                        point = data.point;
+
+                        for(var j=0;j<memberList.length;j++){
+                            if(receive_id == memberList[j].u_id){
+
+                                if(mode ==0){
+                                    memberList[i].good_point += point;
+                                }else if(mode ==1){
+                                    memberList[i].bad_point += point;
+
+                                }else{
+                                    memberList[i].manager_bad_point += point;
+                                }
+                                break;
+                            }
+
+                        }
+                    }
+
+                    console.log(memberList);
+                    res.send(memberList);
+                    DB_handler.disconnectDB(con);
+                }
+            });
         }
-
-        DB_handler.disconnectDB(con);
-
-
     });
 }
-
 
 
 function initLastDuty(req,res){
@@ -2476,7 +2566,8 @@ function getAddPoint(req,res){
     var query = "SELECT * ,(select u_name from t_user where u_id = receive_user) FROM t_duty_point_history " +
         "where send_user = '"+ send_id  +"'  " +
     " and month(t_duty_point_history.date) = " + month +
-    " and year(t_duty_point_history.date) = "+ year +";";
+    " and year(t_duty_point_history.date) = "+ year +"" +
+        " and accept = 0;";
 
 
     console.log(query);
@@ -2943,3 +3034,4 @@ exports.deleteDutyHandler = deleteDutyHandler;
 exports.insertDutyhandler = insertDutyhandler;
 exports.createMonthDuty = createMonthDuty;
 exports.deleteAllDuty = deleteAllDuty;
+exports.setAccept = setAccept;

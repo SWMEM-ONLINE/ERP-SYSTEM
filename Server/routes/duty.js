@@ -181,6 +181,10 @@ router.post('/deleteAllDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.deleteAllDuty(req,res);
 });
 
+router.post('/setAccept', util.ensureAuthenticated, function(req, res){
+    duty_handler.setAccept(req,res);
+});
+
 
 /**
  *  checkList handle

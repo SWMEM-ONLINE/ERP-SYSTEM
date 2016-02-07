@@ -247,6 +247,7 @@ CREATE TABLE t_fee ( f_id int NOT NULL auto_increment primary key,
     `point` tinyint(4) NOT NULL,
     `reason` varchar(250) NOT NULL,
     `index` int(20) NOT NULL AUTO_INCREMENT,
+    `accept` int(20) NOT NULL DEFAULT 0,
     FOREIGN KEY(receive_user) REFERENCES t_user(u_id),
     FOREIGN KEY(send_user) REFERENCES t_user(u_id),
     PRIMARY KEY (`index`)

@@ -76,6 +76,7 @@ $("#setting").unbind().click(function (){
     sendData.bad_duty_count = bad_duty_count;
     sendData.year = year;
     sendData.month = month;
+    sendData.accept = 1;
     console.log(sendData);
 
     toastr['warning']('잠시 기다려주십시오.');
@@ -91,9 +92,18 @@ $("#setting").unbind().click(function (){
                         $.post("/duty/autoMakeDuty", sendData, function(res){
 
                             if(res == "success"){
-                                toastr['success']('당직 설정 완료');
 
-                                setTimeout('redirectToManage()', 500);
+                                $.post("/duty/setAccept", sendData, function(res){
+                                    if(res == "success"){
+
+                                        toastr['success']('당직 설정 완료');
+                                        setTimeout('redirectToManage()', 500);
+
+                                    }else{
+                                        toastr['error']('당직 설정 에러');
+
+                                    }
+                                });
 
                             }
                             else{
