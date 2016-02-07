@@ -18,7 +18,7 @@ $('.datepicker').datepicker({
     keyboardNavigation : false,
     todayHighlight: true,
     startView: 1,
-    endDate: '+5d',
+    endDate: '+7d',
     autoclose: true
 });
 

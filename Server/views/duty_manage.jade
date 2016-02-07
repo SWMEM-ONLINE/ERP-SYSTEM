@@ -19,6 +19,9 @@ block content
                 div#all
                     #calendar.text-center
 
+                button#deleteAllButton.btn.deleteButton(type='button') 당직 전체 삭제
+                p.blur 당직 전체 삭제시 존재하는 벌당직은 모두 운영실 벌당직으로 추가됩니다.
+
             .modal.fade
                 .modal-dialog
                     .modal-content
@@ -26,12 +29,12 @@ block content
                             h4.modal-title 당직 수정
 
                         .modal-body
-                            h5 날짜
+                            h4 날짜
                             #date
 
                             #empty.hidden
-                                p.blur 당직을 생성할시 모든 당직을 수동으로 설정해야 합니다.
-                                button.btn(type='button') 당직 생성
+                                p.blur 주의! 당직을 생성할시 그 달의 모든 당직을 수동으로 설정해야 합니다.
+                                button#createButton.btn(type='button') 당직 생성
 
                             #duties.hidden
                                 table.table
@@ -43,11 +46,31 @@ block content
                                     tbody#tbody
 
 
+                            #addDuty.hidden
+                                table.table
+                                    thead
+                                        tr
+                                            th 회원
+                                            th 모드
+                                    tbody
+                                        tr
+                                            td
+                                                .btn-group
+                                                    button#member_button.btn.dropdown-toggle(data-toggle='dropdown') 회원
+                                                    ul#member_dropdown.dropdown-menu
 
+
+                                            td
+                                                .btn-group
+                                                    button#mode_button.btn.dropdown-toggle(data-toggle='dropdown') 구분
+                                                    ul#mode_dropdown.dropdown-menu
+                                                        li
+                                                            a(href='#') 일반당직
+                                                        li
+                                                            a(href='#') 벌당직
 
                         .modal-footer
-                            //button#modify.btn(type='button') 수정
-                            //button#cancel.btn(type='button') 삭제
+                            button#addButton.hidden.btn(type='button') 추가
                             button.btn(type='button', data-dismiss='modal') 닫기
 
 append script

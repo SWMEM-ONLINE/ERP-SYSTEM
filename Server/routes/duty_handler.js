@@ -12,12 +12,338 @@ var util = require('./util');
 var DB_handler = require('./DB_handler');
 
 
+function deleteAllDuty(req,res){
+
+    var con = DB_handler.connectDB();
+
+    var year = req.body.year;
+    var month = req.body.month;
+
+    var query = "select *  from swmem.t_duty where " +
+        "month(date)= "+month+" and " +
+        "year(date) = "+year+";";
+
+    console.log(query);
+
+    var idList = [];
+    var modeList = [];
+
+
+    con.query(query,function(err,response){
+        if(err){
+            console.log(err);
+        }else{
+
+
+            for(var i =0;i<response.length;i++){
+                var data = response[i];
+                //console.log(data);
+
+
+                for(var j=1;j<=4;j++){
+                    var user = "user_id" + j;
+                    var mode = "user" + j + "_mode";
+                    if(data[user] != null){
+                        idList.push(data[user]);
+                        modeList.push(data[mode]);
+                    }
+
+                }
+            }
+
+            console.log(idList);
+            console.log(modeList);
+
+            var addQuery="";
+            var mode;
+            for(var i =0;i<modeList.length;i++){
+                mode = modeList[i];
+
+                if(mode == 1 ){
+                    addQuery+= "update t_user set u_manager_bad_duty_point = u_manager_bad_duty_point + 1 where u_id = '" + idList[i] +"'; ";
+                }
+
+            }
+
+            addQuery+= "delete from swmem.t_duty where " +
+                "month(date)= "+month+" and " +
+                "year(date) = "+year+";";
+
+            console.log(addQuery);
+
+            con.query(addQuery,function(err,response){
+                if(err){
+                    console.log(err);
+                    res.send("error");
+                }else{
+                    console.log(response);
+                    res.send("success");
+                }
+            });
+
+        }
+
+    });
+
+
+}
+
+
+function createMonthDuty(req,res){
+
+    var con = DB_handler.connectDB();
+
+    var year = new Date(req.body.date).getFullYear();
+    var month = (new Date(req.body.date).getMonth()+1);
+    if(month<10){
+        month = "0"+month;
+    }
+
+    var len = numberOfDays(year, month);
+
+    var query = "";
+    var date;
+    for(var i = 1 ; i <= len ; i++){
+
+        date = i;
+        if(i<10){
+            date = "0"+i;
+        }
+
+        query+="INSERT INTO `swmem`.`t_duty` (`date`) VALUES ('"+year+"-"+month+"-" + date +"');";
+    }
+
+    con.query(query, function(err, response) {
+        if(err){
+            console.log(err);
+            res.send("error");
+        }else{
+            console.log(response);
+            res.send("success");
+        }
+
+        DB_handler.disconnectDB(con);
+
+    });
+
+
+
+}
+
+
+function insertDutyhandler(req,res){
+
+    var con = DB_handler.connectDB();
+
+    var request = {
+        id : req.body.id,
+        mode : req.body.mode,
+        index : req.body.index,
+        toDate : new Date(req.body.date)
+    };
+
+    //일반당직
+    if(request.mode == 0 ){
+        insertNormalDuty(con,request,function(result){
+            res.send(result);
+            DB_handler.disconnectDB(con);
+
+        });
+    }
+    //벌당직
+    else if (request.mode == 1){
+        isEnough(con,request,function(result){
+            if(result=="enough"){
+                insertBadDuty(con,request,function(result){
+                    res.send(result);
+                    DB_handler.disconnectDB(con);
+
+                });
+
+            }else if(result =="notEnough"){
+                res.send(result);
+                DB_handler.disconnectDB(con);
+
+            }else{
+                console.log(result);
+                res.send(result);
+                DB_handler.disconnectDB(con);
+
+            }
+        });
+    }
+    //
+    else{
+
+        console.log("unknown Duty");
+        res.send("error");
+        DB_handler.disconnectDB(con);
+
+    }
+
+}
+
+function insertBadDuty(con,request,callback){
+
+
+    var query = "UPDATE `swmem`.`t_duty` " +
+        "SET `user_id"+request.index+"`='"+request.id+"', " +
+        "`user" +request.index +"_mode`='1' " +
+        "WHERE year(date) = "+request.toDate.getFullYear()+" and " +
+        "month(date) = " +(request.toDate.getMonth() + 1) + " and " +
+        "dayofmonth(date) = "+ request.toDate.getDate() +";";
+
+
+    // 운영실 벌당직
+    if(request.badFlag == 0) {
+        query += "update t_user set u_manager_bad_duty_point = u_manager_bad_duty_point -1 " +
+            "WHERE u_id = '" + request.id + "';";
+    }else if(request.badFlag ==1){
+        query += "update t_user set u_bad_duty_point = u_bad_duty_point -1 " +
+            "WHERE u_id = '" + request.id + "';";
+    }else{
+
+    }
+
+    console.log(query);
+    con.query(query, function(err, response) {
+        if(err){
+            console.log(err);
+            callback("error");
+        }else{
+            console.log(response);
+            callback("success");
+        }
+    });
+
+
+}
+
+function insertNormalDuty(con,request,callback){
+
+    var query = "UPDATE `swmem`.`t_duty` " +
+        "SET `user_id"+request.index+"`='"+request.id+"', " +
+        "`user" +request.index +"_mode`='1' " +
+        "WHERE year(date) = "+request.toDate.getFullYear()+" and " +
+        "month(date) = " +(request.toDate.getMonth() + 1) + " and " +
+        "dayofmonth(date) = "+ request.toDate.getDate() +";";
+
+    console.log(query);
+    con.query(query, function(err, response) {
+        if(err){
+            console.log(err);
+            callback("error");
+        }else{
+            console.log(response);
+            callback("success");
+        }
+    });
+}
+
+
+
+
+
+function isEnough(con,request,callback){
+
+    var query = "SELECT * FROM swmem.t_user WHERE " +
+        "u_id = '" +request.id+"';";
+    console.log(query);
+
+    con.query(query, function(err, response) {
+
+        if(err){
+            console.log(err);
+            callback("error");
+        }else{
+            if(response.length == 0){
+                callback("empty");
+            }else{
+
+                var data = response[0];
+                var badPoint = data.u_bad_duty_point;
+                var managerBadPoint = data.u_manager_bad_duty_point;
+
+                if(managerBadPoint ==0 && badPoint ==0){
+                    console.log("notEnough");
+                    callback("notEnough");
+                }else if(managerBadPoint >0){
+                    request.badFlag = 0;
+                    console.log("enough");
+                    callback("enough");
+
+                }else if(badPoint>0){
+                    request.badFlag = 1;
+                    console.log("enough");
+                    callback("enough");
+
+                }else{
+                    callback("error");
+                }
+
+            }
+        }
+
+    });
+}
+
+
+
+
+function deleteDutyHandler(req,res){
+
+
+    var con = DB_handler.connectDB();
+
+    var request = {
+        id : req.body.id,
+        mode : req.body.mode,
+        fromDate : new Date(req.body.date)
+    };
+
+
+    if(request.mode ==0){
+        deleteDuty(con,request,function(result){
+
+            res.send(result);
+            DB_handler.disconnectDB(con);
+
+        });
+    }
+
+    else if(request.mode == 1){
+
+        var query  =  "update t_user set u_manager_bad_duty_point = u_bad_duty_point + 1 " +
+            "WHERE u_id = '" + request.id + "';";
+
+        con.query(query,function(err,response){
+            if(err){
+                res.send("error");
+                console.log(err);
+                DB_handler.disconnectDB(con);
+            }else{
+                deleteDuty(con,request,function(result){
+
+                    res.send(result);
+                    DB_handler.disconnectDB(con);
+
+                });
+
+            }
+        });
+
+
+    }else{
+        console.log("unknown Mode");
+        res.send("error");
+        DB_handler.disconnectDB(con);
+    }
+}
+
 
 function loadSpecificDuty(req,res){
 
     var con = DB_handler.connectDB();
-
-
     var date = new Date(req.body.date);
 
     console.log(date);
@@ -41,12 +367,9 @@ function loadSpecificDuty(req,res){
                 res.send(response);
             }
         }
-
+        DB_handler.disconnectDB(con);
     });
 
-
-
-    //DB_handler.disconnectDB(con);
 }
 
 
@@ -79,8 +402,6 @@ function changeDutyMode(req,res){
             res.send(result);
             DB_handler.disconnectDB(con);
         }
-
-
 
     });
 
@@ -2618,3 +2939,7 @@ exports.getAllPointHistory = getAllPointHistory;
 exports.moveDuty = moveDuty;
 exports.changeDutyMode = changeDutyMode;
 exports.loadSpecificDuty = loadSpecificDuty;
+exports.deleteDutyHandler = deleteDutyHandler;
+exports.insertDutyhandler = insertDutyhandler;
+exports.createMonthDuty = createMonthDuty;
+exports.deleteAllDuty = deleteAllDuty;

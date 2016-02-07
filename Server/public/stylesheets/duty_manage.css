@@ -8,6 +8,7 @@ div.content input{
 
 p.blur{
     color: darkgray;
+    font-size: 14px;
 }
 
 div#all{
@@ -21,4 +22,10 @@ div#all{
 .add{
     background-color: #009926;
 
+}
+
+
+.deleteButton{
+    background-color: red;
+    margin-bottom:10px
 }

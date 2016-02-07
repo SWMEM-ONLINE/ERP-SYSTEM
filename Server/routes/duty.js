@@ -164,6 +164,23 @@ router.post('/loadSpecificDuty', util.ensureAuthenticated, function(req, res){
     duty_handler.loadSpecificDuty(req,res);
 });
 
+router.post('/deleteDutyHandler', util.ensureAuthenticated, function(req, res){
+    duty_handler.deleteDutyHandler(req,res);
+});
+
+router.post('/insertDutyhandler', util.ensureAuthenticated, function(req, res){
+    duty_handler.insertDutyhandler(req,res);
+});
+
+router.post('/createMonthDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.createMonthDuty(req,res);
+});
+
+
+router.post('/deleteAllDuty', util.ensureAuthenticated, function(req, res){
+    duty_handler.deleteAllDuty(req,res);
+});
+
 
 /**
  *  checkList handle

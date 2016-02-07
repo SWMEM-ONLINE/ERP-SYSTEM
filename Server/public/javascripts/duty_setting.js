@@ -50,6 +50,7 @@ $('.datepicker').datepicker({
     keyboardNavigation : false,
     todayHighlight: true,
     startView: 1,
+    startDate: '+0d',
     endDate: '+7d',
     autoclose: true
 });
@@ -91,6 +92,9 @@ $("#setting").unbind().click(function (){
 
                             if(res == "success"){
                                 toastr['success']('당직 설정 완료');
+
+                                setTimeout('redirectToManage()', 500);
+
                             }
                             else{
                                 toastr['error']('당직 설정 에러');
@@ -126,6 +130,10 @@ $('#bad_duty_count li a').unbind().click(function(){
     isSelected();
 });
 
+function redirectToManage(){
+
+    location.href='/duty/manage';
+}
 
 function isSelected(){
     if(duty_count !=null && bad_duty_count!=null){

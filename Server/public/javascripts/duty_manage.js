@@ -47,27 +47,105 @@ $('.datepicker').datepicker({
     keyboardNavigation : false,
     todayHighlight: true,
     startView: 1,
-    endDate: '+5d',
+    endDate: '+7d',
     autoclose: true
 });
 
 var memberList = null;
 var currentDate = new Date();
 var prevEvent = null;
-$('.datepicker').on('changeDate',function(event){
-    var year = event.date.getFullYear();
-    var month = event.date.getMonth() + 1;
 
-    allDuty(year,month);
+var currentYear = currentDate.getFullYear();
+var currentMonth = currentDate.getMonth()+1;
+
+$('.datepicker').on('changeDate',function(event){
+    currentYear = event.date.getFullYear();
+    currentMonth = event.date.getMonth() + 1;
+
+    allDuty(currentYear,currentMonth);
 
 });
 
 
-allDuty(new Date().getFullYear(), new Date().getMonth()+1);
+allDuty(currentYear, currentMonth);
 
 getMember(function (result){
     memberList = result;
 });
+
+$("#deleteAllButton").unbind().click(function(){
+
+    deleteAllDuty(currentYear,currentMonth);
+
+});
+
+
+
+function deleteAllDuty(year,month){
+
+    var sendData ={};
+    if(month<10){
+        month = "0"+month;
+    }
+
+
+    sendData.year = year;
+    sendData.month = month;
+
+    console.log(sendData);
+
+
+    $.post("/duty/deleteAllDuty",sendData, function(res){
+        console.log(res);
+        if(res == "success") {
+            toastr['success']('전체 당직 삭제 성공');
+            allDuty(year, month);
+
+        }
+        else {
+            toastr['error']('삭제 실패');
+        }
+    })
+}
+
+
+function EventClick(event, jsEvent, view){
+
+    var sendData={};
+    sendData.id = event.user_id;
+    sendData.mode = event.mode;
+    sendData.toDate =event.start.format();
+
+    console.log(sendData);
+
+
+    $.post("/duty/changeDutyMode",sendData, function(res){
+        console.log(res);
+
+        if(res == "success"){
+            toastr['success']('당직 변경 성공');
+
+            if(event.mode == 1){
+                event.textColor= 'black';
+                event.mode = 0;
+            }else{
+                event.textColor= '#EF6C00';
+                event.mode = 1;
+            }
+            $('#calendar').fullCalendar( 'rerenderEvents' );
+
+        }else if(res == "empty"){
+            toastr['error']('당직이 비어있습니다.');
+
+        }else if(res == "notEnough"){
+            toastr['warning']('벌당직이 모자랍니다!');
+        }
+        else {
+            toastr['error']('당직 변경 실패');
+        }
+    })
+
+}
 
 function DateClick(date, jsEvent, view) {
 
@@ -82,8 +160,7 @@ function DateClick(date, jsEvent, view) {
 
         if(res == "empty"){
             init();
-            emptyDuty(res);
-
+            emptyDuty(date.format());
 
         }else if(res == "error"){
             toastr['error']('당직 조회 실패');
@@ -100,21 +177,121 @@ function DateClick(date, jsEvent, view) {
 function init(){
     $("#empty").addClass("hidden");
     $("#duties").addClass("hidden");
-
+    $("#addDuty").addClass("hidden");
+    $("#addButton").addClass("hidden");
 }
 
-function emptyDuty(res){
+
+
+
+function emptyDuty(date_format){
     $("#empty").removeClass("hidden");
 
-    var htmlString = "";
+    var date = new Date(date_format);
 
-    htmlString += "<h3>당직이 존재하지 않습니다.</h3>";
+    $("#date").html( date.getFullYear() +  "년 " + (date.getMonth()+1) + "월 "
+        + date.getDate() +"일" );
+
+    var sendData={};
+    sendData.date = date;
+
+    $("#createButton").unbind().click(function(){
+
+        $.post("/duty/createMonthDuty", sendData, function(res){
+            console.log(res);
+            if(res== "success"){
+                toastr['success']('당직 생성 성공');
+                $('div.modal').modal('hide');
+                allDuty(sendData.date.getFullYear(), sendData.date.getMonth()+1);
+                $('#calendar').fullCalendar( 'rerenderEvents' );
+            }else if(res == "notEnough"){
+                toastr['warning']('벌당직이 모자랍니다!');
+            }else{
+                toastr['error']('당직 생성 실패');
+            }
+
+        })
 
 
+    });
 
     $('div.modal').modal();
 
 }
+
+
+function addDuty(sendData){
+    init();
+    $("#addDuty").removeClass("hidden");
+    $("#addButton").removeClass("hidden");
+
+    var memberFlag = null;
+    var modeFlag = null;
+
+    var htmlString ="";
+    if(memberList != null){
+        for(var i =0 ; i < memberList.length; i++){
+            var member = memberList[i];
+            htmlString+="<li>";
+            htmlString+="<a href='#'>";
+
+            htmlString += member.u_name + " (" + member.u_id +")";
+
+            htmlString+="<a>";
+            htmlString+="</li>";
+
+        }
+    }else{
+        toastr['error']('멤버리스트 생성 실패');
+    }
+
+    $( "#member_dropdown" ).append(htmlString);
+
+
+    $('#mode_dropdown li a').unbind().click(function(){
+        //$('#seriesDropdown').on("hide.bs.dropdown");
+        $('#mode_button').html($(this).html());
+        modeFlag = $(this).parent().index();
+    });
+
+    $('#member_dropdown li a').unbind().click(function(){
+        //$('#seriesDropdown').on("hide.bs.dropdown");
+        $('#member_button').html($(this).html());
+        memberFlag = $(this).parent().index();
+    });
+
+
+    $('button#addButton').unbind().click(function(){
+
+        if(memberFlag ==null || modeFlag == null){
+            toastr['warning']('먼저 대상자 당직을 설정하세요.');
+        }
+        else{
+
+            sendData.id = memberList[memberFlag].u_id;
+            sendData.mode = modeFlag;
+
+            $.post("/duty/insertDutyhandler", sendData, function(res){
+                console.log(res);
+                if(res== "success"){
+                    toastr['success']('당직 추가 성공');
+                    $('div.modal').modal('hide');
+                    allDuty(sendData.date.getFullYear(), sendData.date.getMonth()+1);
+                    $('#calendar').fullCalendar( 'rerenderEvents' );
+                    $('#member_button').html("회원");
+                    $('#mode_button').html("구분");
+
+                }else if(res == "notEnough"){
+                    toastr['warning']('벌당직이 모자랍니다!');
+                }else{
+                    toastr['error']('당직 추가 실패');
+                }
+
+            })
+        }
+    });
+}
+
 
 function hasDuty(res){
     $("#duties").removeClass("hidden");
@@ -185,15 +362,50 @@ function hasDuty(res){
 
             $("#delete"+ i ).click(function(){
                 var index = $(this).attr('index');
-                console.log(index);
-            });
+                var id = data["user_id"+index];
+                var mode = data["user"+index+"_mode"];
+                var sendData={};
 
+                sendData.id = id;
+                sendData.date = date;
+                sendData.mode = mode;
+
+                $.post("/duty/deleteDutyHandler",sendData, function(res){
+                    console.log(res);
+
+                    if(res== "delete"){
+                        toastr['success']('당직 삭제 성공');
+                        allDuty(date.getFullYear(), date.getMonth()+1);
+                        $('div.modal').modal('hide');
+                        $('#calendar').fullCalendar( 'rerenderEvents' );
+
+                    }else if(res == "error"){
+                        toastr['error']('당직 삭제 실패');
+                    }else{
+                        toastr['error']('당직 삭제 실패');
+                    }
+
+                })
+            });
         }
     }
 
     $('button.add').unbind().click(function(){
+
         var index = $(this).attr('index');
-        console.log(index);
+        var id = data["user_id"+index];
+        var mode = data["user"+index+"_mode"];
+
+        var sendData={};
+
+        sendData.id = id;
+        sendData.index = index;
+        sendData.date = date;
+        sendData.mode = mode;
+
+        console.log(sendData);
+
+        addDuty(sendData);
 
     });
 
@@ -210,46 +422,6 @@ function getMember(callback){
         callback(res);
 
     });
-}
-
-
-
-function EventClick(event, jsEvent, view){
-
-    var sendData={};
-    sendData.id = event.user_id;
-    sendData.mode = event.mode;
-    sendData.toDate =event.start.format();
-
-    console.log(sendData);
-
-
-    $.post("/duty/changeDutyMode",sendData, function(res){
-        console.log(res);
-
-        if(res == "success"){
-            toastr['success']('당직 변경 성공');
-
-            if(event.mode == 1){
-                event.textColor= 'black';
-                event.mode = 0;
-            }else{
-                event.textColor= '#EF6C00';
-                event.mode = 1;
-            }
-            $('#calendar').fullCalendar( 'rerenderEvents' );
-
-        }else if(res == "empty"){
-            toastr['error']('당직이 비어있습니다.');
-
-        }else if(res == "notEnough"){
-            toastr['error']('벌당직이 모자랍니다!');
-        }
-        else {
-            toastr['error']('당직 변경 실패');
-        }
-    })
-
 }
 
 
