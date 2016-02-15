@@ -264,7 +264,9 @@ function loadnowHistory(req, res){
 
 function loadpastHistory(req, res){
     var con = DB_handler.connectDB();
-    var query = 'select * from t_book a inner join t_book_return b on a.b_id=b.brt_book_id inner join t_user c on b.brt_user=c.u_id';
+    var date = req.body;
+
+    var query = 'select * from t_book a inner join t_book_return b on a.b_id=b.brt_book_id inner join t_user c on b.brt_user=c.u_id where month(brt_return_date)="' + date.month + '" and year(brt_return_date)="' + date.year + '"';
     con.query(query, function(err, response){
         if(err){
             res.send('failed');

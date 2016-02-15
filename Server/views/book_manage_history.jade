@@ -10,6 +10,7 @@ append head
     link(rel='stylesheet', type='text/css', href='../../stylesheets/main_layout.css')
     link(rel='stylesheet', type='text/css', href='../../stylesheets/book_manage_history.css')
     link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')
+    link(rel='stylesheet', type='text/css', href='../../stylesheets/bootstrap-datepicker3.css')
 block content
     .wrapper
         article.container
@@ -22,8 +23,12 @@ block content
                     li
                         a(href="#") 과거 히스토리
                 hr
+                input.datepicker#monthpicker(type='text', placeholder='월 선택' readonly='readonly').hidden
+                hr
                 table#nowhistoryTable.table.table-striped.table-hover
                 table#pasthistoryTable.table.table-striped.table-hover.hidden
 append script
+    script(src='../../javascripts/moment.min.js')
+    script(src='../../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../../javascripts/book_manage_history.js')

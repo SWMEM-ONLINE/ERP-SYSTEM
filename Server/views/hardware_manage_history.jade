@@ -16,6 +16,8 @@ block content
             h3 하드웨어 대여 기록
             hr
             .content
+                input.datepicker#monthpicker(type='text', placeholder='월 선택' readonly='readonly')
+                hr
                 ul.nav.nav-pills.nav-justified
                     li.active
                         a(href="#") 현재 대여중
@@ -25,5 +27,7 @@ block content
                 table#nowhistoryTable.table.table-striped.table-hover
                 table#pasthistoryTable.table.table-striped.table-hover.hidden
 append script
+    script(src='../javascripts/moment.min.js')
+    script(src='../javascripts/bootstrap-datepicker.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
     script(src='../../javascripts/hardware_manage_history.js')
