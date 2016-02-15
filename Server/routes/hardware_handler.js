@@ -335,7 +335,8 @@ function loadNow(req, res){
 
 function loadPast(req, res){
     var con = DB_handler.connectDB();
-    var query = 'select * from t_hardware a inner join t_hardware_return b on a.h_id=b.ht_hardware_id inner join t_user c on b.ht_user=c.u_id';
+    var date = req.body;
+    var query = 'select * from t_hardware a inner join t_hardware_return b on a.h_id=b.ht_hardware_id inner join t_user c on b.ht_user=c.u_id where month(ht_return_date)="' + date.month + '" and year(ht_return_date)="' + date.year + '"';
     con.query(query, function(err, response){
         if(err){
             res.send('failed');

@@ -25,7 +25,7 @@ $('ul.nav-pills li').unbind().click(function(){
 $('.datepicker').val(select_year+"년 "+ select_month+"월");
 
 $('.datepicker').datepicker({
-    format: "yyyy년 mm월",
+    format: "yyyy년 m월",
     minViewMode: 1,
     keyboardNavigation : false,
     todayHighlight: true,
