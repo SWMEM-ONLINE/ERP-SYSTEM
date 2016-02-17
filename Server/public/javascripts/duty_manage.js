@@ -259,7 +259,7 @@ function addDuty(sendData){
         toastr['error']('멤버리스트 생성 실패');
     }
 
-    $( "#member_dropdown" ).append(htmlString);
+    $( "#member_dropdown" ).html(htmlString);
 
 
     $('#mode_dropdown li a').unbind().click(function(){
@@ -281,7 +281,7 @@ function addDuty(sendData){
             toastr['warning']('먼저 대상자 당직을 설정하세요.');
         }
         else{
-
+            console.log(modeFlag);
             sendData.id = memberList[memberFlag].u_id;
             sendData.mode = modeFlag;
 

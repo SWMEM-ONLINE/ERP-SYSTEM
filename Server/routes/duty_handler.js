@@ -178,6 +178,8 @@ function insertDutyhandler(req,res){
         toDate : new Date(req.body.date)
     };
 
+    console.log(request);
+
     //일반당직
     if(request.mode == 0 ){
         insertNormalDuty(con,request,function(result){
@@ -259,7 +261,7 @@ function insertNormalDuty(con,request,callback){
 
     var query = "UPDATE `swmem`.`t_duty` " +
         "SET `user_id"+request.index+"`='"+request.id+"', " +
-        "`user" +request.index +"_mode`='1' " +
+        "`user" +request.index +"_mode`='0' " +
         "WHERE year(date) = "+request.toDate.getFullYear()+" and " +
         "month(date) = " +(request.toDate.getMonth() + 1) + " and " +
         "dayofmonth(date) = "+ request.toDate.getDate() +";";
@@ -349,7 +351,7 @@ function deleteDutyHandler(req,res){
 
     else if(request.mode == 1){
 
-        var query  =  "update t_user set u_manager_bad_duty_point = u_bad_duty_point + 1 " +
+        var query  =  "update t_user set u_manager_bad_duty_point = u_manager_bad_duty_point + 1 " +
             "WHERE u_id = '" + request.id + "';";
 
         con.query(query,function(err,response){
@@ -573,7 +575,7 @@ function badToNormal(con,request,callback){
         "month(date) = " +(request.toDate.getMonth() + 1) + " and " +
         "dayofmonth(date) = "+ request.toDate.getDate() +";";
 
-    query += "update t_user set u_manager_bad_duty_point = u_bad_duty_point + 1 " +
+    query += "update t_user set u_manager_bad_duty_point = u_manager_bad_duty_point + 1 " +
         "WHERE u_id = '" + request.id + "';";
 
     con.query(query, function(err, response) {
