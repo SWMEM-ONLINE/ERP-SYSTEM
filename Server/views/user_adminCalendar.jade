@@ -1,0 +1,19 @@
+//
+   Created by KIMDONGWON on 2016-02-26.
+
+extends main_layout
+append head
+   link(rel='stylesheet', type='text/css', href='../stylesheets/bootstrap.min.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/flat-ui.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/animate.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/fullcalendar.css')
+   link(rel='stylesheet', type='text/css', href='../stylesheets/user_adminCalendar.css')
+block content
+   .wrapper
+      article.container
+         #calendar
+append script
+   script(src='../javascripts/moment.min.js')
+   script(src='../javascripts/fullcalendar.js')
+   script(src='../javascripts/user_adminCalendar_index.js')
