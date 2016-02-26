@@ -32,4 +32,9 @@ router.post('/getEvents', util.ensureAuthenticated, function(req, res){
     schedule_handler.getEvents(req,res);
 });
 
+router.post('/getBoardEvents', util.ensureAuthenticated, function(req, res){
+    console.log("getBoardEvents");
+    schedule_handler.getBoardEvents(req,res);
+});
+
 module.exports = router;

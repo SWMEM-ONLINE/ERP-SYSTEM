@@ -97,6 +97,43 @@ function Event(title,start,end,flag){
     }
 }
 
+
+function getBoardEvents(req,res){
+    var con = DB_handler.connectDB();
+    var eventLists = [];
+    var i;
+
+    var query = "SELECT * FROM swmem.t_schedule;";
+    console.log(query);
+    con.query(query, function(err,response){
+
+        if(err)
+        {
+            console.log(err);
+            DB_handler.disconnectDB(con);
+        }
+        else
+        {
+            var data;
+            for(i=0;i<response.length; i++){
+                data = response[i];
+                console.log(data);
+                var event = new Event(data.s_title,data.s_start_date, new Date(new Date(data.s_end_date).getTime() + 13 * 60 * 60 * 1000), data.s_flag);
+                eventLists.push(event);
+            }
+
+            console.log(eventLists);
+
+
+            res.send(eventLists);
+            DB_handler.disconnectDB(con);
+
+        }
+    });
+
+}
+
+
 function getEvents(req,res){
     var con = DB_handler.connectDB();
     var eventLists = [];
@@ -343,8 +380,8 @@ function getDuty(con,id,year,month,eventLists,callback){
 }
 
 
-
 exports.deleteSchedule = deleteSchedule;
 exports.enrollSchedule = enrollSchedule;
 exports.loadSchedule = loadSchedule;
 exports.getEvents = getEvents;
+exports.getBoardEvents = getBoardEvents;

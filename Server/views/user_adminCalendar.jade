@@ -9,11 +9,25 @@ append head
    link(rel='stylesheet', type='text/css', href='../stylesheets/main_layout.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/fullcalendar.css')
    link(rel='stylesheet', type='text/css', href='../stylesheets/user_adminCalendar.css')
+   link(rel='stylesheet', type='text/css', href='./stylesheets/bootstrap-datepicker3.css')
 block content
    .wrapper
       article.container
-         #calendar
+         .content
+            hr
+            input.datepicker(type='text', placeholder='월 선택' readonly='readonly')
+            #calendar
+
+
+         .content-header
+            h5#today
+            h5 오늘의 당직
+         hr
+         #content-today_duty
 append script
    script(src='../javascripts/moment.min.js')
+   script(src='../javascripts/bootstrap-datepicker.js')
    script(src='../javascripts/fullcalendar.js')
+   script(src='../javascripts/gcal.js')
    script(src='../javascripts/user_adminCalendar_index.js')
+
