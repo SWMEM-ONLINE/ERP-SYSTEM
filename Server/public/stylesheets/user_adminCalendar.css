@@ -24,19 +24,25 @@ input{
 }
 
 div.card{
-
     background: #FFF;
     border: 1px solid #AAA;
     border-bottom: 3px solid #BBB;
     float:left;
     padding: 0px;
-    margin-left:100px;
     margin-top:50px;
     overflow: hidden;
     width: 15%;
     height: 100%;
     display: inline-block;
     vertical-align: top;
+}
+
+div.card h5{
+    font-size: 60%;
+}
+
+#content-today_duty label{
+    font-size: 60%;
 }
 
 div.content{
