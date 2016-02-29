@@ -622,4 +622,8 @@ router.post('/push', util.ensureAuthenticated, function(req, res, next){
     }
 });
 
+router.get('/adminCalendar', util.ensureAuthenticated, function(req, res, next) {
+    res.render('user_adminCalendar', {title: '월간 일정', grade: util.getUserGrade(req)});
+});
+
 module.exports = router;

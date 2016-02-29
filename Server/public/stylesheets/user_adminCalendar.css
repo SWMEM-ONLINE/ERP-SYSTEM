@@ -1,0 +1,54 @@
+#calendar {
+    width:100%;
+    margin-bottom:20px;
+}
+
+.fc-more{
+    color:  #122359;
+}
+
+.datepicker{
+    margin-bottom: 15px;
+}
+.fc-time{
+    color: #111a23;
+    font-size: 13px;
+}
+
+input{
+    text-align: center;
+    width: 170px;
+    border:1px solid #cccccc;
+    height: 33px;
+    border-radius: 4px;
+}
+
+div.card{
+    background: #FFF;
+    border: 1px solid #AAA;
+    border-bottom: 3px solid #BBB;
+    float:left;
+    padding: 0px;
+    margin-top:50px;
+    margin-left:70px;
+    overflow: hidden;
+    width: 15%;
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+div.card h5{
+    font-size: 100%;
+}
+
+#content-today_duty label{
+    font-size: 100%;
+}
+
+div.content{
+    float: right;
+    width: 70%;
+    margin-top: 50px;
+    margin-right: 50px;
+}
