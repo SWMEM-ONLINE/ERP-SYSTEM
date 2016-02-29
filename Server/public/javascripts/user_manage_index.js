@@ -105,7 +105,7 @@ $('#memberList').on('click','td',function(){
                 $('div.modal #type').html(degree[data[0].u_state]);
                 $('div.modal #selectAdmin').html('계정 전환');
                 document.getElementById('type').setAttribute('origin', data[0].u_state);
-                document.getElementById('profile').setAttribute('src', 'http://211.189.127.124:3000/image?name=' + data[0].u_photo_url);
+                document.getElementById('profile').setAttribute('src', 'http://www.swmem.org/image?name=' + data[0].u_photo_url);
                 //document.getElementById('profile').setAttribute('src','http://www.swmem.org/image?name='+data[0].u_photo_url);
                 document.getElementById('selectAdmin').setAttribute('number', 0);
                 $('div.modal').modal();

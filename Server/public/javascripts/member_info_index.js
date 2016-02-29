@@ -79,7 +79,7 @@ $('#memberList').on('click','td',function(){
                 $('div.modal #phone').html(data[0].u_phone);
                 $('div.modal #mail').html(data[0].u_email);
                 $('div.modal #type').html(degree[data[0].u_state]);
-                document.getElementById('profile').setAttribute('src', 'http://211.189.127.124:3000/image?name=' + data[0].u_photo_url);
+                document.getElementById('profile').setAttribute('src', 'http://www.swmem.org/image?name=' + data[0].u_photo_url);
                 //document.getElementById('profile').setAttribute('src','http://www.swmem.org/image?name='+data[0].u_photo_url);
                 $('div.modal').modal();
             }
