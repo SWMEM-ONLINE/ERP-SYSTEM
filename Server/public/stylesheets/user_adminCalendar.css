@@ -22,3 +22,26 @@ input{
     height: 33px;
     border-radius: 4px;
 }
+
+div.card{
+
+    background: #FFF;
+    border: 1px solid #AAA;
+    border-bottom: 3px solid #BBB;
+    float:left;
+    padding: 0px;
+    margin-left:100px;
+    margin-top:50px;
+    overflow: hidden;
+    width: 350px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+div.content{
+    float: right;
+    width: 70%;
+    margin-top: 50px;
+    margin-right: 50px;
+}
