@@ -107,7 +107,7 @@ function postponeBook(req, res){
             DB_handler.disconnectDB(con);
             res.send('failed');
         }else{
-            if(response[0].br_extenstion_cnt === 1 || response[0].b_reserved_cnt != 0){
+            if(response[0].br_extenstion_cnt >= 6 ||response[0].b_reserved_cnt != 0){
                 res.send('연장할 수 없습니다');
                 DB_handler.disconnectDB(con);
             }else{

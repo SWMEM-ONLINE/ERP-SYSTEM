@@ -64,7 +64,7 @@ function loadBorrowedBooklist(){
             htmlString += '</td><td width="5%">';
             htmlString += '<div>';
             htmlString += '<button id="turnIn" type="button" class="btn">도서반납</button>';
-            if(data.br_extension_cnt === 0 && data.b_reserved_cnt === 0 && data.diff <= 0)   htmlString += '<button id="postpone" type="button" class="btn">대여연장</button>';
+            if(data.br_extension_cnt < 6 && data.b_reserved_cnt === 0 && data.diff <= 0)   htmlString += '<button id="postpone" type="button" class="btn">대여연장</button>';
             else    htmlString += '<button id="postpone" type="button" class="btn disabled">대여연장</button>';
             htmlString += '<button id="missing" type="button" class="btn cancel">분실신고</button></div>';
             htmlString += '</td></tr>';
@@ -90,7 +90,7 @@ function loadBorrowedBooklist(){
             });
         });
         $('button#postpone').each(function(index){                          // postpone button function
-            if(datalist[index].br_extension_cnt === 0 && datalist[index].b_reserved_cnt === 0 && datalist[index].diff <= 0) {
+            if(datalist[index].br_extension_cnt < 6 && datalist[index].b_reserved_cnt === 0 && datalist[index].diff <= 0) {
                 $(this).unbind().click(function () {
                     $.post('/book/mybook/postpone', {rental_id: datalist[index].br_id, book_id: datalist[index].b_id}, function (response) {
                         if(response === 'success'){
