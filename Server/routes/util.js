@@ -373,6 +373,10 @@ function checkAuth(req) {
             if(grade < 10) //운영자, 자치회
                 result = true;
             break;
+        case '/adminCalendar':                                     //Smart TV
+            if(grade == 1)
+                result = true;
+            break;
         default:
             if(grade < 104)
                 result = true;
