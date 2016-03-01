@@ -81,14 +81,14 @@ $("#showresult").click(function(){
             htmlString += "<tr>";
             htmlString += "<td>";
 
-            var request1 = "" + rq_date1.getFullYear() + "-" +rq_date1.getMonth()+1+"-" + rq_date1.getDate() +" / " +
+            var request1 = "" + rq_date1.getFullYear() + "-" +(rq_date1.getMonth()+1)+"-" + rq_date1.getDate() +" / " +
                 rq_name1;
             htmlString += request1;
             htmlString += "</td>";
 
             htmlString += "<td>";
 
-            var request2 = "" + rq_date2.getFullYear() + "-" +rq_date2.getMonth()+1+"-" + rq_date2.getDate() +" / " +
+            var request2 = "" + rq_date2.getFullYear() + "-" +(rq_date2.getMonth()+1)+"-" + rq_date2.getDate() +" / " +
                 rq_name2;
             htmlString += request2;
             htmlString += "</td>";
