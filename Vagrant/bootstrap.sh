@@ -22,6 +22,8 @@ cd /home/vagrant/ERP-SYSTEM
 
 git pull
 
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
+
 
 if ! [ -L /var/www ]; then
   rm -rf /var/www
