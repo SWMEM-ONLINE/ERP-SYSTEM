@@ -28,6 +28,10 @@ $('#calendar').fullCalendar({
     height: 720,
     dayClick: function(date, jsEvent, view) {
         getClickedEvents(date);
+    },
+    googleCalendarApiKey: "AIzaSyCG7BMZu2LiHu-nitkEU-io4GlhqdTCiKo",
+    events: {
+        googleCalendarId: "suwonmem@gmail.com"
     }
 });
 
