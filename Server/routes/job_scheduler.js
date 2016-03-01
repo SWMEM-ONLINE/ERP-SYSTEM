@@ -21,8 +21,6 @@ var CronJob = require('cron').CronJob;
 function startCronJob(){
 
 
-    handler.point_carry();
-
     console.log("cronJobStart");
 
     // "0 30 20 * * *" 매일 8시 30분마다 실행되는 부분
