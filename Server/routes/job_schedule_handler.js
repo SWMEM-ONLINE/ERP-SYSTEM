@@ -220,8 +220,112 @@ function vote_complete() {
     });
 }
 
+function point_carry(){
+
+    var con = DB_handler.connectDB();
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = today.getMonth() + 1;
+    var date = today.getDate();
+
+    if(month<10)
+        month = "0"+month;
+
+
+    var insertDate = year +"-" + month + "-" +date;
+
+    console.log(insertDate);
+
+    var query = "SELECT * FROM swmem.t_user;";
+
+    con.query(query, function(err, response){
+
+        if(err){
+            console.log(err);
+            DB_handler.disconnectDB(con);
+        }else{
+
+            console.log(response);
+            var data;
+            var insertQuery = "";
+            var member;
+            for(var i = 0 ; i < response.length; i++ ){
+                data = response[i];
+
+                member = new Member(data.u_id, data.u_good_duty_point, data.u_bad_duty_point, data.u_manager_bad_duty_point);
+
+                if(member.good_point > 0){
+
+
+                    insertQuery+="INSERT INTO `swmem`.`t_duty_point_history` (`date`, `receive_user`, `send_user`, `mode`, `point`, `reason`, `accept`) " +
+                        "VALUES (" +
+                        "'" + insertDate +"'," +
+                        " '" + member.id +"', " +
+                        "'admin', " +
+                        "'0', " +
+                        "'" + member.good_point + "'," +
+                        " 'POINT_INIT'," +
+                        "'1'); ";
+
+                }
+
+                if(member.bad_point>0){
+                    insertQuery+="INSERT INTO `swmem`.`t_duty_point_history` (`date`, `receive_user`, `send_user`, `mode`, `point`, `reason`, `accept`) " +
+                        "VALUES (" +
+                        "'" + insertDate +"'," +
+                        " '" + member.id +"', " +
+                        "'admin', " +
+                        "'1', " +
+                        "'" + member.bad_point + "'," +
+                        " 'POINT_INIT'," +
+                        "'1'); ";
+                }
+
+                if(member.manager_bad_point > 0){
+                    insertQuery+="INSERT INTO `swmem`.`t_duty_point_history` (`date`, `receive_user`, `send_user`, `mode`, `point`, `reason`, `accept`) " +
+                        "VALUES (" +
+                        "'" + insertDate +"'," +
+                        " '" + member.id +"', " +
+                        "'admin', " +
+                        "'2', " +
+                        "'" + member.manager_bad_point + "'," +
+                        " 'POINT_INIT'," +
+                        " '1'); ";
+                }
+
+
+
+            }
+
+            con.query(insertQuery, function(err, response){
+                if(err){
+                    console.log(err);
+                    DB_handler.disconnectDB(con);
+                }else{
+                    console.log(response);
+                    DB_handler.disconnectDB(con);
+                }
+            });
+        }
+    });
+
+
+}
+
+function Member(id, good_point , bad_point, manager_bad_point ) {
+    this.id = id;
+    this.good_point = good_point;
+    this.bad_point = bad_point;
+    this.manager_bad_point = manager_bad_point;
+
+}
+
+
+
+
 exports.hardware_remaining = hardware_remaining;
 exports.book_remaining = book_remaining;
 exports.nextDayDuty = nextDayDuty;
 exports.fee_carry = fee_carry;
 exports.vote_complete = vote_complete;
+exports.point_carry = point_carry;

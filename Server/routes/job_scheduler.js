@@ -20,6 +20,9 @@ var CronJob = require('cron').CronJob;
 
 function startCronJob(){
 
+
+    handler.point_carry();
+
     console.log("cronJobStart");
 
     // "0 30 20 * * *" 매일 8시 30분마다 실행되는 부분
@@ -43,6 +46,7 @@ function startCronJob(){
     new CronJob('0 0 0 1 * *', function() {
         console.log('매달 1일 00시 00분 00초');
         handler.fee_carry();
+        handler.point_carry();
 
     }, null, true, 'Asia/Seoul');
 

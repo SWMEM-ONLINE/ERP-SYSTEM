@@ -1,7 +1,14 @@
 /**
  * Created by HyunJae on 2015. 12. 23..
  */
+/*
+ hr
+ #name2.gray
+ #point_status.point
+ #foot2.gray
 
+
+ */
 $('.datepicker').datepicker({
     format: "yyyy년 m월",
     minViewMode: 1,
@@ -48,7 +55,6 @@ $.post('/duty/getUser', function(res){
         + res.manager_bad_duty_point +"개 ");
     htmlString = "받으셨습니다";
     $('#foot').html(htmlString);
-    $('#foot2').html(htmlString);
 
 });
 
@@ -175,6 +181,10 @@ function generateAllHistoryHtml(response){
 
         $.each(response, function (idx, data) {
 
+            if(data.reason ="POINT_INIT") {
+                return true;
+            }
+
             htmlString += '<tr>';
 
             htmlString += "<td>";
@@ -238,8 +248,6 @@ function getPersonPoint(year, month){
 
     $.post('/duty/loadMyPointHistory', sendData , function(res){
 
-        var htmlString =  year +" 년 " + month +"월에는";
-        $('#name2').html(htmlString);
         generatePersonHtml(res);
     });
 
@@ -261,6 +269,10 @@ function generatePersonHtml(response){
     else{
 
         $.each(response, function (idx, data) {
+
+            if(data.reason ="POINT_INIT") {
+                return true;
+            }
 
             htmlString += '<tr>';
 
@@ -303,8 +315,6 @@ function generatePersonHtml(response){
 
     }
 
-    $("#point_status").html("상당직 "+ goodDutyPoint + "개, " + "벌당직 " + badDutyPoint +"개, 운영실 벌당직 "
-    + managerBadDutyPoint +"개 ");
 
     $('#history').html(htmlString);
 
