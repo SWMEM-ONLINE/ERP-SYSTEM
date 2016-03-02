@@ -181,7 +181,7 @@ function generateAllHistoryHtml(response){
 
         $.each(response, function (idx, data) {
 
-            if(data.reason ="POINT_INIT") {
+            if(data.reason =="POINT_INIT") {
                 return true;
             }
 
@@ -270,7 +270,7 @@ function generatePersonHtml(response){
 
         $.each(response, function (idx, data) {
 
-            if(data.reason ="POINT_INIT") {
+            if(data.reason =="POINT_INIT") {
                 return true;
             }
 
