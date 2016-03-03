@@ -1899,7 +1899,6 @@ function declineChangeDuty(req,res){
     console.log(req.body);
 
     var con = DB_handler.connectDB();
-    DB_handler.disconnectDB(con);
 
     var index = req.body.index;
 
