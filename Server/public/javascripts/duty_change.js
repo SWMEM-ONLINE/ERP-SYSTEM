@@ -214,6 +214,9 @@ $("#request").unbind().click(function() {
     sendData.requset_id1 = null;
     sendData.request_id2 = request_user_id2[selected];
 
+
+    $(" #memberinfo").addClass("hidden");
+
     $.post('/duty/requestChangeDuty',sendData, function(res){
         if(res.length ==0){
             toastr['error']('맞변경 신청 실패');
