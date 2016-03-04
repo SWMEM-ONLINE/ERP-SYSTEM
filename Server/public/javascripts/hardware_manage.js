@@ -93,7 +93,7 @@ function addHardware(){
                 toastr['error']('수량은 숫자만 기입하세요');
                 return;
             }
-            if(serial.length >= 100 || serial.length == 0){
+            if(serial.length >= 100){
                 toastr['error']('시리얼넘버는 100자 이하여야합니다');
                 return;
             }
@@ -104,6 +104,7 @@ function addHardware(){
             };
             dataGroup.push(data)
         }
+        console.log(dataGroup);
         var jsonData = JSON.stringify(dataGroup);
         $.ajax({
             type:'post',
@@ -127,10 +128,11 @@ function addHardware(){
 
 function alterHardware(){
     $.post('/hardware/loadHardwarelist', function(datalist){
-        var htmlString = '<thead><tr class="empty"><th>이름</th><th>총갯수</th><th>대여</th><th>시리얼넘버</th></tr></thead><tbody>';
+        //var htmlString = '<thead><tr class="empty"><th>이름</th><th>총갯수</th><th>대여</th><th>시리얼넘버</th></tr></thead><tbody>';
+        var htmlString = '<thead><tr class="empty"><th>이름</th><th>남은 수량</th><th>시리얼넘버</th></tr></thead><tbody>';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td>' + data.h_name + '</td>';
-            htmlString += '<td>' + data.h_total + '</td>';
+            //htmlString += '<td>' + data.h_total + '</td>';
             htmlString += '<td>' + data.h_remaining + '</td>';
             htmlString += '<td>' + data.h_serial + '</td>';
         });
@@ -146,22 +148,22 @@ function clickHardware(datalist){
         var modalString = '';
         modalString += '<table class="table table-striped">';
         modalString += '<tr><td>하드웨어 이름</td><td><input type="text" id="hardwareName" value="' + datalist[index].h_name + '"></td></tr>';
-        modalString += '<tr><td>총 수량</td><td><input type="number" id="hardwareTotal" value="' + datalist[index].h_total + '" min="0"></td></tr>';
+        //modalString += '<tr><td>총 수량</td><td><input type="number" id="hardwareTotal" value="' + datalist[index].h_total + '" min="0"></td></tr>';
         modalString += '<tr><td>남은 수량</td><td><input type="number" id="hardwareRemaining" value="' + datalist[index].h_remaining + '" min="0"></td></tr>';
         modalString += '<tr><td>시리얼번호</td><td><input type="text" id="hardwareSerial" value="' + datalist[index].h_serial + '"></td></tr></table>';
         $('div.modal-body').html(modalString);
         $('div.modal').modal();
 
         $('button#alterButton').unbind().click(function(){
-            var n1 = $('#hardwareTotal').val();
+            //var n1 = $('#hardwareTotal').val();
             var n2 = $('#hardwareRemaining').val();
-            if(n2 > n1){
-                toastr['error']('남은 갯수는 총 갯수를 초과할 수 없습니다');
-            }else{
+            //if(n2 > n1){
+            //    toastr['error']('남은 갯수는 총 갯수를 초과할 수 없습니다');
+            //}else{
                 var alterData = {
                     id : datalist[index].h_id,
                     name : $('#hardwareName').val(),
-                    total : n1,
+                    //total : n1,
                     remaining : n2,
                     serial : $('#hardwareSerial').val()
                 };
@@ -175,7 +177,7 @@ function clickHardware(datalist){
                     alterHardware();
                     $('div.modal').modal('hide');
                 });
-            }
+            //}
         });
         $('button#deleteButton').unbind().click(function(){
             $.post('/hardware/manage/delete', {hardware_id : datalist[index].h_id}, function(response){
