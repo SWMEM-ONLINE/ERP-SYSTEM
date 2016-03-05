@@ -310,7 +310,7 @@ $('.datepicker').on('changeDate',function(event){
 
         if(user_id4 !=null){
             $.post('/duty/getName', {id : user_id4} , function(response) {
-                request_user_id2[3] = user_id3;
+                request_user_id2[3] = user_id4;
                 request_user_name2[3] = response;
                 $("#user_4").html("<p>" + response + "</p>");
                 $("#user_4").removeClass("hidden");
