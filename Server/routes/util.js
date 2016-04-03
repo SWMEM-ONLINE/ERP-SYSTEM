@@ -351,7 +351,6 @@ function checkAuth(req) {
             if(grade <= 2 || grade == 5) //운영자, 회장, 생활장
                 result = true;
             break;
-        case '/qnalist':                                            //문의 관리
         case '/mileage':                                            //마일리지 관리
             if(grade <= 2) //운영자, 회장
                 result = true;
