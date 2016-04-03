@@ -19,7 +19,7 @@ function myqnaList(pageNum){
             }
             else {
                 var totalPage = data.totalPage;
-
+                console.log(data);
                 var tbodyString = '';
                 var paginationString = '';
                 if (totalPage == 0) {
