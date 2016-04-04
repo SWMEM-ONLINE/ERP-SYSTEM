@@ -137,6 +137,9 @@ $("#showresult").click(function(){
                         }
 
 
+                        setTimeout('reload()', 500);
+
+
 
                     });
                     console.log(data);
@@ -164,6 +167,8 @@ $("#showresult").click(function(){
 
                         }
 
+
+                        setTimeout('reload()', 500);
 
 
                     });
@@ -443,4 +448,11 @@ function numberOfDays(year, month) {
 function getrequest_date2(){
     request_date2 = new Date(request2_year,request2_month-1,request2_date);
     return true;
+}
+
+
+function reload(){
+
+    window.location.reload();
+
 }
