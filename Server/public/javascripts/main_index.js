@@ -121,20 +121,25 @@ function loadMyDuty(){
                 type = "벌당직";
             }
 
-            htmlString += '<p><label style="text-overflow: ellipsis;">'+ data.month + '월 ' + data.date + '일 ' + type + '</label>';
-
 
             if(diff <= -7){
-                htmlString += '  <span class="label label-default">D' + diff + '</span>';
+                htmlString += '<p><label style="text-overflow: ellipsis;">'+ data.month + '월 ' + data.date + '일 ' + type + '</label>';
+                htmlString += '<span class="label label-default">D' + diff + '</span>';
             }else if(diff < 0){
-                htmlString += '  <span class="label label-warning">D' + diff + '</span>';
-            }else{
-                htmlString += '  <span class="label label-danger">D+' + diff + '</span>';
+                htmlString += '<p><label style="text-overflow: ellipsis;">'+ data.month + '월 ' + data.date + '일 ' + type + '</label>';
+                htmlString += '<span class="label label-warning">D' + diff + '</span>';
             }
+
         });
 
+        //  당직이 남아 있지  않을 때
+        if(htmlString.length==0){
+            htmlString = "<p style='text-overflow:ellipsis;'>남은 당직이 없습니다.</p>"
+        }
+
+        //  이 번달  당직이 존재하지  않을 때
         if(response.length==0){
-            htmlString = "<p style='text-overflow: ellipsis;'> 이번달 당직이 없습니다. </p>"
+            htmlString = "<p style='text-overflow:ellipsis;'>이번달 당직이 없습니다.</p>"
         }
 
         $('.content-my_duty').html(htmlString);
