@@ -397,7 +397,7 @@ function enrollBook(req, res){
                             console.log('Make folder : ' + dir);
 
                             for(var i=0;i<bookName.length; i++){
-                                var result =  bookISBN[i];
+                                var result =  "ssmims-bookrent-" +bookISBN[i] + "-1";
 
                                 var code = qr.image(result, { type: 'png' });
 
