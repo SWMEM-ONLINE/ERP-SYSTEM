@@ -147,5 +147,14 @@ router.post('/manage/resetbookLocation', util.ensureAuthenticated, function(req,
     book_handler.resetbookLocation(req, res);
 });
 
+router.post('/manage/makeQRcodePage', util.ensureAuthenticated, function(req, res){
+    book_handler.makeQRcodePage(req, res);
+});
+
+router.get('/manage/qr_page', util.ensureAuthenticated, function(req, res){
+    res.render('qr_page', { title : 'QR', grade: util.getUserGrade(req)});
+});
+
+
 
 module.exports = router;

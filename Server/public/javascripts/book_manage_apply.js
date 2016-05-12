@@ -138,7 +138,7 @@ loadapplylist(0);
 function loadapplylist(flag){
     var htmlString = '';
     $.post('/book/manage/loadapplylist', {flag : flag}, function(datalist){
-        htmlString += '<tfoot><tr><th colspan="2"><span id="checkSum" class="pull-right">0 원</span></th></tr><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="cancelBuying" class="btn">구매취소</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="down2excel" class="btn btn-danger">엑셀 저장</button></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="2"><span id="checkSum" class="pull-right">0 원</span></th></tr><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="cancelBuying" class="btn">구매취소</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="down2excel" class="btn btn-danger">엑셀 저장</button><button type="button" id="qrButton" class="btn btn-danger">QR 출력</button></th></tr></tfoot>';
         htmlString += '<tbody id="applyTableData">';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td><img class="bookImg" src="' + data.ba_photo_url + '"</td>';
@@ -163,8 +163,35 @@ function loadapplylist(flag){
         enrollButton(datalist);
         cancelBuyingButton(datalist, flag);
         down2excelButton(datalist);
+        qrButtonAccept();
     });
 }
+
+
+
+function qrButtonAccept(){
+    $('#qrButton').unbind().click(function (){
+
+        $.post('/book/manage/makeQRcodePage' , function(response){
+            // type , month , date ,year
+            console.log(response);
+
+            if(response=="fail"){
+                toastr['error']('에러.');
+
+            }else if(response == "empty"){
+                toastr['error']('이번달 새로운 책이 없습니다.');
+
+            }else{
+                var data = response;
+                console.log("Success");
+                window.open('/book/manage/qr_page', '_blank');
+            }
+        });
+
+    });
+}
+
 
 function down2excelButton(datalist){
     $('button#down2excel').unbind().click(function(){

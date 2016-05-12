@@ -72,11 +72,9 @@ function loadTodayDuty(){
         }
 
         if(data === "no data"){
-            console.log("ddd");
             htmlString = '<p><label style="text-overflow: ellipsis;">'
                 + '오늘의 당직이 없습니다.' +
                 '</label>';
-            console.log(htmlString);
         }
 
         $('#content-today_duty').html(htmlString);

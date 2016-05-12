@@ -1,9 +1,17 @@
 /**
  * Created by jung-inchul on 2015. 11. 26..
+ *
+ * modified by HyunJae on 2016.05.11
+ *
+ *  * add the qrcode generator
  */
 
+var qr = require('qr-image');
 var fs = require('fs');
 var DB_handler = require('./DB_handler');
+var mkdirp = require('mkdirp');
+var path = require('path');
+var appDir = path.dirname(require.main.filename);
 
 /*
     Load new tech or humanities booklist. Send one select query and return data.
@@ -343,6 +351,8 @@ function loadApplylist(req, res){
 function enrollBook(req, res){
     var con = DB_handler.connectDB();
     var today = dateformat();
+    var bookName = [];
+    var bookISBN =[];
     var query='select * from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
     var query1 = '';
     con.query(query, function(err, response){
@@ -352,6 +362,9 @@ function enrollBook(req, res){
             res.send('failed');
         }else{
             for(var i = 0; i < response.length; i++){
+                // 책 이름과 ISBN저장
+                bookName[i] = response[i].ba_name;
+                bookISBN[i] = response[i].ba_isbn;
                 query1 += 'insert into t_book set b_type=' + response[i].ba_type + ', b_name="' + response[i].ba_name + '", b_isbn="' + response[i].ba_isbn + '", b_author="' + response[i].ba_author + '", b_publisher="' + response[i].ba_publisher + '", b_location="' + req.body.location + '", b_photo_url="' + response[i].ba_photo_url + '", b_enroll_date="' + today + '", b_price=' + response[i].ba_price + ';';
             }
             query1 += 'delete from t_book_apply where ba_id IN (' + req.body.registerIdlist + ')';
@@ -361,8 +374,46 @@ function enrollBook(req, res){
                     console.log('DB query ERROR in "book_handler.js -> enrollBook"');
                     DB_handler.disconnectDB(con);
                 }else{
-                    res.send('success');
-                    DB_handler.disconnectDB(con);
+
+                    /**
+                     *
+                     *  QRCODE생성
+                     *
+                     */
+                    var date = new Date();
+
+                    var dir = appDir + '/../public/images/qrcode/' + date.getFullYear() + '-' + (date.getMonth()+1);
+
+                    mkdirp(dir, function (err) {
+                        if (err) {
+
+                            res.send('failed');
+                            console.log('DB query ERROR in "book_handler.js -> enrollBook"');
+                            DB_handler.disconnectDB(con);
+
+                            console.error(err);
+                        }
+                        else {
+                            console.log('Make folder : ' + dir);
+
+                            for(var i=0;i<bookName.length; i++){
+                                var result =  bookISBN[i];
+
+                                var code = qr.image(result, { type: 'png' });
+
+                                var output = fs.createWriteStream(dir + "/" +bookISBN[i] + '.png');
+
+                                code.pipe(output);
+
+                                console.log("create qrcode file in " + dir + " file name : " + bookISBN[i] + ".png");
+
+                            }
+
+                            res.send('success');
+                            DB_handler.disconnectDB(con);
+                        }
+                    });
+
                 }
             });
         }
@@ -442,6 +493,45 @@ function getDate(base, plusDate){
     return date;
 }
 
+function makeQRcodePage(req, res){
+    var con = DB_handler.connectDB();
+    var date = new Date();
+    var query = 'select * from t_book where year(b_enroll_date)=' + date.getFullYear() + ' and month(b_enroll_date)=' + (date.getMonth()+1);
+
+    con.query(query, function(err, response){
+        if(err){
+            res.send('fail');
+            console.log('DB update ERROR in "book_handler.js -> makeQRcodePage"');
+            DB_handler.disconnectDB(con);
+        }else{
+
+            if(response.length ==0){
+                res.send("empty");
+
+            }else{
+                var data = [];
+
+                for(var i = 0 ; i < response.length; i++){
+                    var book ={
+                        title : response[i].b_name,
+                        ISBN : response[i].b_isbn
+                    };
+                    data.push(book);
+                }
+
+                res.send(data);
+                console.log(data);
+                DB_handler.disconnectDB(con);
+
+            }
+        }
+    });
+
+    //window.open('http://www.daum.net ', '_blank');
+
+}
+
+
 exports.cancelBuying = cancelBuying;
 exports.borrowBook_QR = borrowBook_QR;
 exports.resetbookLocation = resetbookLocation;
@@ -460,3 +550,4 @@ exports.borrowBook = borrowBook;
 exports.missingBook = missingBook;
 exports.reserveBook = reserveBook;
 exports.searchBook = searchBook;
+exports.makeQRcodePage = makeQRcodePage;

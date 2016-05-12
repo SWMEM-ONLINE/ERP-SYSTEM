@@ -1,0 +1,26 @@
+@page a4sheet { size: 21.0cm 29.7cm }
+
+.a4 { page: a4sheet; page-break-after: always }
+
+.bookTitle{
+    text-align: center;
+    color: black;
+    font-size: 13px;
+    width: 3cm;
+    align-content: center;
+}
+
+table.a4 .template {
+    border: 1px solid black;
+}
+
+.image{
+    align-content: center;
+    width : 3cm;
+    height : 3cm;
+}
+
+td.template{
+    height : 4.95cm;
+    width : 7.0cm;
+}
