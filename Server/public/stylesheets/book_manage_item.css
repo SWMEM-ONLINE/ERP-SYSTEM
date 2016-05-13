@@ -10,6 +10,11 @@ div.content input{
     vertical-align: middle;
 }
 
+button.btn{
+    margin:10px;
+    text-align: center;
+}
+
 img.bookImg{
     width: 50%;
 }

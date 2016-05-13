@@ -471,6 +471,23 @@ function resetbookLocation(req, res){
     });
 }
 
+function deleteBook(req, res){
+    var con = DB_handler.connectDB();
+    console.log('here');
+    console.log(req.body.deletelist);
+    var query = 'delete from t_book where b_id IN (' + req.body.deletelist + ')';
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            console.log('DB delete ERROR in "book_handler.js -> deleteBook"');
+            DB_handler.disconnectDB(con);
+        }else{
+            res.send('success');
+            DB_handler.disconnectDB(con);
+        }
+    });
+}
+
 function cancelBuying(req, res){
     var con = DB_handler.connectDB();
     var query = 'update t_book_apply set ba_state=0 where ba_id IN (' + req.body.cancelIdlist + ')';
@@ -551,3 +568,4 @@ exports.missingBook = missingBook;
 exports.reserveBook = reserveBook;
 exports.searchBook = searchBook;
 exports.makeQRcodePage = makeQRcodePage;
+exports.deleteBook = deleteBook;

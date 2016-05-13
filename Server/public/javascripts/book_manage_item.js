@@ -160,12 +160,13 @@ $('#bookSearchBtn').unbind().click(function() {
 function loadbooklist(select){
     $.post('/book/manage/loadbooklist', {flag: select}, function(datalist){
         settingHTML(datalist);
-        resetlocationButton(datalist, select);
+        resetlocationButton(datalist);
+        deleteButton(datalist);
     });
 }
 
 function settingHTML(datalist){
-    var htmlString = '<tfoot><tr><th colspan="2"><button type="button" id="resetLocation" class="btn">위치변경</button></th></tr></tfoot>';
+    var htmlString = '<tfoot><tr><th colspan="2"><button type="button" id="resetLocation" class="btn">위치변경</button><button type="button" id="deleteBook" class="btn btn-danger">도서삭제</button></th></tr></tfoot>';
     htmlString += '<span class="pull-right"> </span></th></tr></tfoot>';
     htmlString += '<tbody id="booklistData">';
     $.each(datalist, function(idx, data){
@@ -180,6 +181,30 @@ function settingHTML(datalist){
     $('table#booklist').html(htmlString);
     $('table tbody#booklistData tr').unbind().click(function(){
         $(this).toggleClass('warning');
+    });
+}
+
+function deleteButton(datalist){
+    $('button#deleteBook').unbind().click(function(){
+        if($('table tbody#booklistData tr.warning').length === 0){
+            toastr['error']('도서를 선택해주세요');
+            return;
+        }
+        var deletelist = '';
+        $('#booklistData tr.warning').each(function(){
+            var idx = $(this).index();
+            deletelist += datalist[idx].b_id + ',';
+        });
+        deletelist = deletelist.substring(0, deletelist.length - 1);
+
+        $.post('/book/manage/deleteBook', {deletelist : deletelist}, function(response){
+            if(response === 'success'){
+                toastr['success']('도서삭제 성공');
+            }else{
+                toastr['error']('도서삭제 실패');
+            }
+            loadbooklist(flag);
+        });
     });
 }
 

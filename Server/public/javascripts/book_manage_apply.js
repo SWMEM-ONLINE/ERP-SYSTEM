@@ -293,9 +293,9 @@ function buyCompleteButton(datalist, flag){
                 else{
                     toastr['error']('주문실패');
                 }
+                loadapplylist(flag);
             });
             $('div.modal').modal('hide');
-            loadapplylist(flag);
         }
     });
 }
@@ -361,9 +361,9 @@ function cancelBuyingButton(datalist, flag){
             else{
                 toastr['error']('취소실패');
             }
+            loadapplylist(flag);
         });
         $('div.modal').modal('hide');
-        loadapplylist(flag);
     });
 }
 

@@ -151,9 +151,14 @@ router.post('/manage/makeQRcodePage', util.ensureAuthenticated, function(req, re
     book_handler.makeQRcodePage(req, res);
 });
 
+router.post('/manage/deleteBook', util.ensureAuthenticated, function(req, res){
+    book_handler.deleteBook(req, res);
+});
+
 router.get('/manage/qr_page', util.ensureAuthenticated, function(req, res){
     res.render('qr_page', { title : 'QR', grade: util.getUserGrade(req)});
 });
+
 
 
 
