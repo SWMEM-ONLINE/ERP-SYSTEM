@@ -503,6 +503,22 @@ function cancelBuying(req, res){
     });
 }
 
+function deleteApply(req, res){
+    var con = DB_handler.connectDB();
+    var query = 'delete from t_book_apply where ba_id IN (' + req.body.deleteIdlist + ')';
+    console.log(query);
+    con.query(query, function(err, response){
+        if(err){
+            res.send('failed');
+            console.log('DB delete ERROR in "book_handler.js -> deleteApply"');
+            DB_handler.disconnectDB(con);
+        }else{
+            res.send('success');
+            DB_handler.disconnectDB(con);
+        }
+    });
+}
+
 function getDate(base, plusDate){
     var tempDate = new Date(base);
     tempDate.setDate(tempDate.getDate() + plusDate);
@@ -548,7 +564,7 @@ function makeQRcodePage(req, res){
 
 }
 
-
+exports.deleteApply = deleteApply;
 exports.cancelBuying = cancelBuying;
 exports.borrowBook_QR = borrowBook_QR;
 exports.resetbookLocation = resetbookLocation;

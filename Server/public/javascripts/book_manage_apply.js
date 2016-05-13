@@ -138,7 +138,7 @@ loadapplylist(0);
 function loadapplylist(flag){
     var htmlString = '';
     $.post('/book/manage/loadapplylist', {flag : flag}, function(datalist){
-        htmlString += '<tfoot><tr><th colspan="2"><span id="checkSum" class="pull-right">0 원</span></th></tr><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="cancelBuying" class="btn">구매취소</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="down2excel" class="btn btn-danger">엑셀 저장</button><button type="button" id="qrButton" class="btn btn-danger">QR 출력</button></th></tr></tfoot>';
+        htmlString += '<tfoot><tr><th colspan="2"><span id="checkSum" class="pull-right">0 원</span></th></tr><tr><th colspan="2"><button type="button" id="selectAllButton" class="btn pull-left">전체선택</button><button type="button" id="buyCompleteButton" class="btn">구매</button><button type="button" id="enrollButton" class="btn">도서등록</button><button type="button" id="cancelBuying" class="btn btn-warning">구매취소</button><button type="button" id="deleteApplyButton" class="btn btn-warning">신청삭제</button><button type="button" id="down2excel" class="btn btn-danger pull-right">엑셀 저장</button><button type="button" id="qrButton" class="btn btn-danger pull-right">QR 출력</button></th></tr></tfoot>';
         htmlString += '<tbody id="applyTableData">';
         $.each(datalist, function(idx, data){
             htmlString += '<tr><td><img class="bookImg" src="' + data.ba_photo_url + '"</td>';
@@ -163,10 +163,66 @@ function loadapplylist(flag){
         enrollButton(datalist);
         cancelBuyingButton(datalist, flag);
         down2excelButton(datalist);
+        deleteApply(datalist, flag);
         qrButtonAccept();
     });
 }
 
+function buyCompleteButton(datalist, flag){
+    $('button#buyCompleteButton').unbind().click(function(){
+        var buyIdlist = '';
+        var type = 0;
+        var n = 0;
+        $('table tbody#applyTableData tr.warning').each(function(){
+            n++;
+            var idx = $(this).index();
+            buyIdlist += datalist[idx].ba_id + ',';
+            type = datalist[idx].ba_type;
+        });
+        if(n === 0){
+            toastr['error']('도서를 선택해주세요');
+            return;
+        }else{
+            buyIdlist = buyIdlist.substring(0, buyIdlist.length -1);
+            $.post('/book/manage/buyComplete', {type : type, buyIdlist : buyIdlist}, function(response){
+                if(response === 'success'){
+                    toastr['success']('주문완료');
+                }
+                else{
+                    toastr['error']('주문실패');
+                }
+                loadapplylist(flag);
+            });
+            $('div.modal').modal('hide');
+        }
+    });
+}
+
+
+function deleteApply(datalist, flag){
+    $('button#deleteApplyButton').unbind().click(function() {
+        if($('table tbody#applyTableData tr.warning').length === 0){
+            toastr['error']('도서를 선택해주세요');
+            return;
+        }
+
+        var deleteIdlist = '';
+
+        $('table tbody#applyTableData tr.warning').each(function(){
+            var idx = $(this).index();
+            deleteIdlist += datalist[idx].ba_id + ',';
+        });
+        deleteIdlist = deleteIdlist.substring(0, deleteIdlist.length - 1);
+        $.post('/book/manage/deleteApply', {deleteIdlist : deleteIdlist}, function(response){
+            if(response === 'success'){
+                toastr['success']('신청삭제 성공');
+            }else{
+                toastr['error']('도서삭제 실패');
+            }
+            loadapplylist(flag);
+        });
+    });
+}
 
 
 function qrButtonAccept(){
@@ -267,36 +323,6 @@ function saveWorkbook(workbook, name) {
         saveAs(data, name);
     }, function (error) {
         alert('Error exporting: : ' + error);
-    });
-}
-
-function buyCompleteButton(datalist, flag){
-    $('button#buyCompleteButton').unbind().click(function(){
-        var buyIdlist = '';
-        var type = 0;
-        var n = 0;
-        $('table tbody#applyTableData tr.warning').each(function(){
-            n++;
-            var idx = $(this).index();
-            buyIdlist += datalist[idx].ba_id + ',';
-            type = datalist[idx].ba_type;
-        });
-        if(n === 0){
-            toastr['error']('도서를 선택해주세요');
-            return;
-        }else{
-            buyIdlist = buyIdlist.substring(0, buyIdlist.length -1);
-            $.post('/book/manage/buyComplete', {type : type, buyIdlist : buyIdlist}, function(response){
-                if(response === 'success'){
-                    toastr['success']('주문완료');
-                }
-                else{
-                    toastr['error']('주문실패');
-                }
-                loadapplylist(flag);
-            });
-            $('div.modal').modal('hide');
-        }
     });
 }
 
