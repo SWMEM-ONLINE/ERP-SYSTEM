@@ -198,7 +198,6 @@ function buyCompleteButton(datalist, flag){
     });
 }
 
-
 function deleteApply(datalist, flag){
     $('button#deleteApplyButton').unbind().click(function() {
         if($('table tbody#applyTableData tr.warning').length === 0){
@@ -254,12 +253,14 @@ function down2excelButton(datalist){
 
         var workbook = new $.ig.excel.Workbook($.ig.excel.WorkbookFormat.excel2007);
         var sheet = workbook.worksheets().add('도서신청 목록');
-        sheet.columns(0).setWidth(60, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(1).setWidth(500, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(2).setWidth(150, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(3).setWidth(150, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(4).setWidth(120, $.ig.excel.WorksheetColumnWidthUnit.pixel);
-        sheet.columns(5).setWidth(120, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(0).setWidth(40, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(1).setWidth(350, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(2).setWidth(250, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(3).setWidth(120, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(4).setWidth(200, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(5).setWidth(80, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(6).setWidth(120, $.ig.excel.WorksheetColumnWidthUnit.pixel);
+        sheet.columns(7).setWidth(150, $.ig.excel.WorksheetColumnWidthUnit.pixel);
 
         sheet.getCell('A1').value('No');
         sheet.getCell('A1').cellFormat().font().height(10*25);
@@ -267,21 +268,27 @@ function down2excelButton(datalist){
         sheet.getCell('B1').value('도서명');
         sheet.getCell('B1').cellFormat().font().height(10*25);
         sheet.getCell('B1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-        sheet.getCell('C1').value('출판사');
+        sheet.getCell('C1').value('저자');
         sheet.getCell('C1').cellFormat().font().height(10*25);
         sheet.getCell('C1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-        sheet.getCell('D1').value('저자');
+        sheet.getCell('D1').value('출판사');
         sheet.getCell('D1').cellFormat().font().height(10*25);
         sheet.getCell('D1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-        sheet.getCell('E1').value('가격');
+        sheet.getCell('E1').value('링크');
         sheet.getCell('E1').cellFormat().font().height(10*25);
         sheet.getCell('E1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-        sheet.getCell('F1').value('신청자');
+        sheet.getCell('F1').value('가격');
         sheet.getCell('F1').cellFormat().font().height(10*25);
         sheet.getCell('F1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+        sheet.getCell('G1').value('신청자');
+        sheet.getCell('G1').cellFormat().font().height(10*25);
+        sheet.getCell('G1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+        sheet.getCell('H1').value('특이사항');
+        sheet.getCell('H1').cellFormat().font().height(10*25);
+        sheet.getCell('H1').cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
 
         var cnt = ($('table tbody#applyTableData tr.warning').length + 1);
-        var table = sheet.tables().add('A1:F' + cnt, true);
+        var table = sheet.tables().add('A1:H' + cnt, true);
 
         table.style(workbook.standardTableStyles('TableStyleMedium2'));
 
@@ -289,28 +296,35 @@ function down2excelButton(datalist){
 
         $('table tbody#applyTableData tr.warning').each(function(){
             var index = $(this).index();
-            sheet.getCell('A' + i).value(i - 1);
+            sheet.getCell('A' + i).value(i - 1);                                                            // No
             sheet.getCell('A' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-            sheet.getCell('B' + i).value(datalist[index].ba_name);
+
+            sheet.getCell('B' + i).value(datalist[index].ba_name);                                          // 도서명
             sheet.getCell('B' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-            sheet.getCell('C' + i).value(datalist[index].ba_publisher);
+
+            sheet.getCell('C' + i).value(datalist[index].ba_author);                                        // 저자
             sheet.getCell('C' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-            sheet.getCell('D' + i).value(datalist[index].ba_author);
+
+            sheet.getCell('D' + i).value(datalist[index].ba_publisher);                                     // 출판사
             sheet.getCell('D' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-            sheet.getCell('E' + i).value(datalist[index].ba_price);
-            sheet.getCell('E' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
-            sheet.getCell('F' + i).value(datalist[index].u_period + ' ' + datalist[index].u_name);
+
+            sheet.getCell('F' + i).value(datalist[index].ba_price);                                         // 가격
             sheet.getCell('F' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+
+            sheet.getCell('G' + i).value(datalist[index].u_period + ' ' + datalist[index].u_name);          // 신청자
+            sheet.getCell('G' + i).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
             i++;
         });
 
-        sheet.getCell('D'+ (i+2)).value('총액');
-        sheet.getCell('D'+ (i+2)).cellFormat().font().height(14 * 20);
-        sheet.getCell('D'+ (i+2)).cellFormat().font().bold(true);
-
-        sheet.getCell('E'+ (i+2)).applyFormula('=SUM(E2:E'+cnt+')');
+        sheet.getCell('E'+ (i+2)).value('총액');
+        sheet.getCell('E'+ (i+2)).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
         sheet.getCell('E'+ (i+2)).cellFormat().font().height(14 * 20);
         sheet.getCell('E'+ (i+2)).cellFormat().font().bold(true);
+
+        sheet.getCell('F'+ (i+2)).applyFormula('=SUM(F2:F'+cnt+')');
+        sheet.getCell('F'+ (i+2)).cellFormat().alignment($.ig.excel.HorizontalCellAlignment.center);
+        sheet.getCell('F'+ (i+2)).cellFormat().font().height(14 * 20);
+        sheet.getCell('F'+ (i+2)).cellFormat().font().bold(true);
 
         var today = new Date();
         var m = (today.getMonth() + 1);
