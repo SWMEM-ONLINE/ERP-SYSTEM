@@ -186,9 +186,6 @@ function settingHTML(datalist){
 }
 
 function deleteButton(datalist){
-
-    console.log('Enter deleteButton Function');
-
     $('button#deleteBook').unbind().click(function(){
         if($('table tbody#booklistData tr.warning').length === 0){
             toastr['error']('도서를 선택해주세요');
@@ -200,6 +197,7 @@ function deleteButton(datalist){
             deletelist += datalist[idx].b_id + ',';
         });
         deletelist = deletelist.substring(0, deletelist.length - 1);
+        console.log(deletelist);
 
         $.post('/book/manage/deleteBook', {deletelist : deletelist}, function(response){
             if(response === 'success'){

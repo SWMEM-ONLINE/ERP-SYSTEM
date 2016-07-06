@@ -473,9 +473,9 @@ function resetbookLocation(req, res){
 
 function deleteBook(req, res){
     var con = DB_handler.connectDB();
-    console.log('here');
     console.log(req.body.deletelist);
     var query = 'delete from t_book where b_id IN (' + req.body.deletelist + ')';
+    console.log(query);
     con.query(query, function(err, response){
         if(err){
             res.send('failed');
