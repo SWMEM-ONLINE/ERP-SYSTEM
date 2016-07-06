@@ -152,6 +152,7 @@ $('#bookSearchBtn').unbind().click(function() {
         $.post('/book/searchBook', {category : category[flag_category], searchWords : searchWords, flag : (flag === 0 ? 'tech' : 'humanities')}, function(datalist){
             console.log(datalist);
             settingHTML(datalist);
+            deleteButton(datalist);
             resetlocationButton(datalist);
         });
     }
@@ -185,6 +186,9 @@ function settingHTML(datalist){
 }
 
 function deleteButton(datalist){
+
+    console.log('Enter deleteButton Function');
+
     $('button#deleteBook').unbind().click(function(){
         if($('table tbody#booklistData tr.warning').length === 0){
             toastr['error']('도서를 선택해주세요');
