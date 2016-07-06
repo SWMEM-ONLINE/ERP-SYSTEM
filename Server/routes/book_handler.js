@@ -127,7 +127,7 @@ function borrowBook(req, res){
  */
 function searchBook(req, res){
     var con = DB_handler.connectDB();
-    var query = 'select * from t_book where ' + req.body.category + ' like "%' + req.body.searchWords + '%" and b_state<3';
+    var query = 'select * from t_book where ' + req.body.category + ' like "%' + req.body.searchWords + '%" and b_state<3 ';
     if(req.body.flag === 'tech')    query += 'and b_type=0';
     else    query += 'and b_type=1';
     con.query(query, function(err, response){
