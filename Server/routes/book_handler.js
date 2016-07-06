@@ -19,6 +19,7 @@ var appDir = path.dirname(require.main.filename);
      0 : Waiting State
      1 : Someone borrowed
      3 : Missed State
+     4 : Deleted State
 
     * b_type
      0 : Tech book
@@ -28,7 +29,7 @@ var appDir = path.dirname(require.main.filename);
 function loadNewTechbook(res){
     var con = DB_handler.connectDB();
     var date = new Date();
-    var query = 'select * from t_book where year(b_enroll_date)=' + date.getFullYear() + ' and month(b_enroll_date)=' + (date.getMonth()+1) + ' and b_type=0 and not (b_state=3)';
+    var query = 'select * from t_book where year(b_enroll_date)=' + date.getFullYear() + ' and month(b_enroll_date)=' + (date.getMonth()+1) + ' and b_type=0 and b_state<3';
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> loadNewTechbook"');
@@ -44,7 +45,7 @@ function loadNewTechbook(res){
 function loadNewHumanitiesbook(res){
     var con = DB_handler.connectDB();
     var date = new Date();
-    var query = 'select * from t_book where year(b_enroll_date)=' + date.getFullYear() + ' and month(b_enroll_date)=' + (date.getMonth()+1) + ' and b_type=1 and not (b_state=3)';
+    var query = 'select * from t_book where year(b_enroll_date)=' + date.getFullYear() + ' and month(b_enroll_date)=' + (date.getMonth()+1) + ' and b_type=1 and b_state<3';
 
     con.query(query, function(err, response){
         if(err){
@@ -126,7 +127,7 @@ function borrowBook(req, res){
  */
 function searchBook(req, res){
     var con = DB_handler.connectDB();
-    var query = 'select * from t_book where ' + req.body.category + ' like "%' + req.body.searchWords + '%" and not (b_state=3)';
+    var query = 'select * from t_book where ' + req.body.category + ' like "%' + req.body.searchWords + '%" and b_state<3';
     if(req.body.flag === 'tech')    query += 'and b_type=0';
     else    query += 'and b_type=1';
     con.query(query, function(err, response){
@@ -443,7 +444,8 @@ function buyComplete(req, res){
 
 function loadbooklist(req, res){
     var con = DB_handler.connectDB();
-    var query = 'select * from t_book where b_type=' + req.body.flag;
+    var query = 'select * from t_book where b_type=' + req.body.flag + ' and b_state<3';
+    console.log(query);
     con.query(query, function(err, response){
         if(err){
             console.log('DB select ERROR in "book_handler.js -> loadbooklist"');
@@ -474,7 +476,7 @@ function resetbookLocation(req, res){
 function deleteBook(req, res){
     var con = DB_handler.connectDB();
     console.log(req.body.deletelist);
-    var query = 'delete from t_book where b_id IN (' + req.body.deletelist + ')';
+    var query = 'update t_book set b_state=4 where b_id IN (' + req.body.deletelist + ');';
     console.log(query);
     con.query(query, function(err, response){
         if(err){
