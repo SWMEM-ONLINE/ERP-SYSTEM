@@ -123,7 +123,7 @@ function loadMyDuty(){
             if(diff <= -7){
                 htmlString += '<p><label style="text-overflow: ellipsis;">'+ data.month + '월 ' + data.date + '일 ' + type + '</label>';
                 htmlString += '<span class="label label-default">D' + diff + '</span>';
-            }else if(diff < 0){
+            }else if(diff <= 0){
                 htmlString += '<p><label style="text-overflow: ellipsis;">'+ data.month + '월 ' + data.date + '일 ' + type + '</label>';
                 htmlString += '<span class="label label-warning">D' + diff + '</span>';
             }
