@@ -27,6 +27,12 @@
 > node app.js
 ```
 
+* Port Forwarding:
+```bash
+> sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 3000
+```
+
+
 ## Documentation
 
 * [Meeting minutes](https://trello.com/swssmonline)
